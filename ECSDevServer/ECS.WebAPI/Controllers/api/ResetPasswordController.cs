@@ -13,15 +13,9 @@ namespace ECS.WebAPI.Controllers
         /// 
         /// </summary>
         /// <remarks>Author: Scott Roberts</remarks>
-        //[Ajax]
         [HttpPost]
-        public IHttpActionResult SubmitUsername()
+        public IHttpActionResult PostUsername([FromBody)
         {
-            // Read Json from POST body.
-            var json = ParseHttpService.ReadHttpPostBody(Request);
-
-            // Deserialize the Json String
-            var credentials = JsonConverterService.DeserializeObject<AccountCredentialsDTO>(json);
 
             // Proccess any other information.
 
@@ -43,7 +37,7 @@ namespace ECS.WebAPI.Controllers
         /// <remarks>Author: Scott Roberts</remarks>
         //[Ajax]
         [HttpPost]
-        public IHttpActionResult VerifySecurityAnswers()
+        public IHttpActionResult PostSecurityAnswers()
         {
             // Read Json from POST body.
             var json = ParseHttpService.ReadHttpPostBody(Request);
@@ -67,7 +61,7 @@ namespace ECS.WebAPI.Controllers
         /// <remarks>Author: Scott Roberts</remarks>
         //[Ajax]
         [HttpPost]
-        public IHttpActionResult ChangePassword()
+        public IHttpActionResult PostChangePassword()
         {
             // Read Json from POST body.
             var json = ParseHttpService.ReadHttpPostBody(Request);

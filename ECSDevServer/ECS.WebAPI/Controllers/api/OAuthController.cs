@@ -1,6 +1,10 @@
 ﻿using ECS.WebAPI.Filters;
+using ECS.WebAPI.Services;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 
@@ -99,6 +103,12 @@ namespace ECS.WebAPI.Controllers
 
             public string Provider { get; private set; }
             public string ReturnUrl { get; private set; }
+
+            // needs to be implemented for IHttpActionResult
+            public Task<HttpResponseMessage> ExecuteAsync(CancellationToken cancellationToken)
+            {
+                throw new System.NotImplementedException();
+            }
 
             public override void ExecuteResult(ControllerContext context)
             {

@@ -14,13 +14,12 @@ namespace ECS.WebAPI.Controllers
         /// <remarks>Author: Scott Roberts</remarks>
         [HttpPost]
         [Route("RegisterUser")]
-        public IHttpActionResult RegisterUser()
+        public IHttpActionResult Registration([FromBody] AccountRegistrationDTO registrationForm)
         {
-            // Read Json from POST body.
-            var json = ParseHttpService.ReadHttpPostBody(Request);
+            Validate(registrationForm);
 
-            // Deserialize the Json String
-            var userAccount = JsonConverterService.DeserializeObject<AccountRegistrationDTO>(json);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
             // Proccess any other information.
             //if (ModelState.IsValid)
@@ -71,9 +70,7 @@ namespace ECS.WebAPI.Controllers
             //    context.SaveChanges();
             //    // return RedirectToAction();
             //}
-            // Return successful response
-            // return View(userAccount);
-            return new HttpWebResponse(Ok);
+            return Ok(registrationForm);
         }
 
         /// <summary>
@@ -92,10 +89,11 @@ namespace ECS.WebAPI.Controllers
         /// <summary>
         /// Method accepts request to fetch security questions using the GET method over HTTP
         /// </summary>
-        //[AllowAnonymous]
-        //[HttpGet]
-        //public ActionResult RequestSecurityQuestions()
-        //{
-        //}
+        [AllowAnonymous]
+        [HttpGet]
+        public IHttpActionResult GetSecurityQuestions()
+        {
+            return Ok();
+        }
     }
 }

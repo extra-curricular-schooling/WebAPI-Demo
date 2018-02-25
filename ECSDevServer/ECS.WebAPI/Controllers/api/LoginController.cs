@@ -1,4 +1,5 @@
-﻿using ECS.WebAPI.Services;
+﻿using ECS.DTO;
+using ECS.WebAPI.Services;
 using System.Net;
 using System.Web.Http;
 
@@ -12,13 +13,13 @@ namespace ECS.WebAPI.Controllers
         /// </summary>
         /// <remarks>Author: Scott Roberts</remarks>
         [HttpPost]
-        public IHttpActionResult PostLogin()
+        public IHttpActionResult PostLogin([FromBody] AccountCredentialsDTO credentials)
         {
-            // Read Json from POST body.
-            var json = ParseHttpService.ReadHttpPostBody(Request);
+            // Credentials is already read and deserialized into a DTO. Validate it.
+            Validate(credentials);
 
-            // Deserialize the Json String
-            var credentials = JsonConverterService.DeserializeObject<AccountCredentialsDTO>(json);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
             // Proccess any other information.
 
@@ -27,7 +28,7 @@ namespace ECS.WebAPI.Controllers
             // Issue login information
 
             // Return successful response
-            return new HttpStatusCodeResult(HttpStatusCode.OK);
+            return Ok(credentials);
         }
     }
 }
