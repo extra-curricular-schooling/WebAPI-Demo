@@ -17,19 +17,7 @@ namespace ECS.Modules.HttpModule
         public void Init(HttpApplication context)
         {
             context.BeginRequest += new EventHandler(OnPreflightRequest);
-            context.BeginRequest += new EventHandler(OnPostRequest);
-        }
-
-        private void OnPostRequest(object sender, EventArgs e)
-        {
-            // Cast the sender as an HttpApplication
-            var app = sender as HttpApplication;
-            if (app.Request.UrlReferrer.Equals("http://localhost:8080"))
-            {
-                //app.Request.ClearContent();
-                app.Response.AddHeader("UrlReferrer", "Success");
-            }
-
+            //context.BeginRequest += new EventHandler(OnPostRequest);
         }
 
         private void OnPreflightRequest(object sender, EventArgs e)
