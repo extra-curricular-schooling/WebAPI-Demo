@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2020
+VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECS.WebAPI", "ECS.WebAPI\ECS.WebAPI.csproj", "{5D619797-A7BB-4852-85D5-2BCE200773F8}"
 EndProject
@@ -20,6 +20,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data Access", "Data Access", "{A432279A-8FAA-42DE-A56B-04612F32BF72}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECS.WebAPI.Tests", "ECS.WebAPI.Tests\ECS.WebAPI.Tests.csproj", "{B561FD29-6C5E-4F69-8181-B023E154BBD3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetOpenAuth.LinkedInOAuth2", "DotNetOpenAuth.LinkedInOAuth2\DotNetOpenAuth.LinkedInOAuth2.csproj", "{565B5EEA-A5A3-4A98-8B66-531FE6780AE7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +49,10 @@ Global
 		{B561FD29-6C5E-4F69-8181-B023E154BBD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B561FD29-6C5E-4F69-8181-B023E154BBD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B561FD29-6C5E-4F69-8181-B023E154BBD3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{565B5EEA-A5A3-4A98-8B66-531FE6780AE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{565B5EEA-A5A3-4A98-8B66-531FE6780AE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{565B5EEA-A5A3-4A98-8B66-531FE6780AE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{565B5EEA-A5A3-4A98-8B66-531FE6780AE7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -58,6 +64,7 @@ Global
 		{F8F04460-D2EB-4907-8B96-C3B915749A82} = {A432279A-8FAA-42DE-A56B-04612F32BF72}
 		{E8FF7A08-685C-4B1F-A669-3628AE5A8E01} = {005067D1-F007-4094-8987-A11A9A76D295}
 		{B561FD29-6C5E-4F69-8181-B023E154BBD3} = {CF57320B-093C-4296-B1D8-609572384C71}
+		{565B5EEA-A5A3-4A98-8B66-531FE6780AE7} = {005067D1-F007-4094-8987-A11A9A76D295}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {55C5B19F-E2AD-4407-A079-F94B6292FB17}

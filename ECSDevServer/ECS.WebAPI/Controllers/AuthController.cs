@@ -1,30 +1,30 @@
 ﻿using System;
-using System.Net;
 using System.Net.Http;
-using System.Web;
+using System.Net.Http.Headers;
 using System.Web.Http;
+using ECS.WebAPI.Filters;
 using ECS.WebAPI.Services;
 
 namespace ECS.WebAPI.Controllers
 {
+    [RequireHttps]
     [RoutePrefix("Auth")]
     public class AuthController : ApiController
     {
-        /*
         [HttpGet]
         [AllowAnonymous]
+        [Route("GenerateCookie")]
         public HttpResponseMessage GenerateCookie()
         {
+            var response = new HttpResponseMessage();
             string token = JwtManager.GenerateToken("luis");
-            HttpCookie cookie = new HttpCookie("auth_token");
-            cookie.Value = token;
+            var cookie = new CookieHeaderValue("auth_token", token);
             cookie.Domain = ".localhost";
             cookie.HttpOnly = true;
             cookie.Path = "/; SameSite=Lax";
             cookie.Expires = DateTime.Now.AddMinutes(20);
-            Response.AppendCookie(cookie);
-            return new HttpStatusCodeResult(HttpStatusCode.OK);
+            response.Headers.AddCookies(new CookieHeaderValue[] { cookie });
+            return response;
         }
-        */
     }
 }

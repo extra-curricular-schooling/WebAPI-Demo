@@ -1,14 +1,23 @@
 ﻿using ECS.WebAPI.Filters;
+using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.IO;
+using System.Net;
+using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Results;
+using System.Web.Script.Serialization;
 
 namespace ECS.WebAPI.Controllers
 {
-    [RoutePrefix("LinkedIn")]
     // Had to make a custom filter for RequireHttpsAttribute
     [RequireHttps]
+    [RoutePrefix("LinkedIn")]
     public class LinkedInController : ApiController
     {
-        /*
+
         #region Constants and fields
         private const string _defaultAccessGateway = "https://api.linkedin.com/v1/";
         #endregion
@@ -16,9 +25,10 @@ namespace ECS.WebAPI.Controllers
         // GET: LinkedIn
         [AllowAnonymous]
         [HttpGet]
+        [Route("SharePostToConnections")]
         public IHttpActionResult SharePostToConnections()
         {
-            string accessToken = Request.Headers["Authorization"];
+            string accessToken = Request.Headers.Authorization.ToString();
 
             var requestUrl = _defaultAccessGateway + "people/~/shares?format=json";
             var webRequest = (HttpWebRequest)WebRequest.Create(requestUrl);
@@ -65,7 +75,7 @@ namespace ECS.WebAPI.Controllers
                 {
                     var responseStream = webResponse.GetResponseStream();
                     if (responseStream == null || webResponse.StatusCode != HttpStatusCode.Created)
-                        return Content(webResponse.StatusDescription);
+                        return new StatusCodeResult(webResponse.StatusCode, new HttpRequestMessage());
 
                     using (var reader = new StreamReader(responseStream))
                     {
@@ -73,16 +83,14 @@ namespace ECS.WebAPI.Controllers
                         var json = JObject.Parse(response);
                         var updateKey = json.Value<string>("updateKey");
                         var updateUrl = json.Value<string>("updateUrl");
-                        return Json(new { UpdateKey = updateKey, UpdateUrl = updateUrl }, JsonRequestBehavior.AllowGet);
+                        return Json(new { UpdateKey = updateKey, UpdateUrl = updateUrl });
                     }
                 }
             }
             catch (Exception ex)
             {
-                return Content(ex.Source+ "\n" + ex.Message + "\n" + ex.StackTrace);
+                return Content(HttpStatusCode.BadRequest, ex.Source + "\n" + ex.Message + "\n" + ex.StackTrace);
             }
         }
-
-        */
     }
 }

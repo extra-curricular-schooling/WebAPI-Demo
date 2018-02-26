@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using ecs_dev_server;
 using System.Web.Http;
-using System.Web.Routing;
 
 namespace ECS.WebAPI
 {
@@ -11,6 +7,7 @@ namespace ECS.WebAPI
     {
         protected void Application_Start()
         {
+            AuthConfig.RegisterAuth();
             GlobalConfiguration.Configure(WebApiConfig.Register);
         }
     }

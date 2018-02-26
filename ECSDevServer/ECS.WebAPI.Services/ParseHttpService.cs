@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 using System.Web;
 
 /// <summary>
@@ -12,7 +9,6 @@ namespace ECS.WebAPI.Services
 {
     public static class ParseHttpService
     {
-        /*
         public static string ReadHttpPostBody(HttpRequestBase requestBase)
         {
             Stream req = requestBase.InputStream;
@@ -28,6 +24,5 @@ namespace ECS.WebAPI.Services
             var json = new StreamReader(req).ReadToEnd();
             return JsonConverterService.DeserializeObject<T>(json);
         }
-        */
     }
 }

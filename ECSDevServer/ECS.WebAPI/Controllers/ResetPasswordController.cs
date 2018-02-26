@@ -84,7 +84,7 @@ namespace ECS.WebAPI.Controllers
             // Submit new password to app DB.
 
             // After you finish the resetpassword action, we need to send the finished information to the SSO.
-            PostNewPasswordToSSO(credentials);
+            //PostNewPasswordToSSO(credentials);
 
             // Redirect User to Account reset password page??
 

@@ -1,21 +1,21 @@
-﻿using ECS.WebAPI.Filters;
+﻿using DotNetOpenAuth.LinkedInOAuth2;
+using ECS.WebAPI.Filters;
 using ECS.WebAPI.Services;
+using Microsoft.AspNet.Membership.OpenAuth;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Linq;
 using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 
 namespace ECS.WebAPI.Controllers
 {
-    [RoutePrefix("OAuth")]
     // Had to make a custom filter for RequireHttpsAttribute
     [RequireHttps]
+    [RoutePrefix("OAuth")]
     public class OAuthController : ApiController
     {
-        /*
         #region Constants and fields
         private readonly string _clientUri = "http://localhost:8080/";
 
@@ -23,36 +23,34 @@ namespace ECS.WebAPI.Controllers
         #endregion
 
         [AllowAnonymous]
+        [Route("ExternalLoginCallback")]
         public IHttpActionResult ExternalLoginCallback(string returnUrl)
         {
             string ProviderName = OpenAuth.GetProviderNameFromCurrentRequest();
 
             if (ProviderName == null || ProviderName == "")
             {
-                NameValueCollection nvs = Request.QueryString;
-                if (nvs.Count > 0)
+                var nvs = Request.GetQueryNameValuePairs();
+                string state = nvs.LastOrDefault(x => x.Key == "state").Value;
+                if (state != null)
                 {
-                    if (nvs["state"] != null)
+                    NameValueCollection provideritem = HttpUtility.ParseQueryString("state=" + state);
+                    if (provideritem["__provider__"] != null)
                     {
-                        NameValueCollection provideritem = HttpUtility.ParseQueryString(nvs["state"]);
-                        if (provideritem["__provider__"] != null)
-                        {
-                            ProviderName = provideritem["__provider__"];
-                        }
+                        ProviderName = provideritem["__provider__"];
                     }
                 }
             }
 
             LinkedInOAuth2Client.RewriteRequest();
 
-            var redirectUrl = Url.Action("ExternalLoginCallback", new { ReturnUrl = returnUrl });
-            var authResult = OpenAuth.VerifyAuthentication(redirectUrl);
+            var authResult = OpenAuth.VerifyAuthentication(returnUrl);
 
             string providerDisplayName = OpenAuth.GetProviderDisplayName(ProviderName);
 
             if (!authResult.IsSuccessful)
             {
-                return Redirect(Url.Action("Index", "Home"));
+                return Unauthorized();
             }
             else
             {
@@ -91,75 +89,34 @@ namespace ECS.WebAPI.Controllers
                     AccessToken = accessToken
                 });
 
-                return RedirectToAction("RedirectToClient");
-            }
-        }
-
-        internal class ExternalLoginResult : IHttpActionResult
-        {
-            public ExternalLoginResult(string provider, string returnUrl)
-            {
-                Provider = provider;
-                ReturnUrl = returnUrl;
-            }
-
-            public string Provider { get; private set; }
-            public string ReturnUrl { get; private set; }
-
-            // needs to be implemented for IHttpActionResult
-            public Task<HttpResponseMessage> ExecuteAsync(CancellationToken cancellationToken)
-            {
-                throw new System.NotImplementedException();
-            }
-
-            public override void ExecuteResult(ControllerContext context)
-            {
-                // Request authentication from the provider specified by 
-                // redirecting the user to the service's login page.
-                OpenAuth.RequestAuthentication(Provider, ReturnUrl);
+                return RedirectToClient();
             }
         }
 
         // GET: Auth
         [AllowAnonymous]
+        [Route("RedirectToClient")]
         public IHttpActionResult RedirectToClient()
         {
             return Redirect(_clientUri);
         }
 
         [AllowAnonymous]
+        [Route("RedirectToLinkedIn")]
         public IHttpActionResult RedirectToLinkedIn(string authtoken)
         {
             string username;
             if (JwtManager.ValidateToken(authtoken, out username))
             {
                 string provider = "linkedin";
-                string returnUrl = "https://localhost:44313/OAuth/ExternalLoginCallback";
-                return new ExternalLoginResult(provider, Url.Action("ExternalLoginCallback", new { ReturnUrl = returnUrl }));
+                string returnUrl = "https://localhost:44311/OAuth/ExternalLoginCallback";
+                OpenAuth.RequestAuthentication(provider, returnUrl);
+                return Ok();
             }
             else
             {
-                Response.StatusCode = 401;
-                return new EmptyResult();
+                return Unauthorized();
             }
-            //if (this.ControllerContext.HttpContext.Request.Cookies.AllKeys.Contains("auth_token"))
-            //{
-            //    var cookie = Request.Cookies.Get("auth_token");
-            //    var token = cookie.Value;
-
-            //    string username;
-            //    if (ValidateToken(token, out username))
-            //    {
-            //        string provider = "linkedin";
-            //        string returnUrl = "";
-            //        return new ExternalLoginResult(provider, Url.Action("ExternalLoginCallback", new { ReturnUrl = returnUrl }));
-            //    }
-            //    else
-            //    {
-            //        return new EmptyResult();
-            //    }
-            //}
         }
-        */
     }
 }
