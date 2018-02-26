@@ -2,6 +2,7 @@
 using ECS.WebAPI.Filters;
 using ECS.WebAPI.Services;
 using Microsoft.AspNet.Membership.OpenAuth;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
@@ -23,18 +24,19 @@ namespace ECS.WebAPI.Controllers
         #endregion
 
         [AllowAnonymous]
+        [HttpGet]
         [Route("ExternalLoginCallback")]
-        public IHttpActionResult ExternalLoginCallback(string returnUrl)
+        public IHttpActionResult ExternalLoginCallback(string code, string state)
         {
             string ProviderName = OpenAuth.GetProviderNameFromCurrentRequest();
 
             if (ProviderName == null || ProviderName == "")
             {
                 var nvs = Request.GetQueryNameValuePairs();
-                string state = nvs.LastOrDefault(x => x.Key == "state").Value;
+                string stateParam = nvs.LastOrDefault(x => x.Key == "state").Value;
                 if (state != null)
                 {
-                    NameValueCollection provideritem = HttpUtility.ParseQueryString("state=" + state);
+                    NameValueCollection provideritem = HttpUtility.ParseQueryString("state=" + stateParam);
                     if (provideritem["__provider__"] != null)
                     {
                         ProviderName = provideritem["__provider__"];
@@ -44,6 +46,7 @@ namespace ECS.WebAPI.Controllers
 
             LinkedInOAuth2Client.RewriteRequest();
 
+            var returnUrl = "~/";
             var authResult = OpenAuth.VerifyAuthentication(returnUrl);
 
             string providerDisplayName = OpenAuth.GetProviderDisplayName(ProviderName);
@@ -102,6 +105,7 @@ namespace ECS.WebAPI.Controllers
         }
 
         [AllowAnonymous]
+        [HttpGet]
         [Route("RedirectToLinkedIn")]
         public IHttpActionResult RedirectToLinkedIn(string authtoken)
         {
@@ -110,7 +114,12 @@ namespace ECS.WebAPI.Controllers
             {
                 string provider = "linkedin";
                 string returnUrl = "https://localhost:44311/OAuth/ExternalLoginCallback";
-                OpenAuth.RequestAuthentication(provider, returnUrl);
+                var redirectUrl = "~/OAuth/ExternalLoginCallback";
+                if (!String.IsNullOrEmpty(returnUrl))
+                {
+                    redirectUrl += "?ReturnUrl=" + HttpUtility.UrlEncode(returnUrl);
+                }
+                OpenAuth.RequestAuthentication(provider, redirectUrl);
                 return Ok();
             }
             else

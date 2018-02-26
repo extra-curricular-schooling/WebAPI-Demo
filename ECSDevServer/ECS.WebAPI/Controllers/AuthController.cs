@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Web.Http;
+using System.Web.Http.Cors;
 using System.Web.Script.Serialization;
 using ECS.WebAPI.Filters;
 using ECS.WebAPI.Services;
@@ -15,6 +16,7 @@ namespace ECS.WebAPI.Controllers
     {
         [HttpGet]
         [AllowAnonymous]
+        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET")]
         [Route("GenerateCookie")]
         public HttpResponseMessage GenerateCookie()
         {
