@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json.Serialization;
+using System;
+using System.Net.Http.Formatting;
 using System.Web.Http;
 
 namespace ECS.WebAPI
@@ -12,14 +14,10 @@ namespace ECS.WebAPI
             // Enable CORS with default pipeline
             config.EnableCors();
 
-            // Makes the default response a JSON object. Can still return other types that are not the default.
-            GlobalConfiguration.Configuration.Formatters.JsonFormatter.MediaTypeMappings
-                .Add(new System.Net.Http.Formatting.RequestHeaderMapping(
-                    "Accept",
-                    "text/html",
-                    StringComparison.InvariantCultureIgnoreCase,
-                    true,
-                    "application/json"));
+            // Setting up JSON serialization
+            config.Formatters.JsonFormatter.SerializerSettings.Formatting = Newtonsoft.Json.Formatting.Indented;
+            config.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            config.Formatters.JsonFormatter.MediaTypeMappings.Add(new RequestHeaderMapping("Accept", "text/html", StringComparison.InvariantCultureIgnoreCase, true, "application/json"));
 
             // Web API routes
             config.MapHttpAttributeRoutes();

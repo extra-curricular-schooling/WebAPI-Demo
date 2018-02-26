@@ -17,7 +17,8 @@
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
-    <IISExpressSSLPort>44311</IISExpressSSLPort>
+    <IISExpressSSLPort>
+    </IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
@@ -119,7 +120,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\AuthConfig.cs" />
@@ -167,6 +170,10 @@
     <ProjectReference Include="..\ECS.Models\ECS.Models.csproj">
       <Project>{f8f04460-d2eb-4907-8b96-c3b915749a82}</Project>
       <Name>ECS.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ECS.Modules.HttpOptionsModule\ECS.Modules.HttpModule.csproj">
+      <Project>{71432cfa-47bc-4eba-acaa-d0048f335e3d}</Project>
+      <Name>ECS.Modules.HttpModule</Name>
     </ProjectReference>
     <ProjectReference Include="..\ECS.WebAPI.Services\ECS.WebAPI.Services.csproj">
       <Project>{e8ff7a08-685c-4b1f-a669-3628ae5a8e01}</Project>

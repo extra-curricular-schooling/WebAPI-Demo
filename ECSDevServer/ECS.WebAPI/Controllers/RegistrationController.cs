@@ -6,7 +6,6 @@ using System.Web.Http.Cors;
 
 namespace ECS.WebAPI.Controllers
 {
-    [RoutePrefix("Registration")]
     public class RegistrationController : ApiController
     {
         /// <summary>
@@ -15,9 +14,8 @@ namespace ECS.WebAPI.Controllers
         /// <remarks>Author: Scott Roberts</remarks>
         /// 
         [HttpPost]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
-        [Route("RegisterUser")]
-        public IHttpActionResult Registration([FromBody] AccountRegistrationDTO registrationForm)
+        //[EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
+        public IHttpActionResult PostRegistration([FromBody] AccountRegistrationDTO registrationForm)
         {
             Validate(registrationForm);
 
@@ -73,7 +71,7 @@ namespace ECS.WebAPI.Controllers
             //    context.SaveChanges();
             //    // return RedirectToAction();
             //}
-            return Ok(registrationForm);
+            return Ok();
         }
 
         /// <summary>
@@ -96,6 +94,8 @@ namespace ECS.WebAPI.Controllers
         [HttpGet]
         public IHttpActionResult SecurityQuestions()
         {
+
+            // Insert the model into Ok() for it to return in the body as a JSON.
             return Ok();
         }
     }
