@@ -10,10 +10,12 @@ using System.Web.Http;
 
 namespace ECS.WebAPI.Controllers
 {
+    [RoutePrefix("OAuth")]
     // Had to make a custom filter for RequireHttpsAttribute
     [RequireHttps]
     public class OAuthController : ApiController
     {
+        /*
         #region Constants and fields
         private readonly string _clientUri = "http://localhost:8080/";
 
@@ -158,5 +160,6 @@ namespace ECS.WebAPI.Controllers
             //    }
             //}
         }
+        */
     }
 }

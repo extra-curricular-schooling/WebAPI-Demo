@@ -1,20 +1,14 @@
 ﻿using ECS.WebAPI.Filters;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.IO;
-using System.Net;
 using System.Web.Http;
-using System.Web.Script.Serialization;
 
 namespace ECS.WebAPI.Controllers
 {
+    [RoutePrefix("LinkedIn")]
     // Had to make a custom filter for RequireHttpsAttribute
     [RequireHttps]
     public class LinkedInController : ApiController
     {
-
+        /*
         #region Constants and fields
         private const string _defaultAccessGateway = "https://api.linkedin.com/v1/";
         #endregion
@@ -88,5 +82,7 @@ namespace ECS.WebAPI.Controllers
                 return Content(ex.Source+ "\n" + ex.Message + "\n" + ex.StackTrace);
             }
         }
+
+        */
     }
 }

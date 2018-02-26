@@ -5,7 +5,7 @@ using System.Web.Http;
 
 namespace ECS.WebAPI.Controllers
 {
-    [RoutePrefix("login")]
+    [RoutePrefix("Login")]
     public class LoginController : ApiController
     {
         /// <summary>

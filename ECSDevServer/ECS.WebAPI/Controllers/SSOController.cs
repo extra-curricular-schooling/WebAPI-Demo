@@ -1,7 +1,4 @@
 ﻿using ECS.DTO;
-using ECS.WebAPI.Services;
-using Newtonsoft.Json;
-using System.Net;
 using System.Web.Http;
 
 /// <summary>
@@ -16,13 +13,13 @@ namespace ECS.WebAPI.Controllers
         //[Ajax, Json]
         [HttpPost]
         [Route("Register")]
-        public IHttpActionResult Register()
+        public IHttpActionResult Register([FromBody] SSOAccountRegistrationDTO ssoAccount)
         {
-            // Read Json from POST body.
-            var json = ParseHttpService.ReadHttpPostBody(Request);
+            // Credentials is already read and deserialized into a DTO. Validate it.
+            Validate(ssoAccount);
 
-            // Deserialize the Json String
-            var partialUserAccount = JsonConvert.DeserializeObject<SSOAccountRegistrationDTO>(json);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
             // Set some sort of flag up for the User in DB.
             // When they try and register in our app after SSO's registration, check the flag.
@@ -31,16 +28,17 @@ namespace ECS.WebAPI.Controllers
             return Ok();
 
         }
-        //[Ajax, Json]
+        
+
         [HttpPost]
         [Route("ResetPassword")]
-        public IHttpActionResult ResetPassword() // I need the equivalent of [FromBody] to use for incoming JSON
+        public IHttpActionResult ResetPassword([FromBody] AccountCredentialsDTO credentials)
         {
-            // Read Json from POST body.
-            var json = ParseHttpService.ReadHttpPostBody(Request);
+            // Credentials is already read and deserialized into a DTO. Validate it.
+            Validate(credentials);
 
-            // Deserialize the Json String
-            var partialUserAccount = JsonConvert.DeserializeObject<SSOAccountRegistrationDTO>(json);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
             // We need to push this information to the database.
             //using(var context = new ECSContext())

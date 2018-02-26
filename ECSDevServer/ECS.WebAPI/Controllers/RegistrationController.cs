@@ -2,17 +2,20 @@
 using ECS.WebAPI.Services;
 using System.Net;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace ECS.WebAPI.Controllers
 {
-    [RoutePrefix("registration")]
+    [RoutePrefix("Registration")]
     public class RegistrationController : ApiController
     {
         /// <summary>
         /// Method accepts request to submit form using the POST method over HTTP
         /// </summary>
         /// <remarks>Author: Scott Roberts</remarks>
+        /// 
         [HttpPost]
+        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
         [Route("RegisterUser")]
         public IHttpActionResult Registration([FromBody] AccountRegistrationDTO registrationForm)
         {
@@ -91,7 +94,7 @@ namespace ECS.WebAPI.Controllers
         /// </summary>
         [AllowAnonymous]
         [HttpGet]
-        public IHttpActionResult GetSecurityQuestions()
+        public IHttpActionResult SecurityQuestions()
         {
             return Ok();
         }

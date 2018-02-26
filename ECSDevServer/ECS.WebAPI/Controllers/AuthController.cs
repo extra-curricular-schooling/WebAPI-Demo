@@ -7,8 +7,10 @@ using ECS.WebAPI.Services;
 
 namespace ECS.WebAPI.Controllers
 {
+    [RoutePrefix("Auth")]
     public class AuthController : ApiController
     {
+        /*
         [HttpGet]
         [AllowAnonymous]
         public HttpResponseMessage GenerateCookie()
@@ -23,5 +25,6 @@ namespace ECS.WebAPI.Controllers
             Response.AppendCookie(cookie);
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
+        */
     }
 }

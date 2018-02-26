@@ -6,7 +6,7 @@ using ECS.WebAPI.Services;
 
 namespace ECS.WebAPI.Controllers
 {
-    [RoutePrefix("resetpassword")]
+    [RoutePrefix("ResetPassword")]
     public class ResetPasswordController : ApiController
     {
         /// <summary>
@@ -14,15 +14,22 @@ namespace ECS.WebAPI.Controllers
         /// </summary>
         /// <remarks>Author: Scott Roberts</remarks>
         [HttpPost]
-        public IHttpActionResult PostUsername([FromBody)
+        // The DTO we are using worries me because it will have an empty password field for this action
+        // Should I make a AccountUsernameDTO???
+        public IHttpActionResult Username([FromBody] AccountCredentialsDTO credentials)
         {
+            // Credentials is already read and deserialized into a DTO. Validate it.
+            Validate(credentials);
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
             // Proccess any other information.
 
             // Check DB for username
 
             // Send User's security questions.
-            using(HttpClientService client = HttpClientService.Instance)
+            using (HttpClientService client = HttpClientService.Instance)
             {
                 // send to client.
             }
@@ -30,20 +37,24 @@ namespace ECS.WebAPI.Controllers
             // Return successful response
             return Ok();
         }
+        [HttpGet]
+        public AccountCredentialsDTO Username()
+        {
+            return new AccountCredentialsDTO();
+        }
 
         /// <summary>
         /// 
         /// </summary>
         /// <remarks>Author: Scott Roberts</remarks>
-        //[Ajax]
         [HttpPost]
-        public IHttpActionResult PostSecurityAnswers()
+        public IHttpActionResult SecurityAnswers([FromBody] AccountQuestionsDTO securityQuestions)
         {
-            // Read Json from POST body.
-            var json = ParseHttpService.ReadHttpPostBody(Request);
+            // Credentials is already read and deserialized into a DTO. Validate it.
+            Validate(securityQuestions);
 
-            // Deserialize the Json String
-            var securityQuestions = JsonConverterService.DeserializeObject<AccountQuestionsDTO>(json);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
             // Proccess any other information.
 
@@ -59,15 +70,14 @@ namespace ECS.WebAPI.Controllers
         /// 
         /// </summary>
         /// <remarks>Author: Scott Roberts</remarks>
-        //[Ajax]
         [HttpPost]
-        public IHttpActionResult PostChangePassword()
+        public IHttpActionResult AccountPassword([FromBody] AccountCredentialsDTO credentials)
         {
-            // Read Json from POST body.
-            var json = ParseHttpService.ReadHttpPostBody(Request);
+            // Credentials is already read and deserialized into a DTO. Validate it.
+            Validate(credentials);
 
-            // Deserialize the Json String
-            var credentials = JsonConverterService.DeserializeObject<AccountCredentialsDTO>(json);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
             // Proccess any other information.
 
