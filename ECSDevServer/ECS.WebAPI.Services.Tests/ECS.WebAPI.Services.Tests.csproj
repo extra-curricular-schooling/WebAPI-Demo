@@ -5,11 +5,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B561FD29-6C5E-4F69-8181-B023E154BBD3}</ProjectGuid>
+    <ProjectGuid>{7C603835-8883-428E-BD3A-040ECC06A0DA}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ECS.WebAPI.Tests</RootNamespace>
-    <AssemblyName>ECS.WebAPI.Tests</AssemblyName>
+    <RootNamespace>ECS.WebAPI.Services.Tests</RootNamespace>
+    <AssemblyName>ECS.WebAPI.Services.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -68,7 +68,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controllers\RegistrationControllerTests.cs" />
+    <Compile Include="JwtManagerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -76,21 +76,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ECS.DTO\ECS.DTO.csproj">
-      <Project>{40BC80F4-7950-4A6F-B94F-C35F7081A48B}</Project>
-      <Name>ECS.DTO</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ECS.Models\ECS.Models.csproj">
-      <Project>{f8f04460-d2eb-4907-8b96-c3b915749a82}</Project>
-      <Name>ECS.Models</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ECS.WebAPI\ECS.WebAPI.csproj">
-      <Project>{5d619797-a7bb-4852-85d5-2bce200773f8}</Project>
-      <Name>ECS.WebAPI</Name>
-    </ProjectReference>
+    <Analyzer Include="..\packages\xunit.analyzers.0.7.0\analyzers\dotnet\cs\xunit.analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Analyzer Include="..\packages\xunit.analyzers.0.7.0\analyzers\dotnet\cs\xunit.analyzers.dll" />
+    <ProjectReference Include="..\ECS.WebAPI.Services\ECS.WebAPI.Services.csproj">
+      <Project>{e8ff7a08-685c-4b1f-a669-3628ae5a8e01}</Project>
+      <Name>ECS.WebAPI.Services</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
