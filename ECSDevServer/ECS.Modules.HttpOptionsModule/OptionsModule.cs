@@ -11,7 +11,6 @@ namespace ECS.Modules.HttpModule
     {
         public void Dispose()
         {
-            throw new NotImplementedException();
         }
 
         public void Init(HttpApplication context)
