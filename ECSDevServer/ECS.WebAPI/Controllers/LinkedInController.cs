@@ -1,4 +1,5 @@
-﻿using ECS.WebAPI.Filters;
+﻿using ECS.DTO;
+using ECS.WebAPI.Filters;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -24,9 +25,9 @@ namespace ECS.WebAPI.Controllers
 
         // GET: LinkedIn
         [AllowAnonymous]
-        [HttpGet]
+        [HttpPost]
         [Route("SharePostToConnections")]
-        public IHttpActionResult SharePostToConnections()
+        public IHttpActionResult SharePostToConnections(LinkedInPostDTO postData)
         {
             string accessToken = Request.Headers.Authorization.ToString();
 
@@ -49,17 +50,17 @@ namespace ECS.WebAPI.Controllers
             //Build JSON request.
             var jsonMsg = new
             {
-                comment = "Shared this post using LinkedIn's REST API! Check it out!",
+                comment = postData.comment,
                 content = new Dictionary<string, string>
                 {
-                    { "title", "LinkedIn Developers Resources"},
-                    { "description", "Leverage LinkedIn's APIs to maximize engagement" },
-                    { "submitted-url", "https://developer.linkedin.com" },
-                    { "submitted-image-url", "https://example.com/logo.png"}
+                    { "title", postData.title },
+                    { "description", postData.description },
+                    { "submitted-url", postData.submittedurl },
+                    { "submitted-image-url", "https://media-exp2.licdn.com/media/AAMABABqAAIAAQAAAAAAAA7yAAAAJGU1OTQ2NGFlLTNjNzEtNGZjOS04NjVkLWIxNjQ4NTY5ZjNlYw.png" }
                 },
                 visibility = new
                 {
-                    code = "connections-only"
+                    code = postData.code
                 }
             };
 

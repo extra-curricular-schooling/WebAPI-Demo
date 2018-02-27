@@ -135,6 +135,7 @@ namespace DotNetOpenAuth.LinkedInOAuth2
 
         protected override string QueryAccessToken(Uri returnUrl, string authorizationCode)
         {
+            returnUrl = new Uri(returnUrl.GetLeftPart(UriPartial.Path));
             var postData = returnUrl.ParseQueryString();
             postData.Add(new NameValueCollection
                 {

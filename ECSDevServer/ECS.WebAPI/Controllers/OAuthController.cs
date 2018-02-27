@@ -18,7 +18,7 @@ namespace ECS.WebAPI.Controllers
     public class OAuthController : ApiController
     {
         #region Constants and fields
-        private readonly string _clientUri = "http://localhost:8080/";
+        private readonly string _clientUri = "http://localhost:8080/#/";
 
         public object JsonWebToken { get; private set; }
         #endregion
@@ -36,7 +36,7 @@ namespace ECS.WebAPI.Controllers
                 string stateParam = nvs.LastOrDefault(x => x.Key == "state").Value;
                 if (state != null)
                 {
-                    NameValueCollection provideritem = HttpUtility.ParseQueryString("state=" + stateParam);
+                    NameValueCollection provideritem = HttpUtility.ParseQueryString(stateParam);
                     if (provideritem["__provider__"] != null)
                     {
                         ProviderName = provideritem["__provider__"];
@@ -46,7 +46,7 @@ namespace ECS.WebAPI.Controllers
 
             LinkedInOAuth2Client.RewriteRequest();
 
-            var returnUrl = "~/";
+            var returnUrl = "~/OAuth/ExternalLoginCallback";
             var authResult = OpenAuth.VerifyAuthentication(returnUrl);
 
             string providerDisplayName = OpenAuth.GetProviderDisplayName(ProviderName);
@@ -113,12 +113,12 @@ namespace ECS.WebAPI.Controllers
             if (JwtManager.ValidateToken(authtoken, out username))
             {
                 string provider = "linkedin";
-                string returnUrl = "https://localhost:44311/OAuth/ExternalLoginCallback";
+                //string returnUrl = "https://localhost:44311/OAuth/ExternalLoginCallback";
                 var redirectUrl = "~/OAuth/ExternalLoginCallback";
-                if (!String.IsNullOrEmpty(returnUrl))
-                {
-                    redirectUrl += "?ReturnUrl=" + HttpUtility.UrlEncode(returnUrl);
-                }
+                //if (!String.IsNullOrEmpty(returnUrl))
+                //{
+                //    redirectUrl += "?ReturnUrl=" + HttpUtility.UrlEncode(returnUrl);
+                //}
                 OpenAuth.RequestAuthentication(provider, redirectUrl);
                 return Ok();
             }

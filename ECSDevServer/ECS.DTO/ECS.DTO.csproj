@@ -43,6 +43,7 @@
     <Compile Include="AccountCredentialsDTO.cs" />
     <Compile Include="AccountQuestionsDTO.cs" />
     <Compile Include="AccountRegistrationDTO.cs" />
+    <Compile Include="LinkedInPostDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SSOAccountRegistrationDTO.cs" />
   </ItemGroup>
