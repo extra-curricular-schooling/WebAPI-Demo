@@ -26,8 +26,8 @@ namespace ECS.WebAPI.Controllers
         // GET: LinkedIn
         [AllowAnonymous]
         [HttpPost]
-        [Route("SharePostToConnections")]
-        public IHttpActionResult SharePostToConnections(LinkedInPostDTO postData)
+        [Route("SharePost")]
+        public IHttpActionResult SharePost(LinkedInPostDTO postData)
         {
             string accessToken = Request.Headers.Authorization.ToString();
 
