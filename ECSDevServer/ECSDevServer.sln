@@ -33,6 +33,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECS.Modules.HttpModule", "E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECS.WebAPI.Services.Tests", "ECS.WebAPI.Services.Tests\ECS.WebAPI.Services.Tests.csproj", "{7C603835-8883-428E-BD3A-040ECC06A0DA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECS.WebCrawler.Tests", "ECS.WebCrawler.Tests\ECS.WebCrawler.Tests.csproj", "{90F7C475-0C26-499C-99CE-83B1282D87C2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,6 +73,10 @@ Global
 		{7C603835-8883-428E-BD3A-040ECC06A0DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7C603835-8883-428E-BD3A-040ECC06A0DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7C603835-8883-428E-BD3A-040ECC06A0DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{90F7C475-0C26-499C-99CE-83B1282D87C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90F7C475-0C26-499C-99CE-83B1282D87C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90F7C475-0C26-499C-99CE-83B1282D87C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90F7C475-0C26-499C-99CE-83B1282D87C2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -86,6 +92,7 @@ Global
 		{EC6B7273-768E-4199-9685-31316D2F0E50} = {29EBDCAE-51FB-467A-8425-1C104C476DAF}
 		{71432CFA-47BC-4EBA-ACAA-D0048F335E3D} = {161278E8-A596-4B0F-8165-DC893992E14C}
 		{7C603835-8883-428E-BD3A-040ECC06A0DA} = {CF57320B-093C-4296-B1D8-609572384C71}
+		{90F7C475-0C26-499C-99CE-83B1282D87C2} = {CF57320B-093C-4296-B1D8-609572384C71}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {55C5B19F-E2AD-4407-A079-F94B6292FB17}

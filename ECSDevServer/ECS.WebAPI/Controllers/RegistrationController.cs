@@ -8,11 +8,16 @@ namespace ECS.WebAPI.Controllers
 {
     public class RegistrationController : ApiController
     {
+        public IHttpActionResult SayOK()
+        {
+            return Ok();
+        }
+
         /// <summary>
         /// Method accepts request to submit form using the POST method over HTTP
         /// </summary>
         /// <remarks>Author: Scott Roberts</remarks>
-        /// 
+
         [HttpPost]
         //[EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
         public IHttpActionResult PostRegistration([FromBody] AccountRegistrationDTO registrationForm)
@@ -71,6 +76,7 @@ namespace ECS.WebAPI.Controllers
             //    context.SaveChanges();
             //    // return RedirectToAction();
             //}
+
             return Ok();
         }
 

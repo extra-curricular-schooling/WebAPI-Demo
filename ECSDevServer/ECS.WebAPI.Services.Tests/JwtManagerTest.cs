@@ -2,19 +2,17 @@
 using Xunit;
 using Moq;
 using ECS.WebAPI.Services;
+using Xunit.Abstractions;
+
 namespace ECS.WebAPI.Services.Tests
 {
     public class JwtManagerTest
     {
-        public class GenerateTokenWithoutSecretTest
+        private readonly ITestOutputHelper output;
+
+        public JwtManagerTest(ITestOutputHelper output)
         {
-            [Fact]
-            public void PassShouldBeTheSameToken()
-            {
-                string token1 = JwtManager.GenerateTokenWithoutSecret("scott");
-                string token2 = JwtManager.GenerateTokenWithoutSecret("scott");
-                Assert.Same(token1, token2);
-            }
+            this.output = output;
         }
         public class GenerateTokenTest
         {
@@ -22,9 +20,9 @@ namespace ECS.WebAPI.Services.Tests
             public void FailShouldNotBeTheSameToken()
             {
                 string token1 = JwtManager.GenerateToken("scott");
+                System.Threading.Thread.Sleep(1000);
                 string token2 = JwtManager.GenerateToken("scott");
-                Assert.NotSame(token1, token2);
-                
+                Assert.NotEqual(token1, token2);
             }
         }
     }
