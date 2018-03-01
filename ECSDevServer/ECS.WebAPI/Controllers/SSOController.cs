@@ -1,5 +1,6 @@
 ﻿using ECS.DTO;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 /// <summary>
 /// 
@@ -7,19 +8,19 @@ using System.Web.Http;
 /// <remarks>Author: Scott Roberts</remarks>
 namespace ECS.WebAPI.Controllers
 {
-    [RoutePrefix("SSO")]
     public class SSOController : ApiController
     {
-        //[Ajax, Json]
         [HttpPost]
-        [Route("Register")]
-        public IHttpActionResult Register([FromBody] SSOAccountRegistrationDTO ssoAccount)
+        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
+        public IHttpActionResult Registration(SSOAccountRegistrationDTO ssoAccount)
         {
             // Credentials is already read and deserialized into a DTO. Validate it.
             Validate(ssoAccount);
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
+
+            // Make custom validator object.
 
             // Set some sort of flag up for the User in DB.
             // When they try and register in our app after SSO's registration, check the flag.
@@ -28,10 +29,8 @@ namespace ECS.WebAPI.Controllers
             return Ok();
 
         }
-        
 
-        [HttpPost]
-        [Route("ResetPassword")]
+        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
         public IHttpActionResult ResetPassword([FromBody] AccountCredentialsDTO credentials)
         {
             // Credentials is already read and deserialized into a DTO. Validate it.
@@ -40,12 +39,11 @@ namespace ECS.WebAPI.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            // We need to push this information to the database.
+            // We need to take this information and update the user's password in the db.
             //using(var context = new ECSContext())
 
             // Return successful response?
             return Ok();
-
         }
     }
 }

@@ -38,41 +38,25 @@ namespace ECS.WebAPI.Tests
             {
                 // Arrange
 
-                    // Mock the Repository we will use in our Controller
-                
-                    //var mockRepository = new Mock<IProductRepository>();
-                    //mockRepository.Setup(x => x.GetById(42))
-                    //    .Returns(new Product { Id = 42 });
+                // Mock the Repository we will use in our Controller
+
+                //var mockRepository = new Mock<IProductRepository>();
+                //mockRepository.Setup(x => x.GetById(42))
+                //    .Returns(new Product { Id = 42 });
 
                 // Pass the repository into the controller to initialize it.
-                var controller = new RegistrationController();
-                controller.Request = new HttpRequestMessage();
-                controller.Configuration = new HttpConfiguration();
+                var controller = new RegistrationController
+                {
+                    Request = new HttpRequestMessage(),
+                    Configuration = new HttpConfiguration()
+                };
 
                 // Act
-                IHttpActionResult actionResult = controller.PostRegistration(account);
+                IHttpActionResult actionResult = controller.SubmitRegistration(account);
 
                 // Assert
                 Assert.IsType<OkResult>(actionResult);
             }
         }
-        public class SayOK
-        {
-            [Fact]
-            public void ReturnOK()
-            {
-                // Pass the repository into the controller to initialize it.
-
-                // Arrange
-                var controller = new RegistrationController();
-
-                // Act
-                IHttpActionResult actionResult = controller.SayOK();
-
-                // Assert
-                Assert.IsType<OkResult>(actionResult);
-            }
-        }
-
     }
 }

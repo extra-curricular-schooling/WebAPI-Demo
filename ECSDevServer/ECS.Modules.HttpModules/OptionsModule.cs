@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace ECS.Modules.HttpModule
+namespace ECS.Modules.HttpModules
 {
     public class OptionsModule : IHttpModule
     {
@@ -31,10 +31,19 @@ namespace ECS.Modules.HttpModule
                 "https://sso.seniorproject.com/"
             };
 
-            if (app.Request.HttpMethod == "OPTIONS" && acceptedReferrerUrls.Contains(app.Request.UrlReferrer.ToString()))
+            // && acceptedReferrerUrls.Contains(app.Request.UrlReferrer.ToString())
+
+            if (app.Request.HttpMethod == "OPTIONS")
             {
                 app.Response.StatusCode = 200;
-                app.Response.AddHeader("Access-Control-Allow-Headers", "content-type,referer");
+                app.Response.AddHeader("Access-Control-Allow-Headers",
+                    "Access-Control-Allow-Origin," +
+                    "Access-Control-Allow-Credentials," +
+                    "origin," +
+                    "accept," +
+                    "content-type," +
+                    "referer," +
+                    "X-Requested-With");
                 app.Response.AddHeader("Access-Control-Allow-Origin", "http://localhost:8080");
                 app.Response.AddHeader("Access-Control-Allow-Credentials", "true");
                 app.Response.AddHeader("Access-Control-Allow-Methods", "POST,GET,OPTIONS,PUT");

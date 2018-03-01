@@ -8,24 +8,27 @@ namespace ECS.WebAPI.Controllers
 {
     public class RegistrationController : ApiController
     {
-        public IHttpActionResult SayOK()
-        {
-            return Ok();
-        }
 
         /// <summary>
         /// Method accepts request to submit form using the POST method over HTTP
         /// </summary>
         /// <remarks>Author: Scott Roberts</remarks>
 
+        [AllowAnonymous]
         [HttpPost]
-        //[EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
-        public IHttpActionResult PostRegistration([FromBody] AccountRegistrationDTO registrationForm)
+        public IHttpActionResult SubmitRegistration(AccountRegistrationDTO registrationForm)
         {
             Validate(registrationForm);
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
+
+            // Make custom error validator to make sure all values are not null... This is only the start.
+            if (registrationForm.Username == null || registrationForm.Password == null ||
+                registrationForm.SecurityQuestions == null || registrationForm.SecurityAnswers == null)
+                return BadRequest("Improper Request");
+
+
 
             // Proccess any other information.
             //if (ModelState.IsValid)
@@ -84,13 +87,16 @@ namespace ECS.WebAPI.Controllers
         /// 
         /// </summary>
         /// <remarks>Author: Scott Roberts</remarks>
-        private void PostRegistrationToSSO(string username)
+        private IHttpActionResult PostRegistrationToSSO(string username)
         {
-            using(HttpClientService client = HttpClientService.Instance)
+            using (HttpClientService client = HttpClientService.Instance)
             {
                 // Fix this up with a proper url.
                 client.PostAsJson("*****", JsonConverterService.SerializeObject(username));
             }
+
+            // Change if needed.
+            return Ok();
         }
 
         /// <summary>

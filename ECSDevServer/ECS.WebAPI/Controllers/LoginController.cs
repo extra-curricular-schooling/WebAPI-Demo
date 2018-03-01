@@ -5,7 +5,6 @@ using System.Web.Http;
 
 namespace ECS.WebAPI.Controllers
 {
-    [RoutePrefix("Login")]
     public class LoginController : ApiController
     {
         /// <summary>
@@ -13,7 +12,7 @@ namespace ECS.WebAPI.Controllers
         /// </summary>
         /// <remarks>Author: Scott Roberts</remarks>
         [HttpPost]
-        public IHttpActionResult PostLogin([FromBody] AccountCredentialsDTO credentials)
+        public IHttpActionResult SubmitLogin([FromBody] AccountCredentialsDTO credentials)
         {
             // Credentials is already read and deserialized into a DTO. Validate it.
             Validate(credentials);
@@ -27,8 +26,13 @@ namespace ECS.WebAPI.Controllers
 
             // Issue login information
 
-            // Return successful response
-            return Ok(credentials);
+            return Ok();
+
+            // Return successful response with a "redirect" to where the token will be given
+            // Post methods should not return data, but should return responses and location headers of 
+            // what was created in the post.
+
+            //return CreatedAtRoute("DefaultApi", new { id = product.Id }, product);
         }
     }
 }

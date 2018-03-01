@@ -120,19 +120,6 @@
   <ItemGroup>
     <Content Include="index.html" />
     <Content Include="Global.asax" />
-    <Content Include="static\css\app.629470c9140461912e008662f400f6ca.css" />
-    <Content Include="static\js\0.8df62d694de01017cd97.js" />
-    <Content Include="static\js\1.8a0f0e0059403475fc44.js" />
-    <Content Include="static\js\2.10b591ccc45032062220.js" />
-    <Content Include="static\js\3.ecaecfa2ad025fefe020.js" />
-    <Content Include="static\js\4.22b49e30990d6df1abf8.js" />
-    <Content Include="static\js\5.d617528ceae2f896e250.js" />
-    <Content Include="static\js\6.8b91449bd62a21201694.js" />
-    <Content Include="static\js\7.ea4d6f5b3143b8ded424.js" />
-    <Content Include="static\js\app.149847e8c6ab68c31c93.js" />
-    <Content Include="static\js\manifest.f7a3ec9ffca99fdf6fc8.js" />
-    <Content Include="static\js\vendor.0b81f0223b5ce0fba43a.js" />
-    <Content Include="static\site.css" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -161,18 +148,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <Content Include="static\css\app.629470c9140461912e008662f400f6ca.css.map" />
-    <Content Include="static\js\0.8df62d694de01017cd97.js.map" />
-    <Content Include="static\js\1.8a0f0e0059403475fc44.js.map" />
-    <Content Include="static\js\2.10b591ccc45032062220.js.map" />
-    <Content Include="static\js\3.ecaecfa2ad025fefe020.js.map" />
-    <Content Include="static\js\4.22b49e30990d6df1abf8.js.map" />
-    <Content Include="static\js\5.d617528ceae2f896e250.js.map" />
-    <Content Include="static\js\6.8b91449bd62a21201694.js.map" />
-    <Content Include="static\js\7.ea4d6f5b3143b8ded424.js.map" />
-    <Content Include="static\js\app.149847e8c6ab68c31c93.js.map" />
-    <Content Include="static\js\manifest.f7a3ec9ffca99fdf6fc8.js.map" />
-    <Content Include="static\js\vendor.0b81f0223b5ce0fba43a.js.map" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -196,9 +171,9 @@
       <Project>{f8f04460-d2eb-4907-8b96-c3b915749a82}</Project>
       <Name>ECS.Models</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ECS.Modules.HttpOptionsModule\ECS.Modules.HttpModule.csproj">
-      <Project>{71432cfa-47bc-4eba-acaa-d0048f335e3d}</Project>
-      <Name>ECS.Modules.HttpModule</Name>
+    <ProjectReference Include="..\ECS.Modules.HttpModules\ECS.Modules.HttpModules.csproj">
+      <Project>{66ee900a-ef74-4c99-a9f4-461376747d66}</Project>
+      <Name>ECS.Modules.HttpModules</Name>
     </ProjectReference>
     <ProjectReference Include="..\ECS.WebAPI.Services\ECS.WebAPI.Services.csproj">
       <Project>{e8ff7a08-685c-4b1f-a669-3628ae5a8e01}</Project>

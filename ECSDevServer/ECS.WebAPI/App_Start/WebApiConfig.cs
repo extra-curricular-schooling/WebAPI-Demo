@@ -1,7 +1,12 @@
 ﻿using Newtonsoft.Json.Serialization;
 using System;
+using System.Net;
+using System.Net.Http;
 using System.Net.Http.Formatting;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace ECS.WebAPI
 {
@@ -12,6 +17,8 @@ namespace ECS.WebAPI
         {
             // Enable CORS with default pipeline
             config.EnableCors();
+            
+            //config.MessageHandlers.Add(new PreflightRequestsHandler());
 
             // Setting up JSON serialization
             config.Formatters.JsonFormatter.SerializerSettings.Formatting = Newtonsoft.Json.Formatting.Indented;
@@ -35,7 +42,7 @@ namespace ECS.WebAPI
             // Default Controller Route
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
-                routeTemplate: "{controller}/{id}",
+                routeTemplate: "{controller}/{action}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
         }
