@@ -10,6 +10,12 @@ namespace ECS.WebAPI.Controllers
 {
     public class SSOController : ApiController
     {
+        /*
+         * When Web API encounters a type implementing this interface as result of an 
+         * executed action, instead of running content negotiation, it will call 
+         * its only method (Execute) to produce the HttpResponseMessage, and then use that to 
+         * respond to the client
+         */
         [HttpPost]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
         public IHttpActionResult Registration(SSOAccountRegistrationDTO ssoAccount)
