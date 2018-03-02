@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2020
+VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECS.WebAPI", "ECS.WebAPI\ECS.WebAPI.csproj", "{5D619797-A7BB-4852-85D5-2BCE200773F8}"
 EndProject
@@ -38,6 +38,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECS.Modules.HttpModules", "ECS.Modules.HttpModules\ECS.Modules.HttpModules.csproj", "{66EE900A-EF74-4C99-A9F4-461376747D66}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECS.Handlers.HttpHandlers", "ECS.Handlers.HttpHandlers\ECS.Handlers.HttpHandlers.csproj", "{C44BE99A-92D9-4789-9954-A24E1D4F971F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Migrations", "Migrations", "{49491970-427D-47B4-B9FA-A6C0D71DCE1C}"
+	ProjectSection(SolutionItems) = preProject
+		Configuration.cs = Configuration.cs
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

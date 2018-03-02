@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace ECS.Models
 {
@@ -13,16 +13,20 @@ namespace ECS.Models
     /// </summary>
     public class Article
     {
-        //The type of article stored.
-        [Required, Display(Name = "Article Type")] 
-        public string ArticleType { get; set; }
+        //Hugo says we don't need
+        //[Required, Display(Name = "Article Tag")]
+        //public string ArticleTag { get; set; }
+        //Link Article with Interest Tag
 
         //The name of the article stored.
-        [Required, Display(Name = "Article Title")]
+        [Required]
+        [Display(Name = "Article Title")]
         public string ArticleTitle { get; set; }
-        
+
         //The full URL link of the article stored
-        [Key,Required, Display(Name = "Article Link")]
+        [Key]
+        [Required]
+        [Display(Name = "Article Link")]
         public string ArticleLink { get; set; }
 
         //A brief description that is attached to the article stored.
@@ -30,10 +34,10 @@ namespace ECS.Models
         public string ArticleDescription { get; set; }
 
         //Navigation Property of Account
-        public virtual ICollection<Account> Account { get; set; }
-        
-        //Hugo says we don't need
-        //[Required, Display(Name = "Article Tag")]
-        //public string articleTag { get; set; }
+        //Implementation of Account History
+        //public virtual ICollection<Account> Account { get; set; }
+
+        //Navigation Property of Interest Tag
+        public virtual InterestTag InterestTag { get; set; }
     }
 }

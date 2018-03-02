@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace ECS.Models
 {
@@ -14,10 +14,14 @@ namespace ECS.Models
     public class InterestTag
     {
         //The name of the interest tag
-        [Key, Required, Display(Name = "Tag Name")]
+        [Key]
+        [Required]
+        [Display(Name = "Tag Name")]
         public string TagName { get; set; }
 
         //Navigation Property
         public virtual ICollection<Account> AccountUsername { get; set; }
+
+        public virtual ICollection<Article> ArticleTags { get; set; }
     }
 }

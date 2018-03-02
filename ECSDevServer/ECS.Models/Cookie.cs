@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace ECS.Models
 {
@@ -11,14 +11,15 @@ namespace ECS.Models
     /// This model represents the cookies that are acreated when a user attempts to login.  This cookie can be refrenced
     /// at any time as long as it is not past its expiration date from when it was created.
     /// </summary>
-    public class Cookies
+    public class Cookie
     {
         //Where the cookie was created from
         [Required]
         public string Domain { get; set; }
-        
+
         //The time the cookie was created
-        [Required, DataType(DataType.Date)]
+        [Required]
+        [DataType(DataType.Date)]
         public DateTime DateCreatedSessionCookie { get; set; }
 
         //UniqueID of cookie for easy authentication and referencing
@@ -26,7 +27,8 @@ namespace ECS.Models
         public int SessionID { get; set; }
 
         //The time when the cookie is no longer valid
-        [Required, DataType(DataType.Date)]
+        [Required]
+        [DataType(DataType.Date)]
         public DateTime ExpirationDate { get; set; }
 
         //The filepath when the cookie was created
