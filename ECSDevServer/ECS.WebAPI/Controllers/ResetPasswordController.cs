@@ -29,7 +29,7 @@ namespace ECS.WebAPI.Controllers
             // Check DB for username
 
             // Send User's security questions.
-            using (HttpClientService client = HttpClientService.Instance)
+            using (HttpClientService client = HttpClientService.SsoInstance)
             {
                 // send to client.
             }
@@ -100,7 +100,7 @@ namespace ECS.WebAPI.Controllers
         private void PostNewPasswordToSSO(AccountCredentialsDTO credentials)
         {
             // Call request service to make a request to the SSO.
-            using (var client = HttpClientService.Instance)
+            using (var client = HttpClientService.SsoInstance)
             {
                 // The request should talk to the SSO controller to talk to the database.
                 // The request should handle all successes and errors, or pass it off.

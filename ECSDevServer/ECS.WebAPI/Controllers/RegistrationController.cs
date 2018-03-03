@@ -89,10 +89,10 @@ namespace ECS.WebAPI.Controllers
         /// <remarks>Author: Scott Roberts</remarks>
         private IHttpActionResult PostRegistrationToSSO(string username)
         {
-            using (HttpClientService client = HttpClientService.Instance)
+            using (HttpClientService client = HttpClientService.SsoInstance)
             {
                 // Fix this up with a proper url.
-                client.PostAsJson("*****", JsonConverterService.SerializeObject(username));
+                var taskURL = client.PostAsJsonAsync("*****", JsonConverterService.SerializeObject(username));
             }
 
             // Change if needed.

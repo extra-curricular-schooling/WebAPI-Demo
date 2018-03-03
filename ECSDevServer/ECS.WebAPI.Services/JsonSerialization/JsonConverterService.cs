@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using Newtonsoft.Json;
 
 /// <summary>
@@ -25,7 +26,7 @@ namespace ECS.WebAPI.Services
             }
             catch(Exception ex)
             {
-                Console.WriteLine(ex.Source + "\n" + ex.Message + "\n" + ex.StackTrace);
+                Debug.WriteLine(ex.Source + "\n" + ex.Message + "\n" + ex.StackTrace);
 
                 // Returns regardless. Should figure out how to correct the deserialziation.
                 return default(T);
