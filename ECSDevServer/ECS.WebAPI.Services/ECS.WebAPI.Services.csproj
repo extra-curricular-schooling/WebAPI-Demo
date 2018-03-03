@@ -68,13 +68,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="HashService.cs" />
-    <Compile Include="HttpClientService.cs" />
-    <Compile Include="IHttpClient.cs" />
-    <Compile Include="IHttpClientAsync.cs" />
-    <Compile Include="IJsonConverter.cs" />
-    <Compile Include="JsonConverterService.cs" />
-    <Compile Include="JwtManager.cs" />
+    <Compile Include="Security\HashService.cs" />
+    <Compile Include="HttpClient\HttpClientService.cs" />
+    <Compile Include="HttpClient\IHttpClient.cs" />
+    <Compile Include="HttpClient\IHttpClientAsync.cs" />
+    <Compile Include="JsonSerialization\IJsonConverter.cs" />
+    <Compile Include="JsonSerialization\JsonConverterService.cs" />
+    <Compile Include="Security\JwtManager.cs" />
     <Compile Include="ParseHttpService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
