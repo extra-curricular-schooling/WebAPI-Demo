@@ -55,7 +55,7 @@ namespace ECS.WebCrawler
                 try
                 {
 
-                    if (!storer.Articles.Any(a => a.articleLink == article.articleLink))
+                    if (!storer.Articles.Any(a => a.ArticleLink == article.ArticleLink))
                     {
                         storer.Articles.Add(article);
                         storer.SaveChanges();
@@ -64,7 +64,7 @@ namespace ECS.WebCrawler
                 // Catch if DBContext fails to save.
                 catch (DbEntityValidationException e)
                 {
-                    Console.WriteLine(DateTime.Now + ": Site " + article.articleLink + " response: " + e.Message);
+                    Console.WriteLine(DateTime.Now + ": Site " + article.ArticleLink + " response: " + e.Message);
                 }
             }
         }
@@ -168,7 +168,6 @@ namespace ECS.WebCrawler
             string tags = "";
             string title = "";
             string description = "";
-            //string tag = "";
 
             // Boolean to check if article matches a keyword/tag
             bool tagMatch = false;
@@ -220,7 +219,6 @@ namespace ECS.WebCrawler
                         if (Tags.Contains(t))
                         {
                             tagMatch = true;
-                            //tag = t;
                             break;
                         }
                     }
@@ -246,18 +244,18 @@ namespace ECS.WebCrawler
                         var goodArticle = new Article
                         {
                             // Assigns articleType by attribute[18]. ie. Technology, Medical, etc.
-                            articleType = siteAttribute[18],
-                            articleTitle = title,
+                            ArticleType = siteAttribute[18],
+                            ArticleTitle = title,
                             // Assigns the articleLink as the url from the article that is being crawled.
-                            articleLink = art[0],
-                            articleDescription = description,
-                            //articleTag = tag
+                            ArticleLink = art[0],
+                            ArticleDescription = description,
+
                         };
 
                         // Ran into some articles that did not have a Title, decided to make the description the title.
-                        if (goodArticle.articleTitle == "")
+                        if (goodArticle.ArticleTitle == "")
                         {
-                            goodArticle.articleTitle = goodArticle.articleDescription;
+                            goodArticle.ArticleTitle = goodArticle.ArticleDescription;
                         }
 
                         // Add the valid article to the list of valid articles.

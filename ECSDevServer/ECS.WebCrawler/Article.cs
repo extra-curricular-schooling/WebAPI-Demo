@@ -14,26 +14,22 @@ namespace ECS.WebCrawler
         /// Will hold the URL for the article. Used as the Primary Key for the DB.
         /// </summary>
         [Key]
-        public string articleLink { get; set; }
+        public string ArticleLink { get; set; }
 
         /// <summary>
         /// Will hold the Type of Article it is. ie. Technology, Medical, Business, etc.
         /// </summary>
-        public string articleType { get; set; }
+        public string ArticleType { get; set; }
 
         /// <summary>
         /// Will hold the Title of the Article.
         /// </summary>
-        public string articleTitle { get; set; }
+        public string ArticleTitle { get; set; }
 
         /// <summary>
         /// Will hold the article description
         /// </summary>
-        public string articleDescription { get; set; }
+        public string ArticleDescription { get; set; }
 
-        ///// <summary>
-        ///// Will hold the keyword/tag that the article hit in order to be classified as a valid article.
-        ///// </summary>
-        //public string articleTag { get; set; }
     }
 }
