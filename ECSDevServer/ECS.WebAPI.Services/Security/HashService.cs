@@ -37,9 +37,9 @@ namespace ECS.WebAPI.Services
         /// <returns>The password with salt.</returns>
         /// <param name="password">Password.</param>
         /// <param name="salt">Salt.</param>
-        public static string HashPasswordWithSalt(string password, string salt)
+        public static string HashPasswordWithSalt(string salt, string password)
         {
-            string saltedPassword = String.Concat(password, salt);
+            string saltedPassword = String.Concat(salt, password);
 
             UTF8Encoding encoder = new UTF8Encoding();
             SHA256Managed hasher = new SHA256Managed();
