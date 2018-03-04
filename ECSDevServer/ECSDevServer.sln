@@ -39,11 +39,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECS.Modules.HttpModules", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECS.Handlers.HttpHandlers", "ECS.Handlers.HttpHandlers\ECS.Handlers.HttpHandlers.csproj", "{C44BE99A-92D9-4789-9954-A24E1D4F971F}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Migrations", "Migrations", "{49491970-427D-47B4-B9FA-A6C0D71DCE1C}"
-	ProjectSection(SolutionItems) = preProject
-		Configuration.cs = Configuration.cs
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpClientConsole", "HttpClientConsole\HttpClientConsole.csproj", "{EA2F8C3D-FF92-4715-B283-2A97D3A082E4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECS.Validation", "ECS.Validation\ECS.Validation.csproj", "{684A44A9-6485-448F-97A3-1A40E5FA0AA1}"
