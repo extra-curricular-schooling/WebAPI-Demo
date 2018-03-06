@@ -53,13 +53,12 @@
     <Compile Include="Account.cs" />
     <Compile Include="AccountType.cs" />
     <Compile Include="Article.cs" />
-    <Compile Include="Cookie.cs" />
     <Compile Include="ECSContext.cs" />
     <Compile Include="InterestTag.cs" />
     <Compile Include="LinkedIn.cs" />
-    <Compile Include="Migrations\201803060223119_ECSContext.cs" />
-    <Compile Include="Migrations\201803060223119_ECSContext.Designer.cs">
-      <DependentUpon>201803060223119_ECSContext.cs</DependentUpon>
+    <Compile Include="Migrations\201803060801286_ECSContext.cs" />
+    <Compile Include="Migrations\201803060801286_ECSContext.Designer.cs">
+      <DependentUpon>201803060801286_ECSContext.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -75,8 +74,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201803060223119_ECSContext.resx">
-      <DependentUpon>201803060223119_ECSContext.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201803060801286_ECSContext.resx">
+      <DependentUpon>201803060801286_ECSContext.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -77,21 +77,6 @@ namespace ECS.Models.Migrations
                 .PrimaryKey(t => t.Email);
             
             CreateTable(
-                "dbo.Cookie",
-                c => new
-                    {
-                        SessionID = c.Int(nullable: false, identity: true),
-                        Domain = c.String(nullable: false),
-                        DateCreatedSessionCookie = c.DateTime(nullable: false),
-                        ExpirationDate = c.DateTime(nullable: false),
-                        Path = c.String(),
-                        Email = c.String(maxLength: 128),
-                    })
-                .PrimaryKey(t => t.SessionID)
-                .ForeignKey("dbo.User", t => t.Email)
-                .Index(t => t.Email);
-            
-            CreateTable(
                 "dbo.ZipLocation",
                 c => new
                     {
@@ -411,58 +396,6 @@ namespace ECS.Models.Migrations
             );
             
             CreateStoredProcedure(
-                "dbo.Cookie_Insert",
-                p => new
-                    {
-                        Domain = p.String(),
-                        DateCreatedSessionCookie = p.DateTime(),
-                        ExpirationDate = p.DateTime(),
-                        Path = p.String(),
-                        Email = p.String(maxLength: 128),
-                    },
-                body:
-                    @"INSERT [dbo].[Cookie]([Domain], [DateCreatedSessionCookie], [ExpirationDate], [Path], [Email])
-                      VALUES (@Domain, @DateCreatedSessionCookie, @ExpirationDate, @Path, @Email)
-                      
-                      DECLARE @SessionID int
-                      SELECT @SessionID = [SessionID]
-                      FROM [dbo].[Cookie]
-                      WHERE @@ROWCOUNT > 0 AND [SessionID] = scope_identity()
-                      
-                      SELECT t0.[SessionID]
-                      FROM [dbo].[Cookie] AS t0
-                      WHERE @@ROWCOUNT > 0 AND t0.[SessionID] = @SessionID"
-            );
-            
-            CreateStoredProcedure(
-                "dbo.Cookie_Update",
-                p => new
-                    {
-                        SessionID = p.Int(),
-                        Domain = p.String(),
-                        DateCreatedSessionCookie = p.DateTime(),
-                        ExpirationDate = p.DateTime(),
-                        Path = p.String(),
-                        Email = p.String(maxLength: 128),
-                    },
-                body:
-                    @"UPDATE [dbo].[Cookie]
-                      SET [Domain] = @Domain, [DateCreatedSessionCookie] = @DateCreatedSessionCookie, [ExpirationDate] = @ExpirationDate, [Path] = @Path, [Email] = @Email
-                      WHERE ([SessionID] = @SessionID)"
-            );
-            
-            CreateStoredProcedure(
-                "dbo.Cookie_Delete",
-                p => new
-                    {
-                        SessionID = p.Int(),
-                    },
-                body:
-                    @"DELETE [dbo].[Cookie]
-                      WHERE ([SessionID] = @SessionID)"
-            );
-            
-            CreateStoredProcedure(
                 "dbo.ZipLocation_Insert",
                 p => new
                     {
@@ -546,6 +479,45 @@ namespace ECS.Models.Migrations
                 body:
                     @"DELETE [dbo].[AccountType]
                       WHERE (([Username] = @Username) AND ([Permission] = @Permission))"
+            );
+            
+            CreateStoredProcedure(
+                "dbo.LinkedIn_Insert",
+                p => new
+                    {
+                        UserName = p.String(maxLength: 20),
+                        AccessToken = p.String(maxLength: 2000),
+                        TokenCreation = p.DateTime(),
+                    },
+                body:
+                    @"INSERT [dbo].[LinkedIn]([UserName], [AccessToken], [TokenCreation])
+                      VALUES (@UserName, @AccessToken, @TokenCreation)"
+            );
+            
+            CreateStoredProcedure(
+                "dbo.LinkedIn_Update",
+                p => new
+                    {
+                        UserName = p.String(maxLength: 20),
+                        AccessToken = p.String(maxLength: 2000),
+                        TokenCreation = p.DateTime(),
+                    },
+                body:
+                    @"UPDATE [dbo].[LinkedIn]
+                      SET [TokenCreation] = @TokenCreation
+                      WHERE (([UserName] = @UserName) AND ([AccessToken] = @AccessToken))"
+            );
+            
+            CreateStoredProcedure(
+                "dbo.LinkedIn_Delete",
+                p => new
+                    {
+                        UserName = p.String(maxLength: 20),
+                        AccessToken = p.String(maxLength: 2000),
+                    },
+                body:
+                    @"DELETE [dbo].[LinkedIn]
+                      WHERE (([UserName] = @UserName) AND ([AccessToken] = @AccessToken))"
             );
             
             CreateStoredProcedure(
@@ -677,15 +649,15 @@ namespace ECS.Models.Migrations
             DropStoredProcedure("dbo.SweepStakeEntry_Delete");
             DropStoredProcedure("dbo.SweepStakeEntry_Update");
             DropStoredProcedure("dbo.SweepStakeEntry_Insert");
+            DropStoredProcedure("dbo.LinkedIn_Delete");
+            DropStoredProcedure("dbo.LinkedIn_Update");
+            DropStoredProcedure("dbo.LinkedIn_Insert");
             DropStoredProcedure("dbo.AccountType_Delete");
             DropStoredProcedure("dbo.AccountType_Update");
             DropStoredProcedure("dbo.AccountType_Insert");
             DropStoredProcedure("dbo.ZipLocation_Delete");
             DropStoredProcedure("dbo.ZipLocation_Update");
             DropStoredProcedure("dbo.ZipLocation_Insert");
-            DropStoredProcedure("dbo.Cookie_Delete");
-            DropStoredProcedure("dbo.Cookie_Update");
-            DropStoredProcedure("dbo.Cookie_Insert");
             DropStoredProcedure("dbo.User_Delete");
             DropStoredProcedure("dbo.User_Update");
             DropStoredProcedure("dbo.User_Insert");
@@ -710,7 +682,6 @@ namespace ECS.Models.Migrations
             DropForeignKey("dbo.AccountType", "Username", "dbo.Account");
             DropForeignKey("dbo.Account", "Email", "dbo.User");
             DropForeignKey("dbo.ZipLocation", "Email", "dbo.User");
-            DropForeignKey("dbo.Cookie", "Email", "dbo.User");
             DropForeignKey("dbo.SecurityQuestionAccount", "Username", "dbo.Account");
             DropForeignKey("dbo.SecurityQuestionAccount", "SecurityQuestionID", "dbo.SecurityQuestion");
             DropForeignKey("dbo.AccountInterestTag", "InterestTag_TagName", "dbo.InterestTag");
@@ -723,7 +694,6 @@ namespace ECS.Models.Migrations
             DropIndex("dbo.LinkedIn", new[] { "UserName" });
             DropIndex("dbo.AccountType", new[] { "Username" });
             DropIndex("dbo.ZipLocation", new[] { "Email" });
-            DropIndex("dbo.Cookie", new[] { "Email" });
             DropIndex("dbo.SecurityQuestionAccount", new[] { "Username" });
             DropIndex("dbo.SecurityQuestionAccount", new[] { "SecurityQuestionID" });
             DropIndex("dbo.Article", new[] { "InterestTag_TagName" });
@@ -734,7 +704,6 @@ namespace ECS.Models.Migrations
             DropTable("dbo.LinkedIn");
             DropTable("dbo.AccountType");
             DropTable("dbo.ZipLocation");
-            DropTable("dbo.Cookie");
             DropTable("dbo.User");
             DropTable("dbo.SecurityQuestion");
             DropTable("dbo.SecurityQuestionAccount");

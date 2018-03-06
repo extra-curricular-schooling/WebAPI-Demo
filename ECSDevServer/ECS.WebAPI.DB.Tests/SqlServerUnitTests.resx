@@ -140,16 +140,14 @@ SELECT @RC = 0,
 
 EXECUTE @RC = [dbo].[AccountType_Insert] @Username, @Permission, @RoleName;
 
-SELECT @RC AS RC;
-
-</value>
+SELECT * FROM [dbo].[AccountType] WHERE [UserName] = @UserName AND [Permission] = @Permission;</value>
   </data>
   <data name="Delete_Account_TestAction.SqlScript" xml:space="preserve">
     <value>-- database unit test for dbo.Account_Delete
 DECLARE @RC AS INT, @UserName AS NVARCHAR (20);
 
 SELECT @RC = 0,
-       @UserName = 'test50';
+       @UserName = 'test51';
 
 EXECUTE @RC = [dbo].[Account_Delete] @UserName;
 
@@ -163,7 +161,7 @@ DECLARE @RC AS INT, @UserName AS NVARCHAR (20), @Email AS NVARCHAR (128), @Passw
 
 SELECT @RC = 0,
        @UserName = 'test51',
-       @Email = 'test50@gmail.com',
+       @Email = 'test51@gmail.com',
        @Password = 'aaaaaaa',
        @Points = 32,
        @AccountStatus = 1,
@@ -187,9 +185,7 @@ SELECT @RC = 0,
 
 EXECUTE @RC = [dbo].[Account_Update] @UserName, @Email, @Password, @Points, @AccountStatus, @SuspensionTime;
 
-SELECT @RC AS RC WHERE @UserName = 'test2' AND @Points = 41;
-
-</value>
+SELECT * FROM [dbo].[Account] WHERE [UserName] = @UserName AND [Points] = @Points</value>
   </data>
   <data name="Delete_Article_TestAction.SqlScript" xml:space="preserve">
     <value>-- database unit test for dbo.Article_Delete
@@ -197,11 +193,11 @@ DECLARE @RC AS INT, @ArticleLink AS NVARCHAR (128), @InterestTag_TagName AS NVAR
 
 SELECT @RC = 0,
        @ArticleLink = 'www.test100.com',
-       @InterestTag_TagName = 'CompSci';
+       @InterestTag_TagName = 'Chemistry';
 
 EXECUTE @RC = [dbo].[Article_Delete] @ArticleLink, @InterestTag_TagName;
 
-SELECT * FROM [dbo].[Article]
+SELECT * FROM [dbo].[Article];
 
 </value>
   </data>
@@ -217,7 +213,7 @@ SELECT @RC = 0,
 
 EXECUTE @RC = [dbo].[Article_Insert] @ArticleLink, @ArticleTitle, @ArticleDescription, @InterestTag_TagName;
 
-SELECT @RC AS RC;
+SELECT * FROM [dbo].[Article];
 
 </value>
   </data>
@@ -255,14 +251,14 @@ SELECT @RC = 0,
 
 EXECUTE @RC = [dbo].[InterestTag_Insert] @TagName;
 
-SELECT * FROM [dbo].[InterestTag] WHERE [TagName] = @TagName</value>
+SELECT * FROM [dbo].[InterestTag];</value>
   </data>
   <data name="Delete_Account_SecurityAnswer_TestAction.SqlScript" xml:space="preserve">
     <value>-- database unit test for dbo.SecurityQuestionAccount_Delete
 DECLARE @RC AS INT, @Username AS NVARCHAR (20), @SecurityQuestionID AS INT;
 
 SELECT @RC = 0,
-       @Username = 'test50',
+       @Username = 'test51',
        @SecurityQuestionID = 3;
 
 EXECUTE @RC = [dbo].[SecurityQuestionAccount_Delete] @Username, @SecurityQuestionID;
@@ -274,7 +270,7 @@ SELECT * FROM [dbo].[SecurityQuestionAccount];</value>
 DECLARE @RC AS INT, @Username AS NVARCHAR (20), @SecurityQuestionID AS INT, @Answer AS NVARCHAR (100);
 
 SELECT @RC = 0,
-       @Username = 'test50',
+       @Username = 'test51',
        @SecurityQuestionID = 3,
        @Answer = 'yesss';
 
@@ -286,7 +282,7 @@ SELECT * FROM [dbo].[SecurityQuestionAccount] WHERE [UserName] = @UserName AND [
     <value>-- database unit test for dbo.SecurityQuestionAccount_Update
 DECLARE @RC AS INT, @Username AS NVARCHAR (20), @SecurityQuestionID AS INT, @Answer AS NVARCHAR (100);
 
-SELECT @RC = 100,
+SELECT @RC = 0,
        @Username = 'test50',
        @SecurityQuestionID = 3,
        @Answer = 'nooo';
@@ -315,7 +311,7 @@ SELECT @RC = 0,
 
 EXECUTE @RC = [dbo].[SecurityQuestion_Insert] @SecurityQuestions;
 
-SELECT SecurityQuestions FROM [dbo].[SecurityQuestion];</value>
+SELECT * FROM [dbo].[SecurityQuestion];</value>
   </data>
   <data name="Update_SecurityQuestion_TestAction.SqlScript" xml:space="preserve">
     <value>-- database unit test for dbo.SecurityQuestion_Update
@@ -385,7 +381,7 @@ SELECT * FROM [dbo].[ZipLocation];</value>
 DECLARE @RC AS INT, @Email AS NVARCHAR (128), @ZipCode AS NVARCHAR (10), @Address AS NVARCHAR (MAX), @City AS NVARCHAR (MAX), @State AS NVARCHAR (MAX), @Latitude AS INT, @Longitude AS INT;
 
 SELECT @RC = 0,
-       @Email = 'test50@gmail.com',
+       @Email = 'test51@gmail.com',
        @ZipCode = '111111',
        @Address = '111 test',
        @City = 'Long Beaech',
@@ -399,9 +395,6 @@ SELECT * FROM [dbo].[ZipLocation];
 
 </value>
   </data>
-  <metadata name="checksumCondition1.Configuration" xml:space="preserve">
-    <value>Press to configure</value>
-  </metadata>
   <data name="Update_User_ZipCode_TestAction.SqlScript" xml:space="preserve">
     <value>-- database unit test for dbo.ZipLocation_Update
 DECLARE @RC AS INT, @Email AS NVARCHAR (128), @ZipCode AS NVARCHAR (10), @Address AS NVARCHAR (MAX), @City AS NVARCHAR (MAX), @State AS NVARCHAR (MAX), @Latitude AS INT, @Longitude AS INT;
@@ -424,15 +417,15 @@ SELECT * FROM [dbo].[ZipLocation] WHERE [Email] = @Email AND [ZipCode] = @ZipCod
 DECLARE @RC AS INT, @UserName AS NVARCHAR (20), @Email AS NVARCHAR (128), @Password AS NVARCHAR (20), @Points AS INT, @AccountStatus AS BIT, @SuspensionTime AS DATETIME;
 
 SELECT @RC = 0,
-       @UserName = 'test50',
-       @Email = 'test50@gmail.com',
+       @UserName = 'test51',
+       @Email = 'test51@gmail.com',
        @Password = 'aaaaaaa',
        @Points = 32,
        @AccountStatus = 1,
        @SuspensionTime = getdate();
 
 
-   IF NOT EXISTS (SELECT * FROM [dbo].[Account] WHERE [UserName] = @UserName)
+   IF NOT EXISTS (SELECT * FROM [dbo].[Account] WHERE [UserName] = @UserName AND [Email] = @Email)
    BEGIN
        EXECUTE @RC = [dbo].[Account_Insert] @UserName, @Email, @Password, @Points, @AccountStatus, @SuspensionTime;
 	   SELECT * FROM [dbo].[Account] WHERE [UserName] = @UserName;
@@ -440,7 +433,7 @@ SELECT @RC = 0,
    ELSE
    IF EXISTS(SELECT * FROM [dbo].[Account] WHERE [UserName] = @UserName)
    BEGIN
-		EXECUTE @RC = [dbo].[Account_Insert] 'test51', @Email, @Password, @Points, @AccountStatus, @SuspensionTime;
+		EXECUTE @RC = [dbo].[Account_Insert] 'test52', 'test52@gmail.com', @Password, @Points, @AccountStatus, @SuspensionTime;
 	    SELECT * FROM [dbo].[Account] WHERE [UserName] = @UserName;
    END
 
@@ -461,9 +454,7 @@ SELECT @RC = 0,
 
 EXECUTE @RC = [dbo].[Account_Update] @UserName, @Email, @Password, @Points, @AccountStatus, @SuspensionTime;
 
-SELECT @RC AS RC WHERE @UserName = 'test2' AND @AccountStatus = 0;
-
-</value>
+SELECT * FROM [dbo].[Account] WHERE [UserName] = @UserName AND [AccountStatus] = @AccountStatus;</value>
   </data>
   <data name="Change_Password_TestAction.SqlScript" xml:space="preserve">
     <value>-- database unit test for dbo.Account_Update
@@ -551,7 +542,7 @@ SELECT * FROM [dbo].[User] WHERE [Email] = @Email AND [LastName] = @LastName;</v
 DECLARE @RC AS INT, @Email AS NVARCHAR (128), @ZipCode AS NVARCHAR (10), @Address AS NVARCHAR (MAX), @City AS NVARCHAR (MAX), @State AS NVARCHAR (MAX), @Latitude AS INT, @Longitude AS INT;
 
 SELECT @RC = 0,
-       @Email = 'test50@gmail.com',
+       @Email = 'test51@gmail.com',
        @ZipCode = '111111',
        @Address = '222 test',
        @City = 'Long Beach',
@@ -568,7 +559,7 @@ SELECT * FROM [dbo].[ZipLocation] WHERE [Email] = @Email AND [Address] = @Addres
 DECLARE @RC AS INT, @Email AS NVARCHAR (128), @ZipCode AS NVARCHAR (10), @Address AS NVARCHAR (MAX), @City AS NVARCHAR (MAX), @State AS NVARCHAR (MAX), @Latitude AS INT, @Longitude AS INT;
 
 SELECT @RC = 0,
-       @Email = 'test50@gmail.com',
+       @Email = 'test51@gmail.com',
        @ZipCode = '111111',
        @Address = '111 test',
        @City = 'Redondo Beach',
@@ -580,15 +571,12 @@ EXECUTE @RC = [dbo].[ZipLocation_Update] @Email, @ZipCode, @Address, @City, @Sta
 
 SELECT * FROM [dbo].[ZipLocation] WHERE [Email] = @Email AND [City] = @City;</value>
   </data>
-  <metadata name="checksumCondition2.Configuration" xml:space="preserve">
-    <value>Press to configure</value>
-  </metadata>
   <data name="Update_User_State_TestAction.SqlScript" xml:space="preserve">
     <value>-- database unit test for dbo.ZipLocation_Update
 DECLARE @RC AS INT, @Email AS NVARCHAR (128), @ZipCode AS NVARCHAR (10), @Address AS NVARCHAR (MAX), @City AS NVARCHAR (MAX), @State AS NVARCHAR (MAX), @Latitude AS INT, @Longitude AS INT;
 
 SELECT @RC = 0,
-       @Email = 'test50@gmail.com',
+       @Email = 'test51@gmail.com',
        @ZipCode = '111111',
        @Address = '111 test',
        @City = 'Long Beach',
@@ -600,12 +588,33 @@ EXECUTE @RC = [dbo].[ZipLocation_Update] @Email, @ZipCode, @Address, @City, @Sta
 
 SELECT * FROM [dbo].[ZipLocation] WHERE [Email] = @Email AND [State] = @State;</value>
   </data>
-  <metadata name="checksumCondition1.Configuration" xml:space="preserve">
-    <value>Press to configure</value>
-  </metadata>
-  <metadata name="checksumCondition2.Configuration" xml:space="preserve">
-    <value>Press to configure</value>
-  </metadata>
+  <data name="Delete_LinkedIn_Token_TestAction.SqlScript" xml:space="preserve">
+    <value>-- database unit test for dbo.LinkedIn_Delete
+DECLARE @RC AS INT, @UserName AS NVARCHAR (20), @AccessToken AS NVARCHAR (2000);
+
+SELECT @RC = 0,
+       @UserName = 'test51',
+       @AccessToken = 'asfq2gsgg24qfweagfw24';
+
+EXECUTE @RC = [dbo].[LinkedIn_Delete] @UserName, @AccessToken;
+
+SELECT * FROM [dbo].[LinkedIn];
+
+</value>
+  </data>
+  <data name="Add_LinkedIn_Token_TestAction.SqlScript" xml:space="preserve">
+    <value>-- database unit test for dbo.LinkedIn_Insert
+DECLARE @RC AS INT, @UserName AS NVARCHAR (20), @AccessToken AS NVARCHAR (2000), @TokenCreation AS DATETIME;
+
+SELECT @RC = 0,
+       @UserName = 'test51',
+       @AccessToken = 'asfq2gsgg24qfweagfw24',
+       @TokenCreation = getdate();
+
+EXECUTE @RC = [dbo].[LinkedIn_Insert] @UserName, @AccessToken, @TokenCreation;
+
+SELECT * FROM [dbo].[LinkedIn];</value>
+  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>

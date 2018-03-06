@@ -108,8 +108,6 @@ namespace ECS.Models.ECSContext
             modelBuilder.Entity<Article>().MapToStoredProcedures(s => s.Insert (
                 i => i.Parameter(p => p.InterestTag.TagName, "tag_name")));
 
-            modelBuilder.Entity<Cookie>().MapToStoredProcedures();
-
             modelBuilder.Entity<InterestTag>().MapToStoredProcedures();
 
             modelBuilder.Entity<SecurityQuestion>().MapToStoredProcedures();
@@ -123,6 +121,8 @@ namespace ECS.Models.ECSContext
             modelBuilder.Entity<SweepStake>().MapToStoredProcedures();
 
             modelBuilder.Entity<SweepStakeEntry>().MapToStoredProcedures();
+
+            modelBuilder.Entity<LinkedIn>().MapToStoredProcedures();
 
         }
 

@@ -78,9 +78,7 @@ namespace ECS.WebAPI.DB.Tests
             Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.NotEmptyResultSetCondition notEmptyResultSetCondition5;
             Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction Update_Article_Description_TestAction;
             Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction Update_Article_Title_TestAction;
-            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.InconclusiveCondition inconclusiveCondition2;
             Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.NotEmptyResultSetCondition notEmptyResultSetCondition6;
-            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.NotEmptyResultSetCondition notEmptyResultSetCondition7;
             Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition rowCountCondition8;
             Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.ScalarValueCondition scalarValueCondition1;
             Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition rowCountCondition9;
@@ -102,8 +100,12 @@ namespace ECS.WebAPI.DB.Tests
             Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.NotEmptyResultSetCondition notEmptyResultSetCondition11;
             Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.NotEmptyResultSetCondition notEmptyResultSetCondition15;
             Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.NotEmptyResultSetCondition notEmptyResultSetCondition16;
-            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.ChecksumCondition checksumCondition1;
-            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.ChecksumCondition checksumCondition2;
+            Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction Delete_LinkedIn_Token_TestAction;
+            Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction Add_LinkedIn_Token_TestAction;
+            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition rowCountCondition15;
+            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition rowCountCondition16;
+            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition rowCountCondition17;
+            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.NotEmptyResultSetCondition notEmptyResultSetCondition7;
             this.Remove_Account_PermissionData = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestActions();
             this.Give_Account_PermissionData = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestActions();
             this.Delete_AccountData = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestActions();
@@ -136,6 +138,8 @@ namespace ECS.WebAPI.DB.Tests
             this.Update_User_AddressData = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestActions();
             this.Update_User_CityData = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestActions();
             this.Update_User_StateData = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestActions();
+            this.Delete_LinkedIn_TokenData = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestActions();
+            this.Add_LinkedIn_TokenData = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestActions();
             Remove_Account_Permission_TestAction = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction();
             Give_Account_Permission_TestAction = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction();
             Delete_Account_TestAction = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction();
@@ -176,9 +180,7 @@ namespace ECS.WebAPI.DB.Tests
             notEmptyResultSetCondition5 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.NotEmptyResultSetCondition();
             Update_Article_Description_TestAction = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction();
             Update_Article_Title_TestAction = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction();
-            inconclusiveCondition2 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.InconclusiveCondition();
             notEmptyResultSetCondition6 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.NotEmptyResultSetCondition();
-            notEmptyResultSetCondition7 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.NotEmptyResultSetCondition();
             rowCountCondition8 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition();
             scalarValueCondition1 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.ScalarValueCondition();
             rowCountCondition9 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition();
@@ -200,8 +202,12 @@ namespace ECS.WebAPI.DB.Tests
             notEmptyResultSetCondition11 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.NotEmptyResultSetCondition();
             notEmptyResultSetCondition15 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.NotEmptyResultSetCondition();
             notEmptyResultSetCondition16 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.NotEmptyResultSetCondition();
-            checksumCondition1 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.ChecksumCondition();
-            checksumCondition2 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.ChecksumCondition();
+            Delete_LinkedIn_Token_TestAction = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction();
+            Add_LinkedIn_Token_TestAction = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction();
+            rowCountCondition15 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition();
+            rowCountCondition16 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition();
+            rowCountCondition17 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition();
+            notEmptyResultSetCondition7 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.NotEmptyResultSetCondition();
             // 
             // Remove_Account_Permission_TestAction
             // 
@@ -250,7 +256,7 @@ namespace ECS.WebAPI.DB.Tests
             // 
             // Add_InterestTag_TestAction
             // 
-            Add_InterestTag_TestAction.Conditions.Add(notEmptyResultSetCondition7);
+            Add_InterestTag_TestAction.Conditions.Add(rowCountCondition17);
             resources.ApplyResources(Add_InterestTag_TestAction, "Add_InterestTag_TestAction");
             // 
             // Delete_Account_SecurityAnswer_TestAction
@@ -311,7 +317,6 @@ namespace ECS.WebAPI.DB.Tests
             // Update_User_ZipCode_TestAction
             // 
             Update_User_ZipCode_TestAction.Conditions.Add(notEmptyResultSetCondition16);
-            Update_User_ZipCode_TestAction.Conditions.Add(checksumCondition1);
             resources.ApplyResources(Update_User_ZipCode_TestAction, "Update_User_ZipCode_TestAction");
             // 
             // Remove_Account_PermissionData
@@ -451,7 +456,7 @@ namespace ECS.WebAPI.DB.Tests
             rowCountCondition2.Enabled = true;
             rowCountCondition2.Name = "rowCountCondition2";
             rowCountCondition2.ResultSet = 1;
-            rowCountCondition2.RowCount = 1;
+            rowCountCondition2.RowCount = 50;
             // 
             // rowCountCondition3
             // 
@@ -472,7 +477,7 @@ namespace ECS.WebAPI.DB.Tests
             rowCountCondition1.Enabled = true;
             rowCountCondition1.Name = "rowCountCondition1";
             rowCountCondition1.ResultSet = 1;
-            rowCountCondition1.RowCount = 43;
+            rowCountCondition1.RowCount = 50;
             // 
             // Create_Exist_AccountData
             // 
@@ -588,25 +593,14 @@ namespace ECS.WebAPI.DB.Tests
             // 
             // Update_Article_Title_TestAction
             // 
-            Update_Article_Title_TestAction.Conditions.Add(inconclusiveCondition2);
+            Update_Article_Title_TestAction.Conditions.Add(notEmptyResultSetCondition7);
             resources.ApplyResources(Update_Article_Title_TestAction, "Update_Article_Title_TestAction");
-            // 
-            // inconclusiveCondition2
-            // 
-            inconclusiveCondition2.Enabled = true;
-            inconclusiveCondition2.Name = "inconclusiveCondition2";
             // 
             // notEmptyResultSetCondition6
             // 
             notEmptyResultSetCondition6.Enabled = true;
             notEmptyResultSetCondition6.Name = "notEmptyResultSetCondition6";
             notEmptyResultSetCondition6.ResultSet = 1;
-            // 
-            // notEmptyResultSetCondition7
-            // 
-            notEmptyResultSetCondition7.Enabled = true;
-            notEmptyResultSetCondition7.Name = "notEmptyResultSetCondition7";
-            notEmptyResultSetCondition7.ResultSet = 1;
             // 
             // rowCountCondition8
             // 
@@ -649,7 +643,7 @@ namespace ECS.WebAPI.DB.Tests
             rowCountCondition10.Enabled = true;
             rowCountCondition10.Name = "rowCountCondition10";
             rowCountCondition10.ResultSet = 1;
-            rowCountCondition10.RowCount = 146;
+            rowCountCondition10.RowCount = 147;
             // 
             // notEmptyResultSetCondition10
             // 
@@ -727,7 +721,6 @@ namespace ECS.WebAPI.DB.Tests
             // Update_User_State_TestAction
             // 
             Update_User_State_TestAction.Conditions.Add(notEmptyResultSetCondition15);
-            Update_User_State_TestAction.Conditions.Add(checksumCondition2);
             resources.ApplyResources(Update_User_State_TestAction, "Update_User_State_TestAction");
             // 
             // notEmptyResultSetCondition13
@@ -766,17 +759,54 @@ namespace ECS.WebAPI.DB.Tests
             notEmptyResultSetCondition16.Name = "notEmptyResultSetCondition16";
             notEmptyResultSetCondition16.ResultSet = 1;
             // 
-            // checksumCondition1
+            // Delete_LinkedIn_TokenData
             // 
-            checksumCondition1.Checksum = null;
-            checksumCondition1.Enabled = true;
-            checksumCondition1.Name = "checksumCondition1";
+            this.Delete_LinkedIn_TokenData.PosttestAction = null;
+            this.Delete_LinkedIn_TokenData.PretestAction = null;
+            this.Delete_LinkedIn_TokenData.TestAction = Delete_LinkedIn_Token_TestAction;
             // 
-            // checksumCondition2
+            // Delete_LinkedIn_Token_TestAction
             // 
-            checksumCondition2.Checksum = "1115220217";
-            checksumCondition2.Enabled = true;
-            checksumCondition2.Name = "checksumCondition2";
+            Delete_LinkedIn_Token_TestAction.Conditions.Add(rowCountCondition16);
+            resources.ApplyResources(Delete_LinkedIn_Token_TestAction, "Delete_LinkedIn_Token_TestAction");
+            // 
+            // Add_LinkedIn_TokenData
+            // 
+            this.Add_LinkedIn_TokenData.PosttestAction = null;
+            this.Add_LinkedIn_TokenData.PretestAction = null;
+            this.Add_LinkedIn_TokenData.TestAction = Add_LinkedIn_Token_TestAction;
+            // 
+            // Add_LinkedIn_Token_TestAction
+            // 
+            Add_LinkedIn_Token_TestAction.Conditions.Add(rowCountCondition15);
+            resources.ApplyResources(Add_LinkedIn_Token_TestAction, "Add_LinkedIn_Token_TestAction");
+            // 
+            // rowCountCondition15
+            // 
+            rowCountCondition15.Enabled = true;
+            rowCountCondition15.Name = "rowCountCondition15";
+            rowCountCondition15.ResultSet = 1;
+            rowCountCondition15.RowCount = 51;
+            // 
+            // rowCountCondition16
+            // 
+            rowCountCondition16.Enabled = true;
+            rowCountCondition16.Name = "rowCountCondition16";
+            rowCountCondition16.ResultSet = 1;
+            rowCountCondition16.RowCount = 50;
+            // 
+            // rowCountCondition17
+            // 
+            rowCountCondition17.Enabled = true;
+            rowCountCondition17.Name = "rowCountCondition17";
+            rowCountCondition17.ResultSet = 1;
+            rowCountCondition17.RowCount = 11;
+            // 
+            // notEmptyResultSetCondition7
+            // 
+            notEmptyResultSetCondition7.Enabled = true;
+            notEmptyResultSetCondition7.Name = "notEmptyResultSetCondition7";
+            notEmptyResultSetCondition7.ResultSet = 1;
         }
 
         #endregion
@@ -1553,6 +1583,54 @@ namespace ECS.WebAPI.DB.Tests
                 SqlExecutionResult[] posttestResults = TestService.Execute(this.PrivilegedContext, this.PrivilegedContext, testActions.PosttestAction);
             }
         }
+        [TestMethod()]
+        public void Delete_LinkedIn_Token()
+        {
+            SqlDatabaseTestActions testActions = this.Delete_LinkedIn_TokenData;
+            // Execute the pre-test script
+            // 
+            System.Diagnostics.Trace.WriteLineIf((testActions.PretestAction != null), "Executing pre-test script...");
+            SqlExecutionResult[] pretestResults = TestService.Execute(this.PrivilegedContext, this.PrivilegedContext, testActions.PretestAction);
+            try
+            {
+                // Execute the test script
+                // 
+                System.Diagnostics.Trace.WriteLineIf((testActions.TestAction != null), "Executing test script...");
+                SqlExecutionResult[] testResults = TestService.Execute(this.ExecutionContext, this.PrivilegedContext, testActions.TestAction);
+            }
+            finally
+            {
+                // Execute the post-test script
+                // 
+                System.Diagnostics.Trace.WriteLineIf((testActions.PosttestAction != null), "Executing post-test script...");
+                SqlExecutionResult[] posttestResults = TestService.Execute(this.PrivilegedContext, this.PrivilegedContext, testActions.PosttestAction);
+            }
+        }
+
+        [TestMethod()]
+        public void Add_LinkedIn_Token()
+        {
+            SqlDatabaseTestActions testActions = this.Add_LinkedIn_TokenData;
+            // Execute the pre-test script
+            // 
+            System.Diagnostics.Trace.WriteLineIf((testActions.PretestAction != null), "Executing pre-test script...");
+            SqlExecutionResult[] pretestResults = TestService.Execute(this.PrivilegedContext, this.PrivilegedContext, testActions.PretestAction);
+            try
+            {
+                // Execute the test script
+                // 
+                System.Diagnostics.Trace.WriteLineIf((testActions.TestAction != null), "Executing test script...");
+                SqlExecutionResult[] testResults = TestService.Execute(this.ExecutionContext, this.PrivilegedContext, testActions.TestAction);
+            }
+            finally
+            {
+                // Execute the post-test script
+                // 
+                System.Diagnostics.Trace.WriteLineIf((testActions.PosttestAction != null), "Executing post-test script...");
+                SqlExecutionResult[] posttestResults = TestService.Execute(this.PrivilegedContext, this.PrivilegedContext, testActions.PosttestAction);
+            }
+        }
+
 
 
 
@@ -1596,5 +1674,7 @@ namespace ECS.WebAPI.DB.Tests
         private SqlDatabaseTestActions Update_User_AddressData;
         private SqlDatabaseTestActions Update_User_CityData;
         private SqlDatabaseTestActions Update_User_StateData;
+        private SqlDatabaseTestActions Delete_LinkedIn_TokenData;
+        private SqlDatabaseTestActions Add_LinkedIn_TokenData;
     }
 }
