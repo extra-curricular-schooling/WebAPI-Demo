@@ -18,6 +18,7 @@ namespace ECS.Models.Migrations
 
         protected override void Seed(ECS.Models.ECSContext.ECSContext context)
         {
+            
             //Add entries to the User table
             var user = new List<User>
                 {
@@ -526,6 +527,7 @@ namespace ECS.Models.Migrations
             AddOrUpdateZipCode(context, "test49@gmail.com", "84756");
             AddOrUpdateZipCode(context, "test50@gmail.com", "123456");
             **/
+            
             //Add entries to the Account table
             var account = new List<Account>
                 {
@@ -2162,7 +2164,7 @@ namespace ECS.Models.Migrations
             //cookies.ForEach(s => context.//cookies.AddOrUpdate(p => p.SessionID, s));
             context.SaveChanges();
             **/
-
+            
             //Add entries to Interest Tag table
 
             //Add entries to the SecurityQuestion table
@@ -4395,5 +4397,6 @@ namespace ECS.Models.Migrations
                 user.User.Add(context.Users.Single(i => i.Email == email));
         }
         **/
+        
     }
 }

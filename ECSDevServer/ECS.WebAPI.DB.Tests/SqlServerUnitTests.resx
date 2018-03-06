@@ -1,0 +1,612 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Remove_Account_Permission_TestAction.SqlScript" xml:space="preserve">
+    <value>-- database unit test for dbo.AccountType_Delete
+DECLARE @RC AS INT, @Username AS NVARCHAR (20), @Permission AS NVARCHAR (128);
+
+SELECT @RC = 0,
+       @Username = 'test51',
+       @Permission = 'CanCreateUser';
+
+EXECUTE @RC = [dbo].[AccountType_Delete] @Username, @Permission;
+
+SELECT * FROM [dbo].[AccountType] </value>
+  </data>
+  <data name="Give_Account_Permission_TestAction.SqlScript" xml:space="preserve">
+    <value>-- database unit test for dbo.AccountType_Insert
+DECLARE @RC AS INT, @Username AS NVARCHAR (20), @Permission AS NVARCHAR (128), @RoleName AS NVARCHAR (MAX);
+
+SELECT @RC = 0,
+       @Username = 'test51',
+       @Permission = 'CanCreateUser',
+       @RoleName = 'Admin';
+
+EXECUTE @RC = [dbo].[AccountType_Insert] @Username, @Permission, @RoleName;
+
+SELECT @RC AS RC;
+
+</value>
+  </data>
+  <data name="Delete_Account_TestAction.SqlScript" xml:space="preserve">
+    <value>-- database unit test for dbo.Account_Delete
+DECLARE @RC AS INT, @UserName AS NVARCHAR (20);
+
+SELECT @RC = 0,
+       @UserName = 'test50';
+
+EXECUTE @RC = [dbo].[Account_Delete] @UserName;
+
+SELECT * FROM [dbo].[Account];
+
+</value>
+  </data>
+  <data name="Create_New_Account_TestAction.SqlScript" xml:space="preserve">
+    <value>-- database unit test for dbo.Account_Insert
+DECLARE @RC AS INT, @UserName AS NVARCHAR (20), @Email AS NVARCHAR (128), @Password AS NVARCHAR (20), @Points AS INT, @AccountStatus AS BIT, @SuspensionTime AS DATETIME;
+
+SELECT @RC = 0,
+       @UserName = 'test51',
+       @Email = 'test50@gmail.com',
+       @Password = 'aaaaaaa',
+       @Points = 32,
+       @AccountStatus = 1,
+       @SuspensionTime = getdate();
+
+EXECUTE @RC = [dbo].[Account_Insert] @UserName, @Email, @Password, @Points, @AccountStatus, @SuspensionTime;
+
+SELECT * FROM [dbo].[Account] WHERE [UserName] = @UserName;</value>
+  </data>
+  <data name="Add_Points_Account_TestAction.SqlScript" xml:space="preserve">
+    <value>-- database unit test for dbo.Account_Update
+DECLARE @RC AS INT, @UserName AS NVARCHAR (20), @Email AS NVARCHAR (128), @Password AS NVARCHAR (20), @Points AS INT, @AccountStatus AS BIT, @SuspensionTime AS DATETIME;
+
+SELECT @RC = 0,
+       @UserName = 'test2',
+       @Email = 'test2@gmail.com',
+       @Password = 'aaaaaaaaaaaaa',
+       @Points = 41,
+       @AccountStatus = 1,
+       @SuspensionTime = getdate();
+
+EXECUTE @RC = [dbo].[Account_Update] @UserName, @Email, @Password, @Points, @AccountStatus, @SuspensionTime;
+
+SELECT @RC AS RC WHERE @UserName = 'test2' AND @Points = 41;
+
+</value>
+  </data>
+  <data name="Delete_Article_TestAction.SqlScript" xml:space="preserve">
+    <value>-- database unit test for dbo.Article_Delete
+DECLARE @RC AS INT, @ArticleLink AS NVARCHAR (128), @InterestTag_TagName AS NVARCHAR (128);
+
+SELECT @RC = 0,
+       @ArticleLink = 'www.test100.com',
+       @InterestTag_TagName = 'CompSci';
+
+EXECUTE @RC = [dbo].[Article_Delete] @ArticleLink, @InterestTag_TagName;
+
+SELECT * FROM [dbo].[Article]
+
+</value>
+  </data>
+  <data name="Add_Article_TestAction.SqlScript" xml:space="preserve">
+    <value>-- database unit test for dbo.Article_Insert
+DECLARE @RC AS INT, @ArticleLink AS NVARCHAR (128), @ArticleTitle AS NVARCHAR (MAX), @ArticleDescription AS NVARCHAR (MAX), @InterestTag_TagName AS NVARCHAR (128);
+
+SELECT @RC = 0,
+       @ArticleLink = 'www.test100.com',
+       @ArticleTitle = 'test100',
+       @ArticleDescription = 'this is a description',
+       @InterestTag_TagName = 'CompSci';
+
+EXECUTE @RC = [dbo].[Article_Insert] @ArticleLink, @ArticleTitle, @ArticleDescription, @InterestTag_TagName;
+
+SELECT @RC AS RC;
+
+</value>
+  </data>
+  <data name="Update_Article_TagName_TestAction.SqlScript" xml:space="preserve">
+    <value>-- database unit test for dbo.Article_Update
+DECLARE @RC AS INT, @ArticleLink AS NVARCHAR (128), @ArticleTitle AS NVARCHAR (MAX), @ArticleDescription AS NVARCHAR (MAX), @InterestTag_TagName AS NVARCHAR (128);
+
+SELECT @RC = 0,
+       @ArticleLink = 'www.test100.com',
+       @ArticleTitle = 'test100',
+       @ArticleDescription = 'This is a test description',
+       @InterestTag_TagName = 'Chemistry';
+
+EXECUTE @RC = [dbo].[Article_Update] @ArticleLink, @ArticleTitle, @ArticleDescription, @InterestTag_TagName;
+
+SELECT * FROM [dbo].[Article] WHERE [ArticleLink] = @ArticleLink</value>
+  </data>
+  <data name="Delete_InterestTag_TestAction.SqlScript" xml:space="preserve">
+    <value>-- database unit test for dbo.InterestTag_Delete
+DECLARE @RC AS INT, @TagName AS NVARCHAR (128);
+
+SELECT @RC = 0,
+       @TagName = 'test';
+
+EXECUTE @RC = [dbo].[InterestTag_Delete] @TagName;
+
+SELECT * FROM [dbo].[InterestTag]</value>
+  </data>
+  <data name="Add_InterestTag_TestAction.SqlScript" xml:space="preserve">
+    <value>-- database unit test for dbo.InterestTag_Insert
+DECLARE @RC AS INT, @TagName AS NVARCHAR (128);
+
+SELECT @RC = 0,
+       @TagName = 'test';
+
+EXECUTE @RC = [dbo].[InterestTag_Insert] @TagName;
+
+SELECT * FROM [dbo].[InterestTag] WHERE [TagName] = @TagName</value>
+  </data>
+  <data name="Delete_Account_SecurityAnswer_TestAction.SqlScript" xml:space="preserve">
+    <value>-- database unit test for dbo.SecurityQuestionAccount_Delete
+DECLARE @RC AS INT, @Username AS NVARCHAR (20), @SecurityQuestionID AS INT;
+
+SELECT @RC = 0,
+       @Username = 'test50',
+       @SecurityQuestionID = 3;
+
+EXECUTE @RC = [dbo].[SecurityQuestionAccount_Delete] @Username, @SecurityQuestionID;
+
+SELECT * FROM [dbo].[SecurityQuestionAccount];</value>
+  </data>
+  <data name="Add_Account_SecurityAnswer_TestAction.SqlScript" xml:space="preserve">
+    <value>-- database unit test for dbo.SecurityQuestionAccount_Insert
+DECLARE @RC AS INT, @Username AS NVARCHAR (20), @SecurityQuestionID AS INT, @Answer AS NVARCHAR (100);
+
+SELECT @RC = 0,
+       @Username = 'test50',
+       @SecurityQuestionID = 3,
+       @Answer = 'yesss';
+
+EXECUTE @RC = [dbo].[SecurityQuestionAccount_Insert] @Username, @SecurityQuestionID, @Answer;
+
+SELECT * FROM [dbo].[SecurityQuestionAccount] WHERE [UserName] = @UserName AND [Answer] = @Answer;</value>
+  </data>
+  <data name="Update_Account_SecurityAnswer_TestAction.SqlScript" xml:space="preserve">
+    <value>-- database unit test for dbo.SecurityQuestionAccount_Update
+DECLARE @RC AS INT, @Username AS NVARCHAR (20), @SecurityQuestionID AS INT, @Answer AS NVARCHAR (100);
+
+SELECT @RC = 100,
+       @Username = 'test50',
+       @SecurityQuestionID = 3,
+       @Answer = 'nooo';
+
+EXECUTE @RC = [dbo].[SecurityQuestionAccount_Update] @Username, @SecurityQuestionID, @Answer;
+
+SELECT * FROM [dbo].[SecurityQuestionAccount] WHERE [UserName] = @UserName AND [Answer] = @Answer;</value>
+  </data>
+  <data name="Delete_SecurityQuestion_TestAction.SqlScript" xml:space="preserve">
+    <value>-- database unit test for dbo.SecurityQuestion_Delete
+DECLARE @RC AS INT, @SecurityQuestionID AS INT;
+
+SELECT @RC = 4,
+       @SecurityQuestionID = 4;
+
+EXECUTE @RC = [dbo].[SecurityQuestion_Delete] @SecurityQuestionID;
+
+SELECT * FROM [dbo].[SecurityQuestion];</value>
+  </data>
+  <data name="Add_SecurityQuestion_TestAction.SqlScript" xml:space="preserve">
+    <value>-- database unit test for dbo.SecurityQuestion_Insert
+DECLARE @RC AS INT, @SecurityQuestions AS NVARCHAR (MAX);
+
+SELECT @RC = 0,
+       @SecurityQuestions = 'How are you?';
+
+EXECUTE @RC = [dbo].[SecurityQuestion_Insert] @SecurityQuestions;
+
+SELECT SecurityQuestions FROM [dbo].[SecurityQuestion];</value>
+  </data>
+  <data name="Update_SecurityQuestion_TestAction.SqlScript" xml:space="preserve">
+    <value>-- database unit test for dbo.SecurityQuestion_Update
+DECLARE @RC AS INT, @SecurityQuestionID AS INT, @SecurityQuestions AS NVARCHAR (MAX);
+
+SELECT @RC = 4,
+       @SecurityQuestionID = 3,
+       @SecurityQuestions = 'This is a test?';
+
+EXECUTE @RC = [dbo].[SecurityQuestion_Update] @SecurityQuestionID, @SecurityQuestions;
+
+SELECT * FROM [dbo].[SecurityQuestion] WHERE [SecurityQuestions] = @SecurityQuestions
+
+</value>
+  </data>
+  <data name="Delete_User_TestAction.SqlScript" xml:space="preserve">
+    <value>-- database unit test for dbo.User_Delete
+DECLARE @RC AS INT, @Email AS NVARCHAR (128);
+
+SELECT @RC = 0,
+       @Email = 'test51@gmail.com';
+
+EXECUTE @RC = [dbo].[User_Delete] @Email;
+
+SELECT * FROM [dbo].[User];</value>
+  </data>
+  <data name="Add_User_TestAction.SqlScript" xml:space="preserve">
+    <value>-- database unit test for dbo.User_Insert
+DECLARE @RC AS INT, @Email AS NVARCHAR (128), @FirstName AS NVARCHAR (50), @LastName AS NVARCHAR (50);
+
+SELECT @RC = 0,
+       @Email = 'test51@gmail.com',
+       @FirstName = 'test',
+       @LastName = 'testings';
+
+EXECUTE @RC = [dbo].[User_Insert] @Email, @FirstName, @LastName;
+
+SELECT * FROM [dbo].[User];</value>
+  </data>
+  <data name="Update_User_FirstName_TestAction.SqlScript" xml:space="preserve">
+    <value>-- database unit test for dbo.User_Update
+DECLARE @RC AS INT, @Email AS NVARCHAR (128), @FirstName AS NVARCHAR (50), @LastName AS NVARCHAR (50);
+
+SELECT @RC = 0,
+       @Email = 'test51@gmail.com',
+       @FirstName = 'testing',
+       @LastName = 'testeds';
+
+EXECUTE @RC = [dbo].[User_Update] @Email, @FirstName, @LastName;
+
+SELECT * FROM [dbo].[User] WHERE [Email] = @Email AND [FirstName] = @FirstName;</value>
+  </data>
+  <data name="Delete_User_ZipLocation_TestAction.SqlScript" xml:space="preserve">
+    <value>-- database unit test for dbo.ZipLocation_Delete
+DECLARE @RC AS INT, @Email AS NVARCHAR (128), @ZipCode AS NVARCHAR (10);
+
+SELECT @RC = 0,
+       @Email = 'test50@gmail.com',
+       @ZipCode = '111111';
+
+EXECUTE @RC = [dbo].[ZipLocation_Delete] @Email, @ZipCode;
+
+SELECT * FROM [dbo].[ZipLocation];</value>
+  </data>
+  <data name="Add_User_ZipLocation_TestAction.SqlScript" xml:space="preserve">
+    <value>-- database unit test for dbo.ZipLocation_Insert
+DECLARE @RC AS INT, @Email AS NVARCHAR (128), @ZipCode AS NVARCHAR (10), @Address AS NVARCHAR (MAX), @City AS NVARCHAR (MAX), @State AS NVARCHAR (MAX), @Latitude AS INT, @Longitude AS INT;
+
+SELECT @RC = 0,
+       @Email = 'test50@gmail.com',
+       @ZipCode = '111111',
+       @Address = '111 test',
+       @City = 'Long Beaech',
+       @State = 'CA',
+       @Latitude = 0,
+       @Longitude = 0;
+
+EXECUTE @RC = [dbo].[ZipLocation_Insert] @Email, @ZipCode, @Address, @City, @State, @Latitude, @Longitude;
+
+SELECT * FROM [dbo].[ZipLocation];
+
+</value>
+  </data>
+  <metadata name="checksumCondition1.Configuration" xml:space="preserve">
+    <value>Press to configure</value>
+  </metadata>
+  <data name="Update_User_ZipCode_TestAction.SqlScript" xml:space="preserve">
+    <value>-- database unit test for dbo.ZipLocation_Update
+DECLARE @RC AS INT, @Email AS NVARCHAR (128), @ZipCode AS NVARCHAR (10), @Address AS NVARCHAR (MAX), @City AS NVARCHAR (MAX), @State AS NVARCHAR (MAX), @Latitude AS INT, @Longitude AS INT;
+
+SELECT @RC = 0,
+       @Email = 'test50@gmail.com',
+       @ZipCode = '22222',
+       @Address = '111 test',
+       @City = 'Long Beach',
+       @State = 'CA',
+       @Latitude = 1,
+       @Longitude = 2;
+
+EXECUTE @RC = [dbo].[ZipLocation_Update] @Email, @ZipCode, @Address, @City, @State, @Latitude, @Longitude;
+
+SELECT * FROM [dbo].[ZipLocation] WHERE [Email] = @Email AND [ZipCode] = @ZipCode;</value>
+  </data>
+  <data name="Create_Exist_Account_TestAction.SqlScript" xml:space="preserve">
+    <value>-- database unit test for dbo.Account_Insert
+DECLARE @RC AS INT, @UserName AS NVARCHAR (20), @Email AS NVARCHAR (128), @Password AS NVARCHAR (20), @Points AS INT, @AccountStatus AS BIT, @SuspensionTime AS DATETIME;
+
+SELECT @RC = 0,
+       @UserName = 'test50',
+       @Email = 'test50@gmail.com',
+       @Password = 'aaaaaaa',
+       @Points = 32,
+       @AccountStatus = 1,
+       @SuspensionTime = getdate();
+
+
+   IF NOT EXISTS (SELECT * FROM [dbo].[Account] WHERE [UserName] = @UserName)
+   BEGIN
+       EXECUTE @RC = [dbo].[Account_Insert] @UserName, @Email, @Password, @Points, @AccountStatus, @SuspensionTime;
+	   SELECT * FROM [dbo].[Account] WHERE [UserName] = @UserName;
+   END
+   ELSE
+   IF EXISTS(SELECT * FROM [dbo].[Account] WHERE [UserName] = @UserName)
+   BEGIN
+		EXECUTE @RC = [dbo].[Account_Insert] 'test51', @Email, @Password, @Points, @AccountStatus, @SuspensionTime;
+	    SELECT * FROM [dbo].[Account] WHERE [UserName] = @UserName;
+   END
+
+
+</value>
+  </data>
+  <data name="Suspend_Account_TestAction.SqlScript" xml:space="preserve">
+    <value>-- database unit test for dbo.Account_Update
+DECLARE @RC AS INT, @UserName AS NVARCHAR (20), @Email AS NVARCHAR (128), @Password AS NVARCHAR (20), @Points AS INT, @AccountStatus AS BIT, @SuspensionTime AS DATETIME;
+
+SELECT @RC = 0,
+       @UserName = 'test2',
+       @Email = 'test2@gmail.com',
+       @Password = 'aaaaaaaaaaaaa',
+       @Points = 41,
+       @AccountStatus = 0,
+       @SuspensionTime = getdate();
+
+EXECUTE @RC = [dbo].[Account_Update] @UserName, @Email, @Password, @Points, @AccountStatus, @SuspensionTime;
+
+SELECT @RC AS RC WHERE @UserName = 'test2' AND @AccountStatus = 0;
+
+</value>
+  </data>
+  <data name="Change_Password_TestAction.SqlScript" xml:space="preserve">
+    <value>-- database unit test for dbo.Account_Update
+DECLARE @RC AS INT, @UserName AS NVARCHAR (20), @Email AS NVARCHAR (128), @Password AS NVARCHAR (20), @Points AS INT, @AccountStatus AS BIT, @SuspensionTime AS DATETIME;
+
+SELECT @RC = 0,
+       @UserName = 'test2',
+       @Email = 'test2@gmail.com',
+       @Password = 'bbbbbbbbbbbbbb',
+       @Points = 41,
+       @AccountStatus = 1,
+       @SuspensionTime = getdate();
+
+EXECUTE @RC = [dbo].[Account_Update] @UserName, @Email, @Password, @Points, @AccountStatus, @SuspensionTime;
+
+SELECT * FROM [dbo].[Account] WHERE [UserName] = @UserName AND [Password] = @Password
+
+</value>
+  </data>
+  <data name="Change_Username_TestAction.SqlScript" xml:space="preserve">
+    <value>-- database unit test for dbo.Account_Update
+DECLARE @RC AS INT, @UserName AS NVARCHAR (20), @Email AS NVARCHAR (128), @Password AS NVARCHAR (20), @Points AS INT, @AccountStatus AS BIT, @SuspensionTime AS DATETIME;
+
+SELECT @RC = 0,
+       @UserName = 'test51',
+       @Email = 'test2@gmail.com',
+       @Password = 'aaaaaaaaaaaaa',
+       @Points = 41,
+       @AccountStatus = 1,
+       @SuspensionTime = getdate();
+
+
+IF EXISTS(SELECT * FROM [dbo].[Account] WHERE [UserName] = 'test2')
+BEGIN
+EXECUTE @RC = [dbo].[Account_Update] @UserName, @Email, @Password, @Points, @AccountStatus, @SuspensionTime; 
+END
+
+SELECT @RC AS RC WHERE @UserName = 'test51' AND @Email = 'test2@gmail.com';
+
+</value>
+  </data>
+  <data name="Update_Article_Description_TestAction.SqlScript" xml:space="preserve">
+    <value>-- database unit test for dbo.Article_Update
+DECLARE @RC AS INT, @ArticleLink AS NVARCHAR (128), @ArticleTitle AS NVARCHAR (MAX), @ArticleDescription AS NVARCHAR (MAX), @InterestTag_TagName AS NVARCHAR (128);
+
+SELECT @RC = 0,
+       @ArticleLink = 'www.test100.com',
+       @ArticleTitle = 'test100',
+       @ArticleDescription = 'description tested',
+       @InterestTag_TagName = 'Chemistry';
+
+EXECUTE @RC = [dbo].[Article_Update] @ArticleLink, @ArticleTitle, @ArticleDescription, @InterestTag_TagName;
+
+SELECT * FROM [dbo].[Article] WHERE [ArticleLink] = @ArticleLink</value>
+  </data>
+  <data name="Update_Article_Title_TestAction.SqlScript" xml:space="preserve">
+    <value>-- database unit test for dbo.Article_Update
+DECLARE @RC AS INT, @ArticleLink AS NVARCHAR (128), @ArticleTitle AS NVARCHAR (MAX), @ArticleDescription AS NVARCHAR (MAX), @InterestTag_TagName AS NVARCHAR (128);
+
+SELECT @RC = 0,
+       @ArticleLink = 'www.test100.com',
+       @ArticleTitle = 'test99',
+       @ArticleDescription = 'This is a test description',
+       @InterestTag_TagName = 'Chemistry';
+
+EXECUTE @RC = [dbo].[Article_Update] @ArticleLink, @ArticleTitle, @ArticleDescription, @InterestTag_TagName;
+
+SELECT * FROM [dbo].[Article] WHERE [ArticleLink] = @ArticleLink</value>
+  </data>
+  <data name="Update_User_LastName_TestAction.SqlScript" xml:space="preserve">
+    <value>-- database unit test for dbo.User_Update
+DECLARE @RC AS INT, @Email AS NVARCHAR (128), @FirstName AS NVARCHAR (50), @LastName AS NVARCHAR (50);
+
+SELECT @RC = 0,
+       @Email = 'test51@gmail.com',
+       @FirstName = 'testing',
+       @LastName = 'testLast';
+
+EXECUTE @RC = [dbo].[User_Update] @Email, @FirstName, @LastName;
+
+SELECT * FROM [dbo].[User] WHERE [Email] = @Email AND [LastName] = @LastName;</value>
+  </data>
+  <data name="Update_User_Address_TestAction.SqlScript" xml:space="preserve">
+    <value>-- database unit test for dbo.ZipLocation_Update
+DECLARE @RC AS INT, @Email AS NVARCHAR (128), @ZipCode AS NVARCHAR (10), @Address AS NVARCHAR (MAX), @City AS NVARCHAR (MAX), @State AS NVARCHAR (MAX), @Latitude AS INT, @Longitude AS INT;
+
+SELECT @RC = 0,
+       @Email = 'test50@gmail.com',
+       @ZipCode = '111111',
+       @Address = '222 test',
+       @City = 'Long Beach',
+       @State = 'CA',
+       @Latitude = 1,
+       @Longitude = 2;
+
+EXECUTE @RC = [dbo].[ZipLocation_Update] @Email, @ZipCode, @Address, @City, @State, @Latitude, @Longitude;
+
+SELECT * FROM [dbo].[ZipLocation] WHERE [Email] = @Email AND [Address] = @Address;</value>
+  </data>
+  <data name="Update_User_City_TestAction.SqlScript" xml:space="preserve">
+    <value>-- database unit test for dbo.ZipLocation_Update
+DECLARE @RC AS INT, @Email AS NVARCHAR (128), @ZipCode AS NVARCHAR (10), @Address AS NVARCHAR (MAX), @City AS NVARCHAR (MAX), @State AS NVARCHAR (MAX), @Latitude AS INT, @Longitude AS INT;
+
+SELECT @RC = 0,
+       @Email = 'test50@gmail.com',
+       @ZipCode = '111111',
+       @Address = '111 test',
+       @City = 'Redondo Beach',
+       @State = 'CA',
+       @Latitude = 1,
+       @Longitude = 2;
+
+EXECUTE @RC = [dbo].[ZipLocation_Update] @Email, @ZipCode, @Address, @City, @State, @Latitude, @Longitude;
+
+SELECT * FROM [dbo].[ZipLocation] WHERE [Email] = @Email AND [City] = @City;</value>
+  </data>
+  <metadata name="checksumCondition2.Configuration" xml:space="preserve">
+    <value>Press to configure</value>
+  </metadata>
+  <data name="Update_User_State_TestAction.SqlScript" xml:space="preserve">
+    <value>-- database unit test for dbo.ZipLocation_Update
+DECLARE @RC AS INT, @Email AS NVARCHAR (128), @ZipCode AS NVARCHAR (10), @Address AS NVARCHAR (MAX), @City AS NVARCHAR (MAX), @State AS NVARCHAR (MAX), @Latitude AS INT, @Longitude AS INT;
+
+SELECT @RC = 0,
+       @Email = 'test50@gmail.com',
+       @ZipCode = '111111',
+       @Address = '111 test',
+       @City = 'Long Beach',
+       @State = 'FL',
+       @Latitude = 1,
+       @Longitude = 2;
+
+EXECUTE @RC = [dbo].[ZipLocation_Update] @Email, @ZipCode, @Address, @City, @State, @Latitude, @Longitude;
+
+SELECT * FROM [dbo].[ZipLocation] WHERE [Email] = @Email AND [State] = @State;</value>
+  </data>
+  <metadata name="checksumCondition1.Configuration" xml:space="preserve">
+    <value>Press to configure</value>
+  </metadata>
+  <metadata name="checksumCondition2.Configuration" xml:space="preserve">
+    <value>Press to configure</value>
+  </metadata>
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+</root>
