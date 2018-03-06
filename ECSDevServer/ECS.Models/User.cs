@@ -37,7 +37,7 @@ namespace ECS.Models
 
         //navigation property of cookies class
         //a user can have many cookies
-        public virtual ICollection<Cookie> Cookies { get; set; }
+        //public virtual ICollection<Cookie> Cookies { get; set; }
 
         //navigation property of zipLocation class
         //a user can have one zipcode/address

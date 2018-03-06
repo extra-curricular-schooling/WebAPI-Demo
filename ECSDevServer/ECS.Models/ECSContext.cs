@@ -97,6 +97,33 @@ namespace ECS.Models.ECSContext
             //Setting primary key of SecurityQuestionAccount model to custom primary key
             modelBuilder.Entity<SecurityQuestionAccount>()
                 .HasKey(s => new { s.Username, s.SecurityQuestionID });
+
+            modelBuilder.Entity<Account>().MapToStoredProcedures();
+
+            modelBuilder.Entity<Account>().HasMany(p => p.AccountTags)
+                .WithMany(s => s.AccountUsername).MapToStoredProcedures();
+
+            modelBuilder.Entity<User>().MapToStoredProcedures();
+
+            modelBuilder.Entity<Article>().MapToStoredProcedures(s => s.Insert (
+                i => i.Parameter(p => p.InterestTag.TagName, "tag_name")));
+
+            modelBuilder.Entity<InterestTag>().MapToStoredProcedures();
+
+            modelBuilder.Entity<SecurityQuestion>().MapToStoredProcedures();
+
+            modelBuilder.Entity<SecurityQuestionAccount>().MapToStoredProcedures();
+
+            modelBuilder.Entity<ZipLocation>().MapToStoredProcedures();
+
+            modelBuilder.Entity<AccountType>().MapToStoredProcedures();
+
+            modelBuilder.Entity<SweepStake>().MapToStoredProcedures();
+
+            modelBuilder.Entity<SweepStakeEntry>().MapToStoredProcedures();
+
+            modelBuilder.Entity<LinkedIn>().MapToStoredProcedures();
+
         }
 
     }
