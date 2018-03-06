@@ -276,7 +276,7 @@ SELECT @RC = 0,
 
 EXECUTE @RC = [dbo].[SecurityQuestionAccount_Insert] @Username, @SecurityQuestionID, @Answer;
 
-SELECT * FROM [dbo].[SecurityQuestionAccount] WHERE [UserName] = @UserName AND [Answer] = @Answer;</value>
+SELECT * FROM [dbo].[SecurityQuestionAccount] WHERE [UserName] = @UserName AND [SecurityQuestionID] = @SecurityQuestionID;</value>
   </data>
   <data name="Update_Account_SecurityAnswer_TestAction.SqlScript" xml:space="preserve">
     <value>-- database unit test for dbo.SecurityQuestionAccount_Update
@@ -417,28 +417,32 @@ SELECT * FROM [dbo].[ZipLocation] WHERE [Email] = @Email AND [ZipCode] = @ZipCod
 DECLARE @RC AS INT, @UserName AS NVARCHAR (20), @Email AS NVARCHAR (128), @Password AS NVARCHAR (20), @Points AS INT, @AccountStatus AS BIT, @SuspensionTime AS DATETIME;
 
 SELECT @RC = 0,
-       @UserName = 'test51',
-       @Email = 'test51@gmail.com',
+       @UserName = 'test50',
+       @Email = 'test50@gmail.com',
        @Password = 'aaaaaaa',
        @Points = 32,
        @AccountStatus = 1,
        @SuspensionTime = getdate();
 
+	BEGIN TRY
+		IF (EXISTS(SELECT * FROM [dbo].[Account] WHERE [UserName] = @UserName))
+			BEGIN
+				RAISERROR('This account Username already exists.', 16, 0);			
+			END
+	END TRY
+   BEGIN CATCH
+		DECLARE @ErrorMessage  NVARCHAR(400);
+		DECLARE @ErrorSeverity INT;
+		DECLARE @ErrorState INT;
 
-   IF NOT EXISTS (SELECT * FROM [dbo].[Account] WHERE [UserName] = @UserName AND [Email] = @Email)
-   BEGIN
-       EXECUTE @RC = [dbo].[Account_Insert] @UserName, @Email, @Password, @Points, @AccountStatus, @SuspensionTime;
-	   SELECT * FROM [dbo].[Account] WHERE [UserName] = @UserName;
-   END
-   ELSE
-   IF EXISTS(SELECT * FROM [dbo].[Account] WHERE [UserName] = @UserName)
-   BEGIN
-		EXECUTE @RC = [dbo].[Account_Insert] 'test52', 'test52@gmail.com', @Password, @Points, @AccountStatus, @SuspensionTime;
-	    SELECT * FROM [dbo].[Account] WHERE [UserName] = @UserName;
-   END
+		 SELECT @ErrorMessage = ERROR_MESSAGE(),
+                @ErrorSeverity = ERROR_SEVERITY(),
+                @ErrorState = ERROR_STATE()
 
-
-</value>
+		RAISERROR (@ErrorMessage, 
+                   @ErrorSeverity, 
+                   @ErrorState)
+	END CATCH</value>
   </data>
   <data name="Suspend_Account_TestAction.SqlScript" xml:space="preserve">
     <value>-- database unit test for dbo.Account_Update
@@ -614,6 +618,38 @@ SELECT @RC = 0,
 EXECUTE @RC = [dbo].[LinkedIn_Insert] @UserName, @AccessToken, @TokenCreation;
 
 SELECT * FROM [dbo].[LinkedIn];</value>
+  </data>
+  <data name="Create_Account_Existing_Email_TestAction.SqlScript" xml:space="preserve">
+    <value>-- database unit test for dbo.Account_Insert
+DECLARE @RC AS INT, @UserName AS NVARCHAR (20), @Email AS NVARCHAR (128), @Password AS NVARCHAR (20), @Points AS INT, @AccountStatus AS BIT, @SuspensionTime AS DATETIME;
+
+SELECT @RC = 0,
+       @UserName = 'test50',
+       @Email = 'test50@gmail.com',
+       @Password = 'aaaaaaa',
+       @Points = 32,
+       @AccountStatus = 1,
+       @SuspensionTime = getdate();
+
+	BEGIN TRY
+		IF (EXISTS(SELECT * FROM [dbo].[Account] WHERE [Email] = @Email))
+			BEGIN
+				RAISERROR('This email already exists with an account.', 16, 0);			
+			END
+	END TRY
+   BEGIN CATCH
+		DECLARE @ErrorMessage  NVARCHAR(400);
+		DECLARE @ErrorSeverity INT;
+		DECLARE @ErrorState INT;
+
+		 SELECT @ErrorMessage = ERROR_MESSAGE(),
+                @ErrorSeverity = ERROR_SEVERITY(),
+                @ErrorState = ERROR_STATE()
+
+		RAISERROR (@ErrorMessage, 
+                   @ErrorSeverity, 
+                   @ErrorState)
+	END CATCH</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
