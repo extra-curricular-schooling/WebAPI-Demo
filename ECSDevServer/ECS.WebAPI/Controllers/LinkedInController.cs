@@ -8,6 +8,7 @@ using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Cors;
 using System.Web.Http.Results;
 using System.Web.Script.Serialization;
 
@@ -27,9 +28,10 @@ namespace ECS.WebAPI.Controllers
         [AllowAnonymous]
         [HttpPost]
         [Route("SharePost")]
+        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
         public IHttpActionResult SharePost(LinkedInPostDTO postData)
         {
-            string accessToken = Request.Headers.Authorization.ToString();
+            string jwtToken = Request.Headers.Authorization.ToString();
 
             var requestUrl = _defaultAccessGateway + "people/~/shares?format=json";
             var webRequest = (HttpWebRequest)WebRequest.Create(requestUrl);
@@ -42,7 +44,7 @@ namespace ECS.WebAPI.Controllers
             var requestHeaders = new NameValueCollection
             {
                 {"x-li-format", "json" },
-                {"Authorization", "Bearer " + accessToken}, //It is important "Bearer " is included with the access token here.
+                {"Authorization", "Bearer " + postData.AccessToken}, //It is important "Bearer " is included with the access token here.
             };
 
             webRequest.Headers.Add(requestHeaders);
@@ -50,17 +52,17 @@ namespace ECS.WebAPI.Controllers
             //Build JSON request.
             var jsonMsg = new
             {
-                comment = postData.comment,
+                comment = postData.Comment,
                 content = new Dictionary<string, string>
                 {
-                    { "title", postData.title },
-                    { "description", postData.description },
-                    { "submitted-url", postData.submittedurl },
+                    { "title", postData.Title },
+                    { "description", postData.Description },
+                    { "submitted-url", postData.SubmittedUrl },
                     { "submitted-image-url", "https://media-exp2.licdn.com/media/AAMABABqAAIAAQAAAAAAAA7yAAAAJGU1OTQ2NGFlLTNjNzEtNGZjOS04NjVkLWIxNjQ4NTY5ZjNlYw.png" }
                 },
                 visibility = new
                 {
-                    code = postData.code
+                    code = postData.Code
                 }
             };
 

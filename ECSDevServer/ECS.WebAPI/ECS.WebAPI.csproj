@@ -140,6 +140,7 @@
     <Compile Include="Controllers\SSOController.cs" />
     <Compile Include="Controllers\SweepstakeAdminController.cs" />
     <Compile Include="Controllers\SweepstakeController.cs" />
+    <Compile Include="Filters\AuthorizationFilters\AuthorizationAttribute.cs" />
     <Compile Include="Filters\AuthorizationFilters\RequireHttpsAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -174,6 +175,10 @@
     <ProjectReference Include="..\ECS.Modules.HttpModules\ECS.Modules.HttpModules.csproj">
       <Project>{66ee900a-ef74-4c99-a9f4-461376747d66}</Project>
       <Name>ECS.Modules.HttpModules</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ECS.Repositories\ECS.Repositories.csproj">
+      <Project>{84b9525b-6d65-493c-8bc5-61ce7ab8c325}</Project>
+      <Name>ECS.Repositories</Name>
     </ProjectReference>
     <ProjectReference Include="..\ECS.WebAPI.Services\ECS.WebAPI.Services.csproj">
       <Project>{e8ff7a08-685c-4b1f-a669-3628ae5a8e01}</Project>

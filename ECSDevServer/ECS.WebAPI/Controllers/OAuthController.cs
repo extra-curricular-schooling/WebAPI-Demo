@@ -1,4 +1,5 @@
 ﻿using DotNetOpenAuth.LinkedInOAuth2;
+using ECS.Models;
 using ECS.WebAPI.Filters;
 using ECS.WebAPI.Services;
 using Microsoft.AspNet.Membership.OpenAuth;
@@ -92,6 +93,7 @@ namespace ECS.WebAPI.Controllers
                     AccessToken = accessToken
                 });
 
+                LinkedIn access = new LinkedIn();
                 return RedirectToClient();
             }
         }
@@ -110,15 +112,11 @@ namespace ECS.WebAPI.Controllers
         public IHttpActionResult RedirectToLinkedIn(string authtoken)
         {
             string username;
+
             if (JwtManager.ValidateToken(authtoken, out username))
             {
                 string provider = "linkedin";
-                //string returnUrl = "https://localhost:44311/OAuth/ExternalLoginCallback";
                 var redirectUrl = "~/OAuth/ExternalLoginCallback";
-                //if (!String.IsNullOrEmpty(returnUrl))
-                //{
-                //    redirectUrl += "?ReturnUrl=" + HttpUtility.UrlEncode(returnUrl);
-                //}
                 OpenAuth.RequestAuthentication(provider, redirectUrl);
                 return Ok();
             }
