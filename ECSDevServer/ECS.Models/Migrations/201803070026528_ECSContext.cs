@@ -105,6 +105,18 @@ namespace ECS.Models.Migrations
                 .Index(t => t.Username);
             
             CreateTable(
+                "dbo.JWT",
+                c => new
+                    {
+                        JWTID = c.Int(nullable: false, identity: true),
+                        Token = c.String(),
+                        Email = c.String(maxLength: 128),
+                    })
+                .PrimaryKey(t => t.JWTID)
+                .ForeignKey("dbo.User", t => t.Email)
+                .Index(t => t.Email);
+            
+            CreateTable(
                 "dbo.LinkedIn",
                 c => new
                     {
@@ -482,6 +494,52 @@ namespace ECS.Models.Migrations
             );
             
             CreateStoredProcedure(
+                "dbo.JWT_Insert",
+                p => new
+                    {
+                        Token = p.String(),
+                        Email = p.String(maxLength: 128),
+                    },
+                body:
+                    @"INSERT [dbo].[JWT]([Token], [Email])
+                      VALUES (@Token, @Email)
+                      
+                      DECLARE @JWTID int
+                      SELECT @JWTID = [JWTID]
+                      FROM [dbo].[JWT]
+                      WHERE @@ROWCOUNT > 0 AND [JWTID] = scope_identity()
+                      
+                      SELECT t0.[JWTID]
+                      FROM [dbo].[JWT] AS t0
+                      WHERE @@ROWCOUNT > 0 AND t0.[JWTID] = @JWTID"
+            );
+            
+            CreateStoredProcedure(
+                "dbo.JWT_Update",
+                p => new
+                    {
+                        JWTID = p.Int(),
+                        Token = p.String(),
+                        Email = p.String(maxLength: 128),
+                    },
+                body:
+                    @"UPDATE [dbo].[JWT]
+                      SET [Token] = @Token, [Email] = @Email
+                      WHERE ([JWTID] = @JWTID)"
+            );
+            
+            CreateStoredProcedure(
+                "dbo.JWT_Delete",
+                p => new
+                    {
+                        JWTID = p.Int(),
+                    },
+                body:
+                    @"DELETE [dbo].[JWT]
+                      WHERE ([JWTID] = @JWTID)"
+            );
+            
+            CreateStoredProcedure(
                 "dbo.LinkedIn_Insert",
                 p => new
                     {
@@ -652,6 +710,9 @@ namespace ECS.Models.Migrations
             DropStoredProcedure("dbo.LinkedIn_Delete");
             DropStoredProcedure("dbo.LinkedIn_Update");
             DropStoredProcedure("dbo.LinkedIn_Insert");
+            DropStoredProcedure("dbo.JWT_Delete");
+            DropStoredProcedure("dbo.JWT_Update");
+            DropStoredProcedure("dbo.JWT_Insert");
             DropStoredProcedure("dbo.AccountType_Delete");
             DropStoredProcedure("dbo.AccountType_Update");
             DropStoredProcedure("dbo.AccountType_Insert");
@@ -679,6 +740,7 @@ namespace ECS.Models.Migrations
             DropForeignKey("dbo.SweepStakeEntry", "SweepstakesID", "dbo.SweepStake");
             DropForeignKey("dbo.SweepStakeEntry", "UserName", "dbo.Account");
             DropForeignKey("dbo.LinkedIn", "UserName", "dbo.Account");
+            DropForeignKey("dbo.JWT", "Email", "dbo.User");
             DropForeignKey("dbo.AccountType", "Username", "dbo.Account");
             DropForeignKey("dbo.Account", "Email", "dbo.User");
             DropForeignKey("dbo.ZipLocation", "Email", "dbo.User");
@@ -692,6 +754,7 @@ namespace ECS.Models.Migrations
             DropIndex("dbo.SweepStakeEntry", new[] { "UserName" });
             DropIndex("dbo.SweepStakeEntry", new[] { "SweepstakesID" });
             DropIndex("dbo.LinkedIn", new[] { "UserName" });
+            DropIndex("dbo.JWT", new[] { "Email" });
             DropIndex("dbo.AccountType", new[] { "Username" });
             DropIndex("dbo.ZipLocation", new[] { "Email" });
             DropIndex("dbo.SecurityQuestionAccount", new[] { "Username" });
@@ -702,6 +765,7 @@ namespace ECS.Models.Migrations
             DropTable("dbo.SweepStake");
             DropTable("dbo.SweepStakeEntry");
             DropTable("dbo.LinkedIn");
+            DropTable("dbo.JWT");
             DropTable("dbo.AccountType");
             DropTable("dbo.ZipLocation");
             DropTable("dbo.User");

@@ -651,6 +651,31 @@ SELECT @RC = 0,
                    @ErrorState)
 	END CATCH</value>
   </data>
+  <data name="dbo_JWT_DeleteTest_TestAction.SqlScript" xml:space="preserve">
+    <value>-- database unit test for dbo.JWT_Delete
+DECLARE @RC AS INT, @JWTID AS INT;
+
+SELECT @RC = 0,
+       @JWTID = 6;
+
+EXECUTE @RC = [dbo].[JWT_Delete] @JWTID;
+
+SELECT * FROM [dbo].[JWT];
+
+</value>
+  </data>
+  <data name="Add_JWT_Token_TestAction.SqlScript" xml:space="preserve">
+    <value>-- database unit test for dbo.JWT_Insert
+DECLARE @RC AS INT, @Token AS NVARCHAR (MAX), @Email AS NVARCHAR (128);
+
+SELECT @RC = 0,
+       @Token = 'test',
+       @Email = 'test7@gmail.com';
+
+EXECUTE @RC = [dbo].[JWT_Insert] @Token, @Email;
+
+SELECT * FROM [dbo].[JWT];</value>
+  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>

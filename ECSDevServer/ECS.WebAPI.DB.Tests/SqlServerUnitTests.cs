@@ -108,6 +108,10 @@ namespace ECS.WebAPI.DB.Tests
             Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction Create_Account_Existing_Email_TestAction;
             Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition rowCountCondition18;
             Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition rowCountCondition19;
+            Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction dbo_JWT_DeleteTest_TestAction;
+            Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction Add_JWT_Token_TestAction;
+            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition rowCountCondition21;
+            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.ScalarValueCondition scalarValueCondition2;
             this.Remove_Account_PermissionData = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestActions();
             this.Give_Account_PermissionData = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestActions();
             this.Delete_AccountData = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestActions();
@@ -143,6 +147,8 @@ namespace ECS.WebAPI.DB.Tests
             this.Delete_LinkedIn_TokenData = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestActions();
             this.Add_LinkedIn_TokenData = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestActions();
             this.Create_Account_Existing_EmailData = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestActions();
+            this.dbo_JWT_DeleteTestData = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestActions();
+            this.Add_JWT_TokenData = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestActions();
             Remove_Account_Permission_TestAction = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction();
             rowCountCondition6 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition();
             Give_Account_Permission_TestAction = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction();
@@ -213,6 +219,10 @@ namespace ECS.WebAPI.DB.Tests
             Create_Account_Existing_Email_TestAction = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction();
             rowCountCondition18 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition();
             rowCountCondition19 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition();
+            dbo_JWT_DeleteTest_TestAction = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction();
+            Add_JWT_Token_TestAction = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction();
+            rowCountCondition21 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition();
+            scalarValueCondition2 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.ScalarValueCondition();
             // 
             // Remove_Account_Permission_TestAction
             // 
@@ -831,6 +841,45 @@ namespace ECS.WebAPI.DB.Tests
             rowCountCondition19.Name = "rowCountCondition19";
             rowCountCondition19.ResultSet = 1;
             rowCountCondition19.RowCount = 1;
+            // 
+            // dbo_JWT_DeleteTestData
+            // 
+            this.dbo_JWT_DeleteTestData.PosttestAction = null;
+            this.dbo_JWT_DeleteTestData.PretestAction = null;
+            this.dbo_JWT_DeleteTestData.TestAction = dbo_JWT_DeleteTest_TestAction;
+            // 
+            // dbo_JWT_DeleteTest_TestAction
+            // 
+            dbo_JWT_DeleteTest_TestAction.Conditions.Add(rowCountCondition21);
+            resources.ApplyResources(dbo_JWT_DeleteTest_TestAction, "dbo_JWT_DeleteTest_TestAction");
+            // 
+            // Add_JWT_TokenData
+            // 
+            this.Add_JWT_TokenData.PosttestAction = null;
+            this.Add_JWT_TokenData.PretestAction = null;
+            this.Add_JWT_TokenData.TestAction = Add_JWT_Token_TestAction;
+            // 
+            // Add_JWT_Token_TestAction
+            // 
+            Add_JWT_Token_TestAction.Conditions.Add(scalarValueCondition2);
+            resources.ApplyResources(Add_JWT_Token_TestAction, "Add_JWT_Token_TestAction");
+            // 
+            // rowCountCondition21
+            // 
+            rowCountCondition21.Enabled = true;
+            rowCountCondition21.Name = "rowCountCondition21";
+            rowCountCondition21.ResultSet = 1;
+            rowCountCondition21.RowCount = 5;
+            // 
+            // scalarValueCondition2
+            // 
+            scalarValueCondition2.ColumnNumber = 1;
+            scalarValueCondition2.Enabled = true;
+            scalarValueCondition2.ExpectedValue = "6";
+            scalarValueCondition2.Name = "scalarValueCondition2";
+            scalarValueCondition2.NullExpected = false;
+            scalarValueCondition2.ResultSet = 1;
+            scalarValueCondition2.RowNumber = 1;
         }
 
         #endregion
@@ -1677,6 +1726,54 @@ namespace ECS.WebAPI.DB.Tests
                 SqlExecutionResult[] posttestResults = TestService.Execute(this.PrivilegedContext, this.PrivilegedContext, testActions.PosttestAction);
             }
         }
+        [TestMethod()]
+        public void dbo_JWT_DeleteTest()
+        {
+            SqlDatabaseTestActions testActions = this.dbo_JWT_DeleteTestData;
+            // Execute the pre-test script
+            // 
+            System.Diagnostics.Trace.WriteLineIf((testActions.PretestAction != null), "Executing pre-test script...");
+            SqlExecutionResult[] pretestResults = TestService.Execute(this.PrivilegedContext, this.PrivilegedContext, testActions.PretestAction);
+            try
+            {
+                // Execute the test script
+                // 
+                System.Diagnostics.Trace.WriteLineIf((testActions.TestAction != null), "Executing test script...");
+                SqlExecutionResult[] testResults = TestService.Execute(this.ExecutionContext, this.PrivilegedContext, testActions.TestAction);
+            }
+            finally
+            {
+                // Execute the post-test script
+                // 
+                System.Diagnostics.Trace.WriteLineIf((testActions.PosttestAction != null), "Executing post-test script...");
+                SqlExecutionResult[] posttestResults = TestService.Execute(this.PrivilegedContext, this.PrivilegedContext, testActions.PosttestAction);
+            }
+        }
+
+        [TestMethod()]
+        public void Add_JWT_Token()
+        {
+            SqlDatabaseTestActions testActions = this.Add_JWT_TokenData;
+            // Execute the pre-test script
+            // 
+            System.Diagnostics.Trace.WriteLineIf((testActions.PretestAction != null), "Executing pre-test script...");
+            SqlExecutionResult[] pretestResults = TestService.Execute(this.PrivilegedContext, this.PrivilegedContext, testActions.PretestAction);
+            try
+            {
+                // Execute the test script
+                // 
+                System.Diagnostics.Trace.WriteLineIf((testActions.TestAction != null), "Executing test script...");
+                SqlExecutionResult[] testResults = TestService.Execute(this.ExecutionContext, this.PrivilegedContext, testActions.TestAction);
+            }
+            finally
+            {
+                // Execute the post-test script
+                // 
+                System.Diagnostics.Trace.WriteLineIf((testActions.PosttestAction != null), "Executing post-test script...");
+                SqlExecutionResult[] posttestResults = TestService.Execute(this.PrivilegedContext, this.PrivilegedContext, testActions.PosttestAction);
+            }
+        }
+
 
 
 
@@ -1725,5 +1822,7 @@ namespace ECS.WebAPI.DB.Tests
         private SqlDatabaseTestActions Delete_LinkedIn_TokenData;
         private SqlDatabaseTestActions Add_LinkedIn_TokenData;
         private SqlDatabaseTestActions Create_Account_Existing_EmailData;
+        private SqlDatabaseTestActions dbo_JWT_DeleteTestData;
+        private SqlDatabaseTestActions Add_JWT_TokenData;
     }
 }
