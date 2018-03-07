@@ -47,6 +47,8 @@ Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "ECS.DB", "DBTest\ECS.DB.sql
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECS.WebAPI.DB.Tests", "ECS.WebAPI.DB.Tests\ECS.WebAPI.DB.Tests.csproj", "{E506787F-2DBF-453F-902B-2DC16FFDCE96}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECS.RunCrawler", "ECS.RunCrawler\ECS.RunCrawler.csproj", "{6B966E21-3B17-41B3-B68D-12F48794D57E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -115,6 +117,10 @@ Global
 		{E506787F-2DBF-453F-902B-2DC16FFDCE96}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E506787F-2DBF-453F-902B-2DC16FFDCE96}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E506787F-2DBF-453F-902B-2DC16FFDCE96}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B966E21-3B17-41B3-B68D-12F48794D57E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B966E21-3B17-41B3-B68D-12F48794D57E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B966E21-3B17-41B3-B68D-12F48794D57E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B966E21-3B17-41B3-B68D-12F48794D57E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

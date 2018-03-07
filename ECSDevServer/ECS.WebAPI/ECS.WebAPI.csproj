@@ -179,6 +179,10 @@
       <Project>{e8ff7a08-685c-4b1f-a669-3628ae5a8e01}</Project>
       <Name>ECS.WebAPI.Services</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ECS.WebCrawler\ECS.WebCrawler.csproj">
+      <Project>{81ae908e-f95d-42bb-ba63-3314cb7efc42}</Project>
+      <Name>ECS.WebCrawler</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
