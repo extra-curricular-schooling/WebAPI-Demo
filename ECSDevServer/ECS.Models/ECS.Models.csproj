@@ -57,9 +57,9 @@
     <Compile Include="InterestTag.cs" />
     <Compile Include="JWT.cs" />
     <Compile Include="LinkedIn.cs" />
-    <Compile Include="Migrations\201803062337088_ECSContext.cs" />
-    <Compile Include="Migrations\201803062337088_ECSContext.Designer.cs">
-      <DependentUpon>201803062337088_ECSContext.cs</DependentUpon>
+    <Compile Include="Migrations\201803070540566_ECSContext.cs" />
+    <Compile Include="Migrations\201803070540566_ECSContext.Designer.cs">
+      <DependentUpon>201803070540566_ECSContext.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -76,8 +76,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201803062337088_ECSContext.resx">
-      <DependentUpon>201803062337088_ECSContext.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201803070540566_ECSContext.resx">
+      <DependentUpon>201803070540566_ECSContext.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
