@@ -10,18 +10,18 @@ import registrationForm from '@/components/RegistrationForm'
 // import eventHub from '@/components/EventHub'
 
 export default {
-  name: 'RegAppToPortalRequest',
+  // name: 'RegAppToPortalRequest',
   components: {
-    registrationForm
-  },
-  data () {
-    return {
-    }
-  },
-  created () {
-  },
-  methods: {
+    'registration-form': registrationForm
   }
+  // data () {
+  //   return {
+  //   }
+  // },
+  // created () {
+  // },
+  // methods: {
+  // }
 }
 </script>
 

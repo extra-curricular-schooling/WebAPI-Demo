@@ -53,7 +53,7 @@ Vue.component("navbar", {
             <a class="link is-info">Contact Us</a>\
         </p>\
         <p class="level-item has-text-centered">\
-            <router-link to="Registration" tag="button" class="registration-button">Get Started</vue-router>\
+            <router-link to="Registration" tag="button" class="registration-button">Get Started</router-link>\
         </p>\
     </nav>'
 });

@@ -14,18 +14,24 @@ namespace ECS.WebAPI.Controllers
         /// </summary>
         /// <remarks>Author: Scott Roberts</remarks>
 
-        [AllowAnonymous]
         [HttpPost]
+        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
         public IHttpActionResult SubmitRegistration(RegistrationDTO registrationForm)
         {
             Validate(registrationForm);
 
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            if (ModelState.IsValid)
+            {
+                return Ok();
+            }
+
+            return BadRequest(ModelState);
+            //if (!ModelState.IsValid)
+            //    return BadRequest(ModelState);
 
             // Make custom error validator to make sure all values are not null... This is only the start.
-            if (registrationForm.Username == null || registrationForm.Password == null)
-                return BadRequest("Improper Request");
+            //if (registrationForm.Username == null || registrationForm.Password == null)
+            //    return BadRequest("Improper Request");
 
 
 
@@ -79,7 +85,7 @@ namespace ECS.WebAPI.Controllers
             //    // return RedirectToAction();
             //}
 
-            return Ok();
+            //return Ok();
         }
 
         /// <summary>

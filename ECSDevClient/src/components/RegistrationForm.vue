@@ -1,6 +1,6 @@
 <template>
   <!-- Main Registration Form -->
-  <form class="registration-form">
+  <form class="registration-form" method="post">
     <p class="warning field-element">* indicates a required field</p>
 
     <!-- BEGIN required fields for basic information -->
@@ -8,21 +8,21 @@
       <div class="field first-name">
         <label class="label field-element is-required">First Name</label>
         <div class="control">
-          <input v-model="user.firstName" class="input" type="text" placeholder="First Name" required>
+          <input v-model="firstName" id="firstName" class="input" type="text" autocomplete="given-name" placeholder="First Name" required>
         </div>
       </div>
 
       <div class="field last-name">
         <label class="label field-element is-required">Last Name</label>
         <div class="control">
-          <input v-model="user.lastName" class="input" type="text" placeholder="Last Name" required>
+          <input v-model="lastName" id="lastName" class="input" type="text" autocomplete="family-name" placeholder="Last Name" required>
         </div>
       </div>
 
       <div class="field username">
         <label class="label field-element is-required">Username</label>
         <div class="control has-icons-left has-icons-right">
-          <input v-model="user.username" class="input" type="text" placeholder="Username" required>
+          <input v-model="username" id="username" class="input" type="text" autocomplete="username" placeholder="Username" required>
           <span class="icon is-small is-left">
             <i class="fas fa-user"></i>
           </span>
@@ -35,7 +35,7 @@
       <div class="field email-address">
         <label class="label field-element is-required">Email</label>
         <div class="control has-icons-left has-icons-right">
-          <input v-model="user.email" class="input" type="email" placeholder="Email" required>
+          <input v-model="email" id="email" class="input" type="email" autocomplete="email" placeholder="Email" required>
           <span class="icon is-small is-left">
             <i class="fas fa-envelope"></i>
           </span>
@@ -48,7 +48,7 @@
       <div class="field password">
         <label class="label field-element is-required">Password</label>
         <div class="control has-icons-left">
-          <input v-model="user.password" class="input" type="password" placeholder="************" required>
+          <input id="password" class="input" type="password" autocomplete="new-password" placeholder="************" required>
           <span class="icon is-small is-left">
             <i class="fas fa-lock"></i>
           </span>
@@ -58,7 +58,7 @@
       <div class="field confirm-password">
         <label class="label field-element is-required">Confirm Password</label>
         <div class="control has-icons-left">
-          <input v-model="user.confirmPassword" class="input" type="password" placeholder="************" required>
+          <input id="confirmPassword" class="input" type="password" autocomplete="new-password" placeholder="************" required>
           <span class="icon is-small is-left">
             <i class="fas fa-lock"></i>
           </span>
@@ -72,24 +72,25 @@
       <div class="field mailing-address">
         <label class="label field-element">Mailing Address</label>
         <div class="control">
-          <input class="input" type="text" placeholder="Street Address">
+          <input v-model="address" id="address" class="input" type="text" autocomplete="street-address" placeholder="Street Address">
         </div>
       </div>
       <div class="field mailing-address">
         <div class="control">
-          <input class="input" type="text" placeholder="City">
+          <input v-model="city" id="city" class="input" type="text" autocomplete="address-line2" placeholder="City">
         </div>
       </div>
       <div class="field is-grouped mailing-adress">
         <p class="control">
-          <span class="select">
+          <input v-model="state" id="state" class="input" text="text" autocomplete="address-line2" placeholder="State">
+          <!-- <span class="select">
             <select>
               <option selected>State</option>
             </select>
-          </span>
+          </span> -->
         </p>
         <p class="control">
-          <input class="input" type="text" placeholder="Zip Code">
+          <input v-model="zipCode" id="zipCode" class="input" type="number" autocomplete="postal-code" placeholder="Zip Code">
         </p>
       </div>
     </div>
@@ -100,53 +101,49 @@
       <div class="field security-questions">
         <label class="label field-element is-required">Security Questions</label>
         <div class="control">
-          <span class="select">
+          <input v-model="question1" class="input" type="number" placeholder="Question 1" required>
+          <!-- <span class="select">
             <select>
               <option selected>--select--</option>
             </select>
-          </span>
+          </span> -->
         </div>
-        <!-- <div class="control">
-          <span class="select">
-            <select v-model="user.question1">
-              <v-list-tile v-for="security_qa in security_qas" v-bind:key="security_qas.question">--select--</v-list-tile>
-            </select>
-          </span>
-        </div> -->
       </div>
       <div class="field security-questions-answers">
         <div class="control">
-          <input v-model="user.answer1" class="input" type="text" placeholder="Answer 1" required>
+          <input id="answer1" class="input" type="text" placeholder="Answer 1" required>
         </div>
       </div>
 
       <div class="field security-questions">
         <div class="control">
-          <span class="select">
+          <input v-model="question2" class="input" type="number" placeholder="Question 2" required>
+          <!-- <span class="select">
             <select>
               <option selected>--select--</option>
             </select>
-          </span>
+          </span> -->
         </div>
       </div>
       <div class="field security-questions-answers">
         <div class="control">
-          <input v-model="user.answer2" class="input" type="text" placeholder="Answer 2" required>
+          <input id="answer2" class="input" type="text" placeholder="Answer 2" required>
         </div>
       </div>
 
       <div class="field security-questions">
         <div class="control">
-          <span class="select">
+          <input v-model="question3" class="input" type="number" placeholder="Question 1" required>
+          <!-- <span class="select">
             <select>
               <option selected>--select--</option>
             </select>
-          </span>
+          </span> -->
         </div>
       </div>
       <div class="field security-questions-answers">
         <div class="control">
-          <input v-model="user.answer3" class="input" type="text" placeholder="Answer 3" required>
+          <input id="answer3" class="input" type="text" placeholder="Answer 3" required>
         </div>
       </div>
     </div>
@@ -154,7 +151,7 @@
 
     <div class="field form-agreements">
       <label class="checkbox">
-        <input type="checkbox" checked="checked" name="remember-me-box">
+        <input type="checkbox" checked="checked">
         Remember me
       </label><br>
       <label class="checkbox">
@@ -171,13 +168,13 @@
       </p>
       <p class="control">
         <!-- NOTE: Issues with properly checking if required fields have been entered -->
-        <registration-alert v-on:click="submit"></registration-alert>
+        <!-- <registration-alert v-on:click="submit"></registration-alert> -->
         <!-- <router-link to="/" tag="button" class="button is-primary submit-button" v-on:click="submit">
         Submit
         </router-link> -->
-        <!-- <button class="button is-primary submit-button" v-on:click="showAlert">
+        <button class="button is-primary submit-button" v-on:click.prevent="submit">
         Submit
-        </button> -->
+        </button>
       </p>
     </div>
     <!-- END submission options -->
@@ -185,63 +182,85 @@
 </template>
 
 <script>
+/* eslint-disable */
 import axios from 'axios'
 import agreementModal from '@/components/AgreementModal'
-import registrationAlert from '@/components/RegistrationAlert'
+// import registrationAlert from '@/components/RegistrationAlert'
 
 export default {
   name: 'RegistrationForm',
   components: {
-    agreementModal,
-    registrationAlert
+    'agreement-modal': agreementModal,
+    // 'registration-alert': registrationAlert
   },
   data () {
     return {
-      user: {
-        userName: '',
-        password: '',
-        // confirmPassword: '',
-        securityQAs: [
-          { securityQuestion: '', securityAnswer: '' },
-          { securityQuestion: '', securityAnswer: '' },
-          { securityQuestion: '', securityAnswer: '' }
-        ],
-        email: '',
-        firstName: '',
-        lastName: '',
-        // address: '',
-        zipCode: '',
-        city: '',
-        state: ''
-      },
-      errors: []
+      // Primary Data
+      firstName: '',
+      lastName: '',
+      username: '',
+      email: '',
+      address: '',
+      city: '',
+      state: '',
+      zipCode: '',
+      question1: '',
+      question2: '',
+      question3: ''
+
+      // Validation Messages
     }
   },
   methods: {
-    submit: () => {
+    // Data Getters
+    getPassword () {
+      return document.getElementById('password').value;
+    },
+    getSecurityAnswer (i) {
+      var answer
+      if (i == 1) {
+        answer = 'answer1';
+      } else if (i == 2) {
+        answer = 'answer2';
+      } else if (i == 3) {
+        answer = 'answer3'
+      }
+      return document.getElementById(answer).value;
+    },
+    submit () {
       axios({
         method: 'POST',
         url: 'https://localhost:44311/Registration/SubmitRegistration',
-        data: {
-          userName: this.user.username,
-          password: this.user.password,
-          // confirmPassword: this.user.confirmPassword,
-          securityQAs: [
-            { securityQuestion: this.user.question1, securityAnswer: this.user.answer1 },
-            { securityQuestion: this.user.question2, securityAnswer: this.user.answer2 },
-            { securityQuestion: this.user.question3, securityAnswer: this.user.answer3 }
-          ],
-          email: this.user.email,
-          firstName: this.user.firstName,
-          lastName: this.user.lastName,
-          // address: this.user.address
-          zipCode: this.user.zipCode,
-          city: this.user.city,
-          state: this.user.state
-        },
         headers: {
           'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Credentials': true
+          'Access-Control-Allow-Credentials': true,
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        data: {
+          'firstName': this.$data.firstName,
+          'lastName': this.$data.lastName,
+          'username': this.$data.username,
+          'email': this.$data.email,
+          'password': this.getPassword(),
+          'address': this.$data.address,
+          'city': this.$data.city,
+          'state': this.$data.state,
+          'zipCode': Number(this.$data.zipCode),
+          'securityQuestions': [
+            {
+              'question': Number(this.$data.question1),
+              'answer': this.getSecurityAnswer(1)
+            },
+            {
+              'question': Number(this.$data.question2),
+              'answer': this.getSecurityAnswer(2)
+            },
+            {
+              'question': Number(this.$data.question3),
+              'answer': this.getSecurityAnswer(3)
+            }
+          ]
         }
       })
         .then(response => console.log(response))
