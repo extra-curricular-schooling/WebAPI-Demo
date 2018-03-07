@@ -39,73 +39,79 @@ namespace ECS.WebAPI.DB.Tests
         {
             Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction Remove_Account_Permission_TestAction;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SqlServerUnitTests));
+            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition rowCountCondition6;
             Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction Give_Account_Permission_TestAction;
+            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.NotEmptyResultSetCondition notEmptyResultSetCondition4;
             Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction Delete_Account_TestAction;
+            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition rowCountCondition1;
             Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction Create_New_Account_TestAction;
+            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition rowCountCondition3;
             Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction Add_Points_Account_TestAction;
+            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition rowCountCondition4;
             Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction Delete_Article_TestAction;
+            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition rowCountCondition7;
             Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction Add_Article_TestAction;
+            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition rowCountCondition2;
             Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction Update_Article_TagName_TestAction;
+            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.NotEmptyResultSetCondition notEmptyResultSetCondition5;
             Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction Delete_InterestTag_TestAction;
+            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition rowCountCondition8;
             Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction Add_InterestTag_TestAction;
+            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition rowCountCondition17;
             Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction Delete_Account_SecurityAnswer_TestAction;
+            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition rowCountCondition10;
             Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction Add_Account_SecurityAnswer_TestAction;
             Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction Update_Account_SecurityAnswer_TestAction;
+            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.NotEmptyResultSetCondition notEmptyResultSetCondition10;
             Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction Delete_SecurityQuestion_TestAction;
+            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition rowCountCondition9;
             Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction Add_SecurityQuestion_TestAction;
+            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.ScalarValueCondition scalarValueCondition1;
             Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction Update_SecurityQuestion_TestAction;
+            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.NotEmptyResultSetCondition notEmptyResultSetCondition8;
             Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction Delete_User_TestAction;
+            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition rowCountCondition12;
             Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction Add_User_TestAction;
+            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition rowCountCondition11;
             Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction Update_User_FirstName_TestAction;
+            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.NotEmptyResultSetCondition notEmptyResultSetCondition12;
             Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction Delete_User_ZipLocation_TestAction;
+            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition rowCountCondition14;
             Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction Add_User_ZipLocation_TestAction;
+            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition rowCountCondition13;
             Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction Update_User_ZipCode_TestAction;
-            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition rowCountCondition2;
-            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition rowCountCondition3;
-            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition rowCountCondition4;
-            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition rowCountCondition1;
+            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.NotEmptyResultSetCondition notEmptyResultSetCondition16;
             Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction Create_Exist_Account_TestAction;
             Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition rowCountCondition5;
             Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction Suspend_Account_TestAction;
+            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.NotEmptyResultSetCondition notEmptyResultSetCondition2;
             Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction Change_Password_TestAction;
             Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.NotEmptyResultSetCondition notEmptyResultSetCondition1;
-            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.NotEmptyResultSetCondition notEmptyResultSetCondition2;
             Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction Change_Username_TestAction;
             Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.NotEmptyResultSetCondition notEmptyResultSetCondition3;
-            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.NotEmptyResultSetCondition notEmptyResultSetCondition4;
-            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition rowCountCondition6;
-            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition rowCountCondition7;
-            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.NotEmptyResultSetCondition notEmptyResultSetCondition5;
             Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction Update_Article_Description_TestAction;
-            Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction Update_Article_Title_TestAction;
             Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.NotEmptyResultSetCondition notEmptyResultSetCondition6;
-            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition rowCountCondition8;
-            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.ScalarValueCondition scalarValueCondition1;
-            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition rowCountCondition9;
-            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.NotEmptyResultSetCondition notEmptyResultSetCondition8;
-            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.NotEmptyResultSetCondition notEmptyResultSetCondition9;
-            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition rowCountCondition10;
-            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.NotEmptyResultSetCondition notEmptyResultSetCondition10;
-            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition rowCountCondition11;
-            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition rowCountCondition12;
+            Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction Update_Article_Title_TestAction;
+            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.NotEmptyResultSetCondition notEmptyResultSetCondition7;
             Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction Update_User_LastName_TestAction;
-            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition rowCountCondition13;
-            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition rowCountCondition14;
-            Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction Update_User_Address_TestAction;
-            Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction Update_User_City_TestAction;
-            Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction Update_User_State_TestAction;
-            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.NotEmptyResultSetCondition notEmptyResultSetCondition13;
-            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.NotEmptyResultSetCondition notEmptyResultSetCondition14;
-            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.NotEmptyResultSetCondition notEmptyResultSetCondition12;
             Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.NotEmptyResultSetCondition notEmptyResultSetCondition11;
+            Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction Update_User_Address_TestAction;
+            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.NotEmptyResultSetCondition notEmptyResultSetCondition13;
+            Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction Update_User_City_TestAction;
+            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.NotEmptyResultSetCondition notEmptyResultSetCondition14;
+            Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction Update_User_State_TestAction;
             Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.NotEmptyResultSetCondition notEmptyResultSetCondition15;
-            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.NotEmptyResultSetCondition notEmptyResultSetCondition16;
             Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction Delete_LinkedIn_Token_TestAction;
+            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition rowCountCondition16;
             Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction Add_LinkedIn_Token_TestAction;
             Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition rowCountCondition15;
-            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition rowCountCondition16;
-            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition rowCountCondition17;
-            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.NotEmptyResultSetCondition notEmptyResultSetCondition7;
+            Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction Create_Account_Existing_Email_TestAction;
+            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition rowCountCondition18;
+            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition rowCountCondition19;
+            Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction dbo_JWT_DeleteTest_TestAction;
+            Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction Add_JWT_Token_TestAction;
+            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition rowCountCondition21;
+            Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.ScalarValueCondition scalarValueCondition2;
             this.Remove_Account_PermissionData = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestActions();
             this.Give_Account_PermissionData = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestActions();
             this.Delete_AccountData = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestActions();
@@ -140,133 +146,217 @@ namespace ECS.WebAPI.DB.Tests
             this.Update_User_StateData = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestActions();
             this.Delete_LinkedIn_TokenData = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestActions();
             this.Add_LinkedIn_TokenData = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestActions();
+            this.Create_Account_Existing_EmailData = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestActions();
+            this.dbo_JWT_DeleteTestData = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestActions();
+            this.Add_JWT_TokenData = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestActions();
             Remove_Account_Permission_TestAction = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction();
+            rowCountCondition6 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition();
             Give_Account_Permission_TestAction = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction();
+            notEmptyResultSetCondition4 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.NotEmptyResultSetCondition();
             Delete_Account_TestAction = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction();
+            rowCountCondition1 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition();
             Create_New_Account_TestAction = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction();
+            rowCountCondition3 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition();
             Add_Points_Account_TestAction = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction();
+            rowCountCondition4 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition();
             Delete_Article_TestAction = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction();
+            rowCountCondition7 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition();
             Add_Article_TestAction = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction();
+            rowCountCondition2 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition();
             Update_Article_TagName_TestAction = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction();
+            notEmptyResultSetCondition5 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.NotEmptyResultSetCondition();
             Delete_InterestTag_TestAction = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction();
+            rowCountCondition8 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition();
             Add_InterestTag_TestAction = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction();
+            rowCountCondition17 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition();
             Delete_Account_SecurityAnswer_TestAction = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction();
+            rowCountCondition10 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition();
             Add_Account_SecurityAnswer_TestAction = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction();
             Update_Account_SecurityAnswer_TestAction = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction();
+            notEmptyResultSetCondition10 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.NotEmptyResultSetCondition();
             Delete_SecurityQuestion_TestAction = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction();
+            rowCountCondition9 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition();
             Add_SecurityQuestion_TestAction = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction();
+            scalarValueCondition1 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.ScalarValueCondition();
             Update_SecurityQuestion_TestAction = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction();
+            notEmptyResultSetCondition8 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.NotEmptyResultSetCondition();
             Delete_User_TestAction = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction();
+            rowCountCondition12 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition();
             Add_User_TestAction = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction();
+            rowCountCondition11 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition();
             Update_User_FirstName_TestAction = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction();
+            notEmptyResultSetCondition12 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.NotEmptyResultSetCondition();
             Delete_User_ZipLocation_TestAction = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction();
+            rowCountCondition14 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition();
             Add_User_ZipLocation_TestAction = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction();
+            rowCountCondition13 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition();
             Update_User_ZipCode_TestAction = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction();
-            rowCountCondition2 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition();
-            rowCountCondition3 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition();
-            rowCountCondition4 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition();
-            rowCountCondition1 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition();
+            notEmptyResultSetCondition16 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.NotEmptyResultSetCondition();
             Create_Exist_Account_TestAction = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction();
             rowCountCondition5 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition();
             Suspend_Account_TestAction = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction();
+            notEmptyResultSetCondition2 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.NotEmptyResultSetCondition();
             Change_Password_TestAction = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction();
             notEmptyResultSetCondition1 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.NotEmptyResultSetCondition();
-            notEmptyResultSetCondition2 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.NotEmptyResultSetCondition();
             Change_Username_TestAction = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction();
             notEmptyResultSetCondition3 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.NotEmptyResultSetCondition();
-            notEmptyResultSetCondition4 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.NotEmptyResultSetCondition();
-            rowCountCondition6 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition();
-            rowCountCondition7 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition();
-            notEmptyResultSetCondition5 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.NotEmptyResultSetCondition();
             Update_Article_Description_TestAction = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction();
-            Update_Article_Title_TestAction = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction();
             notEmptyResultSetCondition6 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.NotEmptyResultSetCondition();
-            rowCountCondition8 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition();
-            scalarValueCondition1 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.ScalarValueCondition();
-            rowCountCondition9 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition();
-            notEmptyResultSetCondition8 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.NotEmptyResultSetCondition();
-            notEmptyResultSetCondition9 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.NotEmptyResultSetCondition();
-            rowCountCondition10 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition();
-            notEmptyResultSetCondition10 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.NotEmptyResultSetCondition();
-            rowCountCondition11 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition();
-            rowCountCondition12 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition();
+            Update_Article_Title_TestAction = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction();
+            notEmptyResultSetCondition7 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.NotEmptyResultSetCondition();
             Update_User_LastName_TestAction = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction();
-            rowCountCondition13 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition();
-            rowCountCondition14 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition();
-            Update_User_Address_TestAction = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction();
-            Update_User_City_TestAction = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction();
-            Update_User_State_TestAction = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction();
-            notEmptyResultSetCondition13 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.NotEmptyResultSetCondition();
-            notEmptyResultSetCondition14 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.NotEmptyResultSetCondition();
-            notEmptyResultSetCondition12 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.NotEmptyResultSetCondition();
             notEmptyResultSetCondition11 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.NotEmptyResultSetCondition();
+            Update_User_Address_TestAction = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction();
+            notEmptyResultSetCondition13 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.NotEmptyResultSetCondition();
+            Update_User_City_TestAction = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction();
+            notEmptyResultSetCondition14 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.NotEmptyResultSetCondition();
+            Update_User_State_TestAction = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction();
             notEmptyResultSetCondition15 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.NotEmptyResultSetCondition();
-            notEmptyResultSetCondition16 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.NotEmptyResultSetCondition();
             Delete_LinkedIn_Token_TestAction = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction();
+            rowCountCondition16 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition();
             Add_LinkedIn_Token_TestAction = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction();
             rowCountCondition15 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition();
-            rowCountCondition16 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition();
-            rowCountCondition17 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition();
-            notEmptyResultSetCondition7 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.NotEmptyResultSetCondition();
+            Create_Account_Existing_Email_TestAction = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction();
+            rowCountCondition18 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition();
+            rowCountCondition19 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition();
+            dbo_JWT_DeleteTest_TestAction = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction();
+            Add_JWT_Token_TestAction = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.SqlDatabaseTestAction();
+            rowCountCondition21 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.RowCountCondition();
+            scalarValueCondition2 = new Microsoft.Data.Tools.Schema.Sql.UnitTesting.Conditions.ScalarValueCondition();
             // 
             // Remove_Account_Permission_TestAction
             // 
             Remove_Account_Permission_TestAction.Conditions.Add(rowCountCondition6);
             resources.ApplyResources(Remove_Account_Permission_TestAction, "Remove_Account_Permission_TestAction");
             // 
+            // rowCountCondition6
+            // 
+            rowCountCondition6.Enabled = true;
+            rowCountCondition6.Name = "rowCountCondition6";
+            rowCountCondition6.ResultSet = 1;
+            rowCountCondition6.RowCount = 147;
+            // 
             // Give_Account_Permission_TestAction
             // 
             Give_Account_Permission_TestAction.Conditions.Add(notEmptyResultSetCondition4);
             resources.ApplyResources(Give_Account_Permission_TestAction, "Give_Account_Permission_TestAction");
+            // 
+            // notEmptyResultSetCondition4
+            // 
+            notEmptyResultSetCondition4.Enabled = true;
+            notEmptyResultSetCondition4.Name = "notEmptyResultSetCondition4";
+            notEmptyResultSetCondition4.ResultSet = 1;
             // 
             // Delete_Account_TestAction
             // 
             Delete_Account_TestAction.Conditions.Add(rowCountCondition1);
             resources.ApplyResources(Delete_Account_TestAction, "Delete_Account_TestAction");
             // 
+            // rowCountCondition1
+            // 
+            rowCountCondition1.Enabled = true;
+            rowCountCondition1.Name = "rowCountCondition1";
+            rowCountCondition1.ResultSet = 1;
+            rowCountCondition1.RowCount = 50;
+            // 
             // Create_New_Account_TestAction
             // 
             Create_New_Account_TestAction.Conditions.Add(rowCountCondition3);
             resources.ApplyResources(Create_New_Account_TestAction, "Create_New_Account_TestAction");
+            // 
+            // rowCountCondition3
+            // 
+            rowCountCondition3.Enabled = true;
+            rowCountCondition3.Name = "rowCountCondition3";
+            rowCountCondition3.ResultSet = 1;
+            rowCountCondition3.RowCount = 1;
             // 
             // Add_Points_Account_TestAction
             // 
             Add_Points_Account_TestAction.Conditions.Add(rowCountCondition4);
             resources.ApplyResources(Add_Points_Account_TestAction, "Add_Points_Account_TestAction");
             // 
+            // rowCountCondition4
+            // 
+            rowCountCondition4.Enabled = true;
+            rowCountCondition4.Name = "rowCountCondition4";
+            rowCountCondition4.ResultSet = 1;
+            rowCountCondition4.RowCount = 1;
+            // 
             // Delete_Article_TestAction
             // 
             Delete_Article_TestAction.Conditions.Add(rowCountCondition7);
             resources.ApplyResources(Delete_Article_TestAction, "Delete_Article_TestAction");
+            // 
+            // rowCountCondition7
+            // 
+            rowCountCondition7.Enabled = true;
+            rowCountCondition7.Name = "rowCountCondition7";
+            rowCountCondition7.ResultSet = 1;
+            rowCountCondition7.RowCount = 49;
             // 
             // Add_Article_TestAction
             // 
             Add_Article_TestAction.Conditions.Add(rowCountCondition2);
             resources.ApplyResources(Add_Article_TestAction, "Add_Article_TestAction");
             // 
+            // rowCountCondition2
+            // 
+            rowCountCondition2.Enabled = true;
+            rowCountCondition2.Name = "rowCountCondition2";
+            rowCountCondition2.ResultSet = 1;
+            rowCountCondition2.RowCount = 50;
+            // 
             // Update_Article_TagName_TestAction
             // 
             Update_Article_TagName_TestAction.Conditions.Add(notEmptyResultSetCondition5);
             resources.ApplyResources(Update_Article_TagName_TestAction, "Update_Article_TagName_TestAction");
+            // 
+            // notEmptyResultSetCondition5
+            // 
+            notEmptyResultSetCondition5.Enabled = true;
+            notEmptyResultSetCondition5.Name = "notEmptyResultSetCondition5";
+            notEmptyResultSetCondition5.ResultSet = 1;
             // 
             // Delete_InterestTag_TestAction
             // 
             Delete_InterestTag_TestAction.Conditions.Add(rowCountCondition8);
             resources.ApplyResources(Delete_InterestTag_TestAction, "Delete_InterestTag_TestAction");
             // 
+            // rowCountCondition8
+            // 
+            rowCountCondition8.Enabled = true;
+            rowCountCondition8.Name = "rowCountCondition8";
+            rowCountCondition8.ResultSet = 1;
+            rowCountCondition8.RowCount = 10;
+            // 
             // Add_InterestTag_TestAction
             // 
             Add_InterestTag_TestAction.Conditions.Add(rowCountCondition17);
             resources.ApplyResources(Add_InterestTag_TestAction, "Add_InterestTag_TestAction");
+            // 
+            // rowCountCondition17
+            // 
+            rowCountCondition17.Enabled = true;
+            rowCountCondition17.Name = "rowCountCondition17";
+            rowCountCondition17.ResultSet = 1;
+            rowCountCondition17.RowCount = 11;
             // 
             // Delete_Account_SecurityAnswer_TestAction
             // 
             Delete_Account_SecurityAnswer_TestAction.Conditions.Add(rowCountCondition10);
             resources.ApplyResources(Delete_Account_SecurityAnswer_TestAction, "Delete_Account_SecurityAnswer_TestAction");
             // 
+            // rowCountCondition10
+            // 
+            rowCountCondition10.Enabled = true;
+            rowCountCondition10.Name = "rowCountCondition10";
+            rowCountCondition10.ResultSet = 1;
+            rowCountCondition10.RowCount = 147;
+            // 
             // Add_Account_SecurityAnswer_TestAction
             // 
-            Add_Account_SecurityAnswer_TestAction.Conditions.Add(notEmptyResultSetCondition9);
+            Add_Account_SecurityAnswer_TestAction.Conditions.Add(rowCountCondition18);
             resources.ApplyResources(Add_Account_SecurityAnswer_TestAction, "Add_Account_SecurityAnswer_TestAction");
             // 
             // Update_Account_SecurityAnswer_TestAction
@@ -274,50 +364,259 @@ namespace ECS.WebAPI.DB.Tests
             Update_Account_SecurityAnswer_TestAction.Conditions.Add(notEmptyResultSetCondition10);
             resources.ApplyResources(Update_Account_SecurityAnswer_TestAction, "Update_Account_SecurityAnswer_TestAction");
             // 
+            // notEmptyResultSetCondition10
+            // 
+            notEmptyResultSetCondition10.Enabled = true;
+            notEmptyResultSetCondition10.Name = "notEmptyResultSetCondition10";
+            notEmptyResultSetCondition10.ResultSet = 1;
+            // 
             // Delete_SecurityQuestion_TestAction
             // 
             Delete_SecurityQuestion_TestAction.Conditions.Add(rowCountCondition9);
             resources.ApplyResources(Delete_SecurityQuestion_TestAction, "Delete_SecurityQuestion_TestAction");
+            // 
+            // rowCountCondition9
+            // 
+            rowCountCondition9.Enabled = true;
+            rowCountCondition9.Name = "rowCountCondition9";
+            rowCountCondition9.ResultSet = 1;
+            rowCountCondition9.RowCount = 3;
             // 
             // Add_SecurityQuestion_TestAction
             // 
             Add_SecurityQuestion_TestAction.Conditions.Add(scalarValueCondition1);
             resources.ApplyResources(Add_SecurityQuestion_TestAction, "Add_SecurityQuestion_TestAction");
             // 
+            // scalarValueCondition1
+            // 
+            scalarValueCondition1.ColumnNumber = 1;
+            scalarValueCondition1.Enabled = true;
+            scalarValueCondition1.ExpectedValue = "4";
+            scalarValueCondition1.Name = "scalarValueCondition1";
+            scalarValueCondition1.NullExpected = false;
+            scalarValueCondition1.ResultSet = 1;
+            scalarValueCondition1.RowNumber = 1;
+            // 
             // Update_SecurityQuestion_TestAction
             // 
             Update_SecurityQuestion_TestAction.Conditions.Add(notEmptyResultSetCondition8);
             resources.ApplyResources(Update_SecurityQuestion_TestAction, "Update_SecurityQuestion_TestAction");
+            // 
+            // notEmptyResultSetCondition8
+            // 
+            notEmptyResultSetCondition8.Enabled = true;
+            notEmptyResultSetCondition8.Name = "notEmptyResultSetCondition8";
+            notEmptyResultSetCondition8.ResultSet = 1;
             // 
             // Delete_User_TestAction
             // 
             Delete_User_TestAction.Conditions.Add(rowCountCondition12);
             resources.ApplyResources(Delete_User_TestAction, "Delete_User_TestAction");
             // 
+            // rowCountCondition12
+            // 
+            rowCountCondition12.Enabled = true;
+            rowCountCondition12.Name = "rowCountCondition12";
+            rowCountCondition12.ResultSet = 1;
+            rowCountCondition12.RowCount = 50;
+            // 
             // Add_User_TestAction
             // 
             Add_User_TestAction.Conditions.Add(rowCountCondition11);
             resources.ApplyResources(Add_User_TestAction, "Add_User_TestAction");
+            // 
+            // rowCountCondition11
+            // 
+            rowCountCondition11.Enabled = true;
+            rowCountCondition11.Name = "rowCountCondition11";
+            rowCountCondition11.ResultSet = 1;
+            rowCountCondition11.RowCount = 51;
             // 
             // Update_User_FirstName_TestAction
             // 
             Update_User_FirstName_TestAction.Conditions.Add(notEmptyResultSetCondition12);
             resources.ApplyResources(Update_User_FirstName_TestAction, "Update_User_FirstName_TestAction");
             // 
+            // notEmptyResultSetCondition12
+            // 
+            notEmptyResultSetCondition12.Enabled = true;
+            notEmptyResultSetCondition12.Name = "notEmptyResultSetCondition12";
+            notEmptyResultSetCondition12.ResultSet = 1;
+            // 
             // Delete_User_ZipLocation_TestAction
             // 
             Delete_User_ZipLocation_TestAction.Conditions.Add(rowCountCondition14);
             resources.ApplyResources(Delete_User_ZipLocation_TestAction, "Delete_User_ZipLocation_TestAction");
+            // 
+            // rowCountCondition14
+            // 
+            rowCountCondition14.Enabled = true;
+            rowCountCondition14.Name = "rowCountCondition14";
+            rowCountCondition14.ResultSet = 1;
+            rowCountCondition14.RowCount = 4;
             // 
             // Add_User_ZipLocation_TestAction
             // 
             Add_User_ZipLocation_TestAction.Conditions.Add(rowCountCondition13);
             resources.ApplyResources(Add_User_ZipLocation_TestAction, "Add_User_ZipLocation_TestAction");
             // 
+            // rowCountCondition13
+            // 
+            rowCountCondition13.Enabled = true;
+            rowCountCondition13.Name = "rowCountCondition13";
+            rowCountCondition13.ResultSet = 1;
+            rowCountCondition13.RowCount = 5;
+            // 
             // Update_User_ZipCode_TestAction
             // 
             Update_User_ZipCode_TestAction.Conditions.Add(notEmptyResultSetCondition16);
             resources.ApplyResources(Update_User_ZipCode_TestAction, "Update_User_ZipCode_TestAction");
+            // 
+            // notEmptyResultSetCondition16
+            // 
+            notEmptyResultSetCondition16.Enabled = true;
+            notEmptyResultSetCondition16.Name = "notEmptyResultSetCondition16";
+            notEmptyResultSetCondition16.ResultSet = 1;
+            // 
+            // Create_Exist_Account_TestAction
+            // 
+            Create_Exist_Account_TestAction.Conditions.Add(rowCountCondition5);
+            resources.ApplyResources(Create_Exist_Account_TestAction, "Create_Exist_Account_TestAction");
+            // 
+            // rowCountCondition5
+            // 
+            rowCountCondition5.Enabled = true;
+            rowCountCondition5.Name = "rowCountCondition5";
+            rowCountCondition5.ResultSet = 1;
+            rowCountCondition5.RowCount = 1;
+            // 
+            // Suspend_Account_TestAction
+            // 
+            Suspend_Account_TestAction.Conditions.Add(notEmptyResultSetCondition2);
+            resources.ApplyResources(Suspend_Account_TestAction, "Suspend_Account_TestAction");
+            // 
+            // notEmptyResultSetCondition2
+            // 
+            notEmptyResultSetCondition2.Enabled = true;
+            notEmptyResultSetCondition2.Name = "notEmptyResultSetCondition2";
+            notEmptyResultSetCondition2.ResultSet = 1;
+            // 
+            // Change_Password_TestAction
+            // 
+            Change_Password_TestAction.Conditions.Add(notEmptyResultSetCondition1);
+            resources.ApplyResources(Change_Password_TestAction, "Change_Password_TestAction");
+            // 
+            // notEmptyResultSetCondition1
+            // 
+            notEmptyResultSetCondition1.Enabled = true;
+            notEmptyResultSetCondition1.Name = "notEmptyResultSetCondition1";
+            notEmptyResultSetCondition1.ResultSet = 1;
+            // 
+            // Change_Username_TestAction
+            // 
+            Change_Username_TestAction.Conditions.Add(notEmptyResultSetCondition3);
+            resources.ApplyResources(Change_Username_TestAction, "Change_Username_TestAction");
+            // 
+            // notEmptyResultSetCondition3
+            // 
+            notEmptyResultSetCondition3.Enabled = true;
+            notEmptyResultSetCondition3.Name = "notEmptyResultSetCondition3";
+            notEmptyResultSetCondition3.ResultSet = 1;
+            // 
+            // Update_Article_Description_TestAction
+            // 
+            Update_Article_Description_TestAction.Conditions.Add(notEmptyResultSetCondition6);
+            resources.ApplyResources(Update_Article_Description_TestAction, "Update_Article_Description_TestAction");
+            // 
+            // notEmptyResultSetCondition6
+            // 
+            notEmptyResultSetCondition6.Enabled = true;
+            notEmptyResultSetCondition6.Name = "notEmptyResultSetCondition6";
+            notEmptyResultSetCondition6.ResultSet = 1;
+            // 
+            // Update_Article_Title_TestAction
+            // 
+            Update_Article_Title_TestAction.Conditions.Add(notEmptyResultSetCondition7);
+            resources.ApplyResources(Update_Article_Title_TestAction, "Update_Article_Title_TestAction");
+            // 
+            // notEmptyResultSetCondition7
+            // 
+            notEmptyResultSetCondition7.Enabled = true;
+            notEmptyResultSetCondition7.Name = "notEmptyResultSetCondition7";
+            notEmptyResultSetCondition7.ResultSet = 1;
+            // 
+            // Update_User_LastName_TestAction
+            // 
+            Update_User_LastName_TestAction.Conditions.Add(notEmptyResultSetCondition11);
+            resources.ApplyResources(Update_User_LastName_TestAction, "Update_User_LastName_TestAction");
+            // 
+            // notEmptyResultSetCondition11
+            // 
+            notEmptyResultSetCondition11.Enabled = true;
+            notEmptyResultSetCondition11.Name = "notEmptyResultSetCondition11";
+            notEmptyResultSetCondition11.ResultSet = 1;
+            // 
+            // Update_User_Address_TestAction
+            // 
+            Update_User_Address_TestAction.Conditions.Add(notEmptyResultSetCondition13);
+            resources.ApplyResources(Update_User_Address_TestAction, "Update_User_Address_TestAction");
+            // 
+            // notEmptyResultSetCondition13
+            // 
+            notEmptyResultSetCondition13.Enabled = true;
+            notEmptyResultSetCondition13.Name = "notEmptyResultSetCondition13";
+            notEmptyResultSetCondition13.ResultSet = 1;
+            // 
+            // Update_User_City_TestAction
+            // 
+            Update_User_City_TestAction.Conditions.Add(notEmptyResultSetCondition14);
+            resources.ApplyResources(Update_User_City_TestAction, "Update_User_City_TestAction");
+            // 
+            // notEmptyResultSetCondition14
+            // 
+            notEmptyResultSetCondition14.Enabled = true;
+            notEmptyResultSetCondition14.Name = "notEmptyResultSetCondition14";
+            notEmptyResultSetCondition14.ResultSet = 1;
+            // 
+            // Update_User_State_TestAction
+            // 
+            Update_User_State_TestAction.Conditions.Add(notEmptyResultSetCondition15);
+            resources.ApplyResources(Update_User_State_TestAction, "Update_User_State_TestAction");
+            // 
+            // notEmptyResultSetCondition15
+            // 
+            notEmptyResultSetCondition15.Enabled = true;
+            notEmptyResultSetCondition15.Name = "notEmptyResultSetCondition15";
+            notEmptyResultSetCondition15.ResultSet = 1;
+            // 
+            // Delete_LinkedIn_Token_TestAction
+            // 
+            Delete_LinkedIn_Token_TestAction.Conditions.Add(rowCountCondition16);
+            resources.ApplyResources(Delete_LinkedIn_Token_TestAction, "Delete_LinkedIn_Token_TestAction");
+            // 
+            // rowCountCondition16
+            // 
+            rowCountCondition16.Enabled = true;
+            rowCountCondition16.Name = "rowCountCondition16";
+            rowCountCondition16.ResultSet = 1;
+            rowCountCondition16.RowCount = 50;
+            // 
+            // Add_LinkedIn_Token_TestAction
+            // 
+            Add_LinkedIn_Token_TestAction.Conditions.Add(rowCountCondition15);
+            resources.ApplyResources(Add_LinkedIn_Token_TestAction, "Add_LinkedIn_Token_TestAction");
+            // 
+            // rowCountCondition15
+            // 
+            rowCountCondition15.Enabled = true;
+            rowCountCondition15.Name = "rowCountCondition15";
+            rowCountCondition15.ResultSet = 1;
+            rowCountCondition15.RowCount = 51;
+            // 
+            // Create_Account_Existing_Email_TestAction
+            // 
+            Create_Account_Existing_Email_TestAction.Conditions.Add(rowCountCondition19);
+            resources.ApplyResources(Create_Account_Existing_Email_TestAction, "Create_Account_Existing_Email_TestAction");
             // 
             // Remove_Account_PermissionData
             // 
@@ -451,51 +750,11 @@ namespace ECS.WebAPI.DB.Tests
             this.Update_User_ZipCodeData.PretestAction = null;
             this.Update_User_ZipCodeData.TestAction = Update_User_ZipCode_TestAction;
             // 
-            // rowCountCondition2
-            // 
-            rowCountCondition2.Enabled = true;
-            rowCountCondition2.Name = "rowCountCondition2";
-            rowCountCondition2.ResultSet = 1;
-            rowCountCondition2.RowCount = 50;
-            // 
-            // rowCountCondition3
-            // 
-            rowCountCondition3.Enabled = true;
-            rowCountCondition3.Name = "rowCountCondition3";
-            rowCountCondition3.ResultSet = 1;
-            rowCountCondition3.RowCount = 1;
-            // 
-            // rowCountCondition4
-            // 
-            rowCountCondition4.Enabled = true;
-            rowCountCondition4.Name = "rowCountCondition4";
-            rowCountCondition4.ResultSet = 1;
-            rowCountCondition4.RowCount = 1;
-            // 
-            // rowCountCondition1
-            // 
-            rowCountCondition1.Enabled = true;
-            rowCountCondition1.Name = "rowCountCondition1";
-            rowCountCondition1.ResultSet = 1;
-            rowCountCondition1.RowCount = 50;
-            // 
             // Create_Exist_AccountData
             // 
             this.Create_Exist_AccountData.PosttestAction = null;
             this.Create_Exist_AccountData.PretestAction = null;
             this.Create_Exist_AccountData.TestAction = Create_Exist_Account_TestAction;
-            // 
-            // Create_Exist_Account_TestAction
-            // 
-            Create_Exist_Account_TestAction.Conditions.Add(rowCountCondition5);
-            resources.ApplyResources(Create_Exist_Account_TestAction, "Create_Exist_Account_TestAction");
-            // 
-            // rowCountCondition5
-            // 
-            rowCountCondition5.Enabled = true;
-            rowCountCondition5.Name = "rowCountCondition5";
-            rowCountCondition5.ResultSet = 1;
-            rowCountCondition5.RowCount = 1;
             // 
             // Suspend_AccountData
             // 
@@ -503,33 +762,11 @@ namespace ECS.WebAPI.DB.Tests
             this.Suspend_AccountData.PretestAction = null;
             this.Suspend_AccountData.TestAction = Suspend_Account_TestAction;
             // 
-            // Suspend_Account_TestAction
-            // 
-            Suspend_Account_TestAction.Conditions.Add(notEmptyResultSetCondition2);
-            resources.ApplyResources(Suspend_Account_TestAction, "Suspend_Account_TestAction");
-            // 
             // Change_PasswordData
             // 
             this.Change_PasswordData.PosttestAction = null;
             this.Change_PasswordData.PretestAction = null;
             this.Change_PasswordData.TestAction = Change_Password_TestAction;
-            // 
-            // Change_Password_TestAction
-            // 
-            Change_Password_TestAction.Conditions.Add(notEmptyResultSetCondition1);
-            resources.ApplyResources(Change_Password_TestAction, "Change_Password_TestAction");
-            // 
-            // notEmptyResultSetCondition1
-            // 
-            notEmptyResultSetCondition1.Enabled = true;
-            notEmptyResultSetCondition1.Name = "notEmptyResultSetCondition1";
-            notEmptyResultSetCondition1.ResultSet = 1;
-            // 
-            // notEmptyResultSetCondition2
-            // 
-            notEmptyResultSetCondition2.Enabled = true;
-            notEmptyResultSetCondition2.Name = "notEmptyResultSetCondition2";
-            notEmptyResultSetCondition2.ResultSet = 1;
             // 
             // Change_UsernameData
             // 
@@ -537,53 +774,11 @@ namespace ECS.WebAPI.DB.Tests
             this.Change_UsernameData.PretestAction = null;
             this.Change_UsernameData.TestAction = Change_Username_TestAction;
             // 
-            // Change_Username_TestAction
-            // 
-            Change_Username_TestAction.Conditions.Add(notEmptyResultSetCondition3);
-            resources.ApplyResources(Change_Username_TestAction, "Change_Username_TestAction");
-            // 
-            // notEmptyResultSetCondition3
-            // 
-            notEmptyResultSetCondition3.Enabled = true;
-            notEmptyResultSetCondition3.Name = "notEmptyResultSetCondition3";
-            notEmptyResultSetCondition3.ResultSet = 1;
-            // 
-            // notEmptyResultSetCondition4
-            // 
-            notEmptyResultSetCondition4.Enabled = true;
-            notEmptyResultSetCondition4.Name = "notEmptyResultSetCondition4";
-            notEmptyResultSetCondition4.ResultSet = 1;
-            // 
-            // rowCountCondition6
-            // 
-            rowCountCondition6.Enabled = true;
-            rowCountCondition6.Name = "rowCountCondition6";
-            rowCountCondition6.ResultSet = 1;
-            rowCountCondition6.RowCount = 147;
-            // 
-            // rowCountCondition7
-            // 
-            rowCountCondition7.Enabled = true;
-            rowCountCondition7.Name = "rowCountCondition7";
-            rowCountCondition7.ResultSet = 1;
-            rowCountCondition7.RowCount = 49;
-            // 
-            // notEmptyResultSetCondition5
-            // 
-            notEmptyResultSetCondition5.Enabled = true;
-            notEmptyResultSetCondition5.Name = "notEmptyResultSetCondition5";
-            notEmptyResultSetCondition5.ResultSet = 1;
-            // 
             // Update_Article_DescriptionData
             // 
             this.Update_Article_DescriptionData.PosttestAction = null;
             this.Update_Article_DescriptionData.PretestAction = null;
             this.Update_Article_DescriptionData.TestAction = Update_Article_Description_TestAction;
-            // 
-            // Update_Article_Description_TestAction
-            // 
-            Update_Article_Description_TestAction.Conditions.Add(notEmptyResultSetCondition6);
-            resources.ApplyResources(Update_Article_Description_TestAction, "Update_Article_Description_TestAction");
             // 
             // Update_Article_TitleData
             // 
@@ -591,104 +786,11 @@ namespace ECS.WebAPI.DB.Tests
             this.Update_Article_TitleData.PretestAction = null;
             this.Update_Article_TitleData.TestAction = Update_Article_Title_TestAction;
             // 
-            // Update_Article_Title_TestAction
-            // 
-            Update_Article_Title_TestAction.Conditions.Add(notEmptyResultSetCondition7);
-            resources.ApplyResources(Update_Article_Title_TestAction, "Update_Article_Title_TestAction");
-            // 
-            // notEmptyResultSetCondition6
-            // 
-            notEmptyResultSetCondition6.Enabled = true;
-            notEmptyResultSetCondition6.Name = "notEmptyResultSetCondition6";
-            notEmptyResultSetCondition6.ResultSet = 1;
-            // 
-            // rowCountCondition8
-            // 
-            rowCountCondition8.Enabled = true;
-            rowCountCondition8.Name = "rowCountCondition8";
-            rowCountCondition8.ResultSet = 1;
-            rowCountCondition8.RowCount = 10;
-            // 
-            // scalarValueCondition1
-            // 
-            scalarValueCondition1.ColumnNumber = 1;
-            scalarValueCondition1.Enabled = true;
-            scalarValueCondition1.ExpectedValue = "4";
-            scalarValueCondition1.Name = "scalarValueCondition1";
-            scalarValueCondition1.NullExpected = false;
-            scalarValueCondition1.ResultSet = 1;
-            scalarValueCondition1.RowNumber = 1;
-            // 
-            // rowCountCondition9
-            // 
-            rowCountCondition9.Enabled = true;
-            rowCountCondition9.Name = "rowCountCondition9";
-            rowCountCondition9.ResultSet = 1;
-            rowCountCondition9.RowCount = 3;
-            // 
-            // notEmptyResultSetCondition8
-            // 
-            notEmptyResultSetCondition8.Enabled = true;
-            notEmptyResultSetCondition8.Name = "notEmptyResultSetCondition8";
-            notEmptyResultSetCondition8.ResultSet = 1;
-            // 
-            // notEmptyResultSetCondition9
-            // 
-            notEmptyResultSetCondition9.Enabled = true;
-            notEmptyResultSetCondition9.Name = "notEmptyResultSetCondition9";
-            notEmptyResultSetCondition9.ResultSet = 1;
-            // 
-            // rowCountCondition10
-            // 
-            rowCountCondition10.Enabled = true;
-            rowCountCondition10.Name = "rowCountCondition10";
-            rowCountCondition10.ResultSet = 1;
-            rowCountCondition10.RowCount = 147;
-            // 
-            // notEmptyResultSetCondition10
-            // 
-            notEmptyResultSetCondition10.Enabled = true;
-            notEmptyResultSetCondition10.Name = "notEmptyResultSetCondition10";
-            notEmptyResultSetCondition10.ResultSet = 1;
-            // 
-            // rowCountCondition11
-            // 
-            rowCountCondition11.Enabled = true;
-            rowCountCondition11.Name = "rowCountCondition11";
-            rowCountCondition11.ResultSet = 1;
-            rowCountCondition11.RowCount = 51;
-            // 
-            // rowCountCondition12
-            // 
-            rowCountCondition12.Enabled = true;
-            rowCountCondition12.Name = "rowCountCondition12";
-            rowCountCondition12.ResultSet = 1;
-            rowCountCondition12.RowCount = 50;
-            // 
             // Update_User_LastNameData
             // 
             this.Update_User_LastNameData.PosttestAction = null;
             this.Update_User_LastNameData.PretestAction = null;
             this.Update_User_LastNameData.TestAction = Update_User_LastName_TestAction;
-            // 
-            // Update_User_LastName_TestAction
-            // 
-            Update_User_LastName_TestAction.Conditions.Add(notEmptyResultSetCondition11);
-            resources.ApplyResources(Update_User_LastName_TestAction, "Update_User_LastName_TestAction");
-            // 
-            // rowCountCondition13
-            // 
-            rowCountCondition13.Enabled = true;
-            rowCountCondition13.Name = "rowCountCondition13";
-            rowCountCondition13.ResultSet = 1;
-            rowCountCondition13.RowCount = 5;
-            // 
-            // rowCountCondition14
-            // 
-            rowCountCondition14.Enabled = true;
-            rowCountCondition14.Name = "rowCountCondition14";
-            rowCountCondition14.ResultSet = 1;
-            rowCountCondition14.RowCount = 4;
             // 
             // Update_User_AddressData
             // 
@@ -696,21 +798,11 @@ namespace ECS.WebAPI.DB.Tests
             this.Update_User_AddressData.PretestAction = null;
             this.Update_User_AddressData.TestAction = Update_User_Address_TestAction;
             // 
-            // Update_User_Address_TestAction
-            // 
-            Update_User_Address_TestAction.Conditions.Add(notEmptyResultSetCondition13);
-            resources.ApplyResources(Update_User_Address_TestAction, "Update_User_Address_TestAction");
-            // 
             // Update_User_CityData
             // 
             this.Update_User_CityData.PosttestAction = null;
             this.Update_User_CityData.PretestAction = null;
             this.Update_User_CityData.TestAction = Update_User_City_TestAction;
-            // 
-            // Update_User_City_TestAction
-            // 
-            Update_User_City_TestAction.Conditions.Add(notEmptyResultSetCondition14);
-            resources.ApplyResources(Update_User_City_TestAction, "Update_User_City_TestAction");
             // 
             // Update_User_StateData
             // 
@@ -718,57 +810,11 @@ namespace ECS.WebAPI.DB.Tests
             this.Update_User_StateData.PretestAction = null;
             this.Update_User_StateData.TestAction = Update_User_State_TestAction;
             // 
-            // Update_User_State_TestAction
-            // 
-            Update_User_State_TestAction.Conditions.Add(notEmptyResultSetCondition15);
-            resources.ApplyResources(Update_User_State_TestAction, "Update_User_State_TestAction");
-            // 
-            // notEmptyResultSetCondition13
-            // 
-            notEmptyResultSetCondition13.Enabled = true;
-            notEmptyResultSetCondition13.Name = "notEmptyResultSetCondition13";
-            notEmptyResultSetCondition13.ResultSet = 1;
-            // 
-            // notEmptyResultSetCondition14
-            // 
-            notEmptyResultSetCondition14.Enabled = true;
-            notEmptyResultSetCondition14.Name = "notEmptyResultSetCondition14";
-            notEmptyResultSetCondition14.ResultSet = 1;
-            // 
-            // notEmptyResultSetCondition12
-            // 
-            notEmptyResultSetCondition12.Enabled = true;
-            notEmptyResultSetCondition12.Name = "notEmptyResultSetCondition12";
-            notEmptyResultSetCondition12.ResultSet = 1;
-            // 
-            // notEmptyResultSetCondition11
-            // 
-            notEmptyResultSetCondition11.Enabled = true;
-            notEmptyResultSetCondition11.Name = "notEmptyResultSetCondition11";
-            notEmptyResultSetCondition11.ResultSet = 1;
-            // 
-            // notEmptyResultSetCondition15
-            // 
-            notEmptyResultSetCondition15.Enabled = true;
-            notEmptyResultSetCondition15.Name = "notEmptyResultSetCondition15";
-            notEmptyResultSetCondition15.ResultSet = 1;
-            // 
-            // notEmptyResultSetCondition16
-            // 
-            notEmptyResultSetCondition16.Enabled = true;
-            notEmptyResultSetCondition16.Name = "notEmptyResultSetCondition16";
-            notEmptyResultSetCondition16.ResultSet = 1;
-            // 
             // Delete_LinkedIn_TokenData
             // 
             this.Delete_LinkedIn_TokenData.PosttestAction = null;
             this.Delete_LinkedIn_TokenData.PretestAction = null;
             this.Delete_LinkedIn_TokenData.TestAction = Delete_LinkedIn_Token_TestAction;
-            // 
-            // Delete_LinkedIn_Token_TestAction
-            // 
-            Delete_LinkedIn_Token_TestAction.Conditions.Add(rowCountCondition16);
-            resources.ApplyResources(Delete_LinkedIn_Token_TestAction, "Delete_LinkedIn_Token_TestAction");
             // 
             // Add_LinkedIn_TokenData
             // 
@@ -776,37 +822,64 @@ namespace ECS.WebAPI.DB.Tests
             this.Add_LinkedIn_TokenData.PretestAction = null;
             this.Add_LinkedIn_TokenData.TestAction = Add_LinkedIn_Token_TestAction;
             // 
-            // Add_LinkedIn_Token_TestAction
+            // Create_Account_Existing_EmailData
             // 
-            Add_LinkedIn_Token_TestAction.Conditions.Add(rowCountCondition15);
-            resources.ApplyResources(Add_LinkedIn_Token_TestAction, "Add_LinkedIn_Token_TestAction");
+            this.Create_Account_Existing_EmailData.PosttestAction = null;
+            this.Create_Account_Existing_EmailData.PretestAction = null;
+            this.Create_Account_Existing_EmailData.TestAction = Create_Account_Existing_Email_TestAction;
             // 
-            // rowCountCondition15
+            // rowCountCondition18
             // 
-            rowCountCondition15.Enabled = true;
-            rowCountCondition15.Name = "rowCountCondition15";
-            rowCountCondition15.ResultSet = 1;
-            rowCountCondition15.RowCount = 51;
+            rowCountCondition18.Enabled = true;
+            rowCountCondition18.Name = "rowCountCondition18";
+            rowCountCondition18.ResultSet = 1;
+            rowCountCondition18.RowCount = 1;
             // 
-            // rowCountCondition16
+            // rowCountCondition19
             // 
-            rowCountCondition16.Enabled = true;
-            rowCountCondition16.Name = "rowCountCondition16";
-            rowCountCondition16.ResultSet = 1;
-            rowCountCondition16.RowCount = 50;
+            rowCountCondition19.Enabled = true;
+            rowCountCondition19.Name = "rowCountCondition19";
+            rowCountCondition19.ResultSet = 1;
+            rowCountCondition19.RowCount = 1;
             // 
-            // rowCountCondition17
+            // dbo_JWT_DeleteTestData
             // 
-            rowCountCondition17.Enabled = true;
-            rowCountCondition17.Name = "rowCountCondition17";
-            rowCountCondition17.ResultSet = 1;
-            rowCountCondition17.RowCount = 11;
+            this.dbo_JWT_DeleteTestData.PosttestAction = null;
+            this.dbo_JWT_DeleteTestData.PretestAction = null;
+            this.dbo_JWT_DeleteTestData.TestAction = dbo_JWT_DeleteTest_TestAction;
             // 
-            // notEmptyResultSetCondition7
+            // dbo_JWT_DeleteTest_TestAction
             // 
-            notEmptyResultSetCondition7.Enabled = true;
-            notEmptyResultSetCondition7.Name = "notEmptyResultSetCondition7";
-            notEmptyResultSetCondition7.ResultSet = 1;
+            dbo_JWT_DeleteTest_TestAction.Conditions.Add(rowCountCondition21);
+            resources.ApplyResources(dbo_JWT_DeleteTest_TestAction, "dbo_JWT_DeleteTest_TestAction");
+            // 
+            // Add_JWT_TokenData
+            // 
+            this.Add_JWT_TokenData.PosttestAction = null;
+            this.Add_JWT_TokenData.PretestAction = null;
+            this.Add_JWT_TokenData.TestAction = Add_JWT_Token_TestAction;
+            // 
+            // Add_JWT_Token_TestAction
+            // 
+            Add_JWT_Token_TestAction.Conditions.Add(scalarValueCondition2);
+            resources.ApplyResources(Add_JWT_Token_TestAction, "Add_JWT_Token_TestAction");
+            // 
+            // rowCountCondition21
+            // 
+            rowCountCondition21.Enabled = true;
+            rowCountCondition21.Name = "rowCountCondition21";
+            rowCountCondition21.ResultSet = 1;
+            rowCountCondition21.RowCount = 5;
+            // 
+            // scalarValueCondition2
+            // 
+            scalarValueCondition2.ColumnNumber = 1;
+            scalarValueCondition2.Enabled = true;
+            scalarValueCondition2.ExpectedValue = "6";
+            scalarValueCondition2.Name = "scalarValueCondition2";
+            scalarValueCondition2.NullExpected = false;
+            scalarValueCondition2.ResultSet = 1;
+            scalarValueCondition2.RowNumber = 1;
         }
 
         #endregion
@@ -1353,7 +1426,7 @@ namespace ECS.WebAPI.DB.Tests
                 SqlExecutionResult[] posttestResults = TestService.Execute(this.PrivilegedContext, this.PrivilegedContext, testActions.PosttestAction);
             }
         }
-        [TestMethod()]
+        [TestMethod(), ExpectedSqlException(MatchFirstError = false, Severity = 16, State = 0)]
         public void Create_Exist_Account()
         {
             SqlDatabaseTestActions testActions = this.Create_Exist_AccountData;
@@ -1630,6 +1703,78 @@ namespace ECS.WebAPI.DB.Tests
                 SqlExecutionResult[] posttestResults = TestService.Execute(this.PrivilegedContext, this.PrivilegedContext, testActions.PosttestAction);
             }
         }
+        [TestMethod(), ExpectedSqlException(MatchFirstError = false, Severity = 16, State = 0)]
+        public void Create_Account_Existing_Email()
+        {
+            SqlDatabaseTestActions testActions = this.Create_Account_Existing_EmailData;
+            // Execute the pre-test script
+            // 
+            System.Diagnostics.Trace.WriteLineIf((testActions.PretestAction != null), "Executing pre-test script...");
+            SqlExecutionResult[] pretestResults = TestService.Execute(this.PrivilegedContext, this.PrivilegedContext, testActions.PretestAction);
+            try
+            {
+                // Execute the test script
+                // 
+                System.Diagnostics.Trace.WriteLineIf((testActions.TestAction != null), "Executing test script...");
+                SqlExecutionResult[] testResults = TestService.Execute(this.ExecutionContext, this.PrivilegedContext, testActions.TestAction);
+            }
+            finally
+            {
+                // Execute the post-test script
+                // 
+                System.Diagnostics.Trace.WriteLineIf((testActions.PosttestAction != null), "Executing post-test script...");
+                SqlExecutionResult[] posttestResults = TestService.Execute(this.PrivilegedContext, this.PrivilegedContext, testActions.PosttestAction);
+            }
+        }
+        [TestMethod()]
+        public void dbo_JWT_DeleteTest()
+        {
+            SqlDatabaseTestActions testActions = this.dbo_JWT_DeleteTestData;
+            // Execute the pre-test script
+            // 
+            System.Diagnostics.Trace.WriteLineIf((testActions.PretestAction != null), "Executing pre-test script...");
+            SqlExecutionResult[] pretestResults = TestService.Execute(this.PrivilegedContext, this.PrivilegedContext, testActions.PretestAction);
+            try
+            {
+                // Execute the test script
+                // 
+                System.Diagnostics.Trace.WriteLineIf((testActions.TestAction != null), "Executing test script...");
+                SqlExecutionResult[] testResults = TestService.Execute(this.ExecutionContext, this.PrivilegedContext, testActions.TestAction);
+            }
+            finally
+            {
+                // Execute the post-test script
+                // 
+                System.Diagnostics.Trace.WriteLineIf((testActions.PosttestAction != null), "Executing post-test script...");
+                SqlExecutionResult[] posttestResults = TestService.Execute(this.PrivilegedContext, this.PrivilegedContext, testActions.PosttestAction);
+            }
+        }
+
+        [TestMethod()]
+        public void Add_JWT_Token()
+        {
+            SqlDatabaseTestActions testActions = this.Add_JWT_TokenData;
+            // Execute the pre-test script
+            // 
+            System.Diagnostics.Trace.WriteLineIf((testActions.PretestAction != null), "Executing pre-test script...");
+            SqlExecutionResult[] pretestResults = TestService.Execute(this.PrivilegedContext, this.PrivilegedContext, testActions.PretestAction);
+            try
+            {
+                // Execute the test script
+                // 
+                System.Diagnostics.Trace.WriteLineIf((testActions.TestAction != null), "Executing test script...");
+                SqlExecutionResult[] testResults = TestService.Execute(this.ExecutionContext, this.PrivilegedContext, testActions.TestAction);
+            }
+            finally
+            {
+                // Execute the post-test script
+                // 
+                System.Diagnostics.Trace.WriteLineIf((testActions.PosttestAction != null), "Executing post-test script...");
+                SqlExecutionResult[] posttestResults = TestService.Execute(this.PrivilegedContext, this.PrivilegedContext, testActions.PosttestAction);
+            }
+        }
+
+
 
 
 
@@ -1676,5 +1821,8 @@ namespace ECS.WebAPI.DB.Tests
         private SqlDatabaseTestActions Update_User_StateData;
         private SqlDatabaseTestActions Delete_LinkedIn_TokenData;
         private SqlDatabaseTestActions Add_LinkedIn_TokenData;
+        private SqlDatabaseTestActions Create_Account_Existing_EmailData;
+        private SqlDatabaseTestActions dbo_JWT_DeleteTestData;
+        private SqlDatabaseTestActions Add_JWT_TokenData;
     }
 }
