@@ -18,7 +18,7 @@ namespace ECS.WebAPI.Tests
         }
         public class PostRegistration
         {
-            private static AccountRegistrationDTO account = new AccountRegistrationDTO
+            private static RegistrationDTO account = new RegistrationDTO
             {
                 FirstName = "Scott",
                 LastName = "Roberts",
@@ -29,7 +29,7 @@ namespace ECS.WebAPI.Tests
                 City = "Los Alamitos",
                 State = "CA",
                 ZipCode = 90720,
-                SecurityQuestions = new List<AccountQuestionDTO>
+                SecurityQuestions = new List<SecurityQuestionDTO>
                 {
 
                 }

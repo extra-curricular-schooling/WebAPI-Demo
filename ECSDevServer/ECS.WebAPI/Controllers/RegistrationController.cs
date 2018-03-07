@@ -16,7 +16,7 @@ namespace ECS.WebAPI.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public IHttpActionResult SubmitRegistration(AccountRegistrationDTO registrationForm)
+        public IHttpActionResult SubmitRegistration(RegistrationDTO registrationForm)
         {
             Validate(registrationForm);
 

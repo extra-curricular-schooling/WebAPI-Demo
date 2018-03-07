@@ -137,7 +137,7 @@
     <Compile Include="Controllers\OAuthController.cs" />
     <Compile Include="Controllers\RegistrationController.cs" />
     <Compile Include="Controllers\ResetPasswordController.cs" />
-    <Compile Include="Controllers\SSOController.cs" />
+    <Compile Include="Controllers\SsoController.cs" />
     <Compile Include="Controllers\SweepstakeAdminController.cs" />
     <Compile Include="Controllers\SweepstakeController.cs" />
     <Compile Include="Filters\AuthorizationFilters\AuthorizationAttribute.cs" />

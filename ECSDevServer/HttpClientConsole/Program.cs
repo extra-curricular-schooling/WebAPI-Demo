@@ -13,7 +13,7 @@ namespace HttpClientConsole
 {
     class Program
     {
-        static void Showaccount(SSOAccountRegistrationDTO account)
+        static void Showaccount(SsoRegistrationDTO account)
         {
             Console.WriteLine($"Name: {account.Username}\tPassword: " +
                 $"{account.Password}");
@@ -33,13 +33,13 @@ namespace HttpClientConsole
                 try
                 {
                     // Create a new account
-                    SSOAccountRegistrationDTO account = new SSOAccountRegistrationDTO
+                    SsoRegistrationDTO account = new SsoRegistrationDTO
                     {
                         Username = "dkdkd",
                         Password = "aaaaaa",
-                        SecurityQuestions = new List<AccountQuestionDTO>
+                        SecurityQuestions = new List<SecurityQuestionDTO>
                         {
-                            new AccountQuestionDTO
+                            new SecurityQuestionDTO
                             {
                                 Question = 4,
                                 Answer = "My mother"

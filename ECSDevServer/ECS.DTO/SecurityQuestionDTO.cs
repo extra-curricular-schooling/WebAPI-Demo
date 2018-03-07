@@ -5,7 +5,7 @@ using System.Web;
 
 namespace ECS.DTO
 {
-    public class AccountQuestionDTO
+    public class SecurityQuestionDTO
     {
         public int Question { get; set; }
 

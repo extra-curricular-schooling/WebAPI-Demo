@@ -48,7 +48,7 @@ namespace ECS.WebAPI.Controllers
         /// </summary>
         /// <remarks>Author: Scott Roberts</remarks>
         [HttpPost]
-        public IHttpActionResult SecurityAnswers([FromBody] AccountQuestionDTO securityQuestions)
+        public IHttpActionResult SecurityAnswers([FromBody] SecurityQuestionDTO securityQuestions)
         {
             // Credentials is already read and deserialized into a DTO. Validate it.
             Validate(securityQuestions);

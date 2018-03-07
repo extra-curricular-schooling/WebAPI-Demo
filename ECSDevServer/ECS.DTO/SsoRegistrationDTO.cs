@@ -5,7 +5,7 @@ using System.Web;
 
 namespace ECS.DTO
 {
-    public class SSOAccountRegistrationDTO
+    public class SsoRegistrationDTO
     {
         public string Username { get; set; }
 
@@ -13,6 +13,6 @@ namespace ECS.DTO
 
         public bool FirstTimeUser { get; set; }
 
-        public List<AccountQuestionDTO> SecurityQuestions { get; set; }
+        public List<SecurityQuestionDTO> SecurityQuestions { get; set; }
     }
 }

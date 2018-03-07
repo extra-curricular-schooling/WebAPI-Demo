@@ -41,11 +41,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccountCredentialDTO.cs" />
-    <Compile Include="AccountQuestionDTO.cs" />
-    <Compile Include="AccountRegistrationDTO.cs" />
+    <Compile Include="SecurityQuestionDTO.cs" />
+    <Compile Include="RegistrationDTO.cs" />
     <Compile Include="LinkedInPostDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SSOAccountRegistrationDTO.cs" />
+    <Compile Include="SsoRegistrationDTO.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

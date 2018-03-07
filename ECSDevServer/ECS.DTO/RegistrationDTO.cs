@@ -8,7 +8,7 @@ namespace ECS.DTO
     /// <summary>
     /// User account information submitted during registration
     /// </summary>
-    public class AccountRegistrationDTO
+    public class RegistrationDTO
     {
         public string FirstName { get; set; }
 
@@ -28,6 +28,6 @@ namespace ECS.DTO
 
         public int ZipCode { get; set; }
 
-        public List<AccountQuestionDTO> SecurityQuestions { get; set; }
+        public List<SecurityQuestionDTO> SecurityQuestions { get; set; }
     }
 }

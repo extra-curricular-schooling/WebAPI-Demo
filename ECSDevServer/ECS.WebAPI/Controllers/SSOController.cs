@@ -11,7 +11,7 @@ using System.Web.Http.Cors;
 /// <remarks>Author: Scott Roberts</remarks>
 namespace ECS.WebAPI.Controllers
 {
-    public class SSOController : ApiController
+    public class SsoController : ApiController
     {
         /*
          * When Web API encounters a type implementing this interface as result of an 
@@ -21,8 +21,7 @@ namespace ECS.WebAPI.Controllers
          */
 
         [HttpPost]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
-        public IHttpActionResult Registration(SSOAccountRegistrationDTO ssoAccount)
+        public IHttpActionResult Registration(SsoRegistrationDTO ssoAccount)
         {
             // Credentials is already read and deserialized into a DTO. Validate it.
             Validate(ssoAccount);
@@ -72,6 +71,44 @@ namespace ECS.WebAPI.Controllers
 
             // Fail state
             return BadRequest(ModelState);
+        }
+
+        public IHttpActionResult ResetPasswordWithAnswers()
+        {
+            return Ok();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>Author: Scott Roberts</remarks>
+        [HttpPost]
+        public IHttpActionResult Login([FromBody] AccountCredentialDTO credentials)
+        {
+            // Credentials is already read and deserialized into a DTO. Validate it.
+            Validate(credentials);
+
+            if (ModelState.IsValid)
+            {
+                // Proccess any other information.
+
+                // Check app DB for user.
+
+                // Issue login information
+
+                // Return 200
+                return Ok();
+            }
+
+            // Fail state
+            return BadRequest(ModelState);
+
+
+            // Return successful response with a "redirect" to where the token will be given
+            // Post methods should not return data, but should return responses and location headers of 
+            // what was created in the post.
+
+            //return CreatedAtRoute("DefaultApi", new { id = product.Id }, product);
         }
     }
 }
