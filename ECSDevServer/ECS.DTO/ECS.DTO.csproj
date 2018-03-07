@@ -40,8 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AccountCredentialsDTO.cs" />
-    <Compile Include="AccountQuestionsDTO.cs" />
+    <Compile Include="AccountCredentialDTO.cs" />
+    <Compile Include="AccountQuestionDTO.cs" />
     <Compile Include="AccountRegistrationDTO.cs" />
     <Compile Include="LinkedInPostDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

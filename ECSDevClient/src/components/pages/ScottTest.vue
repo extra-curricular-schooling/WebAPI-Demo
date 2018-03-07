@@ -21,13 +21,13 @@ export default {
           'Content-Type': 'application/json'
         },
         data: {
-          'userName': 'Scott',
+          'username': 'Scott',
           'password': 'Blob',
           'securityQuestions': [
-            'Hello'
-          ],
-          'securityAnswers': [
-            'Friend'
+            {
+              'question': 1,
+              'answer': 'Hello'
+            }
           ]
         }
       })
@@ -45,7 +45,7 @@ export default {
           'Content-Type': 'application/json'
         },
         data: {
-          'userName': 'Scott',
+          'username': 'Scott',
           'password': 'Blob'
         }
       })

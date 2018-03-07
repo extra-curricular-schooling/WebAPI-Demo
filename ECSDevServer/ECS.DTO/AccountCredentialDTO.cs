@@ -5,7 +5,7 @@ using System.Web;
 
 namespace ECS.DTO
 {
-    public class AccountCredentialsDTO
+    public class AccountCredentialDTO
     {
         public string Username { get; set; }
 

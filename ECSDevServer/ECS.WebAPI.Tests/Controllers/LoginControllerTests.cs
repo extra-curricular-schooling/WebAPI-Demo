@@ -11,7 +11,7 @@ namespace ECS.WebAPI.Tests.Controllers
     {
         public class Login
         {
-            AccountCredentialsDTO credentialsDTO = new AccountCredentialsDTO
+            AccountCredentialDTO credentialsDTO = new AccountCredentialDTO
             {
                 Username = "Scott",
                 Password = "roberts"

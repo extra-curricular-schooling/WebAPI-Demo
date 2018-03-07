@@ -16,7 +16,7 @@ namespace ECS.WebAPI.Controllers
         [HttpPost]
         // The DTO we are using worries me because it will have an empty password field for this action
         // Should I make a AccountUsernameDTO???
-        public IHttpActionResult Username([FromBody] AccountCredentialsDTO credentials)
+        public IHttpActionResult Username([FromBody] AccountCredentialDTO credentials)
         {
             // Credentials is already read and deserialized into a DTO. Validate it.
             Validate(credentials);
@@ -38,9 +38,9 @@ namespace ECS.WebAPI.Controllers
             return Ok();
         }
         [HttpGet]
-        public AccountCredentialsDTO Username()
+        public AccountCredentialDTO Username()
         {
-            return new AccountCredentialsDTO();
+            return new AccountCredentialDTO();
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace ECS.WebAPI.Controllers
         /// </summary>
         /// <remarks>Author: Scott Roberts</remarks>
         [HttpPost]
-        public IHttpActionResult SecurityAnswers([FromBody] AccountQuestionsDTO securityQuestions)
+        public IHttpActionResult SecurityAnswers([FromBody] AccountQuestionDTO securityQuestions)
         {
             // Credentials is already read and deserialized into a DTO. Validate it.
             Validate(securityQuestions);
@@ -71,7 +71,7 @@ namespace ECS.WebAPI.Controllers
         /// </summary>
         /// <remarks>Author: Scott Roberts</remarks>
         [HttpPost]
-        public IHttpActionResult AccountPassword([FromBody] AccountCredentialsDTO credentials)
+        public IHttpActionResult AccountPassword([FromBody] AccountCredentialDTO credentials)
         {
             // Credentials is already read and deserialized into a DTO. Validate it.
             Validate(credentials);
@@ -97,7 +97,7 @@ namespace ECS.WebAPI.Controllers
         /// </summary>
         /// <param name="credentials"></param>
         /// <remarks>Author: Scott Roberts</remarks>
-        private void PostNewPasswordToSSO(AccountCredentialsDTO credentials)
+        private void PostNewPasswordToSSO(AccountCredentialDTO credentials)
         {
             // Call request service to make a request to the SSO.
             using (var client = HttpClientService.SsoInstance)

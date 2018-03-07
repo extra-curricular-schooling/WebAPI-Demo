@@ -24,8 +24,7 @@ namespace ECS.WebAPI.Controllers
                 return BadRequest(ModelState);
 
             // Make custom error validator to make sure all values are not null... This is only the start.
-            if (registrationForm.Username == null || registrationForm.Password == null ||
-                registrationForm.SecurityQuestions == null || registrationForm.SecurityAnswers == null)
+            if (registrationForm.Username == null || registrationForm.Password == null)
                 return BadRequest("Improper Request");
 
 

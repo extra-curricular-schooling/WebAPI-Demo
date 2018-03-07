@@ -37,8 +37,14 @@ namespace HttpClientConsole
                     {
                         Username = "dkdkd",
                         Password = "aaaaaa",
-                        SecurityAnswers = new List<string>(),
-                        SecurityQuestions = new List<string>()
+                        Questions = new List<AccountQuestionDTO>
+                        {
+                            new AccountQuestionDTO
+                            {
+                                SecurityQuestion = 4,
+                                SecurityAnswer = "My mother"
+                            }
+                        }
                     };
 
                     var message = await client.PostAsJsonAsync("https://localhost:44311/SSO/ResetPassword", account);

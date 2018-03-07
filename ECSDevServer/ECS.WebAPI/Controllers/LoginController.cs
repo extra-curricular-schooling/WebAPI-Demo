@@ -12,7 +12,7 @@ namespace ECS.WebAPI.Controllers
         /// </summary>
         /// <remarks>Author: Scott Roberts</remarks>
         [HttpPost]
-        public IHttpActionResult SubmitLogin([FromBody] AccountCredentialsDTO credentials)
+        public IHttpActionResult SubmitLogin([FromBody] AccountCredentialDTO credentials)
         {
             // Credentials is already read and deserialized into a DTO. Validate it.
             Validate(credentials);

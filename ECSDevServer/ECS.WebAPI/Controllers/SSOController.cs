@@ -19,6 +19,7 @@ namespace ECS.WebAPI.Controllers
          * its only method (Execute) to produce the HttpResponseMessage, and then use that to 
          * respond to the client
          */
+
         [HttpPost]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
         public IHttpActionResult Registration(SSOAccountRegistrationDTO ssoAccount)
@@ -37,6 +38,10 @@ namespace ECS.WebAPI.Controllers
                 return Ok();
             }
 
+            // Code errors for specific html states.
+
+            // Error handling in controller: https://stackoverflow.com/questions/10732644/best-practice-to-return-errors-in-asp-net-web-api#10734690
+
             // Fail-safe return
             return BadRequest(ModelState);
 
@@ -51,7 +56,7 @@ namespace ECS.WebAPI.Controllers
 
 
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
-        public IHttpActionResult ResetPassword([FromBody] AccountCredentialsDTO credentials)
+        public IHttpActionResult ResetPassword([FromBody] AccountCredentialDTO credentials)
         {
             // Credentials is already read and deserialized into a DTO. Validate it.
             Validate(credentials);

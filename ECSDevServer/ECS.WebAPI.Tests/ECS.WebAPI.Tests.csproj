@@ -76,6 +76,7 @@
     <Compile Include="App_Start\WebApiConfigTests.cs" />
     <Compile Include="Controllers\LoginControllerTests.cs" />
     <Compile Include="Controllers\RegistrationControllerTests.cs" />
+    <Compile Include="Controllers\SsoControllerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

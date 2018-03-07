@@ -28,8 +28,6 @@ namespace ECS.DTO
 
         public int ZipCode { get; set; }
 
-        public List<String> SecurityQuestions { get; set; }
-
-        public List<String> SecurityAnswers { get; set; }
+        public List<AccountQuestionDTO> SecurityQuestions { get; set; }
     }
 }

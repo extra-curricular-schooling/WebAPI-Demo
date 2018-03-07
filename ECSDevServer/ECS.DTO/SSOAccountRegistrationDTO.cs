@@ -11,8 +11,8 @@ namespace ECS.DTO
 
         public string Password { get; set; }
 
-        public List<String> SecurityQuestions { get; set; }
+        public bool FirstTimeUser { get; set; }
 
-        public List<String> SecurityAnswers { get; set; }
+        public List<AccountQuestionDTO> SecurityQuestions { get; set; }
     }
 }
