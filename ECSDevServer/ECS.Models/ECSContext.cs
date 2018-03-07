@@ -25,9 +25,9 @@ namespace ECS.Models.ECSContext
 
         public DbSet<InterestTag> InterestTags { get; set; }
 
-        //public DbSet<Cookie> Cookies { get; set; }
-
         public DbSet<LinkedIn> LinkedIn { get; set; }
+
+        public DbSet<JWT> JWTs { get; set; }
 
         public DbSet<Article> Articles { get; set; }
 
@@ -53,19 +53,6 @@ namespace ECS.Models.ECSContext
             //Navigation Properties allow you to define relationships between entities 
             //in a way that makes sense in an object oriented language.
 
-
-            //Many to Many Relationship with Account and Article model
-            //Define the navigation properties of Account and Article
-            //Map the foreign keys of each model
-            //Create table with custom name AccountArticle
-            /**
-            modelBuilder.Entity<Account>()                
-                .HasMany(c => c.Article).WithMany(i => i.Account)
-                .Map(t => t.MapLeftKey("Username")
-                .MapRightKey("ArticleLink")
-                .ToTable("AccountArticle"));
-            
-            **/
             //Many to Many relationship with Account and Interest Tag model
             //Define the navigation properties of Account and Interest Tag
             //Map the foreign keys of each model
@@ -87,16 +74,62 @@ namespace ECS.Models.ECSContext
                 .WithRequired(s => s.Accounts)
                 .HasForeignKey<string>(s => s.Username);
             
-            /**
+            
+            //Setting primary key of SecurityQuestionAccount model to custom primary key
+            modelBuilder.Entity<SecurityQuestionAccount>()
+                .HasKey(s => new { s.Username, s.SecurityQuestionID });
+
+            //Creating Stored Procedures for each class Insert, Delete, Update
+
+            modelBuilder.Entity<Account>().MapToStoredProcedures();
+
+            modelBuilder.Entity<Account>().HasMany(p => p.AccountTags)
+                .WithMany(s => s.AccountUsername).MapToStoredProcedures();
+
+            modelBuilder.Entity<User>().MapToStoredProcedures();
+
+            modelBuilder.Entity<Article>().MapToStoredProcedures(s => s.Insert (
+                i => i.Parameter(p => p.InterestTag.TagName, "tag_name")));
+
+            modelBuilder.Entity<InterestTag>().MapToStoredProcedures();
+
+            modelBuilder.Entity<SecurityQuestion>().MapToStoredProcedures();
+
+            modelBuilder.Entity<SecurityQuestionAccount>().MapToStoredProcedures();
+
+            modelBuilder.Entity<ZipLocation>().MapToStoredProcedures();
+
+            modelBuilder.Entity<AccountType>().MapToStoredProcedures();
+
+            modelBuilder.Entity<SweepStake>().MapToStoredProcedures();
+
+            modelBuilder.Entity<SweepStakeEntry>().MapToStoredProcedures();
+
+            modelBuilder.Entity<LinkedIn>().MapToStoredProcedures();
+
+            modelBuilder.Entity<JWT>().MapToStoredProcedures();
+
+            /**Many to Many Relationship with Account and Article model
+            Define the navigation properties of Account and Article
+            Map the foreign keys of each model
+            Create table with custom name AccountArticle
+            
+            modelBuilder.Entity<Account>()                
+                .HasMany(c => c.Article).WithMany(i => i.Account)
+                .Map(t => t.MapLeftKey("Username")
+                .MapRightKey("ArticleLink")
+                .ToTable("AccountArticle"));
+
+            
             modelBuilder.Entity<InterestTag>()
                 .HasMany<Article>(a => a.ArticleTags)
                 .WithRequired(i => i.InterestTag)
                 .HasForeignKey<string>(i => i.ArticleLink);
             
             **/
-            //Setting primary key of SecurityQuestionAccount model to custom primary key
-            modelBuilder.Entity<SecurityQuestionAccount>()
-                .HasKey(s => new { s.Username, s.SecurityQuestionID });
+
+            
+
         }
 
     }

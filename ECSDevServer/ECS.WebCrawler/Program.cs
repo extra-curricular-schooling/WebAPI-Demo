@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 namespace ECS.WebCrawler
 {
 
-    class Program
+    public class Program
     {
-        static int Main(string[] args)
+        public static int Main()
         {
 
             // Art & Design Sitess

@@ -13,11 +13,6 @@ namespace ECS.Models
     /// </summary>
     public class Article
     {
-        //Hugo says we don't need
-        //[Required, Display(Name = "Article Tag")]
-        //public string ArticleTag { get; set; }
-        //Link Article with Interest Tag
-
         //The name of the article stored.
         [Required]
         [Display(Name = "Article Title")]
@@ -33,11 +28,18 @@ namespace ECS.Models
         [Display(Name = "Article Description")]
         public string ArticleDescription { get; set; }
 
-        //Navigation Property of Account
-        //Implementation of Account History
-        //public virtual ICollection<Account> Account { get; set; }
-
         //Navigation Property of Interest Tag
         public virtual InterestTag InterestTag { get; set; }
+
+
+        /**Hugo says we don't need
+        [Required, Display(Name = "Article Tag")]
+        public string ArticleTag { get; set; }
+        Link Article with Interest Tag
+
+        Navigation Property of Account
+        Implementation of Account History
+        public virtual ICollection<Account> Account { get; set; }
+        **/
     }
 }

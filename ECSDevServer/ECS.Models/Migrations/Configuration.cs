@@ -18,410 +18,311 @@ namespace ECS.Models.Migrations
 
         protected override void Seed(ECS.Models.ECSContext.ECSContext context)
         {
+            
             //Add entries to the User table
             var user = new List<User>
-                {
+            {
                     new User
                     {
                     Email = "test1@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
-                    //ZipCode = zipLocation.Single(s => s.ZipCode == "123456").ZipCode,
-                    //cookies = new List<//cookies>()
                     },
                     new User
                     {
                     Email = "test2@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
-                    //ZipCode = zipLocation.Single(s => s.ZipCode == "123456").ZipCode,
-                    //cookies = new List<//cookies>()
                     },
                     new User
                     {
                     Email = "test3@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
-                    //ZipCode = zipLocation.Single(s => s.ZipCode == "74652").ZipCode,
-                    //cookies = new List<//cookies>()
                     },
                     new User
                     {
                     Email = "test4@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
-                    //ZipCode = zipLocation.Single(s => s.ZipCode == "84756").ZipCode,
-                    //cookies = new List<//cookies>()
                     },
                     new User
                     {
                     Email = "test5@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
-                    //ZipCode = zipLocation.Single(s => s.ZipCode == "123456").ZipCode,
-                    //cookies = new List<//cookies>()
                     },
                     new User
                     {
                     Email = "test6@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
-                    //ZipCode = zipLocation.Single(s => s.ZipCode == "123456").ZipCode,
-                    //cookies = new List<//cookies>()
                     },
                     new User
                     {
                     Email = "test7@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
-                    //ZipCode = zipLocation.Single(s => s.ZipCode == "74652").ZipCode,
-                    //cookies = new List<//cookies>()
                     },
                     new User
                     {
                     Email = "test8@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
-                    //ZipCode = zipLocation.Single(s => s.ZipCode == "84756").ZipCode,
-                    //cookies = new List<//cookies>()
                     },
                     new User
                     {
                     Email = "test9@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
-                    //ZipCode = zipLocation.Single(s => s.ZipCode == "123456").ZipCode,
-                    //cookies = new List<//cookies>()
                     },
                     new User
                     {
                     Email = "test10@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
-                    //ZipCode = zipLocation.Single(s => s.ZipCode == "123456").ZipCode,
-                    //cookies = new List<//cookies>()
                     },
                     new User
                     {
                     Email = "test11@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
-                    //ZipCode = zipLocation.Single(s => s.ZipCode == "74652").ZipCode,
-                    //cookies = new List<//cookies>()
                     },
                     new User
                     {
                     Email = "test12@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
-                    //ZipCode = zipLocation.Single(s => s.ZipCode == "84756").ZipCode,
-                    //cookies = new List<//cookies>()
                     },
                     new User
                     {
                     Email = "test13@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
-                    //ZipCode = zipLocation.Single(s => s.ZipCode == "123456").ZipCode,
-                    //cookies = new List<//cookies>()
                     },
                     new User
                     {
                     Email = "test14@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
-                    //ZipCode = zipLocation.Single(s => s.ZipCode == "123456").ZipCode,
-                    //cookies = new List<//cookies>()
                     },
                     new User
                     {
                     Email = "test15@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
-                    //ZipCode = zipLocation.Single(s => s.ZipCode == "74652").ZipCode,
-                    //cookies = new List<//cookies>()
                     },
                     new User
                     {
                     Email = "test16@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
-                    //ZipCode = zipLocation.Single(s => s.ZipCode == "123456").ZipCode,
-                    // = new List<Cookie>()
                     },
                     new User
                     {
                     Email = "test17@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
-                    //ZipCode = zipLocation.Single(s => s.ZipCode == "123456").ZipCode,
-                    ////cookies = new List<Cookie>()
                     },
                     new User
                     {
                     Email = "test18@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
-                    //ZipCode = zipLocation.Single(s => s.ZipCode == "74652").ZipCode,
-                    ////cookies = new List<Cookie>()
                     },
                     new User
                     {
                     Email = "test19@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
-                    //ZipCode = zipLocation.Single(s => s.ZipCode == "84756").ZipCode,
-                    ////cookies = new List<Cookie>()
                     },
                     new User
                     {
                     Email = "test20@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
-                    //ZipCode = zipLocation.Single(s => s.ZipCode == "123456").ZipCode,
-                    ////cookies = new List<Cookie>()
                     },
                     new User
                     {
                     Email = "test21@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
-                    //ZipCode = zipLocation.Single(s => s.ZipCode == "74652").ZipCode,
-                    ////cookies = new List<Cookie>()
                     },
                     new User
                     {
                     Email = "test22@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
-                    //ZipCode = zipLocation.Single(s => s.ZipCode == "84756").ZipCode,
-                    ////cookies = new List<Cookie>()
                     },
                     new User
                     {
                     Email = "test23@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
-                    //ZipCode = zipLocation.Single(s => s.ZipCode == "123456").ZipCode,
-                    ////cookies = new List<Cookie>()
                     },
                     new User
                     {
                     Email = "test24@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
-                    //ZipCode = zipLocation.Single(s => s.ZipCode == "123456").ZipCode,
-                    ////cookies = new List<Cookie>()
                     },
                     new User
                     {
                     Email = "test25@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
-                    //ZipCode = zipLocation.Single(s => s.ZipCode == "74652").ZipCode,
-                    ////cookies = new List<Cookie>()
                     },
                     new User
                     {
                     Email = "test26@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
-                    //ZipCode = zipLocation.Single(s => s.ZipCode == "84756").ZipCode,
-                    ////cookies = new List<Cookie>()
                     },
                     new User
                     {
                     Email = "test27@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
-                    //ZipCode = zipLocation.Single(s => s.ZipCode == "123456").ZipCode,
-                    ////cookies = new List<Cookie>()
                     },
                     new User
                     {
                     Email = "test28@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
-                    //ZipCode = zipLocation.Single(s => s.ZipCode == "123456").ZipCode,
-                    ////cookies = new List<Cookie>()
                     },
                     new User
                     {
                     Email = "test29@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
-                    //ZipCode = zipLocation.Single(s => s.ZipCode == "74652").ZipCode,
-                    ////cookies = new List<Cookie>()
                     },
                     new User
                     {
                     Email = "test30@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
-                    //ZipCode = zipLocation.Single(s => s.ZipCode == "84756").ZipCode,
-                    ////cookies = new List<Cookie>()
                     },
                     new User
                     {
                     Email = "test31@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
-                    //ZipCode = zipLocation.Single(s => s.ZipCode == "123456").ZipCode,
-                    ////cookies = new List<Cookie>()
                     },
                     new User
                     {
                     Email = "test32@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
-                    //ZipCode = zipLocation.Single(s => s.ZipCode == "123456").ZipCode,
-                    ////cookies = new List<Cookie>()
                     },
                     new User
                     {
                     Email = "test33@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
-                    //ZipCode = zipLocation.Single(s => s.ZipCode == "74652").ZipCode,
-                    ////cookies = new List<Cookie>()
                     },
                     new User
                     {
                     Email = "test34@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
-                    //ZipCode = zipLocation.Single(s => s.ZipCode == "84756").ZipCode,
-                    ////cookies = new List<Cookie>()
                     },
                     new User
                     {
                     Email = "test35@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
-                    //ZipCode = zipLocation.Single(s => s.ZipCode == "123456").ZipCode,
-                    ////cookies = new List<////cookies>()
                     },
                     new User
                     {
                     Email = "test36@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
-                    //ZipCode = zipLocation.Single(s => s.ZipCode == "123456").ZipCode,
-                    ////cookies = new List<Cookie>()
                     },
                     new User
                     {
                     Email = "test37@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
-                    //ZipCode = zipLocation.Single(s => s.ZipCode == "74652").ZipCode,
-                    //cookies = new List<Cookie>()
                     },
                     new User
                     {
                     Email = "test38@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
-                    //ZipCode = zipLocation.Single(s => s.ZipCode == "84756").ZipCode,
-                    //cookies = new List<Cookie>()
                     },
                     new User
                     {
                     Email = "test39@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
-                    //ZipCode = zipLocation.Single(s => s.ZipCode == "123456").ZipCode,
-                    //cookies = new List<Cookie>()
                     },
                     new User
                     {
                     Email = "test40@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
-                    //ZipCode = zipLocation.Single(s => s.ZipCode == "123456").ZipCode,
-                    //cookies = new List<Cookie>()
                     },
                     new User
                     {
                     Email = "test41@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
-                    //ZipCode = zipLocation.Single(s => s.ZipCode == "74652").ZipCode,
-                    //cookies = new List<Cookie>()
                     },
                     new User
                     {
                     Email = "test42@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
-                    //ZipCode = zipLocation.Single(s => s.ZipCode == "84756").ZipCode,
-                    //cookies = new List<Cookie>()
                     },
                     new User
                     {
                     Email = "test43@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
-                    //ZipCode = zipLocation.Single(s => s.ZipCode == "123456").ZipCode,
-                    //cookies = new List<Cookie>()
                     },
                     new User
                     {
                     Email = "test44@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
-                    //ZipCode = zipLocation.Single(s => s.ZipCode == "123456").ZipCode,
-                    //cookies = new List<Cookie>()
                     },
                     new User
                     {
                     Email = "test45@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
-                    //ZipCode = zipLocation.Single(s => s.ZipCode == "74652").ZipCode,
-                    //cookies = new List<//cookies>()
                     },
                     new User
                     {
                     Email = "test46@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
-                    //ZipCode = zipLocation.Single(s => s.ZipCode == "84756").ZipCode,
-                    //cookies = new List<//cookies>()
                     },
                     new User
                     {
                     Email = "test47@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
-                    //ZipCode = zipLocation.Single(s => s.ZipCode == "123456").ZipCode,
-                    //cookies = new List<//cookies>()
                     },
                     new User
                     {
                     Email = "test48@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
-                    //ZipCode = zipLocation.Single(s => s.ZipCode == "123456").ZipCode,
-                    //cookies = new List<//cookies>()
                     },
                     new User
                     {
                     Email = "test49@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
-                    //ZipCode = zipLocation.Single(s => s.ZipCode == "74652").ZipCode,
-                    //cookies = new List<//cookies>()
                     },
                     new User
                     {
                     Email = "test50@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
-                    //ZipCode = zipLocation.Single(s => s.ZipCode == "84756").ZipCode,
-                    //cookies = new List<//cookies>(),
                     },
-                };
+            };
             //For each item in the list user addorupdate a User object with an email
             user.ForEach(s => context.Users.AddOrUpdate(p => p.Email, s));
             context.SaveChanges();
@@ -473,62 +374,10 @@ namespace ECS.Models.Migrations
             //For each item in the list zipLocation addorupdate a ZipLocation object with a ZipcOd
             zipLocation.ForEach(s => context.ZipLocations.AddOrUpdate(p => p.ZipCode, s));
             context.SaveChanges();
-
-            /**
-            AddOrUpdateZipCode(context, "test1@gmail.com", "84756");
-            AddOrUpdateZipCode(context, "test2@gmail.com", "123456");
-            AddOrUpdateZipCode(context, "test3@gmail.com", "84756");
-            AddOrUpdateZipCode(context, "test4@gmail.com", "84756");
-            AddOrUpdateZipCode(context, "test5@gmail.com", "98765");
-            AddOrUpdateZipCode(context, "test6@gmail.com", "74652");
-            AddOrUpdateZipCode(context, "test7@gmail.com", "74652");
-            AddOrUpdateZipCode(context, "test8@gmail.com", "123456");
-            AddOrUpdateZipCode(context, "test9@gmail.com", "84756");
-            AddOrUpdateZipCode(context, "test10@gmail.com", "98765");
-            AddOrUpdateZipCode(context, "test11@gmail.com", "84756");
-            AddOrUpdateZipCode(context, "test12@gmail.com", "84756");
-            AddOrUpdateZipCode(context, "test13@gmail.com", "98765");
-            AddOrUpdateZipCode(context, "test14@gmail.com", "123456");
-            AddOrUpdateZipCode(context, "test15@gmail.com", "84756");
-            AddOrUpdateZipCode(context, "test16@gmail.com", "84756");
-            AddOrUpdateZipCode(context, "test17@gmail.com", "74652");
-            AddOrUpdateZipCode(context, "test18@gmail.com", "98765");
-            AddOrUpdateZipCode(context, "test19@gmail.com", "74652");
-            AddOrUpdateZipCode(context, "test20@gmail.com", "123456");
-            AddOrUpdateZipCode(context, "test21@gmail.com", "84756");
-            AddOrUpdateZipCode(context, "test22@gmail.com", "84756");
-            AddOrUpdateZipCode(context, "test23@gmail.com", "84756");
-            AddOrUpdateZipCode(context, "test24@gmail.com", "98765");
-            AddOrUpdateZipCode(context, "test25@gmail.com", "123456");
-            AddOrUpdateZipCode(context, "test26@gmail.com", "84756");
-            AddOrUpdateZipCode(context, "test27@gmail.com", "84756");
-            AddOrUpdateZipCode(context, "test28@gmail.com", "84756");
-            AddOrUpdateZipCode(context, "test29@gmail.com", "123456");
-            AddOrUpdateZipCode(context, "test30@gmail.com", "98765");
-            AddOrUpdateZipCode(context, "test31@gmail.com", "74652");
-            AddOrUpdateZipCode(context, "test32@gmail.com", "123456");
-            AddOrUpdateZipCode(context, "test33@gmail.com", "84756");
-            AddOrUpdateZipCode(context, "test34@gmail.com", "84756");
-            AddOrUpdateZipCode(context, "test35@gmail.com", "123456");
-            AddOrUpdateZipCode(context, "test36@gmail.com", "84756");
-            AddOrUpdateZipCode(context, "test37@gmail.com", "98765");
-            AddOrUpdateZipCode(context, "test38@gmail.com", "84756");
-            AddOrUpdateZipCode(context, "test39@gmail.com", "84756");
-            AddOrUpdateZipCode(context, "test40@gmail.com", "123456");
-            AddOrUpdateZipCode(context, "test41@gmail.com", "74652");
-            AddOrUpdateZipCode(context, "test42@gmail.com", "74652");
-            AddOrUpdateZipCode(context, "test43@gmail.com", "98765");
-            AddOrUpdateZipCode(context, "test44@gmail.com", "74652");
-            AddOrUpdateZipCode(context, "test45@gmail.com", "84756");
-            AddOrUpdateZipCode(context, "test46@gmail.com", "123456");
-            AddOrUpdateZipCode(context, "test47@gmail.com", "84756");
-            AddOrUpdateZipCode(context, "test48@gmail.com", "84756");
-            AddOrUpdateZipCode(context, "test49@gmail.com", "84756");
-            AddOrUpdateZipCode(context, "test50@gmail.com", "123456");
-            **/
+            
             //Add entries to the Account table
             var account = new List<Account>
-                {
+            {
                     new Account
                     {
                         UserName = "test1",
@@ -983,7 +832,7 @@ namespace ECS.Models.Migrations
                         SuspensionTime = DateTime.Now,
                         AccountTags = new List<InterestTag>(),
                         //Article = new List<Article>(),
-                        SecurityAnswers = new List<SecurityQuestionAccount>(),
+                        SecurityAnswers = new List<SecurityQuestionAccount>()
                     },
                     new Account
                     {
@@ -995,7 +844,7 @@ namespace ECS.Models.Migrations
                         SuspensionTime = DateTime.Now,
                         AccountTags = new List<InterestTag>(),
                         //Article = new List<Article>(),
-                        SecurityAnswers = new List<SecurityQuestionAccount>(),
+                        SecurityAnswers = new List<SecurityQuestionAccount>()
                     },
                     new Account
                     {
@@ -1007,7 +856,7 @@ namespace ECS.Models.Migrations
                         SuspensionTime = DateTime.Now,
                         AccountTags = new List<InterestTag>(),
                         //Article = new List<Article>(),
-                        SecurityAnswers = new List<SecurityQuestionAccount>(),
+                        SecurityAnswers = new List<SecurityQuestionAccount>()
                     },
                     new Account
                     {
@@ -1019,7 +868,7 @@ namespace ECS.Models.Migrations
                         SuspensionTime = DateTime.Now,
                         AccountTags = new List<InterestTag>(),
                         //Article = new List<Article>(),
-                        SecurityAnswers = new List<SecurityQuestionAccount>(),
+                        SecurityAnswers = new List<SecurityQuestionAccount>()
                     },
                     new Account
                     {
@@ -1031,7 +880,7 @@ namespace ECS.Models.Migrations
                         SuspensionTime = DateTime.Now,
                         AccountTags = new List<InterestTag>(),
                         //Article = new List<Article>(),
-                        SecurityAnswers = new List<SecurityQuestionAccount>(),
+                        SecurityAnswers = new List<SecurityQuestionAccount>()
                     },
                     new Account
                     {
@@ -1043,7 +892,7 @@ namespace ECS.Models.Migrations
                         SuspensionTime = DateTime.Now,
                         AccountTags = new List<InterestTag>(),
                         //Article = new List<Article>(),
-                        SecurityAnswers = new List<SecurityQuestionAccount>(),
+                        SecurityAnswers = new List<SecurityQuestionAccount>()
                     },
                     new Account
                     {
@@ -1055,7 +904,7 @@ namespace ECS.Models.Migrations
                         SuspensionTime = DateTime.Now,
                         AccountTags = new List<InterestTag>(),
                         //Article = new List<Article>(),
-                        SecurityAnswers = new List<SecurityQuestionAccount>(),
+                        SecurityAnswers = new List<SecurityQuestionAccount>()
                     },
                     new Account
                     {
@@ -1067,7 +916,7 @@ namespace ECS.Models.Migrations
                         SuspensionTime = DateTime.Now,
                         AccountTags = new List<InterestTag>(),
                         //Article = new List<Article>(),
-                        SecurityAnswers = new List<SecurityQuestionAccount>(),
+                        SecurityAnswers = new List<SecurityQuestionAccount>()
                     },
                     new Account
                     {
@@ -1079,7 +928,7 @@ namespace ECS.Models.Migrations
                         SuspensionTime = DateTime.Now,
                         AccountTags = new List<InterestTag>(),
                         //Article = new List<Article>(),
-                        SecurityAnswers = new List<SecurityQuestionAccount>(),
+                        SecurityAnswers = new List<SecurityQuestionAccount>()
                     },
                     new Account
                     {
@@ -1091,7 +940,7 @@ namespace ECS.Models.Migrations
                         SuspensionTime = DateTime.Now,
                         AccountTags = new List<InterestTag>(),
                         //Article = new List<Article>(),
-                        SecurityAnswers = new List<SecurityQuestionAccount>(),
+                        SecurityAnswers = new List<SecurityQuestionAccount>()
                     },
                     new Account
                     {
@@ -1103,7 +952,7 @@ namespace ECS.Models.Migrations
                         SuspensionTime = DateTime.Now,
                         AccountTags = new List<InterestTag>(),
                         //Article = new List<Article>(),
-                        SecurityAnswers = new List<SecurityQuestionAccount>(),
+                        SecurityAnswers = new List<SecurityQuestionAccount>()
                     },
                     new Account
                     {
@@ -1115,7 +964,7 @@ namespace ECS.Models.Migrations
                         SuspensionTime = DateTime.Now,
                         AccountTags = new List<InterestTag>(),
                         //Article = new List<Article>(),
-                        SecurityAnswers = new List<SecurityQuestionAccount>(),
+                        SecurityAnswers = new List<SecurityQuestionAccount>()
                     },
                     new Account
                     {
@@ -1127,7 +976,7 @@ namespace ECS.Models.Migrations
                         SuspensionTime = DateTime.Now,
                         AccountTags = new List<InterestTag>(),
                         //Article = new List<Article>(),
-                        SecurityAnswers = new List<SecurityQuestionAccount>(),
+                        SecurityAnswers = new List<SecurityQuestionAccount>()
                     },
             };
             //For each item in the list account addorupdate an Account object with an email
@@ -1135,7 +984,7 @@ namespace ECS.Models.Migrations
             context.SaveChanges();
 
             var accountTags = new List<InterestTag>
-                {
+            {
                     new InterestTag
                     {
                         TagName = "CompSci",
@@ -1187,7 +1036,7 @@ namespace ECS.Models.Migrations
                         ArticleTags = new List<Article>()
                     },
 
-                };
+            };
             //For each item in the list accountTags addorupdate an Interest Tag with a TagName
             accountTags.ForEach(s => context.InterestTags.AddOrUpdate(p => p.TagName, s));
             context.SaveChanges();
@@ -1631,8 +1480,6 @@ namespace ECS.Models.Migrations
             context.SaveChanges();
 
             //Add entries to foreign key of Article which is the Interest Tag Name
-
-
             AddOrUpdateArticle(context, "Chemistry", "www.test1.com");
             AddOrUpdateArticle(context, "Chemistry", "www.test2.com");
             AddOrUpdateArticle(context, "Chemistry", "www.test3.com");
@@ -1682,489 +1529,8 @@ namespace ECS.Models.Migrations
             AddOrUpdateArticle(context, "Math", "www.test47.com");
             AddOrUpdateArticle(context, "Math", "www.test48.com");
             AddOrUpdateArticle(context, "Math", "www.test49.com");
-            //AddOrUpdateArticle(context, "CompSci", "www.test50.com");
             context.SaveChanges();
-
-            /**
-            //Add entries to the //cookies table
-            var //cookies = new List<//cookies>
-                {
-                    new //cookies
-                    {
-                        Domain = "ECS",
-                        DateCreatedSessionCookie = DateTime.Now,
-                        ExpirationDate = DateTime.Now.AddSeconds(4000.00),
-                        Path = "/",
-                        SessionID = 1,
-                        Email = user.Single(s => s.Email == "test1@gmail.com").Email
-                    },
-                    new //cookies
-                    {
-                        Domain = "ECS",
-                        DateCreatedSessionCookie = DateTime.Now,
-                        ExpirationDate = DateTime.Now.AddSeconds(4000.00),
-                        Path = "/",
-                        SessionID = 2,
-                        Email = user.Single(s => s.Email == "test2@gmail.com").Email
-                    },
-                    new //cookies
-                    {
-                        Domain = "ECS",
-                        DateCreatedSessionCookie = DateTime.Now,
-                        ExpirationDate = DateTime.Now.AddSeconds(5000.00),
-                        Path = "/",
-                        SessionID = 3,
-                        Email = user.Single(s => s.Email == "test3@gmail.com").Email
-                    },
-                    new //cookies
-                    {
-                        Domain = "ECS",
-                        DateCreatedSessionCookie = DateTime.Now,
-                        ExpirationDate = DateTime.Now.AddSeconds(6000.00),
-                        Path = "/",
-                        SessionID = 4,
-                        Email = user.Single(s => s.Email == "test4@gmail.com").Email
-                    },
-                    new //cookies
-                    {
-                        Domain = "ECS",
-                        DateCreatedSessionCookie = DateTime.Now,
-                        ExpirationDate = DateTime.Now.AddSeconds(4000.00),
-                        Path = "/",
-                        SessionID = 5,
-                        Email = user.Single(s => s.Email == "test5@gmail.com").Email
-                    },
-                    new //cookies
-                    {
-                        Domain = "ECS",
-                        DateCreatedSessionCookie = DateTime.Now,
-                        ExpirationDate = DateTime.Now.AddSeconds(4000.00),
-                        Path = "/",
-                        SessionID = 6,
-                        Email = user.Single(s => s.Email == "test6@gmail.com").Email
-                    },
-                    new //cookies
-                    {
-                        Domain = "ECS",
-                        DateCreatedSessionCookie = DateTime.Now,
-                        ExpirationDate = DateTime.Now.AddSeconds(5000.00),
-                        Path = "/",
-                        SessionID = 7,
-                        Email = user.Single(s => s.Email == "test7@gmail.com").Email
-                    },
-                    new //cookies
-                    {
-                        Domain = "ECS",
-                        DateCreatedSessionCookie = DateTime.Now,
-                        ExpirationDate = DateTime.Now.AddSeconds(6000.00),
-                        Path = "/",
-                        SessionID = 8,
-                        Email = user.Single(s => s.Email == "test8@gmail.com").Email
-                    },
-                    new //cookies
-                    {
-                        Domain = "ECS",
-                        DateCreatedSessionCookie = DateTime.Now,
-                        ExpirationDate = DateTime.Now.AddSeconds(4000.00),
-                        Path = "/",
-                        SessionID = 9,
-                        Email = user.Single(s => s.Email == "test9@gmail.com").Email
-                    },
-                    new //cookies
-                    {
-                        Domain = "ECS",
-                        DateCreatedSessionCookie = DateTime.Now,
-                        ExpirationDate = DateTime.Now.AddSeconds(4000.00),
-                        Path = "/",
-                        SessionID = 10,
-                        Email = user.Single(s => s.Email == "test10@gmail.com").Email
-                    },
-                    new //cookies
-                    {
-                        Domain = "ECS",
-                        DateCreatedSessionCookie = DateTime.Now,
-                        ExpirationDate = DateTime.Now.AddSeconds(5000.00),
-                        Path = "/",
-                        SessionID = 11,
-                        Email = user.Single(s => s.Email == "test11@gmail.com").Email
-                    },
-                    new //cookies
-                    {
-                        Domain = "ECS",
-                        DateCreatedSessionCookie = DateTime.Now,
-                        ExpirationDate = DateTime.Now.AddSeconds(6000.00),
-                        Path = "/",
-                        SessionID = 12,
-                        Email = user.Single(s => s.Email == "test12@gmail.com").Email
-                    },
-                    new //cookies
-                    {
-                        Domain = "ECS",
-                        DateCreatedSessionCookie = DateTime.Now,
-                        ExpirationDate = DateTime.Now.AddSeconds(4000.00),
-                        Path = "/",
-                        SessionID = 13,
-                        Email = user.Single(s => s.Email == "test13@gmail.com").Email
-                    },
-                    new //cookies
-                    {
-                        Domain = "ECS",
-                        DateCreatedSessionCookie = DateTime.Now,
-                        ExpirationDate = DateTime.Now.AddSeconds(4000.00),
-                        Path = "/",
-                        SessionID = 14,
-                        Email = user.Single(s => s.Email == "test14@gmail.com").Email
-                    },
-                    new //cookies
-                    {
-                        Domain = "ECS",
-                        DateCreatedSessionCookie = DateTime.Now,
-                        ExpirationDate = DateTime.Now.AddSeconds(5000.00),
-                        Path = "/",
-                        SessionID = 15,
-                        Email = user.Single(s => s.Email == "test15@gmail.com").Email
-                    },
-                    new //cookies
-                    {
-                        Domain = "ECS",
-                        DateCreatedSessionCookie = DateTime.Now,
-                        ExpirationDate = DateTime.Now.AddSeconds(6000.00),
-                        Path = "/",
-                        SessionID = 16,
-                        Email = user.Single(s => s.Email == "test16@gmail.com").Email
-                    },
-                    new //cookies
-                    {
-                        Domain = "ECS",
-                        DateCreatedSessionCookie = DateTime.Now,
-                        ExpirationDate = DateTime.Now.AddSeconds(4000.00),
-                        Path = "/",
-                        SessionID = 1,
-                        Email = user.Single(s => s.Email == "test1@gmail.com").Email
-                    },
-                    new //cookies
-                    {
-                        Domain = "ECS",
-                        DateCreatedSessionCookie = DateTime.Now,
-                        ExpirationDate = DateTime.Now.AddSeconds(4000.00),
-                        Path = "/",
-                        SessionID = 17,
-                        Email = user.Single(s => s.Email == "test17@gmail.com").Email
-                    },
-                    new //cookies
-                    {
-                        Domain = "ECS",
-                        DateCreatedSessionCookie = DateTime.Now,
-                        ExpirationDate = DateTime.Now.AddSeconds(5000.00),
-                        Path = "/",
-                        SessionID = 18,
-                        Email = user.Single(s => s.Email == "test18@gmail.com").Email
-                    },
-                    new //cookies
-                    {
-                        Domain = "ECS",
-                        DateCreatedSessionCookie = DateTime.Now,
-                        ExpirationDate = DateTime.Now.AddSeconds(6000.00),
-                        Path = "/",
-                        SessionID = 19,
-                        Email = user.Single(s => s.Email == "test19@gmail.com").Email
-                    },
-                    new //cookies
-                    {
-                        Domain = "ECS",
-                        DateCreatedSessionCookie = DateTime.Now,
-                        ExpirationDate = DateTime.Now.AddSeconds(4000.00),
-                        Path = "/",
-                        SessionID = 20,
-                        Email = user.Single(s => s.Email == "test20@gmail.com").Email
-                    },
-                    new //cookies
-                    {
-                        Domain = "ECS",
-                        DateCreatedSessionCookie = DateTime.Now,
-                        ExpirationDate = DateTime.Now.AddSeconds(4000.00),
-                        Path = "/",
-                        SessionID = 21,
-                        Email = user.Single(s => s.Email == "test21@gmail.com").Email
-                    },
-                    new //cookies
-                    {
-                        Domain = "ECS",
-                        DateCreatedSessionCookie = DateTime.Now,
-                        ExpirationDate = DateTime.Now.AddSeconds(5000.00),
-                        Path = "/",
-                        SessionID = 22,
-                        Email = user.Single(s => s.Email == "test22@gmail.com").Email
-                    },
-                    new //cookies
-                    {
-                        Domain = "ECS",
-                        DateCreatedSessionCookie = DateTime.Now,
-                        ExpirationDate = DateTime.Now.AddSeconds(6000.00),
-                        Path = "/",
-                        SessionID = 23,
-                        Email = user.Single(s => s.Email == "test23@gmail.com").Email
-                    },
-                    new //cookies
-                    {
-                        Domain = "ECS",
-                        DateCreatedSessionCookie = DateTime.Now,
-                        ExpirationDate = DateTime.Now.AddSeconds(4000.00),
-                        Path = "/",
-                        SessionID = 24,
-                        Email = user.Single(s => s.Email == "test24@gmail.com").Email
-                    },
-                    new //cookies
-                    {
-                        Domain = "ECS",
-                        DateCreatedSessionCookie = DateTime.Now,
-                        ExpirationDate = DateTime.Now.AddSeconds(4000.00),
-                        Path = "/",
-                        SessionID = 25,
-                        Email = user.Single(s => s.Email == "test25@gmail.com").Email
-                    },
-                    new //cookies
-                    {
-                        Domain = "ECS",
-                        DateCreatedSessionCookie = DateTime.Now,
-                        ExpirationDate = DateTime.Now.AddSeconds(5000.00),
-                        Path = "/",
-                        SessionID = 26,
-                        Email = user.Single(s => s.Email == "test26@gmail.com").Email
-                    },
-                    new //cookies
-                    {
-                        Domain = "ECS",
-                        DateCreatedSessionCookie = DateTime.Now,
-                        ExpirationDate = DateTime.Now.AddSeconds(6000.00),
-                        Path = "/",
-                        SessionID = 27,
-                        Email = user.Single(s => s.Email == "test27@gmail.com").Email
-                    },
-                    new //cookies
-                    {
-                        Domain = "ECS",
-                        DateCreatedSessionCookie = DateTime.Now,
-                        ExpirationDate = DateTime.Now.AddSeconds(4000.00),
-                        Path = "/",
-                        SessionID = 28,
-                        Email = user.Single(s => s.Email == "test28@gmail.com").Email
-                    },
-                    new //cookies
-                    {
-                        Domain = "ECS",
-                        DateCreatedSessionCookie = DateTime.Now,
-                        ExpirationDate = DateTime.Now.AddSeconds(4000.00),
-                        Path = "/",
-                        SessionID = 2,
-                        Email = user.Single(s => s.Email == "test2@gmail.com").Email
-                    },
-                    new //cookies
-                    {
-                        Domain = "ECS",
-                        DateCreatedSessionCookie = DateTime.Now,
-                        ExpirationDate = DateTime.Now.AddSeconds(5000.00),
-                        Path = "/",
-                        SessionID = 29,
-                        Email = user.Single(s => s.Email == "test29@gmail.com").Email
-                    },
-                    new //cookies
-                    {
-                        Domain = "ECS",
-                        DateCreatedSessionCookie = DateTime.Now,
-                        ExpirationDate = DateTime.Now.AddSeconds(6000.00),
-                        Path = "/",
-                        SessionID = 30,
-                        Email = user.Single(s => s.Email == "test30@gmail.com").Email
-                    },
-                    new //cookies
-                    {
-                        Domain = "ECS",
-                        DateCreatedSessionCookie = DateTime.Now,
-                        ExpirationDate = DateTime.Now.AddSeconds(4000.00),
-                        Path = "/",
-                        SessionID = 31,
-                        Email = user.Single(s => s.Email == "test31@gmail.com").Email
-                    },
-                    new //cookies
-                    {
-                        Domain = "ECS",
-                        DateCreatedSessionCookie = DateTime.Now,
-                        ExpirationDate = DateTime.Now.AddSeconds(4000.00),
-                        Path = "/",
-                        SessionID = 32,
-                        Email = user.Single(s => s.Email == "test32@gmail.com").Email
-                    },
-                    new //cookies
-                    {
-                        Domain = "ECS",
-                        DateCreatedSessionCookie = DateTime.Now,
-                        ExpirationDate = DateTime.Now.AddSeconds(5000.00),
-                        Path = "/",
-                        SessionID = 33,
-                        Email = user.Single(s => s.Email == "test33@gmail.com").Email
-                    },
-                    new //cookies
-                    {
-                        Domain = "ECS",
-                        DateCreatedSessionCookie = DateTime.Now,
-                        ExpirationDate = DateTime.Now.AddSeconds(6000.00),
-                        Path = "/",
-                        SessionID = 34,
-                        Email = user.Single(s => s.Email == "test34@gmail.com").Email
-                    },
-                    new //cookies
-                    {
-                        Domain = "ECS",
-                        DateCreatedSessionCookie = DateTime.Now,
-                        ExpirationDate = DateTime.Now.AddSeconds(6000.00),
-                        Path = "/",
-                        SessionID = 35,
-                        Email = user.Single(s => s.Email == "test35@gmail.com").Email
-                    },
-                    new //cookies
-                    {
-                        Domain = "ECS",
-                        DateCreatedSessionCookie = DateTime.Now,
-                        ExpirationDate = DateTime.Now.AddSeconds(4000.00),
-                        Path = "/",
-                        SessionID = 36,
-                        Email = user.Single(s => s.Email == "test36@gmail.com").Email
-                    },
-                    new //cookies
-                    {
-                        Domain = "ECS",
-                        DateCreatedSessionCookie = DateTime.Now,
-                        ExpirationDate = DateTime.Now.AddSeconds(4000.00),
-                        Path = "/",
-                        SessionID = 37,
-                        Email = user.Single(s => s.Email == "test37@gmail.com").Email
-                    },
-                    new //cookies
-                    {
-                        Domain = "ECS",
-                        DateCreatedSessionCookie = DateTime.Now,
-                        ExpirationDate = DateTime.Now.AddSeconds(5000.00),
-                        Path = "/",
-                        SessionID = 38,
-                        Email = user.Single(s => s.Email == "test38@gmail.com").Email
-                    },
-                    new //cookies
-                    {
-                        Domain = "ECS",
-                        DateCreatedSessionCookie = DateTime.Now,
-                        ExpirationDate = DateTime.Now.AddSeconds(6000.00),
-                        Path = "/",
-                        SessionID = 39,
-                        Email = user.Single(s => s.Email == "test39@gmail.com").Email
-                    },
-                    new //cookies
-                    {
-                        Domain = "ECS",
-                        DateCreatedSessionCookie = DateTime.Now,
-                        ExpirationDate = DateTime.Now.AddSeconds(6000.00),
-                        Path = "/",
-                        SessionID = 40,
-                        Email = user.Single(s => s.Email == "test40@gmail.com").Email
-                    },
-                    new //cookies
-                    {
-                        Domain = "ECS",
-                        DateCreatedSessionCookie = DateTime.Now,
-                        ExpirationDate = DateTime.Now.AddSeconds(4000.00),
-                        Path = "/",
-                        SessionID = 41,
-                        Email = user.Single(s => s.Email == "test41@gmail.com").Email
-                    },
-                    new //cookies
-                    {
-                        Domain = "ECS",
-                        DateCreatedSessionCookie = DateTime.Now,
-                        ExpirationDate = DateTime.Now.AddSeconds(4000.00),
-                        Path = "/",
-                        SessionID = 42,
-                        Email = user.Single(s => s.Email == "test42@gmail.com").Email
-                    },
-                    new //cookies
-                    {
-                        Domain = "ECS",
-                        DateCreatedSessionCookie = DateTime.Now,
-                        ExpirationDate = DateTime.Now.AddSeconds(5000.00),
-                        Path = "/",
-                        SessionID = 43,
-                        Email = user.Single(s => s.Email == "test43@gmail.com").Email
-                    },
-                    new //cookies
-                    {
-                        Domain = "ECS",
-                        DateCreatedSessionCookie = DateTime.Now,
-                        ExpirationDate = DateTime.Now.AddSeconds(6000.00),
-                        Path = "/",
-                        SessionID = 44,
-                        Email = user.Single(s => s.Email == "test44@gmail.com").Email
-                    },
-                    new //cookies
-                    {
-                        Domain = "ECS",
-                        DateCreatedSessionCookie = DateTime.Now,
-                        ExpirationDate = DateTime.Now.AddSeconds(6000.00),
-                        Path = "/",
-                        SessionID = 45,
-                        Email = user.Single(s => s.Email == "test45@gmail.com").Email
-                    },
-                    new //cookies
-                    {
-                        Domain = "ECS",
-                        DateCreatedSessionCookie = DateTime.Now,
-                        ExpirationDate = DateTime.Now.AddSeconds(4000.00),
-                        Path = "/",
-                        SessionID = 46,
-                        Email = user.Single(s => s.Email == "test46@gmail.com").Email
-                    },
-                    new //cookies
-                    {
-                        Domain = "ECS",
-                        DateCreatedSessionCookie = DateTime.Now,
-                        ExpirationDate = DateTime.Now.AddSeconds(4000.00),
-                        Path = "/",
-                        SessionID = 47,
-                        Email = user.Single(s => s.Email == "test47@gmail.com").Email
-                    },
-                    new //cookies
-                    {
-                        Domain = "ECS",
-                        DateCreatedSessionCookie = DateTime.Now,
-                        ExpirationDate = DateTime.Now.AddSeconds(5000.00),
-                        Path = "/",
-                        SessionID = 48,
-                        Email = user.Single(s => s.Email == "test48@gmail.com").Email
-                    },
-                    new //cookies
-                    {
-                        Domain = "ECS",
-                        DateCreatedSessionCookie = DateTime.Now,
-                        ExpirationDate = DateTime.Now.AddSeconds(6000.00),
-                        Path = "/",
-                        SessionID = 49,
-                        Email = user.Single(s => s.Email == "test49@gmail.com").Email
-                    },
-                    new //cookies
-                    {
-                        Domain = "ECS",
-                        DateCreatedSessionCookie = DateTime.Now,
-                        ExpirationDate = DateTime.Now.AddSeconds(6000.00),
-                        Path = "/",
-                        SessionID = 50,
-                        Email = user.Single(s => s.Email == "test50@gmail.com").Email
-                    },
-            };
-            //For each item in the list //cookies addorupdate a cookie with a sessionID
-            //cookies.ForEach(s => context.//cookies.AddOrUpdate(p => p.SessionID, s));
-            context.SaveChanges();
-            **/
-
-            //Add entries to Interest Tag table
-
+            
             //Add entries to the SecurityQuestion table
             var securityQuestion = new List<SecurityQuestion>
             {
@@ -3970,7 +3336,7 @@ namespace ECS.Models.Migrations
 
             //Add entries to the LinkedIn table
             var linkedIn = new List<LinkedIn>
-                {
+            {
                     new LinkedIn
                     {
                         AccessToken = "asfawgdsvbasbewgawnira",
@@ -4273,14 +3639,14 @@ namespace ECS.Models.Migrations
                         TokenCreation = DateTime.Now
                     },
 
-                };
+            };
             //For each item in the list linkedIn addorupdate a LinkedIn object with a username
             linkedIn.ForEach(s => context.LinkedIn.AddOrUpdate(p => p.UserName, s));
             context.SaveChanges();
 
             //Add entries to Sweepstakes table
             var sweepStakes = new List<SweepStake>
-                {
+            {
                         new SweepStake
                         {
                             SweepStakesID = 1,
@@ -4323,7 +3689,7 @@ namespace ECS.Models.Migrations
 
             //Add entries to SweepStakeEntry table
             var sweepStakeEntry = new List<SweepStakeEntry>
-                {
+            {
                     new SweepStakeEntry
                     {
                         UserName = account.Single(i => i.UserName == "test1").UserName,
@@ -4364,10 +3730,48 @@ namespace ECS.Models.Migrations
                         SweepstakesID = sweepStakes.Single(s => s.SweepStakesID == 1).SweepStakesID,
                         OpenDateTime = sweepStakes.Single(i => i.SweepStakesID == 1).OpenDateTime
                     },
-                };
+            };
             //For each item in the list sweepStakeEntry addorupdate a SweepStakeEntry object with a username
             sweepStakeEntry.ForEach(s => context.SweepStakeEntries.AddOrUpdate(p => p.UserName, s));
             context.SaveChanges();
+
+            var jwt = new List<JWT>
+            {
+                new JWT
+                {
+                    JWTID = 1,
+                    Token = "1inf39f1finfadf0nionaf",
+                    Email = user.Single(s => s.Email == "test1@gmail.com").Email
+                },
+                new JWT
+                {
+                    JWTID = 2,
+                    Token = "1inf39f1fin3298nf2nfio2",
+                    Email = user.Single(s => s.Email == "test2@gmail.com").Email
+                },
+                new JWT
+                {
+                    JWTID = 3,
+                    Token = "1wekjngf0g24igadf0nionaf",
+                    Email = user.Single(s => s.Email == "test3@gmail.com").Email
+                },
+                new JWT
+                {
+                    JWTID = 4,
+                    Token = "1in24iofn42g09n42gi",
+                    Email = user.Single(s => s.Email == "test4@gmail.com").Email
+                },
+                new JWT
+                {
+                    JWTID = 5,
+                    Token = "1inf32fnoiw09fn2nfioieff",
+                    Email = user.Single(s => s.Email == "test5@gmail.com").Email
+                }
+            };
+            //For each item in the list sweepStakeEntry addorupdate a SweepStakeEntry object with a username
+            jwt.ForEach(s => context.JWTs.AddOrUpdate(p => p.JWTID, s));
+            context.SaveChanges();
+
             base.Seed(context);
         }
 
@@ -4395,5 +3799,482 @@ namespace ECS.Models.Migrations
                 user.User.Add(context.Users.Single(i => i.Email == email));
         }
         **/
+        /**
+            //Add entries to the //cookies table
+            var //cookies = new List<//cookies>
+                {
+                    new //cookies
+                    {
+                        Domain = "ECS",
+                        DateCreatedSessionCookie = DateTime.Now,
+                        ExpirationDate = DateTime.Now.AddSeconds(4000.00),
+                        Path = "/",
+                        SessionID = 1,
+                        Email = user.Single(s => s.Email == "test1@gmail.com").Email
+                    },
+                    new //cookies
+                    {
+                        Domain = "ECS",
+                        DateCreatedSessionCookie = DateTime.Now,
+                        ExpirationDate = DateTime.Now.AddSeconds(4000.00),
+                        Path = "/",
+                        SessionID = 2,
+                        Email = user.Single(s => s.Email == "test2@gmail.com").Email
+                    },
+                    new //cookies
+                    {
+                        Domain = "ECS",
+                        DateCreatedSessionCookie = DateTime.Now,
+                        ExpirationDate = DateTime.Now.AddSeconds(5000.00),
+                        Path = "/",
+                        SessionID = 3,
+                        Email = user.Single(s => s.Email == "test3@gmail.com").Email
+                    },
+                    new //cookies
+                    {
+                        Domain = "ECS",
+                        DateCreatedSessionCookie = DateTime.Now,
+                        ExpirationDate = DateTime.Now.AddSeconds(6000.00),
+                        Path = "/",
+                        SessionID = 4,
+                        Email = user.Single(s => s.Email == "test4@gmail.com").Email
+                    },
+                    new //cookies
+                    {
+                        Domain = "ECS",
+                        DateCreatedSessionCookie = DateTime.Now,
+                        ExpirationDate = DateTime.Now.AddSeconds(4000.00),
+                        Path = "/",
+                        SessionID = 5,
+                        Email = user.Single(s => s.Email == "test5@gmail.com").Email
+                    },
+                    new //cookies
+                    {
+                        Domain = "ECS",
+                        DateCreatedSessionCookie = DateTime.Now,
+                        ExpirationDate = DateTime.Now.AddSeconds(4000.00),
+                        Path = "/",
+                        SessionID = 6,
+                        Email = user.Single(s => s.Email == "test6@gmail.com").Email
+                    },
+                    new //cookies
+                    {
+                        Domain = "ECS",
+                        DateCreatedSessionCookie = DateTime.Now,
+                        ExpirationDate = DateTime.Now.AddSeconds(5000.00),
+                        Path = "/",
+                        SessionID = 7,
+                        Email = user.Single(s => s.Email == "test7@gmail.com").Email
+                    },
+                    new //cookies
+                    {
+                        Domain = "ECS",
+                        DateCreatedSessionCookie = DateTime.Now,
+                        ExpirationDate = DateTime.Now.AddSeconds(6000.00),
+                        Path = "/",
+                        SessionID = 8,
+                        Email = user.Single(s => s.Email == "test8@gmail.com").Email
+                    },
+                    new //cookies
+                    {
+                        Domain = "ECS",
+                        DateCreatedSessionCookie = DateTime.Now,
+                        ExpirationDate = DateTime.Now.AddSeconds(4000.00),
+                        Path = "/",
+                        SessionID = 9,
+                        Email = user.Single(s => s.Email == "test9@gmail.com").Email
+                    },
+                    new //cookies
+                    {
+                        Domain = "ECS",
+                        DateCreatedSessionCookie = DateTime.Now,
+                        ExpirationDate = DateTime.Now.AddSeconds(4000.00),
+                        Path = "/",
+                        SessionID = 10,
+                        Email = user.Single(s => s.Email == "test10@gmail.com").Email
+                    },
+                    new //cookies
+                    {
+                        Domain = "ECS",
+                        DateCreatedSessionCookie = DateTime.Now,
+                        ExpirationDate = DateTime.Now.AddSeconds(5000.00),
+                        Path = "/",
+                        SessionID = 11,
+                        Email = user.Single(s => s.Email == "test11@gmail.com").Email
+                    },
+                    new //cookies
+                    {
+                        Domain = "ECS",
+                        DateCreatedSessionCookie = DateTime.Now,
+                        ExpirationDate = DateTime.Now.AddSeconds(6000.00),
+                        Path = "/",
+                        SessionID = 12,
+                        Email = user.Single(s => s.Email == "test12@gmail.com").Email
+                    },
+                    new //cookies
+                    {
+                        Domain = "ECS",
+                        DateCreatedSessionCookie = DateTime.Now,
+                        ExpirationDate = DateTime.Now.AddSeconds(4000.00),
+                        Path = "/",
+                        SessionID = 13,
+                        Email = user.Single(s => s.Email == "test13@gmail.com").Email
+                    },
+                    new //cookies
+                    {
+                        Domain = "ECS",
+                        DateCreatedSessionCookie = DateTime.Now,
+                        ExpirationDate = DateTime.Now.AddSeconds(4000.00),
+                        Path = "/",
+                        SessionID = 14,
+                        Email = user.Single(s => s.Email == "test14@gmail.com").Email
+                    },
+                    new //cookies
+                    {
+                        Domain = "ECS",
+                        DateCreatedSessionCookie = DateTime.Now,
+                        ExpirationDate = DateTime.Now.AddSeconds(5000.00),
+                        Path = "/",
+                        SessionID = 15,
+                        Email = user.Single(s => s.Email == "test15@gmail.com").Email
+                    },
+                    new //cookies
+                    {
+                        Domain = "ECS",
+                        DateCreatedSessionCookie = DateTime.Now,
+                        ExpirationDate = DateTime.Now.AddSeconds(6000.00),
+                        Path = "/",
+                        SessionID = 16,
+                        Email = user.Single(s => s.Email == "test16@gmail.com").Email
+                    },
+                    new //cookies
+                    {
+                        Domain = "ECS",
+                        DateCreatedSessionCookie = DateTime.Now,
+                        ExpirationDate = DateTime.Now.AddSeconds(4000.00),
+                        Path = "/",
+                        SessionID = 1,
+                        Email = user.Single(s => s.Email == "test1@gmail.com").Email
+                    },
+                    new //cookies
+                    {
+                        Domain = "ECS",
+                        DateCreatedSessionCookie = DateTime.Now,
+                        ExpirationDate = DateTime.Now.AddSeconds(4000.00),
+                        Path = "/",
+                        SessionID = 17,
+                        Email = user.Single(s => s.Email == "test17@gmail.com").Email
+                    },
+                    new //cookies
+                    {
+                        Domain = "ECS",
+                        DateCreatedSessionCookie = DateTime.Now,
+                        ExpirationDate = DateTime.Now.AddSeconds(5000.00),
+                        Path = "/",
+                        SessionID = 18,
+                        Email = user.Single(s => s.Email == "test18@gmail.com").Email
+                    },
+                    new //cookies
+                    {
+                        Domain = "ECS",
+                        DateCreatedSessionCookie = DateTime.Now,
+                        ExpirationDate = DateTime.Now.AddSeconds(6000.00),
+                        Path = "/",
+                        SessionID = 19,
+                        Email = user.Single(s => s.Email == "test19@gmail.com").Email
+                    },
+                    new //cookies
+                    {
+                        Domain = "ECS",
+                        DateCreatedSessionCookie = DateTime.Now,
+                        ExpirationDate = DateTime.Now.AddSeconds(4000.00),
+                        Path = "/",
+                        SessionID = 20,
+                        Email = user.Single(s => s.Email == "test20@gmail.com").Email
+                    },
+                    new //cookies
+                    {
+                        Domain = "ECS",
+                        DateCreatedSessionCookie = DateTime.Now,
+                        ExpirationDate = DateTime.Now.AddSeconds(4000.00),
+                        Path = "/",
+                        SessionID = 21,
+                        Email = user.Single(s => s.Email == "test21@gmail.com").Email
+                    },
+                    new //cookies
+                    {
+                        Domain = "ECS",
+                        DateCreatedSessionCookie = DateTime.Now,
+                        ExpirationDate = DateTime.Now.AddSeconds(5000.00),
+                        Path = "/",
+                        SessionID = 22,
+                        Email = user.Single(s => s.Email == "test22@gmail.com").Email
+                    },
+                    new //cookies
+                    {
+                        Domain = "ECS",
+                        DateCreatedSessionCookie = DateTime.Now,
+                        ExpirationDate = DateTime.Now.AddSeconds(6000.00),
+                        Path = "/",
+                        SessionID = 23,
+                        Email = user.Single(s => s.Email == "test23@gmail.com").Email
+                    },
+                    new //cookies
+                    {
+                        Domain = "ECS",
+                        DateCreatedSessionCookie = DateTime.Now,
+                        ExpirationDate = DateTime.Now.AddSeconds(4000.00),
+                        Path = "/",
+                        SessionID = 24,
+                        Email = user.Single(s => s.Email == "test24@gmail.com").Email
+                    },
+                    new //cookies
+                    {
+                        Domain = "ECS",
+                        DateCreatedSessionCookie = DateTime.Now,
+                        ExpirationDate = DateTime.Now.AddSeconds(4000.00),
+                        Path = "/",
+                        SessionID = 25,
+                        Email = user.Single(s => s.Email == "test25@gmail.com").Email
+                    },
+                    new //cookies
+                    {
+                        Domain = "ECS",
+                        DateCreatedSessionCookie = DateTime.Now,
+                        ExpirationDate = DateTime.Now.AddSeconds(5000.00),
+                        Path = "/",
+                        SessionID = 26,
+                        Email = user.Single(s => s.Email == "test26@gmail.com").Email
+                    },
+                    new //cookies
+                    {
+                        Domain = "ECS",
+                        DateCreatedSessionCookie = DateTime.Now,
+                        ExpirationDate = DateTime.Now.AddSeconds(6000.00),
+                        Path = "/",
+                        SessionID = 27,
+                        Email = user.Single(s => s.Email == "test27@gmail.com").Email
+                    },
+                    new //cookies
+                    {
+                        Domain = "ECS",
+                        DateCreatedSessionCookie = DateTime.Now,
+                        ExpirationDate = DateTime.Now.AddSeconds(4000.00),
+                        Path = "/",
+                        SessionID = 28,
+                        Email = user.Single(s => s.Email == "test28@gmail.com").Email
+                    },
+                    new //cookies
+                    {
+                        Domain = "ECS",
+                        DateCreatedSessionCookie = DateTime.Now,
+                        ExpirationDate = DateTime.Now.AddSeconds(4000.00),
+                        Path = "/",
+                        SessionID = 2,
+                        Email = user.Single(s => s.Email == "test2@gmail.com").Email
+                    },
+                    new //cookies
+                    {
+                        Domain = "ECS",
+                        DateCreatedSessionCookie = DateTime.Now,
+                        ExpirationDate = DateTime.Now.AddSeconds(5000.00),
+                        Path = "/",
+                        SessionID = 29,
+                        Email = user.Single(s => s.Email == "test29@gmail.com").Email
+                    },
+                    new //cookies
+                    {
+                        Domain = "ECS",
+                        DateCreatedSessionCookie = DateTime.Now,
+                        ExpirationDate = DateTime.Now.AddSeconds(6000.00),
+                        Path = "/",
+                        SessionID = 30,
+                        Email = user.Single(s => s.Email == "test30@gmail.com").Email
+                    },
+                    new //cookies
+                    {
+                        Domain = "ECS",
+                        DateCreatedSessionCookie = DateTime.Now,
+                        ExpirationDate = DateTime.Now.AddSeconds(4000.00),
+                        Path = "/",
+                        SessionID = 31,
+                        Email = user.Single(s => s.Email == "test31@gmail.com").Email
+                    },
+                    new //cookies
+                    {
+                        Domain = "ECS",
+                        DateCreatedSessionCookie = DateTime.Now,
+                        ExpirationDate = DateTime.Now.AddSeconds(4000.00),
+                        Path = "/",
+                        SessionID = 32,
+                        Email = user.Single(s => s.Email == "test32@gmail.com").Email
+                    },
+                    new //cookies
+                    {
+                        Domain = "ECS",
+                        DateCreatedSessionCookie = DateTime.Now,
+                        ExpirationDate = DateTime.Now.AddSeconds(5000.00),
+                        Path = "/",
+                        SessionID = 33,
+                        Email = user.Single(s => s.Email == "test33@gmail.com").Email
+                    },
+                    new //cookies
+                    {
+                        Domain = "ECS",
+                        DateCreatedSessionCookie = DateTime.Now,
+                        ExpirationDate = DateTime.Now.AddSeconds(6000.00),
+                        Path = "/",
+                        SessionID = 34,
+                        Email = user.Single(s => s.Email == "test34@gmail.com").Email
+                    },
+                    new //cookies
+                    {
+                        Domain = "ECS",
+                        DateCreatedSessionCookie = DateTime.Now,
+                        ExpirationDate = DateTime.Now.AddSeconds(6000.00),
+                        Path = "/",
+                        SessionID = 35,
+                        Email = user.Single(s => s.Email == "test35@gmail.com").Email
+                    },
+                    new //cookies
+                    {
+                        Domain = "ECS",
+                        DateCreatedSessionCookie = DateTime.Now,
+                        ExpirationDate = DateTime.Now.AddSeconds(4000.00),
+                        Path = "/",
+                        SessionID = 36,
+                        Email = user.Single(s => s.Email == "test36@gmail.com").Email
+                    },
+                    new //cookies
+                    {
+                        Domain = "ECS",
+                        DateCreatedSessionCookie = DateTime.Now,
+                        ExpirationDate = DateTime.Now.AddSeconds(4000.00),
+                        Path = "/",
+                        SessionID = 37,
+                        Email = user.Single(s => s.Email == "test37@gmail.com").Email
+                    },
+                    new //cookies
+                    {
+                        Domain = "ECS",
+                        DateCreatedSessionCookie = DateTime.Now,
+                        ExpirationDate = DateTime.Now.AddSeconds(5000.00),
+                        Path = "/",
+                        SessionID = 38,
+                        Email = user.Single(s => s.Email == "test38@gmail.com").Email
+                    },
+                    new //cookies
+                    {
+                        Domain = "ECS",
+                        DateCreatedSessionCookie = DateTime.Now,
+                        ExpirationDate = DateTime.Now.AddSeconds(6000.00),
+                        Path = "/",
+                        SessionID = 39,
+                        Email = user.Single(s => s.Email == "test39@gmail.com").Email
+                    },
+                    new //cookies
+                    {
+                        Domain = "ECS",
+                        DateCreatedSessionCookie = DateTime.Now,
+                        ExpirationDate = DateTime.Now.AddSeconds(6000.00),
+                        Path = "/",
+                        SessionID = 40,
+                        Email = user.Single(s => s.Email == "test40@gmail.com").Email
+                    },
+                    new //cookies
+                    {
+                        Domain = "ECS",
+                        DateCreatedSessionCookie = DateTime.Now,
+                        ExpirationDate = DateTime.Now.AddSeconds(4000.00),
+                        Path = "/",
+                        SessionID = 41,
+                        Email = user.Single(s => s.Email == "test41@gmail.com").Email
+                    },
+                    new //cookies
+                    {
+                        Domain = "ECS",
+                        DateCreatedSessionCookie = DateTime.Now,
+                        ExpirationDate = DateTime.Now.AddSeconds(4000.00),
+                        Path = "/",
+                        SessionID = 42,
+                        Email = user.Single(s => s.Email == "test42@gmail.com").Email
+                    },
+                    new //cookies
+                    {
+                        Domain = "ECS",
+                        DateCreatedSessionCookie = DateTime.Now,
+                        ExpirationDate = DateTime.Now.AddSeconds(5000.00),
+                        Path = "/",
+                        SessionID = 43,
+                        Email = user.Single(s => s.Email == "test43@gmail.com").Email
+                    },
+                    new //cookies
+                    {
+                        Domain = "ECS",
+                        DateCreatedSessionCookie = DateTime.Now,
+                        ExpirationDate = DateTime.Now.AddSeconds(6000.00),
+                        Path = "/",
+                        SessionID = 44,
+                        Email = user.Single(s => s.Email == "test44@gmail.com").Email
+                    },
+                    new //cookies
+                    {
+                        Domain = "ECS",
+                        DateCreatedSessionCookie = DateTime.Now,
+                        ExpirationDate = DateTime.Now.AddSeconds(6000.00),
+                        Path = "/",
+                        SessionID = 45,
+                        Email = user.Single(s => s.Email == "test45@gmail.com").Email
+                    },
+                    new //cookies
+                    {
+                        Domain = "ECS",
+                        DateCreatedSessionCookie = DateTime.Now,
+                        ExpirationDate = DateTime.Now.AddSeconds(4000.00),
+                        Path = "/",
+                        SessionID = 46,
+                        Email = user.Single(s => s.Email == "test46@gmail.com").Email
+                    },
+                    new //cookies
+                    {
+                        Domain = "ECS",
+                        DateCreatedSessionCookie = DateTime.Now,
+                        ExpirationDate = DateTime.Now.AddSeconds(4000.00),
+                        Path = "/",
+                        SessionID = 47,
+                        Email = user.Single(s => s.Email == "test47@gmail.com").Email
+                    },
+                    new //cookies
+                    {
+                        Domain = "ECS",
+                        DateCreatedSessionCookie = DateTime.Now,
+                        ExpirationDate = DateTime.Now.AddSeconds(5000.00),
+                        Path = "/",
+                        SessionID = 48,
+                        Email = user.Single(s => s.Email == "test48@gmail.com").Email
+                    },
+                    new //cookies
+                    {
+                        Domain = "ECS",
+                        DateCreatedSessionCookie = DateTime.Now,
+                        ExpirationDate = DateTime.Now.AddSeconds(6000.00),
+                        Path = "/",
+                        SessionID = 49,
+                        Email = user.Single(s => s.Email == "test49@gmail.com").Email
+                    },
+                    new //cookies
+                    {
+                        Domain = "ECS",
+                        DateCreatedSessionCookie = DateTime.Now,
+                        ExpirationDate = DateTime.Now.AddSeconds(6000.00),
+                        Path = "/",
+                        SessionID = 50,
+                        Email = user.Single(s => s.Email == "test50@gmail.com").Email
+                    },
+            };
+            //For each item in the list //cookies addorupdate a cookie with a sessionID
+            //cookies.ForEach(s => context.//cookies.AddOrUpdate(p => p.SessionID, s));
+            context.SaveChanges();
+            **/
     }
 }
