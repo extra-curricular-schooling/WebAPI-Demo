@@ -29,7 +29,7 @@ namespace ECS.WebAPI.Tests
                 City = "Los Alamitos",
                 State = "CA",
                 ZipCode = 90720,
-                Questions = new List<AccountQuestionDTO>
+                SecurityQuestions = new List<AccountQuestionDTO>
                 {
 
                 }

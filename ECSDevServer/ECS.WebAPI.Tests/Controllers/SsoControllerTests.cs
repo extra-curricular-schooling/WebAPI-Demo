@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 using Moq;
+using System.Diagnostics;
 
 namespace ECS.WebAPI.Tests.Controllers
 {
@@ -12,14 +13,12 @@ namespace ECS.WebAPI.Tests.Controllers
     {
         public class Login
         {
-
-
             // Is the route acceptable
             [Theory]
             [InlineData("https://localhost:44311/Sso/Login")]
             public void RouteIsRecognized(string url)
             {
-
+                Debug.WriteLine(url);
             }
 
                 // Route "items" are spelled differently
@@ -27,7 +26,7 @@ namespace ECS.WebAPI.Tests.Controllers
             [InlineData("https://localhost:44311/SSO/Login")]
             public void RouteIsNotRecognized(string url)
             {
-
+                Debug.WriteLine(url);
             }
 
             // Check the anti-forgery token

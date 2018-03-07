@@ -6,17 +6,28 @@ using System.Linq.Expressions;
 
 namespace ECS.Repositories
 {
-    public class Repository<T> : IRepository<T> where T : class
+    public abstract class RepositoryBase<T> : IRepository<T> where T : class
     {
+        // DbContext represents the data context (database connection) currently in use.
         protected DbContext context;
-        protected IQueryable<T> DbSet;
-        public Repository(DbContext datacontext)
+
+        // DbSet represents the "table" that you are performing operations on.
+        protected IQueryable<T> dbSet;
+
+        /// <summary>
+        /// Repository base class contructor.
+        /// </summary>
+        /// <param name="datacontext">
+        /// The "database" that is used to produce the generated repository.
+        /// </param>
+        public RepositoryBase(DbContext datacontext)
         {
             //You can use the cpmt
             context = datacontext;
-            DbSet = context.Set<T>();
+            dbSet = context.Set<T>();
         }
 
+        
         public void Insert(T entity)
         {
             //Use the context object and entity state to save the entity
@@ -24,6 +35,7 @@ namespace ECS.Repositories
             context.SaveChanges();
         }
 
+        
         public void Delete(T entity)
         {
             //Use the context object and entity state to delete the entity
@@ -31,61 +43,66 @@ namespace ECS.Repositories
             context.SaveChanges();
         }
 
+        
         public void Update(T entity)
         {
-
             //Use the context object and entity state to update the entity
             context.Entry(entity).State = System.Data.Entity.EntityState.Modified;
             context.SaveChanges();
         }
 
+        // Haven't tested these yet!!!!!!!!!!!!!!!!!
         public T GetById(int id)
         {
-            return null;
+            return dbSet.Single(x => x.Equals(id));
+        }
+
+        // Haven't tested these yet!!!!!!!!!!!!!!!!!
+        public T GetById(string id)
+        {
+            return dbSet.Single(x => x.Equals(id));
         }
 
         public IQueryable<T> SearchFor(Expression<Func<T, bool>> predicate)
         {
-            IQueryable<T> dbQuery = context.Set<T>();
-            return dbQuery.Where(predicate);
+            return dbSet.Where(predicate);
         }
 
+        
         public IList<T> GetAll(params Expression<Func<T, object>>[] navigationProperties)
         {
             List<T> list = new List<T>();
-            IQueryable<T> dbQuery = context.Set<T>();
 
             //Apply eager loading
             foreach (Expression<Func<T, object>> navigationProperty in navigationProperties)
             {
-                dbQuery = dbQuery.Include<T, object>(navigationProperty);
+                dbSet = dbSet.Include<T, object>(navigationProperty);
 
-                list = dbQuery.AsNoTracking().ToList<T>();
+                list = dbSet.AsNoTracking().ToList<T>();
             }
             return list;
         }
 
+        // An example of the method GetStandardByName(string standardName)
+        // public Standard GetStandardByName(string standardName)
+        // {
+        //   return _standardRepository.GetSingle(d => d.StandardName.Equals(standardName), d => d.Students);
+        // } 
         public T GetSingle(Func<T, bool> where, params Expression<Func<T, object>>[] navigationProperties)
-        //This method will find the related records by passing two argument
-        //First argument: lambda expression to search a record such as d => d.StandardName.Equals(standardName) to search am record by standard name
-        //Second argument: navigation property that leads to the related records such as d => d.Students
-        //The method returns the related records that met the condition in the first argument.
-        //An example of the method GetStandardByName(string standardName)
-        //public Standard GetStandardByName(string standardName)
-        //{
-        //return _standardRepository.GetSingle(d => d.StandardName.Equals(standardName), d => d.Students);
-        //} 
         {
             T item = null;
-            IQueryable<T> dbQuery = context.Set<T>();
-            foreach (Expression<Func<T, object>> navigationProperty in navigationProperties)
-                dbQuery = dbQuery.Include<T, object>(navigationProperty);
 
-            item = dbQuery.AsNoTracking().FirstOrDefault(where);
+            foreach (Expression<Func<T, object>> navigationProperty in navigationProperties)
+                dbSet = dbSet.Include<T, object>(navigationProperty);
+
+            item = dbSet.AsNoTracking().FirstOrDefault(where);
             return item;
 
         }
 
+        /// <summary>
+        /// Garbage Collection is not implemented.
+        /// </summary>
         public void Dispose()
         {
             throw new NotImplementedException();

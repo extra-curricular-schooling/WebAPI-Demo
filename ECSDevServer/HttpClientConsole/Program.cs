@@ -37,12 +37,12 @@ namespace HttpClientConsole
                     {
                         Username = "dkdkd",
                         Password = "aaaaaa",
-                        Questions = new List<AccountQuestionDTO>
+                        SecurityQuestions = new List<AccountQuestionDTO>
                         {
                             new AccountQuestionDTO
                             {
-                                SecurityQuestion = 4,
-                                SecurityAnswer = "My mother"
+                                Question = 4,
+                                Answer = "My mother"
                             }
                         }
                     };
