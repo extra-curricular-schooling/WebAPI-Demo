@@ -8,21 +8,23 @@
       <div class="field first-name">
         <label class="label field-element is-required">First Name</label>
         <div class="control">
-          <input v-model="firstName" id="firstName" class="input" type="text" autocomplete="given-name" placeholder="First Name" required>
+          <input v-model="firstName" id="firstName" class="input" type="text" @keyup="validateFirstName" autocomplete="given-name" placeholder="First Name" required>
         </div>
+        <p id="firstNameControl" class="help">{{ firstNameMessage }}</p>
       </div>
 
       <div class="field last-name">
         <label class="label field-element is-required">Last Name</label>
         <div class="control">
-          <input v-model="lastName" id="lastName" class="input" type="text" autocomplete="family-name" placeholder="Last Name" required>
+          <input v-model="lastName" id="lastName" class="input" type="text" @keyup="validateLastName" autocomplete="family-name" placeholder="Last Name" required>
         </div>
+        <p id="lastNameControl" class="help">{{ lastNameMessage }}</p>
       </div>
 
       <div class="field username">
         <label class="label field-element is-required">Username</label>
         <div class="control has-icons-left has-icons-right">
-          <input v-model="username" id="username" class="input" type="text" autocomplete="username" placeholder="Username" required>
+          <input v-model="username" id="username" class="input" type="text" @keyup="validateUsername" autocomplete="username" placeholder="Username" required>
           <span class="icon is-small is-left">
             <i class="fas fa-user"></i>
           </span>
@@ -30,12 +32,13 @@
             <i class="fas fa-check"></i>
           </span>
         </div>
+        <p id="usernameControl" class="help">{{ usernameMessage }}</p>
       </div>
 
       <div class="field email-address">
         <label class="label field-element is-required">Email</label>
         <div class="control has-icons-left has-icons-right">
-          <input v-model="email" id="email" class="input" type="email" autocomplete="email" placeholder="Email" required>
+          <input v-model="email" id="email" class="input" type="email" @keyup="validateEmail" autocomplete="email" placeholder="Email" required>
           <span class="icon is-small is-left">
             <i class="fas fa-envelope"></i>
           </span>
@@ -43,26 +46,29 @@
             <i class="fas fa-exclamation-triangle"></i>
           </span>
         </div>
+        <p id="emailControl" class="help">{{ emailMessage }}</p>
       </div>
 
       <div class="field password">
         <label class="label field-element is-required">Password</label>
         <div class="control has-icons-left">
-          <input id="password" class="input" type="password" autocomplete="new-password" placeholder="************" required>
+          <input id="password" class="input" type="password"  @keyup="validatePassword" autocomplete="new-password" placeholder="************" required>
           <span class="icon is-small is-left">
             <i class="fas fa-lock"></i>
           </span>
         </div>
+        <p id="passwordControl" class="help">{{ passwordMessage }}</p>
       </div>
 
       <div class="field confirm-password">
         <label class="label field-element is-required">Confirm Password</label>
         <div class="control has-icons-left">
-          <input id="confirmPassword" class="input" type="password" autocomplete="new-password" placeholder="************" required>
+          <input id="confirmPassword" class="input" type="password" @keyup="validateConfirmPassword" autocomplete="new-password" placeholder="************" required>
           <span class="icon is-small is-left">
             <i class="fas fa-lock"></i>
           </span>
         </div>
+        <p id="confirmPasswordControl" class="help">{{ confirmPasswordMessage }}</p>
       </div>
     </div>
     <!-- END basic info fields -->
@@ -72,26 +78,30 @@
       <div class="field mailing-address">
         <label class="label field-element">Mailing Address</label>
         <div class="control">
-          <input v-model="address" id="address" class="input" type="text" autocomplete="street-address" placeholder="Street Address">
+          <input v-model="address" id="address" class="input" type="text" @keyup="validateAddress" autocomplete="street-address" placeholder="Street Address">
         </div>
+        <p id="addressControl" class="help">{{ addressMessage }}</p>
       </div>
       <div class="field mailing-address">
         <div class="control">
-          <input v-model="city" id="city" class="input" type="text" autocomplete="address-line2" placeholder="City">
+          <input v-model="city" id="city" class="input" type="text" @keyup="validateCity" autocomplete="address-line2" placeholder="City">
         </div>
+        <p id="cityControl" class="help">{{ cityMessage }}</p>
       </div>
       <div class="field is-grouped mailing-adress">
         <p class="control">
-          <input v-model="state" id="state" class="input" text="text" autocomplete="address-line2" placeholder="State">
+          <input v-model="state" id="state" class="input" text="text" @keyup="validateState" autocomplete="address-line2" placeholder="State">
           <!-- <span class="select">
             <select>
               <option selected>State</option>
             </select>
           </span> -->
         </p>
+        <p id="stateControl" class="help">{{ stateMessage }}</p>
         <p class="control">
-          <input v-model="zipCode" id="zipCode" class="input" type="number" autocomplete="postal-code" placeholder="Zip Code">
+          <input v-model="zipCode" id="zipCode" class="input" type="number" @keyup="validateZipCode" autocomplete="postal-code" placeholder="Zip Code">
         </p>
+        <p id="zipCodeControl" class="help">{{ zipCodeMessage }}</p>
       </div>
     </div>
     <!-- END mailing address fields -->
@@ -206,9 +216,29 @@ export default {
       zipCode: '',
       question1: '',
       question2: '',
-      question3: ''
+      question3: '',
 
       // Validation Messages
+      firstNameMessage: '',
+      lastNameMessage: '',
+      usernameMessage: '',
+      passwordMessage: '',
+      confirmPasswordMessage: '',
+      emailMessage: '',
+      addressMessage: '',
+      cityMessage: '',
+      stateMessage: '',
+      zipCodeMessage: '',
+
+      // Regular Expressions
+      NAME_REGEX: /^[a-zA-Z ]{1,50}$/,
+      USERNAME_REGEX: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]{8,120}$/,
+      PASSWORD_REGEX: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_])[a-zA-Z0-9!@#$%^&*()_]{8,64}$/,
+      EMAIL_REGEX: /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+      ADDRESS_REGEX: /^[a-zA-Z0-9#.,-/ ]{0,}$/,
+      CITY_REGEX: /^[a-zA-Z ]{0,}$/,
+      STATE_REGEX: /^[A-Z]{0,2}$/,
+      ZIPCODE_REGEX: /^\d{5}(?:[-\s]\d{4})?$/
     }
   },
   methods: {
@@ -226,6 +256,117 @@ export default {
         answer = 'answer3'
       }
       return document.getElementById(answer).value;
+    },
+    // Data Validations
+    validateFirstName () {
+      if (!this.$data.NAME_REGEX.test(this.$data.firstName) && this.$data.firstName != '') {
+        document.getElementById('firstName').className = 'input';
+        document.getElementById('firstNameControl').className = 'help is-warning';
+        this.$data.firstNameMessage = 'Sorry, the name you entered is too long.';
+      } else {
+        document.getElementById('firstName').className = 'input is-success';
+        document.getElementById('firstNameControl').className = 'help';
+        this.$data.firstNameMessage = '';
+      }
+    },
+    validateLastName () {
+      if (!this.$data.NAME_REGEX.test(this.$data.lastName) && this.$data.firstName != '') {
+        document.getElementById('lastName').className = 'input';
+        document.getElementById('lastNameControl').className = 'help is-warning';
+        this.$data.lastNameMessage = 'Sorry, the name you entered is too long.';
+      } else {
+        document.getElementById('lastName').className = 'input is-success';
+        document.getElementById('lastNameControl').className = 'help';
+        this.$data.lastNameMessage = '';
+      }
+    },
+    validateUsername () {
+      if (!this.$data.USERNAME_REGEX.test(this.$data.username)) {
+        document.getElementById('username').className = 'input';
+        document.getElementById('usernameControl').className = 'help is-warning';
+        this.$data.usernameMessage = 'Username must be 8-120 characters long, must not contain any spaces, and must contain at least 1 lowercase letter, 1 uppercase letter, and 1 number.';
+      } else {
+        document.getElementById('username').className = 'input is-success';
+        document.getElementById('usernameControl').className = 'help';
+        this.$data.usernameMessage = '';
+      }
+    },
+    validateEmail () {
+      if (!this.$data.EMAIL_REGEX.test(this.$data.email)) {
+        document.getElementById('email').className = 'input';
+        document.getElementById('emailControl').className = 'help is-warning';
+        this.$data.emailMessage = 'Email is not a valid email.';
+      } else {
+        document.getElementById('email').className = 'input is-success';
+        document.getElementById('emailControl').className = 'help';
+        this.$data.emailMessage = '';
+      }
+    },
+    validatePassword () {
+      if (!this.$data.PASSWORD_REGEX.test(document.getElementById('password').value)) {
+        document.getElementById('password').className = 'input';
+        document.getElementById('passwordControl').className = 'help is-warning';
+        this.$data.passwordMessage = 'Password must be 8-64 characters long, must not contain any spaces, and must contain at least 1 lowercase letter, 1 uppercase letter, 1 number, and 1 special character.';
+      } else {
+        document.getElementById('password').className = 'input is-success';
+        document.getElementById('passwordControl').className = 'help';
+        this.$data.passwordMessage = '';
+      }
+    },
+    validateConfirmPassword () {
+      if (document.getElementById('password').value != document.getElementById('confirmPassword').value) {
+        document.getElementById('confirmPassword').className = 'input';
+        document.getElementById('confirmPasswordControl').className = 'help is-warning';
+        this.$data.confirmPasswordMessage = 'Retype Password';
+      } else if (document.getElementById('password').value == document.getElementById('confirmPassword').value) {
+        document.getElementById('confirmPassword').className = 'input is-success';
+        document.getElementById('confirmPasswordControl').className = 'help';
+        this.$data.confirmPasswordMessage = '';
+      }
+    },
+    validateAddress () {
+      if (!this.$data.ADDRESS_REGEX.test(this.$data.address)) {
+        document.getElementById('address').className = 'input';
+        document.getElementById('addressControl').className = 'help is-warning';
+        this.$data.addressMessage = 'The address you entered contains invalid characters.';
+      } else {
+        document.getElementById('address').className = 'input is-success';
+        document.getElementById('addressControl').className = 'help';
+        this.$data.addressMessage = '';
+      }
+    },
+    validateCity () {
+      if (!this.$data.CITY_REGEX.test(this.$data.city)) {
+        document.getElementById('city').className = 'input';
+        document.getElementById('cityControl').className = 'help is-warning';
+        this.$data.cityMessage = 'The city you entered contains invalid characters.';
+      } else {
+        document.getElementById('city').className = 'input is-success';
+        document.getElementById('cityControl').className = 'help';
+        this.$data.cityMessage = '';
+      }
+    },
+    validateState () {
+      if (!this.$data.STATE_REGEX.test(this.$data.state)) {
+        document.getElementById('state').className = 'input';
+        document.getElementById('stateControl').className = 'help is-warning';
+        this.$data.stateMessage = 'State must be in abbreviated format.';
+      } else {
+        document.getElementById('state').className = 'input is-success';
+        document.getElementById('stateControl').className = 'help';
+        this.$data.stateMessage = '';
+      }
+    },
+    validateZipCode () {
+      if (!this.$data.ZIPCODE_REGEX.test(this.$data.zipCode)) {
+        document.getElementById('zipCode').className = 'input';
+        document.getElementById('zipCodeControl').className = 'help is-warning';
+        this.$data.zipCodeMessage = 'ZipCode must follow proper format as defined by the U.S. Postal Service.';
+      } else {
+        document.getElementById('zipCode').className = 'input is-success';
+        document.getElementById('zipCodeControl').className = 'help';
+        this.$data.zipCodeMessage = '';
+      }
     },
     submit () {
       axios({
