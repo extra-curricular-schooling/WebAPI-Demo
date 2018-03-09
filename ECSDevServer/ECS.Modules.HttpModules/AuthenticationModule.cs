@@ -15,8 +15,7 @@ namespace ECS.Modules.HttpModules
 
         public void Init(HttpApplication context)
         {
-            context.BeginRequest += new EventHandler(OnPreflightRequest);
-            context.BeginRequest += new EventHandler(OnApiRequest);
+            context.BeginRequest += new EventHandler(OnHttpRequest);
         }
 
         // List of accepted referrer header values.
@@ -35,6 +34,28 @@ namespace ECS.Modules.HttpModules
             "https://ecschooling.org"
         };
 
+        private void OnHttpRequest(object sender, EventArgs e)
+        {
+            // Cast the sender as an HttpApplication
+            var app = sender as HttpApplication;
+            var request = app.Request;
+            if (request.GetType().Name.Equals("HttpRequest"))
+            {
+                if (request.HttpMethod.Equals("OPTIONS"))
+                {
+                    OnPreflightRequest(sender, e);
+                }
+                else
+                {
+                    if (request.Headers["Referer"] == null || !acceptedReferrerUrls.Contains(request.Headers["Referer"]))
+                    {
+                        app.Response.StatusCode = 401;
+                        app.Response.End();
+                    }
+                }  
+            }
+        }
+
         private void OnPreflightRequest(object sender, EventArgs e)
         {
             // Cast the sender as an HttpApplication
@@ -47,9 +68,10 @@ namespace ECS.Modules.HttpModules
                 app.Response.End();
             }
 
-            if (app.Request.HttpMethod == "OPTIONS" )
+            if (app.Request.HttpMethod == "OPTIONS")
             {
                 app.Response.StatusCode = 200;
+                // Change for production... String concat is costly.
                 app.Response.AddHeader("Access-Control-Allow-Headers",
                     "Access-Control-Allow-Origin," +
                     "Access-Control-Allow-Credentials," +
@@ -66,19 +88,5 @@ namespace ECS.Modules.HttpModules
             }
         }
 
-        private void OnApiRequest(object sender, EventArgs e)
-        {
-            // Cast the sender as an HttpApplication
-            var app = sender as HttpApplication;
-
-            // All requests need to have a referer header and be on the whitelist.
-            // How do I get around the options part... Options preflight doesn't have an origin.
-            if (app.Request.HttpMethod != "OPTIONS" && (app.Request.Headers["Referer"] == null 
-                || !acceptedReferrerUrls.Contains(app.Request.Headers["Referer"])))
-            {
-                app.Response.StatusCode = 401;
-                app.Response.End();
-            }
-        }
     }
 }

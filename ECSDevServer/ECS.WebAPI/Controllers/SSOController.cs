@@ -13,13 +13,19 @@ namespace ECS.WebAPI.Controllers
 {
     public class SsoController : ApiController
     {
+        [HttpGet]
+        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET")]
+        public void Registration()
+        {
+            // Return a Registration form if they haven't properly finished registration??
+        }
+
         /*
          * When Web API encounters a type implementing this interface as result of an 
          * executed action, instead of running content negotiation, it will call 
          * its only method (Execute) to produce the HttpResponseMessage, and then use that to 
          * respond to the client
          */
-
         [HttpPost]
         public IHttpActionResult Registration(SsoRegistrationDTO ssoAccount)
         {
@@ -34,7 +40,7 @@ namespace ECS.WebAPI.Controllers
                 // When they try and register in our app after SSO's registration, check the flag.
 
                 // Return successful response
-                return Ok();
+                return Ok("Post Registration");
             }
 
             // Code errors for specific html states.
@@ -43,17 +49,25 @@ namespace ECS.WebAPI.Controllers
 
             // Fail-safe return
             return BadRequest(ModelState);
-
         }
 
         [HttpGet]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET")]
-        public void Registration()
+        public IHttpActionResult SecurityQuestions()
         {
-            // Return a Registration form if they haven't properly finished registration??
+            // Grab the repository information for User's security questions
+            
+            // Return List<SecurityQuestionDTO> to the Client
+            return Ok("Get Security Questions");
         }
 
+        [HttpPost]
+        public IHttpActionResult SecurityQuestions(AccountCredentialDTO credentials)
+        {
+            // Check the db If their answers are correct.
+            return Ok("Post Security Questions");
+        }
 
+        [HttpPost]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
         public IHttpActionResult ResetPassword([FromBody] AccountCredentialDTO credentials)
         {
@@ -66,16 +80,11 @@ namespace ECS.WebAPI.Controllers
                 // using(var context = new ECSContext())
 
                 // Return 200
-                return Ok();
+                return Ok("Post Reset Password");
             }
 
             // Fail state
             return BadRequest(ModelState);
-        }
-
-        public IHttpActionResult ResetPasswordWithAnswers()
-        {
-            return Ok();
         }
 
         /// <summary>
@@ -97,7 +106,7 @@ namespace ECS.WebAPI.Controllers
                 // Issue login information
 
                 // Return 200
-                return Ok();
+                return Ok(credentials);
             }
 
             // Fail state

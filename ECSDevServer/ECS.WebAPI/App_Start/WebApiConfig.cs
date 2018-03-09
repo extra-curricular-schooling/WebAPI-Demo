@@ -18,6 +18,7 @@ namespace ECS.WebAPI
             // Enable CORS with default pipeline
             config.EnableCors();
             
+            // Enable the HttpHandler for Preflight Requests
             //config.MessageHandlers.Add(new PreflightRequestsHandler());
 
             // Setting up JSON serialization
