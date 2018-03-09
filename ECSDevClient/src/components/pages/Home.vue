@@ -1,7 +1,7 @@
 <template>
-  <div class="embed_content">
+  <div class="EmbedContent">
     <h1>Welcome to Article Page</h1>
-    <iframe src="https://ecschooling.org/" name="frame_result" height="700" width=100% style="border:8px solid black;"></iframe>
+    <iframe src="https://ecschooling.org/" name="FrameResult" height="700" width=100% style="border:8px solid black;"></iframe>
     <vue-good-table :columns="columns" :rows="rows" styleClass="table condensed table-bordered table-striped" paginate=true>
     <template slot="table-row" slot-scope="props">
     <td>{{ props.row.articleType }}</td>
@@ -9,7 +9,8 @@
     <td>{{ props.row.articleLink }}</td>
     <td>{{ props.row.articleDescription }}</td>
     <td>{{ props.row.articleTag }}</td>
-    <a v-bind:href="props.row.articleLink" target="frame_result">DISPLAY</a>
+    <a v-bind:href="props.row.articleLink" target="FrameResult">DISPLAY</a>
+    <!-- need timeout if the page is not rendered in 5 seconds, This is for earning points. -->
     </template>
     </vue-good-table>
   </div>
