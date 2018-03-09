@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Web.Http;
+using System.Web.Http.Cors;
 using ECS.DTO;
 using ECS.Models;
 using ECS.WebAPI.Services;
@@ -9,6 +10,61 @@ namespace ECS.WebAPI.Controllers
     [RoutePrefix("ResetPassword")]
     public class ResetPasswordController : ApiController
     {
+        [HttpGet]
+        public IHttpActionResult SecurityQuestions()
+        {
+            // Grab the repository information for User's security questions
+
+            // Return List<SecurityQuestionDTO> to the Client
+            return Ok("Get Security Questions");
+        }
+
+        [HttpPost]
+        public IHttpActionResult SecurityQuestions(AccountCredentialDTO credentials)
+        {
+            // Credentials is already read and deserialized into a DTO. Validate it.
+            Validate(credentials);
+
+            if (!ModelState.IsValid)
+            {
+                // Proccess any other information.
+
+                // Check the db If their answers are correct.
+
+                // Return succesful response
+                return Ok("Post Security Questions");
+            }
+            return BadRequest(ModelState);
+        }
+
+        [HttpPost]
+        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
+        public IHttpActionResult ResetPassword(AccountCredentialDTO credentials)
+        {
+            // Credentials is already read and deserialized into a DTO. Validate it.
+            Validate(credentials);
+
+            if (ModelState.IsValid)
+            {
+                // We need to take this information and update the user's password in the db.
+                
+                // Return 200
+                return Ok("Post Reset Password");
+            }
+
+            // Fail state
+            return BadRequest(ModelState);
+        }
+
+        public void SsoResetPasswordRequest()
+        {
+            // send the password to sso
+            using (HttpClientService client = HttpClientService.SsoInstance)
+            {
+                // send to client.
+            }
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -36,11 +92,6 @@ namespace ECS.WebAPI.Controllers
 
             // Return successful response
             return Ok();
-        }
-        [HttpGet]
-        public AccountCredentialDTO Username()
-        {
-            return new AccountCredentialDTO();
         }
 
         /// <summary>
@@ -114,8 +165,5 @@ namespace ECS.WebAPI.Controllers
 
             //return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
-
-
-
     }
 }

@@ -31,7 +31,7 @@ namespace ECS.Repositories
         public void Insert(T entity)
         {
             //Use the context object and entity state to save the entity
-            context.Entry(entity).State = System.Data.Entity.EntityState.Added;
+            //context.Entry(entity).State = System.Data.Entity.EntityState.Added;
             context.SaveChanges();
         }
 

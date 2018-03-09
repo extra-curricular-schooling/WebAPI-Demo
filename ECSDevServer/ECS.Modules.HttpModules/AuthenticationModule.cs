@@ -21,6 +21,7 @@ namespace ECS.Modules.HttpModules
         // List of accepted referrer header values.
         List<string> acceptedReferrerUrls = new List<string>
         {
+            "https://localhost:44311/",
             "http://localhost:8080/",
             "https://www.ecschooling.org/",
             "https://ecschooling.org/"
@@ -41,52 +42,41 @@ namespace ECS.Modules.HttpModules
             var request = app.Request;
             if (request.GetType().Name.Equals("HttpRequest"))
             {
-                if (request.HttpMethod.Equals("OPTIONS"))
+                bool isAcceptedRefererHeader = false;
+                bool isAcceptedOriginHeader = false;
+                if (request.Headers["Referer"] != null && acceptedReferrerUrls.Contains(request.Headers["Referer"]))
                 {
-                    OnPreflightRequest(sender, e);
+                    isAcceptedRefererHeader = true;
                 }
-                //else
-                //{
-                //    if (request.Headers["Referer"] == null || !acceptedReferrerUrls.Contains(request.Headers["Referer"]))
-                //    {
-                //        app.Response.StatusCode = 401;
-                //        app.Response.End();
-                //    }
-                //}
+                if (request.Headers["Origin"] != null && acceptedOrigins.Contains(request.Headers["Origin"]))
+                {
+                    isAcceptedOriginHeader = true;
+                }
+                if (!isAcceptedRefererHeader && !isAcceptedOriginHeader)
+                {
+                    app.Response.StatusCode = 401;
+                    app.Response.End();
+                }
+                // For Preflight
+                if (app.Request.HttpMethod == "OPTIONS")
+                {
+                    app.Response.StatusCode = 200;
+                    // Change for production... String concat is costly.
+                    app.Response.AddHeader("Access-Control-Allow-Headers",
+                        "Access-Control-Allow-Origin," +
+                        "Access-Control-Allow-Credentials," +
+                        "origin," +
+                        "accept," +
+                        "content-type," +
+                        "referer," +
+                        "X-Requested-With");
+                    app.Response.AddHeader("Access-Control-Allow-Origin", "http://localhost:8080");
+                    app.Response.AddHeader("Access-Control-Allow-Credentials", "true");
+                    app.Response.AddHeader("Access-Control-Allow-Methods", "POST,GET,OPTIONS");
+                    app.Response.AddHeader("Content-Type", "application/json");
+                    app.Response.End();
+                }
             }
         }
-
-        private void OnPreflightRequest(object sender, EventArgs e)
-        {
-            // Cast the sender as an HttpApplication
-            var app = sender as HttpApplication;
-
-            // All requests need to have a origin header and be on the whitelist.
-            if (app.Request.Headers["Origin"] == null || !acceptedOrigins.Contains(app.Request.Headers["Origin"]))
-            {
-                app.Response.StatusCode = 401;
-                app.Response.End();
-            }
-
-            if (app.Request.HttpMethod == "OPTIONS")
-            {
-                app.Response.StatusCode = 200;
-                // Change for production... String concat is costly.
-                app.Response.AddHeader("Access-Control-Allow-Headers",
-                    "Access-Control-Allow-Origin," +
-                    "Access-Control-Allow-Credentials," +
-                    "origin," +
-                    "accept," +
-                    "content-type," +
-                    "referer," +
-                    "X-Requested-With");
-                app.Response.AddHeader("Access-Control-Allow-Origin", "http://localhost:8080");
-                app.Response.AddHeader("Access-Control-Allow-Credentials", "true");
-                app.Response.AddHeader("Access-Control-Allow-Methods", "POST,GET,OPTIONS");
-                app.Response.AddHeader("Content-Type", "application/json");
-                app.Response.End();
-            }
-        }
-
     }
 }

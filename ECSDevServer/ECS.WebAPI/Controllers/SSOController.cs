@@ -27,6 +27,7 @@ namespace ECS.WebAPI.Controllers
          * respond to the client
          */
         [HttpPost]
+        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET")]
         public IHttpActionResult Registration(SsoRegistrationDTO ssoAccount)
         {
             // Credentials is already read and deserialized into a DTO. Validate it.
@@ -48,42 +49,6 @@ namespace ECS.WebAPI.Controllers
             // Error handling in controller: https://stackoverflow.com/questions/10732644/best-practice-to-return-errors-in-asp-net-web-api#10734690
 
             // Fail-safe return
-            return BadRequest(ModelState);
-        }
-
-        [HttpGet]
-        public IHttpActionResult SecurityQuestions()
-        {
-            // Grab the repository information for User's security questions
-            
-            // Return List<SecurityQuestionDTO> to the Client
-            return Ok("Get Security Questions");
-        }
-
-        [HttpPost]
-        public IHttpActionResult SecurityQuestions(AccountCredentialDTO credentials)
-        {
-            // Check the db If their answers are correct.
-            return Ok("Post Security Questions");
-        }
-
-        [HttpPost]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
-        public IHttpActionResult ResetPassword([FromBody] AccountCredentialDTO credentials)
-        {
-            // Credentials is already read and deserialized into a DTO. Validate it.
-            Validate(credentials);
-
-            if (ModelState.IsValid)
-            {
-                // We need to take this information and update the user's password in the db.
-                // using(var context = new ECSContext())
-
-                // Return 200
-                return Ok("Post Reset Password");
-            }
-
-            // Fail state
             return BadRequest(ModelState);
         }
 
