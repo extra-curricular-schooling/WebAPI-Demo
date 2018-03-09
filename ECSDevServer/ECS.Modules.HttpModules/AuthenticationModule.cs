@@ -52,7 +52,7 @@ namespace ECS.Modules.HttpModules
                         app.Response.StatusCode = 401;
                         app.Response.End();
                     }
-                }  
+                }
             }
         }
 
