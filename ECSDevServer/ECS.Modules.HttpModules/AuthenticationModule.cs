@@ -45,14 +45,14 @@ namespace ECS.Modules.HttpModules
                 {
                     OnPreflightRequest(sender, e);
                 }
-                else
-                {
-                    if (request.Headers["Referer"] == null || !acceptedReferrerUrls.Contains(request.Headers["Referer"]))
-                    {
-                        app.Response.StatusCode = 401;
-                        app.Response.End();
-                    }
-                }
+                //else
+                //{
+                //    if (request.Headers["Referer"] == null || !acceptedReferrerUrls.Contains(request.Headers["Referer"]))
+                //    {
+                //        app.Response.StatusCode = 401;
+                //        app.Response.End();
+                //    }
+                //}
             }
         }
 
