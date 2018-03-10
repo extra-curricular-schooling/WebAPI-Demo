@@ -1,8 +1,12 @@
-﻿using ECS.DTO;
+﻿using System.Collections.Generic;
+using System.Web.Script.Serialization;
+using ECS.DTO;
+using ECS.Models;
 using ECS.WebAPI.Services;
 using System.Net;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using System.Net.Http;
 
 namespace ECS.WebAPI.Controllers
 {
@@ -107,13 +111,22 @@ namespace ECS.WebAPI.Controllers
         /// <summary>
         /// Method accepts request to fetch security questions using the GET method over HTTP
         /// </summary>
-        [AllowAnonymous]
         [HttpGet]
-        public IHttpActionResult SecurityQuestions()
+        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET")]
+        public IHttpActionResult GetSecurityQuestions()
         {
 
             // Insert the model into Ok() for it to return in the body as a JSON.
-            return Ok();
+
+            // TEST ????
+            List<SecurityQuestion> test = new List<SecurityQuestion> {
+                new SecurityQuestion{SecurityQuestionID = 1, SecurityQuestions = "Who?" },
+                new SecurityQuestion{SecurityQuestionID = 2, SecurityQuestions = "What?" },
+                new SecurityQuestion{SecurityQuestionID = 3, SecurityQuestions = "When?" },
+                new SecurityQuestion{SecurityQuestionID = 4, SecurityQuestions = "Why?" }
+            };
+            
+            return Content(HttpStatusCode.OK, new JavaScriptSerializer().Serialize(test));
         }
     }
 }
