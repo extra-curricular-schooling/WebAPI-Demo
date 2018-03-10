@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using ECS.Repositories;
+using ECS.Models;
 
 /// <summary>
 /// 
@@ -13,11 +15,11 @@ namespace ECS.WebAPI.Controllers
 {
     public class SsoController : ApiController
     {
-        [HttpGet]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET")]
-        public void Registration()
+        private AccountRepository accountRepository;
+
+        public SsoController()
         {
-            // Return a Registration form if they haven't properly finished registration??
+            accountRepository = new AccountRepository();
         }
 
         /*
@@ -27,29 +29,22 @@ namespace ECS.WebAPI.Controllers
          * respond to the client
          */
         [HttpPost]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET")]
-        public IHttpActionResult Registration(SsoRegistrationDTO ssoAccount)
+        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
+        public IHttpActionResult Registration()
         {
-            // Credentials is already read and deserialized into a DTO. Validate it.
-            Validate(ssoAccount);
+            // Validate JWT? Make custom validator object?
 
-            if (ModelState.IsValid)
-            {
-                // Make custom validator object.
+            // Read the JWT, and grab the information out of it.
 
-                // Set some sort of flag up for the User in DB.
-                // When they try and register in our app after SSO's registration, check the flag.
-
-                // Return successful response
-                return Ok("Post Registration");
-            }
+            // Set some sort of flag up for the User in DB.
+            // When they try and register in our app after SSO's registration, check the flag.
+            Account account = new Account();
+            //accountRepository.Insert(account);
 
             // Code errors for specific html states.
-
             // Error handling in controller: https://stackoverflow.com/questions/10732644/best-practice-to-return-errors-in-asp-net-web-api#10734690
 
-            // Fail-safe return
-            return BadRequest(ModelState);
+            return Ok();
         }
 
         /// <summary>
@@ -57,32 +52,27 @@ namespace ECS.WebAPI.Controllers
         /// </summary>
         /// <remarks>Author: Scott Roberts</remarks>
         [HttpPost]
-        public IHttpActionResult Login([FromBody] AccountCredentialDTO credentials)
+        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
+        public IHttpActionResult Login()
         {
-            // Credentials is already read and deserialized into a DTO. Validate it.
-            Validate(credentials);
+            // Validate JWT? Make custom validator object?
 
-            if (ModelState.IsValid)
-            {
-                // Proccess any other information.
+            // Read the JWT, and grab the information out of it.
 
-                // Check app DB for user.
+            // Proccess any other information.
 
-                // Issue login information
+            // Check app DB for user.
 
-                // Return 200
-                return Ok(credentials);
-            }
-
-            // Fail state
-            return BadRequest(ModelState);
-
+            // Issue login information
 
             // Return successful response with a "redirect" to where the token will be given
             // Post methods should not return data, but should return responses and location headers of 
             // what was created in the post.
 
             //return CreatedAtRoute("DefaultApi", new { id = product.Id }, product);
+
+            // Return 200
+            return Ok();
         }
     }
 }

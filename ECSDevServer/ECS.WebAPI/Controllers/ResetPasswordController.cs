@@ -11,6 +11,7 @@ namespace ECS.WebAPI.Controllers
     public class ResetPasswordController : ApiController
     {
         [HttpGet]
+        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET")]
         public IHttpActionResult SecurityQuestions()
         {
             // Grab the repository information for User's security questions
@@ -20,12 +21,13 @@ namespace ECS.WebAPI.Controllers
         }
 
         [HttpPost]
+        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
         public IHttpActionResult SecurityQuestions(AccountCredentialDTO credentials)
         {
             // Credentials is already read and deserialized into a DTO. Validate it.
             Validate(credentials);
 
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 // Proccess any other information.
 
@@ -39,7 +41,7 @@ namespace ECS.WebAPI.Controllers
 
         [HttpPost]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
-        public IHttpActionResult ResetPassword(AccountCredentialDTO credentials)
+        public IHttpActionResult NewPassword(AccountCredentialDTO credentials)
         {
             // Credentials is already read and deserialized into a DTO. Validate it.
             Validate(credentials);
@@ -72,7 +74,7 @@ namespace ECS.WebAPI.Controllers
         [HttpPost]
         // The DTO we are using worries me because it will have an empty password field for this action
         // Should I make a AccountUsernameDTO???
-        public IHttpActionResult Username([FromBody] AccountCredentialDTO credentials)
+        public IHttpActionResult Username(AccountCredentialDTO credentials)
         {
             // Credentials is already read and deserialized into a DTO. Validate it.
             Validate(credentials);
@@ -99,7 +101,7 @@ namespace ECS.WebAPI.Controllers
         /// </summary>
         /// <remarks>Author: Scott Roberts</remarks>
         [HttpPost]
-        public IHttpActionResult SecurityAnswers([FromBody] SecurityQuestionDTO securityQuestions)
+        public IHttpActionResult SecurityAnswers(SecurityQuestionDTO securityQuestions)
         {
             // Credentials is already read and deserialized into a DTO. Validate it.
             Validate(securityQuestions);
@@ -122,7 +124,7 @@ namespace ECS.WebAPI.Controllers
         /// </summary>
         /// <remarks>Author: Scott Roberts</remarks>
         [HttpPost]
-        public IHttpActionResult AccountPassword([FromBody] AccountCredentialDTO credentials)
+        public IHttpActionResult AccountPassword(AccountCredentialDTO credentials)
         {
             // Credentials is already read and deserialized into a DTO. Validate it.
             Validate(credentials);
