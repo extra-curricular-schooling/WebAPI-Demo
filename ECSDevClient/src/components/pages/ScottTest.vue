@@ -17,10 +17,10 @@ import axios from 'axios'
 
 export default {
   methods: {
-    testRequest: () => {
+    testRequest () {
       axios({
         method: 'POST',
-        url: this.$store.getters.getBaseAppUrl + '/ResetPassword/SecurityQuestions',
+        url: this.$store.getters.getBaseAppUrl + 'ResetPassword/SecurityQuestions',
         headers: this.$store.getters.getRequestHeaders,
         data: {
           'username': 'Scott',

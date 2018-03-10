@@ -111,12 +111,13 @@
       <div class="field security-questions">
         <label class="label field-element is-required">Security Questions</label>
         <div class="control">
-          <input v-model="question1" class="input" type="number" placeholder="Question 1" required>
-          <!-- <span class="select">
-            <select>
-              <option selected>--select--</option>
+          <!-- <input v-model="question1" class="input" type="number" placeholder="Question 1" required> -->
+          <span class="select">
+            <select @change="getSelectionID(1, question1)" v-model="question1">
+              <option disabled value="">--select--</option>
+              <option v-for="question in questions" v-bind:key="question.SecurityQuestionID"> {{ question.SecurityQuestions }} </option>
             </select>
-          </span> -->
+          </span>
         </div>
       </div>
       <div class="field security-questions-answers">
@@ -127,12 +128,13 @@
 
       <div class="field security-questions">
         <div class="control">
-          <input v-model="question2" class="input" type="number" placeholder="Question 2" required>
-          <!-- <span class="select">
-            <select>
-              <option selected>--select--</option>
+          <!-- <input v-model="question2" class="input" type="number" placeholder="Question 2" required> -->
+          <span class="select">
+            <select @change="getSelectionID(2, question2)" v-model="question2">
+              <option disabled value="">--select--</option>
+              <option v-for="question in questions" v-bind:key="question.SecurityQuestionID"> {{ question.SecurityQuestions }} </option>
             </select>
-          </span> -->
+          </span>
         </div>
       </div>
       <div class="field security-questions-answers">
@@ -143,12 +145,13 @@
 
       <div class="field security-questions">
         <div class="control">
-          <input v-model="question3" class="input" type="number" placeholder="Question 1" required>
-          <!-- <span class="select">
-            <select>
-              <option selected>--select--</option>
+          <!-- <input v-model="question3" class="input" type="number" placeholder="Question 1" required> -->
+          <span class="select">
+            <select @change="getSelectionID(3, question3)" v-model="question3">
+              <option disabled value="">--select--</option>
+              <option v-for="question in questions" v-bind:key="question.SecurityQuestionID"> {{ question.SecurityQuestions }} </option>
             </select>
-          </span> -->
+          </span>
         </div>
       </div>
       <div class="field security-questions-answers">
@@ -205,7 +208,12 @@ export default {
   },
   data () {
     return {
-      // Primary Data
+      // Properties
+      question1: '',
+      question2: '',
+      question3: '',
+
+      // Request Data
       firstName: '',
       lastName: '',
       username: '',
@@ -214,9 +222,10 @@ export default {
       city: '',
       state: '',
       zipCode: '',
-      question1: '',
-      question2: '',
-      question3: '',
+      questionIDs: [],
+
+      // Response Data
+      questions: [],
 
       // Validation Messages
       firstNameMessage: '',
@@ -238,8 +247,11 @@ export default {
       ADDRESS_REGEX: /^[a-zA-Z0-9#.,-/ ]{0,}$/,
       CITY_REGEX: /^[a-zA-Z ]{0,}$/,
       STATE_REGEX: /^[A-Z]{0,2}$/,
-      ZIPCODE_REGEX: /^\d{5}(?:[-\s]\d{4})?$/
+      ZIPCODE_REGEX: /^\d{5}(?:[-\s]\d{4})?$/,
     }
+  },
+  mounted () {
+    this.fetchSecurityQuestions()
   },
   methods: {
     // Data Getters
@@ -256,6 +268,15 @@ export default {
         answer = 'answer3'
       }
       return document.getElementById(answer).value;
+    },
+    getSelectionID (i, selected) {
+      for (var key in this.questions) {
+        var question = this.questions[key]
+        if (question.SecurityQuestions === selected) {
+          var ID = question.SecurityQuestionID
+        }
+      }
+      this.$data.questionIDs[i] = ID
     },
     // Data Validations
     validateFirstName () {
@@ -371,13 +392,8 @@ export default {
     submit () {
       axios({
         method: 'POST',
-        url: 'https://localhost:44311/Registration/SubmitRegistration',
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Credentials': true,
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
+        url: this.$store.getters.getBaseAppUrl + 'Registration/SubmitRegistration',
+        headers: this.$store.getters.getRequestHeaders,
         data: {
           'firstName': this.$data.firstName,
           'lastName': this.$data.lastName,
@@ -390,15 +406,15 @@ export default {
           'zipCode': Number(this.$data.zipCode),
           'securityQuestions': [
             {
-              'question': Number(this.$data.question1),
+              'question': Number(this.$data.questionIDs[1]),
               'answer': this.getSecurityAnswer(1)
             },
             {
-              'question': Number(this.$data.question2),
+              'question': Number(this.$data.questionIDs[2]),
               'answer': this.getSecurityAnswer(2)
             },
             {
-              'question': Number(this.$data.question3),
+              'question': Number(this.$data.questionIDs[3]),
               'answer': this.getSecurityAnswer(3)
             }
           ]
@@ -406,17 +422,18 @@ export default {
       })
         .then(response => console.log(response))
         .catch(response => console.log(response))
-    }
-    /* fetchSecurityQuestions: () => {
+    },
+    fetchSecurityQuestions () {
       axios({
         method: 'GET',
-        url: 'https://localhost:44313/registration/RequestSecurityQuestions'
+        url: this.$store.getters.getBaseAppUrl + 'Registration/GetSecurityQuestions',
+        headers: this.$store.getters.getRequestHeaders
       })
         .then(response => {
-          this.security_qas = response.data
+          this.$data.questions = JSON.parse(response.data)
         })
         .catch(response => console.log(response))
-    } */
+    }
   }
 }
 </script>
@@ -427,6 +444,10 @@ export default {
 }
 
 .form-agreements {
+  text-align: left;
+}
+
+.help {
   text-align: left;
 }
 
