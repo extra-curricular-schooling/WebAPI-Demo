@@ -1,9 +1,14 @@
 <template>
   <div>
+    <h2>Registration API Calls</h2>
     <button v-on:click="submitRegistration">Send Post to Sso/Registration</button>
-    <button v-on:click="requestQuestions">Send Get to Sso/SecurityQuestions</button>
-    <button v-on:click="submitAnswers">Send Post to Sso/SecurityQuestions</button>
+    <h2>Login API Calls</h2>
     <button v-on:click="submitLogin">Send Post to Sso/Login</button>
+    <h2>Reset Password API Calls</h2>
+    <button v-on:click="requestQuestions">Send Get to ResetPassword/SecurityQuestions</button>
+    <button v-on:click="submitAnswers">Send Post to ResetPassword/SecurityQuestions</button>
+    <h2>Test With Store</h2>
+    <button v-on:click="testRequest">Test store request info</button>
   </div>
 </template>
 
@@ -12,6 +17,25 @@ import axios from 'axios'
 
 export default {
   methods: {
+    testRequest: () => {
+      axios({
+        method: 'POST',
+        url: this.$store.getters.getBaseAppUrl + '/ResetPassword/SecurityQuestions',
+        headers: this.$store.getters.getRequestHeaders,
+        data: {
+          'username': 'Scott',
+          'password': 'Blob',
+          'securityQuestions': [
+            {
+              'question': 1,
+              'answer': 'Hello'
+            }
+          ]
+        }
+      })
+        .then(response => console.log(response))
+        .catch(response => console.log(response))
+    },
     submitRegistration: () => {
       axios({
         method: 'POST',
@@ -36,10 +60,28 @@ export default {
         .then(response => console.log(response))
         .catch(response => console.log(response))
     },
+    submitLogin: () => {
+      axios({
+        method: 'POST',
+        url: 'https://localhost:44311/Sso/Login',
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Credentials': true,
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        data: {
+          'username': 'Scott',
+          'newPassword': 'Blob'
+        }
+      })
+        .then(response => console.log(response))
+        .catch(response => console.log(response))
+    },
     requestQuestions: () => {
       axios({
         method: 'GET',
-        url: 'https://localhost:44311/Sso/SecurityQuestions',
+        url: 'https://localhost:44311/ResetPassword/SecurityQuestions',
         headers: {
           'Access-Control-Allow-Origin': '*',
           'Access-Control-Allow-Credentials': true,
@@ -52,7 +94,7 @@ export default {
     submitAnswers: () => {
       axios({
         method: 'POST',
-        url: 'https://localhost:44311/Sso/SecurityQuestions',
+        url: 'https://localhost:44311/ResetPassword/SecurityQuestions',
         headers: {
           'Access-Control-Allow-Origin': '*',
           'Access-Control-Allow-Credentials': true,
@@ -83,7 +125,7 @@ export default {
     resetPassword: () => {
       axios({
         method: 'POST',
-        url: 'https://localhost:44311/Sso/ResetPassword',
+        url: 'https://localhost:44311/ResetPassword/NewPassword',
         headers: {
           'Access-Control-Allow-Origin': '*',
           'Access-Control-Allow-Credentials': true,
@@ -93,24 +135,6 @@ export default {
         data: {
           'username': 'Scott',
           'newPassword': 'blah'
-        }
-      })
-        .then(response => console.log(response))
-        .catch(response => console.log(response))
-    },
-    submitLogin: () => {
-      axios({
-        method: 'POST',
-        url: 'https://localhost:44311/Sso/Login',
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Credentials': true,
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        data: {
-          'username': 'Scott',
-          'newPassword': 'Blob'
         }
       })
         .then(response => console.log(response))

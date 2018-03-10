@@ -4,7 +4,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import store from './store/store'
+import store from './store'
 import { sync } from 'vuex-router-sync'
 // eslint-disable-next-line
 import Bulma from 'bulma'
