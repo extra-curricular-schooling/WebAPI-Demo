@@ -3,13 +3,13 @@ using ECS.Models;
 using ECS.WebAPI.Filters;
 using ECS.WebAPI.Services;
 using Microsoft.AspNet.Membership.OpenAuth;
-using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Net.Http;
 using System.Web;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace ECS.WebAPI.Controllers
 {
@@ -19,8 +19,6 @@ namespace ECS.WebAPI.Controllers
     public class OAuthController : ApiController
     {
         #region Constants and fields
-        private readonly string _clientUri = "http://localhost:8080/#/";
-
         public object JsonWebToken { get; private set; }
         #endregion
 
@@ -94,21 +92,14 @@ namespace ECS.WebAPI.Controllers
                 });
 
                 LinkedIn access = new LinkedIn();
-                return RedirectToClient();
+                return Ok();
             }
-        }
-
-        // GET: Auth
-        [AllowAnonymous]
-        [Route("RedirectToClient")]
-        public IHttpActionResult RedirectToClient()
-        {
-            return Redirect(_clientUri);
         }
 
         [AllowAnonymous]
         [HttpGet]
         [Route("RedirectToLinkedIn")]
+        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET")]
         public IHttpActionResult RedirectToLinkedIn(string authtoken)
         {
             string username;

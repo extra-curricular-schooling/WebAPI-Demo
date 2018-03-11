@@ -88,5 +88,15 @@
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ECS.Models\ECS.Models.csproj">
+      <Project>{F8F04460-D2EB-4907-8B96-C3B915749A82}</Project>
+      <Name>ECS.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ECS.Repositories\ECS.Repositories.csproj">
+      <Project>{84B9525B-6D65-493C-8BC5-61CE7AB8C325}</Project>
+      <Name>ECS.Repositories</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

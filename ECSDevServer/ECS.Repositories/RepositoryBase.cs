@@ -113,5 +113,27 @@ namespace ECS.Repositories
         {
             throw new NotImplementedException();
         }
+
+        public bool Exists(Func<T, bool> where, params Expression<Func<T, object>>[] navigationProperties)
+        {
+            IQueryable<T> query = dbSet;
+            T item = null;
+
+            foreach (Expression<Func<T, object>> navigationProperty in navigationProperties)
+                query = query.Include<T, object>(navigationProperty);
+            
+            try
+            {
+                item = query.AsNoTracking().Single(where);
+            } catch (ArgumentNullException ex)
+            {
+                return false;
+            } catch (InvalidOperationException ex)
+            {
+                return false;
+            }
+
+            return true;
+        }
     }
 }
