@@ -25,10 +25,12 @@ namespace ECS.WebAPI.Controllers
         public HttpResponseMessage GenerateCookie()
         {
             var response = new HttpResponseMessage();
-            Token token = new Token();
-            token.Value = JwtManager.GenerateToken("test1");
-            token.Username = "test1";
-            token.Name = "jwt";
+            Token token = new Token
+            {
+                Value = JwtManager.GenerateToken("test1"),
+                Username = "test1",
+                Name = "jwt"
+            };
             _tokenRepository.Insert(token);
 
             //Build JSON response.
@@ -40,11 +42,13 @@ namespace ECS.WebAPI.Controllers
             var responseJson = new JavaScriptSerializer().Serialize(jsonMsg);
             response.Content = new StringContent(responseJson, Encoding.UTF8, "application/json");
 
-            var cookie = new CookieHeaderValue("auth_token", token.Value);
-            cookie.Domain = ".localhost";
-            cookie.HttpOnly = true;
-            cookie.Path = "/; SameSite=Lax";
-            cookie.Expires = DateTime.Now.AddMinutes(20);
+            var cookie = new CookieHeaderValue("auth_token", token.Value)
+            {
+                Domain = ".localhost",
+                HttpOnly = true,
+                Path = "/; SameSite=Lax",
+                Expires = DateTime.Now.AddMinutes(20)
+            };
             response.Headers.AddCookies(new CookieHeaderValue[] { cookie });
             return response;
         }

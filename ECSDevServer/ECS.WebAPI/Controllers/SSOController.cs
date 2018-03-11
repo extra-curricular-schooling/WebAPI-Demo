@@ -6,6 +6,9 @@ using System.Web.Http;
 using System.Web.Http.Cors;
 using ECS.Repositories;
 using ECS.Models;
+using System.Net;
+using System.Diagnostics;
+using System.Security.Claims;
 
 /// <summary>
 /// 
@@ -15,11 +18,15 @@ namespace ECS.WebAPI.Controllers
 {
     public class SsoController : ApiController
     {
-        private AccountRepository accountRepository;
+        private readonly IAccountRepository accountRepository;
 
         public SsoController()
         {
             accountRepository = new AccountRepository();
+        }
+        public SsoController(IAccountRepository repo)
+        {
+            accountRepository = repo;
         }
 
         /*
@@ -55,7 +62,19 @@ namespace ECS.WebAPI.Controllers
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
         public IHttpActionResult Login()
         {
-            // Validate JWT? Make custom validator object?
+            var tokens = JwtManager.GetJwtsFromHttpHeaders(Request);
+            // Authenticate JWT? Make custom validator object?
+            foreach (var token in tokens)
+            {
+                var principal = JwtManager.GetPrincipal(token);
+                if (null != principal)
+                {
+                    foreach (Claim claim in principal.Claims)
+                    {
+                        Debug.Write("CLAIM TYPE: " + claim.Type + "; CLAIM VALUE: " + claim.Value + "</br>");
+                    }
+                }
+            }
 
             // Read the JWT, and grab the information out of it.
 
@@ -64,14 +83,6 @@ namespace ECS.WebAPI.Controllers
             // Check app DB for user.
 
             // Issue login information
-
-            // Return successful response with a "redirect" to where the token will be given
-            // Post methods should not return data, but should return responses and location headers of 
-            // what was created in the post.
-
-            //return CreatedAtRoute("DefaultApi", new { id = product.Id }, product);
-
-            // Return 200
             return Ok();
         }
     }

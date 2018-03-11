@@ -6,7 +6,9 @@ export const Request = {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Credentials': true,
       'Accept': 'application/json',
-      'Content-Type': 'application/json'
+      // 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InRlc3QxIiwibmJmIjoxNTIwNzQwODYwLCJleHAiOjE1MjA3NDIwNjAsImlhdCI6MTUyMDc0MDg2MH0.wMzQYSHUOjzxMHGdMRPokFGpESCQaJ0Fak9mO45kpVc',
+      'Content-Type': 'application/json',
+      'X-Requested-With': 'XMLHttpRequest'
     }
   },
   getters: {

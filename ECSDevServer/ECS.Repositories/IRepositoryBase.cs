@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 namespace ECS.Repositories
 {
-    public interface IRepository<T> : IDisposable
+    public interface IRepositoryBase<T> : IDisposable
     {
         /// <summary>
         /// Add an entity to the repository

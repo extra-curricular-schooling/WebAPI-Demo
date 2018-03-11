@@ -6,84 +6,91 @@ namespace ECS.Repositories
     /// <summary>
     /// Account Repository Interface for Account Models
     /// </summary>
-    public interface IAccountRepository : IRepository<Account>
+    public interface IAccountRepository : IRepositoryBase<Account>
     {
     }
 
     /// <summary>
     /// AccountType Repository Interface for AccountType Models
     /// </summary>
-    public interface IAccountTypeRepository : IRepository<AccountType>
+    public interface IAccountTypeRepository : IRepositoryBase<AccountType>
     {
     }
 
     /// <summary>
     /// Article Repository Interface for Article Models
     /// </summary>
-    public interface IArticleRepository : IRepository<Article>
+    public interface IArticleRepository : IRepositoryBase<Article>
     {
     }
 
     /// <summary>
     /// 
     /// </summary>
-    public interface IInterestTagRepository : IRepository<InterestTag>
+    public interface IInterestTagRepository : IRepositoryBase<InterestTag>
     {
     }
 
     /// <summary>
     /// 
     /// </summary>
-    public interface ILinkedInRepository : IRepository<LinkedIn>
+    public interface IJwtRepository: IRepositoryBase<JWT>
     {
     }
 
     /// <summary>
     /// 
     /// </summary>
-    public interface ISecurityQuestionRepository : IRepository<SecurityQuestion>
+    public interface ILinkedInRepository : IRepositoryBase<LinkedIn>
     {
     }
 
     /// <summary>
     /// 
     /// </summary>
-    public interface ISecurityQuestionAccountRepository : IRepository<SecurityQuestionAccount>
+    public interface ISecurityQuestionRepository : IRepositoryBase<SecurityQuestion>
     {
     }
 
     /// <summary>
     /// 
     /// </summary>
-    public interface ISweepStakeRepository : IRepository<SweepStake>
+    public interface ISecurityQuestionAccountRepository : IRepositoryBase<SecurityQuestionAccount>
     {
     }
 
     /// <summary>
     /// 
     /// </summary>
-    public interface ISweepStakeEntryRepository : IRepository<SweepStakeEntry>
+    public interface ISweepStakeRepository : IRepositoryBase<SweepStake>
     {
     }
 
     /// <summary>
     /// 
     /// </summary>
-    public interface ITokenRepository : IRepository<Token>
+    public interface ISweepStakeEntryRepository : IRepositoryBase<SweepStakeEntry>
     {
     }
 
     /// <summary>
     /// 
     /// </summary>
-    public interface IUserRepository : IRepository<User>
+    public interface ITokenRepository : IRepositoryBase<Token>
     {
     }
 
     /// <summary>
     /// 
     /// </summary>
-    public interface IZipLocationRepository : IRepository<ZipLocation>
+    public interface IUserRepository : IRepositoryBase<User>
+    {
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public interface IZipLocationRepository : IRepositoryBase<ZipLocation>
     {
     }
 
@@ -124,6 +131,14 @@ namespace ECS.Repositories
     {
         public InterestTagRepository() : base(new ECSContext())
         {
+        }
+    }
+
+    public class JwtRepository : RepositoryBase<JWT>, IJwtRepository
+    {
+        public JwtRepository () : base (new ECSContext())
+        {
+
         }
     }
 

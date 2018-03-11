@@ -1,10 +1,13 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
+using System.Web.Http.Controllers;
 
 namespace ECS.WebAPI.Services
 {
@@ -70,6 +73,21 @@ namespace ECS.WebAPI.Services
             {
                 return null;
             }
+        }
+
+        public static List<string> GetJwtsFromHttpHeaders(HttpRequestMessage request)
+        {
+            var jwtList = new List<string>();
+            try
+            {
+               var token = request.Headers.Authorization.Parameter;
+               jwtList.Add(token);
+            }
+            catch (NullReferenceException e)
+            {
+                Debug.WriteLine("***** JWTMANAGER CATCH: " + e.Message);
+            }
+            return jwtList;
         }
 
         public static bool ValidateToken(string token, out string username)

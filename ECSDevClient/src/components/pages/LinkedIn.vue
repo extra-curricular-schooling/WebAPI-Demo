@@ -20,6 +20,7 @@ Vue.component("get-token", {
     requestCookie: function() {
       Axios({
         method: "GET",
+        headers: this.$store.getters.getRequestHeaders,
         url: "https://localhost:44311/Auth/GenerateCookie"
       }).then(function(response) {
         window.sessionStorage.setItem("auth_token", response.data.auth_token);

@@ -17,18 +17,23 @@ export default new Vuex.Store({
 
   // State is passed into any of your getters.
   state: {
-    isAuthenticated: false
+    isAuthenticated: false,
+    authToken: ''
   },
   // Any function that retrieves data.
   getters: {
     isAuth: function (state) {
       return state.isAuthenticated
+    },
+    getAuthToken: (state) => {
+      return state.authToken
     }
   },
   // Any function that changes data.
   mutations: {
-    signIn: function (state) {
+    signIn: function (state, payload) {
       state.isAuthenticated = true
+      state.authToken = payload
     }
   },
   // The exposed methods that the system uses to work with the store.

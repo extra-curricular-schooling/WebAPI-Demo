@@ -20,7 +20,7 @@ export default {
     testRequest () {
       axios({
         method: 'POST',
-        url: this.$store.getters.getBaseAppUrl + 'ResetPassword/SecurityQuestions',
+        url: this.$store.getters.getBaseAppUrl + 'Sso/Login',
         headers: this.$store.getters.getRequestHeaders,
         data: {
           'username': 'Scott',
@@ -36,16 +36,11 @@ export default {
         .then(response => console.log(response))
         .catch(response => console.log(response))
     },
-    submitRegistration: () => {
+    submitRegistration () {
       axios({
         method: 'POST',
         url: 'https://localhost:44311/Sso/Registration',
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Credentials': true,
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
+        headers: this.$store.getters.getRequestHeaders,
         data: {
           'username': 'Scott',
           'password': 'Blob',
@@ -60,16 +55,11 @@ export default {
         .then(response => console.log(response))
         .catch(response => console.log(response))
     },
-    submitLogin: () => {
+    submitLogin () {
       axios({
         method: 'POST',
         url: 'https://localhost:44311/Sso/Login',
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Credentials': true,
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
+        headers: this.$store.getters.getRequestHeaders,
         data: {
           'username': 'Scott',
           'newPassword': 'Blob'
@@ -78,29 +68,20 @@ export default {
         .then(response => console.log(response))
         .catch(response => console.log(response))
     },
-    requestQuestions: () => {
+    requestQuestions () {
       axios({
         method: 'GET',
         url: 'https://localhost:44311/ResetPassword/SecurityQuestions',
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Credentials': true,
-          'Accept': 'application/json'
-        }
+        headers: this.$store.getters.getRequestHeaders
       })
         .then(response => console.log(response))
         .catch(response => console.log(response))
     },
-    submitAnswers: () => {
+    submitAnswers () {
       axios({
         method: 'POST',
         url: 'https://localhost:44311/ResetPassword/SecurityQuestions',
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Credentials': true,
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
+        headers: this.$store.getters.getRequestHeaders,
         data: {
           'username': 'Scott',
           'securityQuestions': [
@@ -119,19 +100,16 @@ export default {
           ]
         }
       })
-        .then(this.resetPassword())
+        .then(response => {
+          return this.resetPassword()
+        })
         .catch(response => console.log(response))
     },
-    resetPassword: () => {
+    resetPassword () {
       axios({
         method: 'POST',
         url: 'https://localhost:44311/ResetPassword/NewPassword',
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Credentials': true,
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
+        headers: this.$store.getters.getRequestHeaders,
         data: {
           'username': 'Scott',
           'newPassword': 'blah'
