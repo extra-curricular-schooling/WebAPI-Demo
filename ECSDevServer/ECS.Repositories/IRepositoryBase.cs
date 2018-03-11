@@ -71,5 +71,7 @@ namespace ECS.Repositories
         /// Returns a single, specific element of a sequence.
         /// </returns>
         T GetSingle(Func<T, bool> where, params Expression<Func<T, object>>[] navigationProperties);
+
+        bool Exists(Func<T, bool> where, params Expression<Func<T, object>>[] navigationProperties);
     }
 }

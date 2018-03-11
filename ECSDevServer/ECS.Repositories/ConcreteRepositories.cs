@@ -11,7 +11,7 @@ namespace ECS.Repositories
     }
 
     /// <summary>
-    /// AccountType Repository Interface for AccountType Models
+    /// AccountType Repository Interface for AccountType ModelsC:\Users\simpo\source\repos\dev-webapi\ECSDevServer\ECS.Repositories\ConcreteRepositories.cs
     /// </summary>
     public interface IAccountTypeRepository : IRepositoryBase<AccountType>
     {

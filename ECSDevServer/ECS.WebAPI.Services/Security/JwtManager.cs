@@ -1,4 +1,5 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using ECS.Repositories;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -7,18 +8,22 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
-using System.Web.Http.Controllers;
 
 namespace ECS.WebAPI.Services
 {
     public class JwtManager
     {
+
+        #region Constants and fields
         /// <summary>
         /// Use the below code to generate symmetric Secret Key
         ///     var hmac = new HMACSHA256();
         ///     var key = Convert.ToBase64String(hmac.Key);
         /// </summary>
         private const string Secret = "db3OIsj+BXE9NZDy0t8W3TcNekrF+2d/1sFnWG4HnV8TZY30iTOdtVWJG8abWvB1GlOgJuQZdcF2Luqm/hccMw==";
+
+        private static AccountRepository _accountRepository = new AccountRepository();
+        #endregion
 
         public static string GenerateToken(string username, int expireMinutes = 20)
         {
@@ -95,21 +100,42 @@ namespace ECS.WebAPI.Services
             username = null;
             var simplePrinciple = GetPrincipal(token);
             ClaimsIdentity identity = null;
+
             try
             {
                 identity = simplePrinciple.Identity as ClaimsIdentity;
-            }
-            catch(Exception ex)
+            } catch(Exception ex)
             {
                 Console.WriteLine(ex.Source + "\n" + ex.Message + "\n" + ex.StackTrace);
                 return false;
             }
-            if (identity == null) return false;
-            if (!identity.IsAuthenticated) return false;
+
+            if (identity == null)
+            {
+                return false;
+            }
+
+            if (!identity.IsAuthenticated)
+            {
+                return false;
+            }
+
             var usernameClaim = identity.FindFirst(ClaimTypes.Name);
             username = usernameClaim?.Value;
-            if (string.IsNullOrEmpty(username)) return false;
-            // More validate to check whether username exists in system  
+
+            if (string.IsNullOrEmpty(username))
+            {
+                return false;
+            }
+
+            // Cannot use a ref or out string in a lambda expression, thus make a copy
+            string tempUsername = string.Copy(username);
+
+            // More validation to check whether username exists in system
+            if(!_accountRepository.Exists(d => d.UserName == tempUsername, d => d.User))
+            {
+                return false;
+            }
             return true;
         }
 
