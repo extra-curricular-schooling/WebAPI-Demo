@@ -1,7 +1,8 @@
 // Nice to have a central location to update information. (Single Source of truth)
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { Request } from './modules/request'
+import { request } from './modules/request'
+import { auth } from './modules/auth'
 
 Vue.use(Vuex)
 
@@ -12,37 +13,28 @@ export default new Vuex.Store({
   // If we want to expand the store to hold different objects/abstractions,
   // we could use modules to organize them.
   modules: {
-    Request
+    auth,
+    request
   },
 
   // State is passed into any of your getters.
   state: {
-    isAuthenticated: false,
-    authToken: ''
+    username: ''
   },
   // Any function that retrieves data.
   getters: {
-    isAuth: function (state) {
-      return state.isAuthenticated
-    },
-    getAuthToken: (state) => {
-      return state.authToken
+    getUsername: function (state) {
+      return state.username
     }
   },
   // Any function that changes data.
   mutations: {
-    signIn: function (state, payload) {
-      state.isAuthenticated = true
-      state.authToken = payload
+    setUsername: function (state, username) {
+      state.username = username
     }
   },
   // The exposed methods that the system uses to work with the store.
   actions: {
-    signIn: function (context, payload) {
-      // Commit = Call this method in the mutations.
-      context.commit('signIn')
-    }
-
   },
 
   // If strict should be enabled during development.

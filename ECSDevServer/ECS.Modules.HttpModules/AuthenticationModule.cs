@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 
 namespace ECS.Modules.HttpModules
@@ -11,7 +8,6 @@ namespace ECS.Modules.HttpModules
     {
         public void Dispose()
         {
-
         }
 
         public void Init(HttpApplication context)
@@ -20,7 +16,7 @@ namespace ECS.Modules.HttpModules
         }
 
         // List of accepted referrer header values.
-        List<string> acceptedUrls = new List<string>
+        HashSet<string> acceptedUrls = new HashSet<string>
         {
             "https://localhost:44311/",
             "http://localhost:8080/",
@@ -28,13 +24,13 @@ namespace ECS.Modules.HttpModules
             "https://ecschooling.org/"
         };
 
-        List<string> acceptedAuthorities = new List<string>
+        HashSet<string> acceptedAuthorities = new HashSet<string>
         {
             "localhost:44311"
         };
 
         // List of accepted orgin header values
-        List<string> acceptedOrigins = new List<string>
+        HashSet<string> acceptedOrigins = new HashSet<string>
         {
             "http://localhost:8080",
             "https://www.ecschooling.org",
@@ -47,35 +43,65 @@ namespace ECS.Modules.HttpModules
             var app = sender as HttpApplication;
             var request = app.Request;
 
+            bool isTrusted = false;
             bool isAcceptedUrlAuthorityHeader = false;
             bool isAcceptedRefererHeader = false;
             bool isAcceptedOriginHeader = false;
+            bool isBadRequest = false;
 
-            // Check if the request Url authority is recognized
-            if (request.Url.Authority != null && acceptedAuthorities.Contains(request.Url.Authority))
+            // Check if the request has a "Referer" header
+            if (request.Headers["Referer"] != null && !isTrusted)
             {
-                isAcceptedUrlAuthorityHeader = true;
-            }
-
-            // Check if the request has a recognized "Referer" header
-            if (request.Headers["Referer"] != null && acceptedUrls.Contains(request.Headers["Referer"]))
-            {
-                isAcceptedRefererHeader = true;
+                if (acceptedUrls.Contains(request.Headers["Referer"]))
+                {
+                    isAcceptedRefererHeader = true;
+                    isTrusted = true;
+                }
+                else
+                {
+                    isBadRequest = true;
+                }
+                
             }
 
             // Check if the request has a recognized "Origin" header
-            if (request.Headers["Origin"] != null && acceptedOrigins.Contains(request.Headers["Origin"]))
+            if (request.Headers["Origin"] != null && !isTrusted)
             {
-                isAcceptedOriginHeader = true;
+                if (acceptedOrigins.Contains(request.Headers["Origin"]))
+                {
+                    isAcceptedOriginHeader = true;
+                    isTrusted = true;
+                }
+                else
+                {
+                    isBadRequest = true;
+                }
             }
 
-            if (!isAcceptedRefererHeader && !isAcceptedOriginHeader && !isAcceptedUrlAuthorityHeader)
+            // Check if the request Url authority is used
+            if (request.Url.Authority != null && !isTrusted)
+            {
+                // Is it a recognized Url?
+                if (acceptedAuthorities.Contains(request.Url.Authority))
+                {
+                    isAcceptedUrlAuthorityHeader = true;
+                    isTrusted = true;
+                }
+                else
+                {
+                    isBadRequest = true;
+                }
+            }
+
+            // Return the bad request
+            if (!isAcceptedRefererHeader && !isAcceptedOriginHeader && !isAcceptedUrlAuthorityHeader && !isBadRequest)
             {
                 app.Response.StatusCode = 401;
                 app.Response.End();
             }
+
             // For Preflight
-            if (app.Request.HttpMethod == "OPTIONS")
+            if (app.Request.HttpMethod == "OPTIONS" && isTrusted)
             {
                 app.Response.StatusCode = 200;
                 // Change for production... String concat is costly.
@@ -88,7 +114,7 @@ namespace ECS.Modules.HttpModules
                     "content-type," +
                     "referer," +
                     "X-Requested-With");
-                app.Response.AddHeader("Access-Control-Allow-Origin", "http://localhost:8080");
+                app.Response.AddHeader("Access-Control-Allow-Origin", request.Headers["Origin"]);
                 app.Response.AddHeader("Access-Control-Allow-Credentials", "true");
                 app.Response.AddHeader("Access-Control-Allow-Methods", "POST,GET,OPTIONS");
                 app.Response.AddHeader("Content-Type", "application/json");

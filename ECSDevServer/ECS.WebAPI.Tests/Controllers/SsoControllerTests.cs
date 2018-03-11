@@ -63,6 +63,7 @@ namespace ECS.WebAPI.Tests.Controllers
                 accountRepo = new AccountRepository();
             }
 
+            [Fact]
             public void PostSetsLocationHeader_MockVersion()
             {
                 // This version uses a mock UrlHelper.
@@ -113,7 +114,7 @@ namespace ECS.WebAPI.Tests.Controllers
             [InlineData("Sso", "login")]
             public void RouteIsNotRecognized(string controllerName, string actionName)
             {
-                output.WriteLine(controllerName);
+                output.WriteLine(controllerName + "/" + actionName);
             }
 
             // Does the post work?
@@ -132,6 +133,7 @@ namespace ECS.WebAPI.Tests.Controllers
                 Assert.IsType<OkResult>(result);
             }
 
+            [Fact]
             public void ReturnsJwtTokenWithOk()
             {
                 var mockRepo = new Mock<IJwtRepository>();

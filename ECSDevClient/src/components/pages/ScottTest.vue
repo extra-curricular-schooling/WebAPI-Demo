@@ -14,14 +14,15 @@
 
 <script>
 import axios from 'axios'
+import store from '@/store/index'
 
 export default {
   methods: {
     testRequest () {
       axios({
         method: 'POST',
-        url: this.$store.getters.getBaseAppUrl + 'Sso/Login',
-        headers: this.$store.getters.getRequestHeaders,
+        url: store.getters.getBaseAppUrl + 'Sso/Login',
+        headers: store.getters.getRequestHeaders,
         data: {
           'username': 'Scott',
           'password': 'Blob',
@@ -40,7 +41,7 @@ export default {
       axios({
         method: 'POST',
         url: 'https://localhost:44311/Sso/Registration',
-        headers: this.$store.getters.getRequestHeaders,
+        headers: store.getters.getRequestHeaders,
         data: {
           'username': 'Scott',
           'password': 'Blob',
@@ -59,7 +60,7 @@ export default {
       axios({
         method: 'POST',
         url: 'https://localhost:44311/Sso/Login',
-        headers: this.$store.getters.getRequestHeaders,
+        headers: store.getters.getRequestHeaders,
         data: {
           'username': 'Scott',
           'newPassword': 'Blob'
@@ -72,7 +73,7 @@ export default {
       axios({
         method: 'GET',
         url: 'https://localhost:44311/ResetPassword/SecurityQuestions',
-        headers: this.$store.getters.getRequestHeaders
+        headers: store.getters.getRequestHeaders
       })
         .then(response => console.log(response))
         .catch(response => console.log(response))
@@ -81,7 +82,7 @@ export default {
       axios({
         method: 'POST',
         url: 'https://localhost:44311/ResetPassword/SecurityQuestions',
-        headers: this.$store.getters.getRequestHeaders,
+        headers: store.getters.getRequestHeaders,
         data: {
           'username': 'Scott',
           'securityQuestions': [
@@ -109,7 +110,7 @@ export default {
       axios({
         method: 'POST',
         url: 'https://localhost:44311/ResetPassword/NewPassword',
-        headers: this.$store.getters.getRequestHeaders,
+        headers: store.getters.getRequestHeaders,
         data: {
           'username': 'Scott',
           'newPassword': 'blah'

@@ -19,8 +19,7 @@ namespace ECS.WebAPI.Filters.AuthorizationFilters
                 // get the access token
                 accessTokenFromRequest = actionContext.Request.Headers.Authorization.Parameter;
 
-                string username;
-                if(JwtManager.ValidateToken(accessTokenFromRequest, out username))
+                if (JwtManager.ValidateToken(accessTokenFromRequest, out string username))
                 {
                     Token accessToken = _tokenRepository.GetSingle(d => d.Name == "jwt" & d.Username == username);
                     if (accessToken != null)
@@ -43,7 +42,7 @@ namespace ECS.WebAPI.Filters.AuthorizationFilters
                 else
                 {
                     return false;
-                } 
+                }
             }
             else
             {
