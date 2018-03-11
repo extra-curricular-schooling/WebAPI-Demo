@@ -7,6 +7,12 @@
     <h2>Reset Password API Calls</h2>
     <button v-on:click="requestQuestions">Send Get to ResetPassword/SecurityQuestions</button>
     <button v-on:click="submitAnswers">Send Post to ResetPassword/SecurityQuestions</button>
+    <h2>Sweepstake API Calls</h2>
+    <h2>SweepstakeAdmin API Calls</h2>
+    <h2>Account API Calls</h2>
+    <h2>AccountAdmin API Calls</h2>
+    <h2>Auth API Calls</h2>
+    <h2>LinkedIn API Calls</h2>
     <h2>Test With Store</h2>
     <button v-on:click="testRequest">Test store request info</button>
   </div>
