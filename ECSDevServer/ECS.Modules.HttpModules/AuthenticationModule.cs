@@ -11,6 +11,7 @@ namespace ECS.Modules.HttpModules
     {
         public void Dispose()
         {
+
         }
 
         public void Init(HttpApplication context)
@@ -27,6 +28,11 @@ namespace ECS.Modules.HttpModules
             "https://ecschooling.org/"
         };
 
+        List<string> acceptedAuthorities = new List<string>
+        {
+            "localhost:44311"
+        };
+
         // List of accepted orgin header values
         List<string> acceptedOrigins = new List<string>
         {
@@ -41,22 +47,29 @@ namespace ECS.Modules.HttpModules
             var app = sender as HttpApplication;
             var request = app.Request;
 
-            // bool isAcceptedUrlHeader = false;
+            bool isAcceptedUrlAuthorityHeader = false;
             bool isAcceptedRefererHeader = false;
             bool isAcceptedOriginHeader = false;
-            //if (request.Headers["Url"] != null && acceptedUrls.Contains(request.Headers["Url"]))
-            //{
-            //    isAcceptedUrlHeader = true;
-            //}
+
+            // Check if the request Url authority is recognized
+            if (request.Url.Authority != null && acceptedAuthorities.Contains(request.Url.Authority))
+            {
+                isAcceptedUrlAuthorityHeader = true;
+            }
+
+            // Check if the request has a recognized "Referer" header
             if (request.Headers["Referer"] != null && acceptedUrls.Contains(request.Headers["Referer"]))
             {
                 isAcceptedRefererHeader = true;
             }
+
+            // Check if the request has a recognized "Origin" header
             if (request.Headers["Origin"] != null && acceptedOrigins.Contains(request.Headers["Origin"]))
             {
                 isAcceptedOriginHeader = true;
             }
-            if (!isAcceptedRefererHeader && !isAcceptedOriginHeader)
+
+            if (!isAcceptedRefererHeader && !isAcceptedOriginHeader && !isAcceptedUrlAuthorityHeader)
             {
                 app.Response.StatusCode = 401;
                 app.Response.End();
