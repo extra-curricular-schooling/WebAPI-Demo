@@ -104,7 +104,7 @@ namespace ECS.WebAPI.Controllers
         {
             string username;
 
-            if (JwtManager.ValidateToken(authtoken, out username))
+            if (JwtManager.Instance.ValidateToken(authtoken, out username))
             {
                 string provider = "linkedin";
                 var redirectUrl = "~/OAuth/ExternalLoginCallback";

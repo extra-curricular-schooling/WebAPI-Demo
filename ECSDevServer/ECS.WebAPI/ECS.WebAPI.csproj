@@ -141,8 +141,10 @@
     <Compile Include="Controllers\SsoController.cs" />
     <Compile Include="Controllers\SweepstakeAdminController.cs" />
     <Compile Include="Controllers\SweepstakeController.cs" />
+    <Compile Include="ExceptionHandlers\TraceExceptionLogger.cs" />
     <Compile Include="Filters\AuthorizationFilters\AuthorizationAttribute.cs" />
     <Compile Include="Filters\AuthorizationFilters\RequireHttpsAttribute.cs" />
+    <Compile Include="Filters\AuthorizationFilters\SsoAuthorizeAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -159,6 +161,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Filters\ExceptionFilters\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DotNetOpenAuth.LinkedInOAuth2\DotNetOpenAuth.LinkedInOAuth2.csproj">

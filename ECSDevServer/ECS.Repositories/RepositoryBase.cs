@@ -33,9 +33,9 @@ namespace ECS.Repositories
             //Use the context object and entity state to save the entity
 
 
-            // CAUSING PROBLEMS!!!
+            // CAUSING PROBLEMS!!! Scott: Maybe because my sql isn't installed correctly.
             dbSet.Add(entity);
-            //context.Entry(entity).State = System.Data.Entity.EntityState.Added;
+            context.Entry(entity).State = EntityState.Added;
             context.SaveChanges();
         }
 
@@ -43,6 +43,7 @@ namespace ECS.Repositories
         public void Delete(T entity)
         {
             //Use the context object and entity state to delete the entity
+            dbSet.Remove(entity);
             context.Entry(entity).State = EntityState.Deleted;
             context.SaveChanges();
         }
@@ -103,7 +104,6 @@ namespace ECS.Repositories
 
             item = query.AsNoTracking().FirstOrDefault(where);
             return item;
-
         }
 
         /// <summary>

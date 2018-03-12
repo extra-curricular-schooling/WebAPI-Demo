@@ -19,21 +19,20 @@ namespace ECS.WebAPI.Filters
                 UriBuilder uri = new UriBuilder(request.RequestUri);
                 uri.Scheme = Uri.UriSchemeHttps;
                 uri.Port = 443;
-                string body = string.Format("<p>The resource can be found at <a href=\"{0}\">{0}</a>.</p>",
-                    uri.Uri.AbsoluteUri);
+                string body = string.Format("The resource can be found at: {0}", uri.Uri.AbsoluteUri);
                 if (request.Method.Equals(HttpMethod.Get) || request.Method.Equals(HttpMethod.Head))
                 {
                     response = request.CreateResponse(HttpStatusCode.Found);
                     response.Headers.Location = uri.Uri;
                     if (request.Method.Equals(HttpMethod.Get))
                     {
-                        response.Content = new StringContent(body, Encoding.UTF8, "text/html");
+                        response.Content = new StringContent(body, Encoding.UTF8, "application/json");
                     }
                 }
                 else
                 {
                     response = request.CreateResponse(HttpStatusCode.NotFound);
-                    response.Content = new StringContent(body, Encoding.UTF8, "text/html");
+                    response.Content = new StringContent(body, Encoding.UTF8, "application/json");
                 }
 
                 actionContext.Response = response;

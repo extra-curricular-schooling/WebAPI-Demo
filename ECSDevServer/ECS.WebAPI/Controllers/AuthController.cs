@@ -27,7 +27,7 @@ namespace ECS.WebAPI.Controllers
             var response = new HttpResponseMessage();
             Token token = new Token
             {
-                Value = JwtManager.GenerateToken("test1"),
+                Value = JwtManager.Instance.GenerateToken("test1"),
                 Username = "test1",
                 Name = "jwt"
             };

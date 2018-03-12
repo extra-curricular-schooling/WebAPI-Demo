@@ -8,7 +8,7 @@ using System.Web.Http.Controllers;
 
 namespace ECS.WebAPI.Filters.AuthorizationFilters
 {
-    public class AuthorizationAttribute : AuthorizeAttribute, IDisposable
+    public class SsoAuthorizeAttribute : AuthorizeAttribute, IDisposable
     {
         private TokenRepository _tokenRepository = new TokenRepository();
 
@@ -17,7 +17,10 @@ namespace ECS.WebAPI.Filters.AuthorizationFilters
             string accessTokenFromRequest = "";
             if (actionContext.Request.Headers.Authorization != null)
             {
-                // get the access token
+                // get the access token from the appropriate header...
+
+
+
                 accessTokenFromRequest = actionContext.Request.Headers.Authorization.Parameter;
 
                 if (JwtManager.Instance.ValidateToken(accessTokenFromRequest, out string username))
@@ -48,7 +51,7 @@ namespace ECS.WebAPI.Filters.AuthorizationFilters
             else
             {
                 return false;
-            }            
+            }
         }
 
         protected override void HandleUnauthorizedRequest(HttpActionContext actionContext)
@@ -59,6 +62,7 @@ namespace ECS.WebAPI.Filters.AuthorizationFilters
 
         public void Dispose()
         {
+            
         }
     }
 }

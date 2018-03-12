@@ -1,14 +1,12 @@
-﻿using ECS.DTO;
-using ECS.WebAPI.Services;
-using System.Collections.Generic;
-using System.Net.Http;
+﻿using ECS.WebAPI.Services;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using ECS.Repositories;
 using ECS.Models;
+using ECS.WebAPI.Filters.AuthorizationFilters;
+using System;
+using ECS.WebAPI.Services.Security;
 using System.Net;
-using System.Diagnostics;
-using System.Security.Claims;
 
 /// <summary>
 /// 
@@ -19,10 +17,12 @@ namespace ECS.WebAPI.Controllers
     public class SsoController : ApiController
     {
         private readonly IAccountRepository accountRepository;
+        private readonly ITokenRepository tokenRepository;
 
         public SsoController()
         {
             accountRepository = new AccountRepository();
+            tokenRepository = new TokenRepository();
         }
         public SsoController(IAccountRepository repo)
         {
@@ -37,19 +37,19 @@ namespace ECS.WebAPI.Controllers
          */
         [HttpPost]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
+        [SsoAuthorize]
         public IHttpActionResult Registration()
         {
-            // Validate JWT? Make custom validator object?
+            var token = JwtHelper.Instance.GetJwtFromAuthorizationHeader(Request);
+            // Read the JWT, and grab the claims.
+            var username = JwtHelper.Instance.GetUsernameFromToken(token);
 
-            // Read the JWT, and grab the information out of it.
+            // Proccess any other information.
 
             // Set some sort of flag up for the User in DB.
             // When they try and register in our app after SSO's registration, check the flag.
             Account account = new Account();
             //accountRepository.Insert(account);
-
-            // Code errors for specific html states.
-            // Error handling in controller: https://stackoverflow.com/questions/10732644/best-practice-to-return-errors-in-asp-net-web-api#10734690
 
             return Ok();
         }
@@ -60,30 +60,27 @@ namespace ECS.WebAPI.Controllers
         /// <remarks>Author: Scott Roberts</remarks>
         [HttpPost]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
+        [SsoAuthorize]
         public IHttpActionResult Login()
         {
-            var tokens = JwtManager.GetJwtsFromHttpHeaders(Request);
-            // Authenticate JWT? Make custom validator object?
-            foreach (var token in tokens)
-            {
-                var principal = JwtManager.GetPrincipal(token);
-                if (null != principal)
-                {
-                    foreach (Claim claim in principal.Claims)
-                    {
-                        Debug.Write("CLAIM TYPE: " + claim.Type + "; CLAIM VALUE: " + claim.Value + "</br>");
-                    }
-                }
-            }
-
-            // Read the JWT, and grab the information out of it.
+            var token = JwtHelper.Instance.GetJwtFromAuthorizationHeader(Request);
+            // Read the JWT, and grab the claims.
+            var username = JwtHelper.Instance.GetUsernameFromToken(token);
 
             // Proccess any other information.
 
-            // Check app DB for user.
+            // Store JWT in DB.
+            // WHY IS THIS CONNECTED TO A USER AND NOT AN ACCOUNT???
+            Token tokenModel = new Token
+            {
+                Name = "jwt",
+                Username = username,
+                Value = token
+            };
+            tokenRepository.Update(tokenModel);
 
-            // Issue login information
-            return Ok();
+            // Redirect them to our Home page with their credentials logged.
+            return Content(HttpStatusCode.Redirect, new Uri("https://localhost:44311/#/Home"));
         }
     }
 }

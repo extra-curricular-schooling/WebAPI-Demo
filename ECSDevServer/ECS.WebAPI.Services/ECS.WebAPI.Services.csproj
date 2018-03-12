@@ -77,6 +77,9 @@
     <Compile Include="HttpClient\IHttpClientAsync.cs" />
     <Compile Include="JsonSerialization\IJsonConverter.cs" />
     <Compile Include="JsonSerialization\JsonConverterService.cs" />
+    <Compile Include="Security\IHashService.cs" />
+    <Compile Include="Security\IJwtManager.cs" />
+    <Compile Include="Security\JwtHelper.cs" />
     <Compile Include="Security\JwtManager.cs" />
     <Compile Include="ParseHttpService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

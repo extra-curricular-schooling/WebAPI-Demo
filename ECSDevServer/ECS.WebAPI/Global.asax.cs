@@ -1,5 +1,7 @@
-﻿using ecs_dev_server;
+﻿using ECS.WebAPI.ExceptionHandlers;
+using ecs_dev_server;
 using System.Web.Http;
+using System.Web.Http.ExceptionHandling;
 
 namespace ECS.WebAPI
 {
@@ -7,6 +9,8 @@ namespace ECS.WebAPI
     {
         protected void Application_Start()
         {
+            // Logging for any 
+            GlobalConfiguration.Configuration.Services.Add(typeof(IExceptionLogger), new TraceExceptionLogger());
             AuthConfig.RegisterAuth();
             GlobalConfiguration.Configure(WebApiConfig.Register);
 

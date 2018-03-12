@@ -1,5 +1,6 @@
 <template>
 <div class="container is-fullhd">
+  <navbar></navbar>
     <section class="hero is-dark">
       <div class="hero-body">
         <div class="container is-fluid">
@@ -174,11 +175,14 @@
 <script>
 /* eslint-disable */
 // import DefaultLayout from '@/layouts/Default'
+import Navbar from '@/components/Navbar'
+
 export default {
   name: "Main",
   components: {
     // DefaultLayout
     // This is causing an ambiguous root error when rendering.
+    Navbar
   },
   data() {
     return {

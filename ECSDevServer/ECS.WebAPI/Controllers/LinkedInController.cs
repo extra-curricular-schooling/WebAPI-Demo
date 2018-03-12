@@ -69,8 +69,11 @@ namespace ECS.WebAPI.Controllers
             var requestJson = new JavaScriptSerializer().Serialize(jsonMsg);
 
             using (var s = webRequest.GetRequestStream())
-            using (var sw = new StreamWriter(s))
+            {
+                var sw = new StreamWriter(s);
                 sw.Write(requestJson);
+            }
+            
 
             try
             {

@@ -41,85 +41,91 @@ namespace ECS.Modules.HttpModules
         {
             // Cast the sender as an HttpApplication
             var app = sender as HttpApplication;
-            var request = app.Request;
 
-            bool isTrusted = false;
-            bool isAcceptedUrlAuthorityHeader = false;
-            bool isAcceptedRefererHeader = false;
-            bool isAcceptedOriginHeader = false;
-            bool isBadRequest = false;
-
-            // Check if the request has a "Referer" header
-            if (request.Headers["Referer"] != null && !isTrusted)
+            if(app.Request.GetType().Name.Equals("HttpRequest"))
             {
-                if (acceptedUrls.Contains(request.Headers["Referer"]))
-                {
-                    isAcceptedRefererHeader = true;
-                    isTrusted = true;
-                }
-                else
-                {
-                    isBadRequest = true;
-                }
-                
-            }
+                var request = app.Request;
+                var type = request.GetType();
+                bool isTrusted = false;
+                bool isAcceptedUrlAuthorityHeader = false;
+                bool isAcceptedRefererHeader = false;
+                bool isAcceptedOriginHeader = false;
+                bool isBadRequest = false;
 
-            // Check if the request has a recognized "Origin" header
-            if (request.Headers["Origin"] != null && !isTrusted)
-            {
-                if (acceptedOrigins.Contains(request.Headers["Origin"]))
+                // Check if the request has a "Referer" header
+                if (request.Headers["Referer"] != null && !isTrusted)
                 {
-                    isAcceptedOriginHeader = true;
-                    isTrusted = true;
-                }
-                else
-                {
-                    isBadRequest = true;
-                }
-            }
+                    if (acceptedUrls.Contains(request.Headers["Referer"]))
+                    {
+                        isAcceptedRefererHeader = true;
+                        isTrusted = true;
+                    }
+                    else
+                    {
+                        isBadRequest = true;
+                    }
 
-            // Check if the request Url authority is used
-            if (request.Url.Authority != null && !isTrusted)
-            {
-                // Is it a recognized Url?
-                if (acceptedAuthorities.Contains(request.Url.Authority))
-                {
-                    isAcceptedUrlAuthorityHeader = true;
-                    isTrusted = true;
                 }
-                else
+
+                // Check if the request has a recognized "Origin" header
+                if (request.Headers["Origin"] != null && !isTrusted)
                 {
-                    isBadRequest = true;
+                    if (acceptedOrigins.Contains(request.Headers["Origin"]))
+                    {
+                        isAcceptedOriginHeader = true;
+                        isTrusted = true;
+                    }
+                    else
+                    {
+                        isBadRequest = true;
+                    }
+                }
+
+                // Check if the request Url authority is used
+                if (request.Url.Authority != null && !isTrusted)
+                {
+                    // Is it a recognized Url?
+                    if (acceptedAuthorities.Contains(request.Url.Authority))
+                    {
+                        isAcceptedUrlAuthorityHeader = true;
+                        isTrusted = true;
+                    }
+                    else
+                    {
+                        isBadRequest = true;
+                    }
+                }
+
+                // Return the bad request
+                if (!isAcceptedRefererHeader && !isAcceptedOriginHeader && !isAcceptedUrlAuthorityHeader && !isBadRequest)
+                {
+                    // Http Status Code 403: Request is correct, but our API refuses to serve for this request.
+                    app.Response.StatusCode = 403;
+                    app.Response.End();
+                }
+
+                // For Preflight
+                if (app.Request.HttpMethod == "OPTIONS" && isTrusted)
+                {
+                    app.Response.StatusCode = 200;
+                    // Change for production... String concat is costly.
+                    app.Response.AddHeader("Access-Control-Allow-Headers",
+                        "Access-Control-Allow-Origin," +
+                        "Access-Control-Allow-Credentials," +
+                        "Authorization," +
+                        "origin," +
+                        "accept," +
+                        "content-type," +
+                        "referer," +
+                        "X-Requested-With");
+                    app.Response.AddHeader("Access-Control-Allow-Origin", request.Headers["Origin"]);
+                    app.Response.AddHeader("Access-Control-Allow-Credentials", "true");
+                    app.Response.AddHeader("Access-Control-Allow-Methods", "POST,GET,OPTIONS");
+                    app.Response.AddHeader("Content-Type", "application/json");
+                    app.Response.End();
                 }
             }
-
-            // Return the bad request
-            if (!isAcceptedRefererHeader && !isAcceptedOriginHeader && !isAcceptedUrlAuthorityHeader && !isBadRequest)
-            {
-                app.Response.StatusCode = 401;
-                app.Response.End();
-            }
-
-            // For Preflight
-            if (app.Request.HttpMethod == "OPTIONS" && isTrusted)
-            {
-                app.Response.StatusCode = 200;
-                // Change for production... String concat is costly.
-                app.Response.AddHeader("Access-Control-Allow-Headers",
-                    "Access-Control-Allow-Origin," +
-                    "Access-Control-Allow-Credentials," +
-                    "Authorization," +
-                    "origin," +
-                    "accept," +
-                    "content-type," +
-                    "referer," +
-                    "X-Requested-With");
-                app.Response.AddHeader("Access-Control-Allow-Origin", request.Headers["Origin"]);
-                app.Response.AddHeader("Access-Control-Allow-Credentials", "true");
-                app.Response.AddHeader("Access-Control-Allow-Methods", "POST,GET,OPTIONS");
-                app.Response.AddHeader("Content-Type", "application/json");
-                app.Response.End();
-            }
+            
         }
     }
 }

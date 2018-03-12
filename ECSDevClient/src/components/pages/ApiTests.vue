@@ -1,20 +1,20 @@
 <template>
   <div>
-    <h2>Registration API Calls</h2>
+    <h2>SSO Registration API Calls</h2>
     <button v-on:click="submitRegistration">Send Post to Sso/Registration</button>
-    <h2>Login API Calls</h2>
+    <h2>SSO Login API Calls</h2>
     <button v-on:click="submitLogin">Send Post to Sso/Login</button>
     <h2>Reset Password API Calls</h2>
     <button v-on:click="requestQuestions">Send Get to ResetPassword/SecurityQuestions</button>
     <button v-on:click="submitAnswers">Send Post to ResetPassword/SecurityQuestions</button>
+    <!-- Add your apis in here -->
     <h2>Sweepstake API Calls</h2>
     <h2>SweepstakeAdmin API Calls</h2>
     <h2>Account API Calls</h2>
     <h2>AccountAdmin API Calls</h2>
     <h2>Auth API Calls</h2>
     <h2>LinkedIn API Calls</h2>
-    <h2>Test With Store</h2>
-    <button v-on:click="testRequest">Test store request info</button>
+    <h2>Article API Calls</h2>
   </div>
 </template>
 
@@ -24,25 +24,6 @@ import store from '@/store/index'
 
 export default {
   methods: {
-    testRequest () {
-      axios({
-        method: 'POST',
-        url: store.getters.getBaseAppUrl + 'Sso/Login',
-        headers: store.getters.getRequestHeaders,
-        data: {
-          'username': 'Scott',
-          'password': 'Blob',
-          'securityQuestions': [
-            {
-              'question': 1,
-              'answer': 'Hello'
-            }
-          ]
-        }
-      })
-        .then(response => console.log(response))
-        .catch(response => console.log(response))
-    },
     submitRegistration () {
       axios({
         method: 'POST',

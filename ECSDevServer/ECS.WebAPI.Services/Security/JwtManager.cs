@@ -1,10 +1,10 @@
 ﻿using ECS.Repositories;
+using ECS.WebAPI.Services.Security;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
-using System.Net.Http;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
@@ -22,34 +22,61 @@ namespace ECS.WebAPI.Services
         /// </summary>
         private const string Secret = "db3OIsj+BXE9NZDy0t8W3TcNekrF+2d/1sFnWG4HnV8TZY30iTOdtVWJG8abWvB1GlOgJuQZdcF2Luqm/hccMw==";
 
-        private static AccountRepository _accountRepository = new AccountRepository();
+        // Single repository to query users associated with tokens.
+        private static AccountRepository _accountRepository;
+
+        // Instance for Singleton Pattern
+        private static JwtManager instance;
         #endregion
 
-        public static string GenerateToken(string username, int expireMinutes = 20)
+        private JwtManager()
+        {
+            _accountRepository = new AccountRepository();
+        }
+
+        public static JwtManager Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new JwtManager();
+                }
+                return instance;
+            }
+        }
+
+        public string GenerateToken(string username, int expireMinutes = 15)
         {
             var symmetricKey = Convert.FromBase64String(Secret);
             var tokenHandler = new JwtSecurityTokenHandler();
 
             var now = DateTime.UtcNow;
+            // The SecurityTokenDescriptor won't take a list of strings, just one...
+            var aud = new List<string>
+            {
+                "http://localhost:8080",
+                "https://www.sso.com"
+            };
             var tokenDescriptor = new SecurityTokenDescriptor
             {
+                Issuer = "https://localhost:44311/",
                 Subject = new ClaimsIdentity(new[]
                         {
                             new Claim(ClaimTypes.Name, username)
                         }),
-
                 Expires = now.AddMinutes(Convert.ToInt32(expireMinutes)),
-
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(symmetricKey), SecurityAlgorithms.HmacSha256Signature)
+                NotBefore = now,
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(symmetricKey), SecurityAlgorithms.HmacSha256Signature),
             };
-
+            
             var stoken = tokenHandler.CreateToken(tokenDescriptor);
             var token = tokenHandler.WriteToken(stoken);
 
             return token;
         }
 
-        public static ClaimsPrincipal GetPrincipal(string token)
+        public ClaimsPrincipal GetPrincipal(string token)
         {
             try
             {
@@ -64,6 +91,7 @@ namespace ECS.WebAPI.Services
                 var validationParameters = new TokenValidationParameters()
                 {
                     RequireExpirationTime = true,
+                    // Should be true?
                     ValidateIssuer = false,
                     ValidateAudience = false,
                     IssuerSigningKey = new SymmetricSecurityKey(symmetricKey)
@@ -80,22 +108,7 @@ namespace ECS.WebAPI.Services
             }
         }
 
-        public static List<string> GetJwtsFromHttpHeaders(HttpRequestMessage request)
-        {
-            var jwtList = new List<string>();
-            try
-            {
-               var token = request.Headers.Authorization.Parameter;
-               jwtList.Add(token);
-            }
-            catch (NullReferenceException e)
-            {
-                Debug.WriteLine("***** JWTMANAGER CATCH: " + e.Message);
-            }
-            return jwtList;
-        }
-
-        public static bool ValidateToken(string token, out string username)
+        public bool ValidateToken(string token, out string username)
         {
             username = null;
             var simplePrinciple = GetPrincipal(token);
@@ -106,7 +119,7 @@ namespace ECS.WebAPI.Services
                 identity = simplePrinciple.Identity as ClaimsIdentity;
             } catch(Exception ex)
             {
-                Console.WriteLine(ex.Source + "\n" + ex.Message + "\n" + ex.StackTrace);
+                Debug.WriteLine(ex.Source + "\n" + ex.Message + "\n" + ex.StackTrace);
                 return false;
             }
 

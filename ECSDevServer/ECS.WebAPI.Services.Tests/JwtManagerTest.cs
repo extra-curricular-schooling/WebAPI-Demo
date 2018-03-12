@@ -1,8 +1,6 @@
-﻿using System;
-using Xunit;
-using Moq;
-using ECS.WebAPI.Services;
+﻿using Xunit;
 using Xunit.Abstractions;
+using System.Threading;
 
 namespace ECS.WebAPI.Services.Tests
 {
@@ -16,12 +14,34 @@ namespace ECS.WebAPI.Services.Tests
         }
         public class GenerateTokenTest
         {
-            [Fact]
-            public void FailShouldNotBeTheSameToken()
+            private readonly ITestOutputHelper output;
+
+            public GenerateTokenTest(ITestOutputHelper output)
             {
-                string token1 = JwtManager.GenerateToken("scott");
-                System.Threading.Thread.Sleep(1000);
-                string token2 = JwtManager.GenerateToken("scott");
+                this.output = output;
+            }
+
+            [Fact]
+            public void ShouldBeSameToken()
+            {
+                string token1 = JwtManager.Instance.GenerateToken("scott");
+                output.WriteLine(token1);
+                string token2 = JwtManager.Instance.GenerateToken("scott");
+                output.WriteLine(token2);
+                Assert.Equal(token1, token2);
+            }
+
+            // Tokens need a certain amount of time to be refreshed by the generator
+            // 100 milliseconds is too little to have different tokens, hence the failed test.
+            [Theory]
+            [InlineData(100)]
+            [InlineData(500)]
+            [InlineData(1000)]
+            public void ShouldNotBeTheSameToken(int ms)
+            {
+                string token1 = JwtManager.Instance.GenerateToken("scott");
+                Thread.Sleep(ms);
+                string token2 = JwtManager.Instance.GenerateToken("scott");
                 Assert.NotEqual(token1, token2);
             }
         }
