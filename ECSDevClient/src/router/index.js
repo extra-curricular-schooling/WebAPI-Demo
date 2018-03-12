@@ -11,27 +11,27 @@ export default new Router({
       component: () => import('@/components/pages/Main')
     },
     {
-      path: '/About',
+      path: '/about',
       name: 'About',
       component: () => import('@/components/pages/About')
     },
     {
-      path: '/Registration',
+      path: '/registration',
       name: 'Registration',
       component: () => import('@/components/pages/Registration')
     },
     {
-      path: '/Home',
+      path: '/home',
       name: 'Home',
       component: () => import('@/components/pages/Home')
     },
     {
-      path: '/Account',
+      path: '/account',
       name: 'Account',
       component: () => import('@/components/pages/Account')
     },
     {
-      path: '/Sweepstake',
+      path: '/sweepstake',
       name: 'Sweepstake',
       component: () => import('@/components/pages/Sweepstake')
     },
@@ -42,12 +42,12 @@ export default new Router({
       component: () => import('@/components/pages/MissingPage')
     },
     {
-      path: '/LinkedIn',
+      path: '/linkedin',
       name: 'LinkedIn',
       component: () => import('@/components/pages/LinkedIn')
     },
     {
-      path: '/ApiTests',
+      path: '/apitests',
       name: 'ApiTests',
       component: () => import('@/components/pages/ApiTests')
     }
