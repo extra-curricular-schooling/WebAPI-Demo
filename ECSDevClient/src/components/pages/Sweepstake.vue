@@ -1,30 +1,54 @@
 <template>
   <div>
-    <h1>Welcome to Sweepstakes.</h1>
+    <h1>Welcome to Sweepstake Entry. Buy A Ticket To Enter Into The Sweepstake.</h1>
     <h1>Time Left</h1>
     <Countdown deadline="March 22, 2018"></Countdown>
     <!-- or
     <Countdown end="August 22, 2022"></Countdown> -->
-    <button v-on:click="ticket_bought">Buy A Ticket</button>
+    <button v-on:click="ticketBought(totalPoints,ticketPrice)">Buy A Ticket</button>
+    <div class="timeStamp">
+      <!-- use v-bind or something to tie the timestamp  -->
+    <h2>{{new Date() | moment("dddd, MMMM Do YYYY , h:mm:ss a")}}</h2>
+    </div>
   </div>
 </template>
 <script>
-// import Vue from 'vue'
+import Vue from 'vue'
+// timestamp pattern 2018-03-06 16:46:08.433 use the UTC only
+// generate a timestamp function first and send it to the ticket bought
+// import moment from 'moment'
+// uninstall the dependecy you are not using
+// sweepstake main in which we have sweepstake id, date open and close, prize, username who wins.
+// now we have a seperate sweepstake entry in which we have a ticket purchase timestamp, the cost, the username of who bought the ticket,
+// sweepstake open date like when a sweepstake ticket can be bought the date open and close. we need an isActive flag too.
 import Countdown from 'vuejs-countdown'
+Vue.use(require('vue-moment'))
 export default {
-  data: function () {
+  name: 'prizes',
+  data () {
     return {
-      points: 5
+      totalPoints: 10,
+      ticketPrice: 5,
+      timeStamp: ' '
     }
   },
   components: { Countdown },
   methods: {
-    ticket_bought: function () {
-      alert('One Ticket Bought for ' + this.points)
+    ticketBought: function (totalPoints, ticketPrice) {
+      if (totalPoints >= ticketPrice) {
+        alert('Congragulations! One ticket bought for ' + ticketPrice + ' points!')
+        totalPoints = totalPoints - ticketPrice
+        alert('Points left = ' + totalPoints)
+        return totalPoints
+      } else {
+        alert('Sorry! You have Insufficient Points!')
+      }
     }
-    // hehe: function () {
-    //   alert('you are stupid')
-    // }put if statements for points if points greater than 5 do this or else do that
+    // timeStamp: function () {
+    //   alert(new Date() | moment('dddd, MMMM Do YYYY , h:mm:ss a') + 'you are stupid')
+    //   alert(new Date() | moment("dddd, MMMM Do YYYY , h:mm:ss a"))
+    // return Date.now()
+    // }
   }
 }
 </script>
