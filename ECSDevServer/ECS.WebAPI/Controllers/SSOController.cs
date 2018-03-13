@@ -17,12 +17,12 @@ namespace ECS.WebAPI.Controllers
     public class SsoController : ApiController
     {
         private readonly IAccountRepository accountRepository;
-        private readonly ITokenRepository tokenRepository;
+        private readonly IJwtRepository jwtRepository;
 
         public SsoController()
         {
             accountRepository = new AccountRepository();
-            tokenRepository = new TokenRepository();
+            jwtRepository = new JwtRepository();
         }
         public SsoController(IAccountRepository repo)
         {
@@ -71,13 +71,12 @@ namespace ECS.WebAPI.Controllers
 
             // Store JWT in DB.
             // WHY IS THIS CONNECTED TO A USER AND NOT AN ACCOUNT???
-            Token tokenModel = new Token
+            JWT tokenModel = new JWT
             {
-                Name = "jwt",
-                Username = username,
+                UserName = username,
                 Value = token
             };
-            tokenRepository.Update(tokenModel);
+            jwtRepository.Update(tokenModel);
 
             // Redirect them to our Home page with their credentials logged.
             return Content(HttpStatusCode.Redirect, new Uri("https://localhost:44311/#/Home"));

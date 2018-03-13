@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ECS.Models
 {
@@ -13,17 +9,24 @@ namespace ECS.Models
     /// </summary>
     public class JWT
     {
+        //Consists of claims, expiration date, where it comes from
+        [Required]
+        [Column(Order = 2)]
+        public string Value { get; set; }
+
+        //Foreign Key of Account
+        [Column(Order = 0)]
+        [Display(Name = "Username")]
+        [StringLength(20, MinimumLength = 5, ErrorMessage = "Username must be between 5-20 characters")]
+        public string UserName { get; set; }
+
         //Identifier for JWT's
         [Key]
-        public int JWTID { get; set; }
-
-        //Consists of claims, expiration date, where it comes from
-        public string Token { get; set; }
-
-        //Foreign Key of user
-        public string Email { get; set; }
+        [Column(Order = 1)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int TokenId { get; set; }
 
         //Navigation Property of User
-        public User User { get; set; }
+        public Account Account { get; set; }
     }
 }

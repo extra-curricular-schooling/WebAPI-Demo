@@ -3734,45 +3734,6 @@ namespace ECS.Models.Migrations
             //For each item in the list sweepStakeEntry addorupdate a SweepStakeEntry object with a username
             sweepStakeEntry.ForEach(s => context.SweepStakeEntries.AddOrUpdate(p => p.UserName, s));
             context.SaveChanges();
-
-            var jwt = new List<JWT>
-            {
-                new JWT
-                {
-                    JWTID = 1,
-                    Token = "1inf39f1finfadf0nionaf",
-                    Email = user.Single(s => s.Email == "test1@gmail.com").Email
-                },
-                new JWT
-                {
-                    JWTID = 2,
-                    Token = "1inf39f1fin3298nf2nfio2",
-                    Email = user.Single(s => s.Email == "test2@gmail.com").Email
-                },
-                new JWT
-                {
-                    JWTID = 3,
-                    Token = "1wekjngf0g24igadf0nionaf",
-                    Email = user.Single(s => s.Email == "test3@gmail.com").Email
-                },
-                new JWT
-                {
-                    JWTID = 4,
-                    Token = "1in24iofn42g09n42gi",
-                    Email = user.Single(s => s.Email == "test4@gmail.com").Email
-                },
-                new JWT
-                {
-                    JWTID = 5,
-                    Token = "1inf32fnoiw09fn2nfioieff",
-                    Email = user.Single(s => s.Email == "test5@gmail.com").Email
-                }
-            };
-            //For each item in the list sweepStakeEntry addorupdate a SweepStakeEntry object with a username
-            jwt.ForEach(s => context.JWTs.AddOrUpdate(p => p.JWTID, s));
-            context.SaveChanges();
-
-            base.Seed(context);
         }
 
         void AddOrUpdateInterestTag(ECS.Models.ECSContext.ECSContext context, string accountUsername, string tagName)

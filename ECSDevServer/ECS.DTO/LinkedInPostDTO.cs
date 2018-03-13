@@ -10,6 +10,5 @@
         public string Description { get; set; }
         public string SubmittedUrl { get; set; }
         public string Code { get; set; }
-        public string AccessToken { get; set; }
     }
 }

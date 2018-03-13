@@ -39,8 +39,6 @@ namespace ECS.Models.ECSContext
 
         public DbSet<SweepStake> SweepStakes { get; set; }
 
-        public DbSet<Token> Tokens { get; set; }
-
         public DbSet<User> Users { get; set; }
 
         public DbSet<ZipLocation> ZipLocations { get; set; }

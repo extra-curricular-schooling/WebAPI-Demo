@@ -8,9 +8,9 @@ using System.Web.Http.Controllers;
 
 namespace ECS.WebAPI.Filters.AuthorizationFilters
 {
-    public class AuthorizationAttribute : AuthorizeAttribute, IDisposable
+    public class AuthorizationRequiredAttribute : AuthorizeAttribute, IDisposable
     {
-        private TokenRepository _tokenRepository = new TokenRepository();
+        private JwtRepository _jwtRepository = new JwtRepository();
 
         protected override bool IsAuthorized(HttpActionContext actionContext)
         {
@@ -20,9 +20,11 @@ namespace ECS.WebAPI.Filters.AuthorizationFilters
                 // get the access token
                 accessTokenFromRequest = actionContext.Request.Headers.Authorization.Parameter;
 
-                if (JwtManager.Instance.ValidateToken(accessTokenFromRequest, out string username))
+                string username = "";
+                if (JwtManager.Instance.ValidateToken(accessTokenFromRequest, out username))
                 {
-                    Token accessToken = _tokenRepository.GetSingle(d => d.Name == "jwt" & d.Username == username);
+                    string tempUsername = string.Copy(username);
+                    JWT accessToken = _jwtRepository.GetSingle(d => d.UserName == tempUsername, d => d.Account);
                     if (accessToken != null)
                     {
                         string accessTokenStored = accessToken.Value;

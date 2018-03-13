@@ -35,8 +35,15 @@ namespace ECS.Models
         [Display(Name = "Token Creation")]
         public DateTime TokenCreation { get; set; }
 
+        public bool Expired { get; set; }
+
         //navigation property of Account
         //token has one Account
         public Account Account { get; set; }
+
+        public LinkedIn()
+        {
+            Expired = false;
+        }
     }
 }

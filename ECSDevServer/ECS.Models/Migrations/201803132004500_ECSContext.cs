@@ -3,26 +3,171 @@ namespace ECS.Models.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class ECSContext1 : DbMigration
+    public partial class ECSContext : DbMigration
     {
         public override void Up()
         {
-            RenameTable(name: "dbo.AccountTags", newName: "AccountInterestTag");
-            RenameColumn(table: "dbo.AccountInterestTag", name: "Username", newName: "Account_UserName");
-            RenameColumn(table: "dbo.AccountInterestTag", name: "TagName", newName: "InterestTag_TagName");
-            RenameIndex(table: "dbo.AccountInterestTag", name: "IX_Username", newName: "IX_Account_UserName");
-            RenameIndex(table: "dbo.AccountInterestTag", name: "IX_TagName", newName: "IX_InterestTag_TagName");
+            CreateTable(
+                "dbo.Account",
+                c => new
+                    {
+                        UserName = c.String(nullable: false, maxLength: 20),
+                        Email = c.String(nullable: false, maxLength: 128),
+                        Password = c.String(nullable: false, maxLength: 20),
+                        Points = c.Int(nullable: false),
+                        AccountStatus = c.Boolean(nullable: false),
+                        SuspensionTime = c.DateTime(nullable: false),
+                    })
+                .PrimaryKey(t => t.UserName)
+                .ForeignKey("dbo.User", t => t.Email, cascadeDelete: true)
+                .Index(t => t.Email);
+            
+            CreateTable(
+                "dbo.InterestTag",
+                c => new
+                    {
+                        TagName = c.String(nullable: false, maxLength: 128),
+                    })
+                .PrimaryKey(t => t.TagName);
+            
+            CreateTable(
+                "dbo.Article",
+                c => new
+                    {
+                        ArticleLink = c.String(nullable: false, maxLength: 128),
+                        ArticleTitle = c.String(nullable: false),
+                        ArticleDescription = c.String(),
+                        InterestTag_TagName = c.String(maxLength: 128),
+                    })
+                .PrimaryKey(t => t.ArticleLink)
+                .ForeignKey("dbo.InterestTag", t => t.InterestTag_TagName)
+                .Index(t => t.InterestTag_TagName);
+            
+            CreateTable(
+                "dbo.SecurityQuestionAccount",
+                c => new
+                    {
+                        SecurityQuestionID = c.Int(nullable: false),
+                        Username = c.String(nullable: false, maxLength: 20),
+                        Answer = c.String(nullable: false, maxLength: 100),
+                    })
+                .PrimaryKey(t => new { t.SecurityQuestionID, t.Username })
+                .ForeignKey("dbo.SecurityQuestion", t => t.SecurityQuestionID, cascadeDelete: true)
+                .ForeignKey("dbo.Account", t => t.Username, cascadeDelete: true)
+                .Index(t => t.SecurityQuestionID)
+                .Index(t => t.Username);
+            
+            CreateTable(
+                "dbo.SecurityQuestion",
+                c => new
+                    {
+                        SecurityQuestionID = c.Int(nullable: false, identity: true),
+                        SecurityQuestions = c.String(),
+                    })
+                .PrimaryKey(t => t.SecurityQuestionID);
+            
+            CreateTable(
+                "dbo.User",
+                c => new
+                    {
+                        Email = c.String(nullable: false, maxLength: 128),
+                        FirstName = c.String(nullable: false, maxLength: 50),
+                        LastName = c.String(nullable: false, maxLength: 50),
+                    })
+                .PrimaryKey(t => t.Email);
+            
+            CreateTable(
+                "dbo.ZipLocation",
+                c => new
+                    {
+                        Email = c.String(nullable: false, maxLength: 128),
+                        ZipCode = c.String(nullable: false, maxLength: 10),
+                        Address = c.String(nullable: false),
+                        City = c.String(nullable: false),
+                        State = c.String(nullable: false),
+                        Latitude = c.Int(nullable: false),
+                        Longitude = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => new { t.Email, t.ZipCode })
+                .ForeignKey("dbo.User", t => t.Email, cascadeDelete: true)
+                .Index(t => t.Email);
+            
+            CreateTable(
+                "dbo.AccountType",
+                c => new
+                    {
+                        Username = c.String(nullable: false, maxLength: 20),
+                        Permission = c.String(nullable: false, maxLength: 128),
+                        RoleName = c.String(nullable: false),
+                    })
+                .PrimaryKey(t => new { t.Username, t.Permission })
+                .ForeignKey("dbo.Account", t => t.Username, cascadeDelete: true)
+                .Index(t => t.Username);
+            
             CreateTable(
                 "dbo.JWT",
                 c => new
                     {
-                        JWTID = c.Int(nullable: false, identity: true),
-                        Token = c.String(),
-                        Email = c.String(maxLength: 128),
+                        UserName = c.String(maxLength: 20),
+                        TokenId = c.Int(nullable: false, identity: true),
+                        Value = c.String(nullable: false),
                     })
-                .PrimaryKey(t => t.JWTID)
-                .ForeignKey("dbo.User", t => t.Email)
-                .Index(t => t.Email);
+                .PrimaryKey(t => t.TokenId)
+                .ForeignKey("dbo.Account", t => t.UserName)
+                .Index(t => t.UserName);
+            
+            CreateTable(
+                "dbo.LinkedIn",
+                c => new
+                    {
+                        UserName = c.String(nullable: false, maxLength: 20),
+                        AccessToken = c.String(nullable: false, maxLength: 2000),
+                        TokenCreation = c.DateTime(nullable: false),
+                    })
+                .PrimaryKey(t => new { t.UserName, t.AccessToken })
+                .ForeignKey("dbo.Account", t => t.UserName, cascadeDelete: true)
+                .Index(t => t.UserName);
+            
+            CreateTable(
+                "dbo.SweepStakeEntry",
+                c => new
+                    {
+                        SweepstakesID = c.Int(nullable: false),
+                        UserName = c.String(nullable: false, maxLength: 20),
+                        PurchaseDateTime = c.DateTime(nullable: false),
+                        Cost = c.Int(nullable: false),
+                        OpenDateTime = c.DateTime(nullable: false),
+                    })
+                .PrimaryKey(t => new { t.SweepstakesID, t.UserName })
+                .ForeignKey("dbo.Account", t => t.UserName, cascadeDelete: true)
+                .ForeignKey("dbo.SweepStake", t => t.SweepstakesID, cascadeDelete: true)
+                .Index(t => t.SweepstakesID)
+                .Index(t => t.UserName);
+            
+            CreateTable(
+                "dbo.SweepStake",
+                c => new
+                    {
+                        SweepStakesID = c.Int(nullable: false, identity: true),
+                        OpenDateTime = c.DateTime(nullable: false),
+                        ClosedDateTime = c.DateTime(nullable: false),
+                        Prize = c.String(nullable: false),
+                        UsernameWinner = c.String(maxLength: 20),
+                    })
+                .PrimaryKey(t => t.SweepStakesID);
+            
+            CreateTable(
+                "dbo.AccountInterestTag",
+                c => new
+                    {
+                        Account_UserName = c.String(nullable: false, maxLength: 20),
+                        InterestTag_TagName = c.String(nullable: false, maxLength: 128),
+                    })
+                .PrimaryKey(t => new { t.Account_UserName, t.InterestTag_TagName })
+                .ForeignKey("dbo.Account", t => t.Account_UserName, cascadeDelete: true)
+                .ForeignKey("dbo.InterestTag", t => t.InterestTag_TagName, cascadeDelete: true)
+                .Index(t => t.Account_UserName)
+                .Index(t => t.InterestTag_TagName);
             
             CreateStoredProcedure(
                 "dbo.Account_Insert",
@@ -352,46 +497,46 @@ namespace ECS.Models.Migrations
                 "dbo.JWT_Insert",
                 p => new
                     {
-                        Token = p.String(),
-                        Email = p.String(maxLength: 128),
+                        Value = p.String(),
+                        UserName = p.String(maxLength: 20),
                     },
                 body:
-                    @"INSERT [dbo].[JWT]([Token], [Email])
-                      VALUES (@Token, @Email)
+                    @"INSERT [dbo].[JWT]([UserName], [Value])
+                      VALUES (@UserName, @Value)
                       
-                      DECLARE @JWTID int
-                      SELECT @JWTID = [JWTID]
+                      DECLARE @TokenId int
+                      SELECT @TokenId = [TokenId]
                       FROM [dbo].[JWT]
-                      WHERE @@ROWCOUNT > 0 AND [JWTID] = scope_identity()
+                      WHERE @@ROWCOUNT > 0 AND [TokenId] = scope_identity()
                       
-                      SELECT t0.[JWTID]
+                      SELECT t0.[TokenId]
                       FROM [dbo].[JWT] AS t0
-                      WHERE @@ROWCOUNT > 0 AND t0.[JWTID] = @JWTID"
+                      WHERE @@ROWCOUNT > 0 AND t0.[TokenId] = @TokenId"
             );
             
             CreateStoredProcedure(
                 "dbo.JWT_Update",
                 p => new
                     {
-                        JWTID = p.Int(),
-                        Token = p.String(),
-                        Email = p.String(maxLength: 128),
+                        TokenId = p.Int(),
+                        Value = p.String(),
+                        UserName = p.String(maxLength: 20),
                     },
                 body:
                     @"UPDATE [dbo].[JWT]
-                      SET [Token] = @Token, [Email] = @Email
-                      WHERE ([JWTID] = @JWTID)"
+                      SET [UserName] = @UserName, [Value] = @Value
+                      WHERE ([TokenId] = @TokenId)"
             );
             
             CreateStoredProcedure(
                 "dbo.JWT_Delete",
                 p => new
                     {
-                        JWTID = p.Int(),
+                        TokenId = p.Int(),
                     },
                 body:
                     @"DELETE [dbo].[JWT]
-                      WHERE ([JWTID] = @JWTID)"
+                      WHERE ([TokenId] = @TokenId)"
             );
             
             CreateStoredProcedure(
@@ -592,14 +737,43 @@ namespace ECS.Models.Migrations
             DropStoredProcedure("dbo.Account_Delete");
             DropStoredProcedure("dbo.Account_Update");
             DropStoredProcedure("dbo.Account_Insert");
-            DropForeignKey("dbo.JWT", "Email", "dbo.User");
-            DropIndex("dbo.JWT", new[] { "Email" });
+            DropForeignKey("dbo.SweepStakeEntry", "SweepstakesID", "dbo.SweepStake");
+            DropForeignKey("dbo.SweepStakeEntry", "UserName", "dbo.Account");
+            DropForeignKey("dbo.LinkedIn", "UserName", "dbo.Account");
+            DropForeignKey("dbo.JWT", "UserName", "dbo.Account");
+            DropForeignKey("dbo.AccountType", "Username", "dbo.Account");
+            DropForeignKey("dbo.Account", "Email", "dbo.User");
+            DropForeignKey("dbo.ZipLocation", "Email", "dbo.User");
+            DropForeignKey("dbo.SecurityQuestionAccount", "Username", "dbo.Account");
+            DropForeignKey("dbo.SecurityQuestionAccount", "SecurityQuestionID", "dbo.SecurityQuestion");
+            DropForeignKey("dbo.AccountInterestTag", "InterestTag_TagName", "dbo.InterestTag");
+            DropForeignKey("dbo.AccountInterestTag", "Account_UserName", "dbo.Account");
+            DropForeignKey("dbo.Article", "InterestTag_TagName", "dbo.InterestTag");
+            DropIndex("dbo.AccountInterestTag", new[] { "InterestTag_TagName" });
+            DropIndex("dbo.AccountInterestTag", new[] { "Account_UserName" });
+            DropIndex("dbo.SweepStakeEntry", new[] { "UserName" });
+            DropIndex("dbo.SweepStakeEntry", new[] { "SweepstakesID" });
+            DropIndex("dbo.LinkedIn", new[] { "UserName" });
+            DropIndex("dbo.JWT", new[] { "UserName" });
+            DropIndex("dbo.AccountType", new[] { "Username" });
+            DropIndex("dbo.ZipLocation", new[] { "Email" });
+            DropIndex("dbo.SecurityQuestionAccount", new[] { "Username" });
+            DropIndex("dbo.SecurityQuestionAccount", new[] { "SecurityQuestionID" });
+            DropIndex("dbo.Article", new[] { "InterestTag_TagName" });
+            DropIndex("dbo.Account", new[] { "Email" });
+            DropTable("dbo.AccountInterestTag");
+            DropTable("dbo.SweepStake");
+            DropTable("dbo.SweepStakeEntry");
+            DropTable("dbo.LinkedIn");
             DropTable("dbo.JWT");
-            RenameIndex(table: "dbo.AccountInterestTag", name: "IX_InterestTag_TagName", newName: "IX_TagName");
-            RenameIndex(table: "dbo.AccountInterestTag", name: "IX_Account_UserName", newName: "IX_Username");
-            RenameColumn(table: "dbo.AccountInterestTag", name: "InterestTag_TagName", newName: "TagName");
-            RenameColumn(table: "dbo.AccountInterestTag", name: "Account_UserName", newName: "Username");
-            RenameTable(name: "dbo.AccountInterestTag", newName: "AccountTags");
+            DropTable("dbo.AccountType");
+            DropTable("dbo.ZipLocation");
+            DropTable("dbo.User");
+            DropTable("dbo.SecurityQuestion");
+            DropTable("dbo.SecurityQuestionAccount");
+            DropTable("dbo.Article");
+            DropTable("dbo.InterestTag");
+            DropTable("dbo.Account");
         }
     }
 }

@@ -16,7 +16,7 @@ namespace ECS.WebAPI.Controllers
     [RoutePrefix("Auth")]
     public class AuthController : ApiController
     {
-        private TokenRepository _tokenRepository = new TokenRepository();
+        private JwtRepository _jwtRepository = new JwtRepository();
 
         [HttpGet]
         [AllowAnonymous]
@@ -25,14 +25,26 @@ namespace ECS.WebAPI.Controllers
         public HttpResponseMessage GenerateCookie()
         {
             var response = new HttpResponseMessage();
-            Token token = new Token
-            {
-                Value = JwtManager.Instance.GenerateToken("test1"),
-                Username = "test1",
-                Name = "jwt"
-            };
-            _tokenRepository.Insert(token);
+            JWT token;
 
+            // JWT token already exists
+            if (_jwtRepository.Exists(d => d.UserName == "test1", d => d.Account))
+            {
+                token = _jwtRepository.GetSingle(d => d.UserName == "test1", d => d.Account);
+                token.Value = JwtManager.Instance.GenerateToken("test1");
+                _jwtRepository.Update(token);
+            }
+            // JWT does not exist for this user
+            else
+            {
+                token = new JWT
+                {
+                    Value = JwtManager.Instance.GenerateToken("test1"),
+                    UserName = "test1"
+                };
+                _jwtRepository.Insert(token);
+            }
+            
             //Build JSON response.
             var jsonMsg = new
             {

@@ -10,7 +10,7 @@ namespace ECS.WebAPI.Filters.AuthorizationFilters
 {
     public class SsoAuthorizeAttribute : AuthorizeAttribute, IDisposable
     {
-        private TokenRepository _tokenRepository = new TokenRepository();
+        private JwtRepository _jwtRepository = new JwtRepository();
 
         protected override bool IsAuthorized(HttpActionContext actionContext)
         {
@@ -25,7 +25,7 @@ namespace ECS.WebAPI.Filters.AuthorizationFilters
 
                 if (JwtManager.Instance.ValidateToken(accessTokenFromRequest, out string username))
                 {
-                    Token accessToken = _tokenRepository.GetSingle(d => d.Name == "jwt" & d.Username == username);
+                    JWT accessToken = _jwtRepository.GetSingle(d => d.UserName == username, d => d.Account);
                     if (accessToken != null)
                     {
                         string accessTokenStored = accessToken.Value;

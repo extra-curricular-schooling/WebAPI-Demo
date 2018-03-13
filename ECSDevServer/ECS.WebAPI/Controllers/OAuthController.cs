@@ -1,8 +1,10 @@
 ﻿using DotNetOpenAuth.LinkedInOAuth2;
 using ECS.Models;
+using ECS.Repositories;
 using ECS.WebAPI.Filters;
 using ECS.WebAPI.Services;
 using Microsoft.AspNet.Membership.OpenAuth;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
@@ -20,6 +22,9 @@ namespace ECS.WebAPI.Controllers
     {
         #region Constants and fields
         public object JsonWebToken { get; private set; }
+
+        private LinkedInRepository _linkedInRepository = new LinkedInRepository();
+        private AccountRepository _accountRepository = new AccountRepository();
         #endregion
 
         [AllowAnonymous]
@@ -29,17 +34,38 @@ namespace ECS.WebAPI.Controllers
         {
             string ProviderName = OpenAuth.GetProviderNameFromCurrentRequest();
 
+            string username = "";
             if (ProviderName == null || ProviderName == "")
             {
                 var nvs = Request.GetQueryNameValuePairs();
-                string stateParam = nvs.LastOrDefault(x => x.Key == "state").Value;
+                string stateParam = nvs.LastOrDefault(d => d.Key == "state").Value;
                 if (state != null)
                 {
+                    // We need some variables from our state parameter.
                     NameValueCollection provideritem = HttpUtility.ParseQueryString(stateParam);
                     if (provideritem["__provider__"] != null)
                     {
                         ProviderName = provideritem["__provider__"];
                     }
+
+                    if (provideritem["username"] != null)
+                    {
+                        username = provideritem["username"];
+                        // Check to make sure username exists in database.
+                        if(!_accountRepository.Exists(d => d.UserName == username, d => d.User))
+                        {
+                            return Unauthorized();
+                        }
+                    }
+                    // No username was provided.
+                    else
+                    {
+                        return Unauthorized();
+                    }
+                }
+                else
+                {
+                    return BadRequest();
                 }
             }
 
@@ -91,7 +117,24 @@ namespace ECS.WebAPI.Controllers
                     AccessToken = accessToken
                 });
 
-                LinkedIn access = new LinkedIn();
+                if(ProviderName == "linkedin")
+                {
+                    if(_linkedInRepository.Exists(d => d.UserName == username, d => d.Account))
+                    {
+                        LinkedIn currentToken = _linkedInRepository.GetSingle(d => d.UserName == username, d => d.Account);
+                        currentToken.AccessToken = accessToken;
+                        currentToken.TokenCreation = DateTime.Now.ToUniversalTime();
+                        _linkedInRepository.Update(currentToken);
+                    }
+                    else
+                    {
+                        LinkedIn linkedinToken = new LinkedIn();
+                        linkedinToken.AccessToken = accessToken;
+                        linkedinToken.UserName = username;
+                        linkedinToken.TokenCreation = DateTime.Now.ToUniversalTime();
+                        _linkedInRepository.Insert(linkedinToken);
+                    }
+                }
                 return Ok();
             }
         }
@@ -103,11 +146,11 @@ namespace ECS.WebAPI.Controllers
         public IHttpActionResult RedirectToLinkedIn(string authtoken)
         {
             string username;
-
+            
             if (JwtManager.Instance.ValidateToken(authtoken, out username))
             {
                 string provider = "linkedin";
-                var redirectUrl = "~/OAuth/ExternalLoginCallback";
+                var redirectUrl = "~/OAuth/ExternalLoginCallback?username=" + username;
                 OpenAuth.RequestAuthentication(provider, redirectUrl);
                 return Ok();
             }

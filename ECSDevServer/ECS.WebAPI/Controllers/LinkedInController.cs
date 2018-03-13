@@ -1,5 +1,9 @@
 ﻿using ECS.DTO;
+using ECS.Models;
+using ECS.Repositories;
 using ECS.WebAPI.Filters;
+using ECS.WebAPI.Filters.AuthorizationFilters;
+using ECS.WebAPI.Services;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -22,16 +26,46 @@ namespace ECS.WebAPI.Controllers
 
         #region Constants and fields
         private const string _defaultAccessGateway = "https://api.linkedin.com/v1/";
+
+        private readonly LinkedInRepository _linkedInRepository = new LinkedInRepository();
         #endregion
 
-        // GET: LinkedIn
-        [AllowAnonymous]
+        // GET: LinkedIn]
+        [AuthorizationRequired]
         [HttpPost]
         [Route("SharePost")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
         public IHttpActionResult SharePost(LinkedInPostDTO postData)
         {
             string jwtToken = Request.Headers.Authorization.ToString();
+            string username = "";
+            if(!JwtManager.Instance.ValidateToken(jwtToken, out username))
+            {
+                return Unauthorized();
+            }
+
+            LinkedIn access;
+
+            try
+            {
+                if(_linkedInRepository.Exists(d => d.UserName == username, d => d.Account))
+                {
+                    access = _linkedInRepository.GetSingle(d => d.UserName == username, d => d.Account);
+                    if (access.TokenCreation.AddDays(60).CompareTo(DateTime.Now.ToUniversalTime()) >= 0)
+                    {
+                        access.Expired = true;
+                        _linkedInRepository.Update(access);
+                        return BadRequest("LinkedIn access token expired.");
+                    }
+                }
+                else
+                {
+                    return Unauthorized();
+                }
+            } catch (Exception ex)
+            {
+                return Unauthorized();
+            }
 
             var requestUrl = _defaultAccessGateway + "people/~/shares?format=json";
             var webRequest = (HttpWebRequest)WebRequest.Create(requestUrl);
@@ -44,7 +78,7 @@ namespace ECS.WebAPI.Controllers
             var requestHeaders = new NameValueCollection
             {
                 {"x-li-format", "json" },
-                {"Authorization", "Bearer " + postData.AccessToken}, //It is important "Bearer " is included with the access token here.
+                {"Authorization", "Bearer " + access.AccessToken}, //It is important "Bearer " is included with the access token here.
             };
 
             webRequest.Headers.Add(requestHeaders);

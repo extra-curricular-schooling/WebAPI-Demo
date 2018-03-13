@@ -142,7 +142,7 @@
     <Compile Include="Controllers\SweepstakeAdminController.cs" />
     <Compile Include="Controllers\SweepstakeController.cs" />
     <Compile Include="ExceptionHandlers\TraceExceptionLogger.cs" />
-    <Compile Include="Filters\AuthorizationFilters\AuthorizationAttribute.cs" />
+    <Compile Include="Filters\AuthorizationFilters\AuthorizationRequiredAttribute.cs" />
     <Compile Include="Filters\AuthorizationFilters\RequireHttpsAttribute.cs" />
     <Compile Include="Filters\AuthorizationFilters\SsoAuthorizeAttribute.cs" />
     <Compile Include="Global.asax.cs">

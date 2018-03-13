@@ -57,9 +57,13 @@
     <Compile Include="InterestTag.cs" />
     <Compile Include="JWT.cs" />
     <Compile Include="LinkedIn.cs" />
-    <Compile Include="Migrations\201803070540566_ECSContext.cs" />
-    <Compile Include="Migrations\201803070540566_ECSContext.Designer.cs">
-      <DependentUpon>201803070540566_ECSContext.cs</DependentUpon>
+    <Compile Include="Migrations\201803132004500_ECSContext.cs" />
+    <Compile Include="Migrations\201803132004500_ECSContext.Designer.cs">
+      <DependentUpon>201803132004500_ECSContext.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201803132236171_LinkedIn_Expired_Flag_Added.cs" />
+    <Compile Include="Migrations\201803132236171_LinkedIn_Expired_Flag_Added.Designer.cs">
+      <DependentUpon>201803132236171_LinkedIn_Expired_Flag_Added.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -67,7 +71,6 @@
     <Compile Include="SecurityQuestionAccount.cs" />
     <Compile Include="SweepStake.cs" />
     <Compile Include="SweepStakeEntry.cs" />
-    <Compile Include="Token.cs" />
     <Compile Include="User.cs" />
     <Compile Include="ZipLocation.cs" />
   </ItemGroup>
@@ -76,8 +79,11 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201803070540566_ECSContext.resx">
-      <DependentUpon>201803070540566_ECSContext.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201803132004500_ECSContext.resx">
+      <DependentUpon>201803132004500_ECSContext.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803132236171_LinkedIn_Expired_Flag_Added.resx">
+      <DependentUpon>201803132236171_LinkedIn_Expired_Flag_Added.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -76,13 +76,6 @@ namespace ECS.Repositories
     /// <summary>
     /// 
     /// </summary>
-    public interface ITokenRepository : IRepositoryBase<Token>
-    {
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
     public interface IUserRepository : IRepositoryBase<User>
     {
     }
@@ -188,16 +181,6 @@ namespace ECS.Repositories
     public class SweepStakeEntryRepository : RepositoryBase<SweepStakeEntry>, ISweepStakeEntryRepository
     {
         public SweepStakeEntryRepository() : base(new ECSContext())
-        {
-        }
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public class TokenRepository : RepositoryBase<Token>, ITokenRepository
-    {
-        public TokenRepository() : base(new ECSContext())
         {
         }
     }
