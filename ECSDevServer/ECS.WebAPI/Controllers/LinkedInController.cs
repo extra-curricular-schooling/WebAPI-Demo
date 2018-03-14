@@ -51,7 +51,7 @@ namespace ECS.WebAPI.Controllers
                 if(_linkedInRepository.Exists(d => d.UserName == username, d => d.Account))
                 {
                     access = _linkedInRepository.GetSingle(d => d.UserName == username, d => d.Account);
-                    if (access.TokenCreation.AddDays(60).CompareTo(DateTime.Now.ToUniversalTime()) >= 0)
+                    if (access.TokenCreation.AddDays(60).CompareTo(DateTime.Now.ToUniversalTime()) <= 0)
                     {
                         access.Expired = true;
                         _linkedInRepository.Update(access);

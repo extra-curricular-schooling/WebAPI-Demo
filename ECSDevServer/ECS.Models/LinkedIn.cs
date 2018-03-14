@@ -14,18 +14,22 @@ namespace ECS.Models
     /// </summary>
     public class LinkedIn
     {
-        //Foreign Key of Account class
-        [Required]
+        //Identifier for JWT's
         [Key]
         [Column(Order = 0)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int TokenId { get; set; }
+
+        //Foreign Key of Account class
+        [Required]
+        [Column(Order = 1)]
         [Display(Name = "Username")]
         [StringLength(20, MinimumLength = 5, ErrorMessage = "Username must be between 5-20 characters")]
         public string UserName { get; set; }
 
         //The token produced as a string to create a LinkedIn post
         [Required]
-        [Key]
-        [Column(Order = 1)]
+        [Column(Order = 2)]
         [StringLength(2000)]
         public string AccessToken { get; set; }
 

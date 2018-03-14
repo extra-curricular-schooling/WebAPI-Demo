@@ -1,6 +1,7 @@
 <template>
   <div>
     <get-token></get-token>
+    <connect-to-linkedin/>
     <LinkedInPostModal/>
   </div>
 </template>
@@ -10,7 +11,7 @@
 import Bulma from "bulma";
 import Vue from "vue";
 import Axios from "axios";
-import LinkedInPostModal from '@/components/LinkedInPostModal'
+import LinkedInPostModal from "@/components/LinkedInPostModal";
 
 // DELETE this during production, temporary token to access linkedin resource
 Vue.component("get-token", {
@@ -20,8 +21,12 @@ Vue.component("get-token", {
     requestCookie: function() {
       Axios({
         method: "GET",
-        headers: this.$store.getters.getRequestHeaders,
-        url: "https://localhost:44311/Auth/GenerateCookie"
+        url: "https://localhost:44311/Auth/GenerateCookie",
+        headers: {
+          "Access-Control-Allow-Origin": "http://localhost:8080",
+          "Content-Type": "application/json",
+          referer: "http://localhost:8080/"
+        }
       }).then(function(response) {
         window.sessionStorage.setItem("auth_token", response.data.auth_token);
       });
@@ -62,15 +67,13 @@ Vue.component("linkedin-post-modal", {
         </footer>\
       </div>\
     </div>',
-  methods: {
-
-  }
+  methods: {}
 });
 
 export default {
   name: "LinkedIn",
   components: {
-    'LinkedInPostModal': LinkedInPostModal
+    LinkedInPostModal: LinkedInPostModal
   }
 };
 </script>

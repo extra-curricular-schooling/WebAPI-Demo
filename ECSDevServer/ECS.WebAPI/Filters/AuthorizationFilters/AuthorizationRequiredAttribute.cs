@@ -15,10 +15,10 @@ namespace ECS.WebAPI.Filters.AuthorizationFilters
         protected override bool IsAuthorized(HttpActionContext actionContext)
         {
             string accessTokenFromRequest = "";
-            if (actionContext.Request.Headers.Authorization != null)
+            if (actionContext.Request.Headers.Authorization.ToString() != null)
             {
                 // get the access token
-                accessTokenFromRequest = actionContext.Request.Headers.Authorization.Parameter;
+                accessTokenFromRequest = actionContext.Request.Headers.Authorization.ToString();
 
                 string username = "";
                 if (JwtManager.Instance.ValidateToken(accessTokenFromRequest, out username))

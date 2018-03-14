@@ -3,12 +3,12 @@
     <button v-on:click="toggleLinkedInModal" class="button is-primary">Share on LinkedIn!</button>
     <div class="modal" v-bind:class="{ 'is-active' : isActive }">
       <div class="modal-background"></div>
-      <div class="modal-card">
+      <div id="linkedin-modal" class="modal-card">
         <header class="modal-card-head">
           <p class="modal-card-title">Share this article on LinkedIn!</p>
           <button class="delete" aria-label="close" v-on:click="toggleLinkedInModal"></button>
         </header>
-        <section class="modal-card-body">
+        <section id="linkedin-modal-body" class="modal-card-body">
           <p class="warning field-element">* indicates a required field</p>
           <div class="is-field-group">
             <div class="field comment">
@@ -27,7 +27,7 @@
             </div>
           </div>
         </section>
-        <section class="hero is-info">
+        <section id="linkedin-preview" class="hero is-info">
           <div class="hero-body">
             <a>Preview</a>
             <div class="box">
@@ -88,8 +88,23 @@
           </div>
         </section>
         <footer class="modal-card-foot">
-          <button class="button is-success">Post on LinkedIn</button>
+          <button id="linkedin-submit-button" class="button is-success" v-on:click="shareToLinkedIn">Post on LinkedIn</button>
           <button class="button" v-on:click="toggleLinkedInModal">Cancel</button>
+        </footer>
+      </div>
+    </div>
+    <div class="modal" v-bind:class="{ 'is-active' : isConfirm }">
+      <div class="modal-background"></div>
+      <div id="linkedin-modal" class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">Article has been shared on LinkedIn!</p>
+          <button class="delete" aria-label="close" v-on:click="toggleConfirmModal"></button>
+        </header>
+        <section id="linkedin-modal-body" class="modal-card-body">
+          <p>View the article </p><a id="post-url" href="">here</a>
+        </section>
+        <footer class="modal-card-foot">
+          <button id="linkedin-submit-button" class="button is-success" v-on:click="toggleConfirmModal">Close</button>
         </footer>
       </div>
     </div>
@@ -97,36 +112,57 @@
 </template>
 
 <script>
-import Axios from 'axios'
+import Axios from "axios";
 export default {
-  name: 'LinkedInPostModal',
-  data () {
+  name: "LinkedInPostModal",
+  data() {
     return {
       isActive: false,
+      isConfirm: false,
       postData: {
-        comment: 'Check this article I found on ECS!',
-        title: 'Placeholder title',
-        description: '',
-        submittedurl: 'https://developer.linkedin.com/',
-        code: 'connections-only'
+        comment: "Check this article I found on ECS!",
+        title: "Placeholder title",
+        description: "",
+        submittedurl: "https://developer.linkedin.com/",
+        code: "connections-only"
       },
       currentDateTime: new Date()
-    }
+    };
   },
   methods: {
-    toggleLinkedInModal: function () {
-      this.isActive = !this.isActive
+    toggleLinkedInModal: function() {
+      this.isActive = !this.isActive;
     },
-    shareToLinkedIn: function () {
+    toggleConfirmModal: function() {
+      this.isConfirm = !this.isConfirm;
+    },
+    shareToLinkedIn: function() {
       Axios({
-        method: 'POST',
-        url: 'https://localhost:44311/LinkedIn/SharePost'
-      }).then(function (response) {
-        window.sessionStorage.setItem('auth_token', response.data.auth_token)
+        method: "POST",
+        url: "https://localhost:44311/LinkedIn/SharePost",
+        headers: {
+          "Access-Control-Allow-Origin": "http://localhost:8080",
+          Authorization:
+            window.sessionStorage.auth_token
+        },
+        data: {
+          comment: this.postData.comment,
+          title: this.postData.title,
+          description: this.postData.description,
+          submittedurl: this.postData.submittedurl,
+          code: this.postData.code
+        }
       })
+        .then(function(response) {
+          toggleLinkedInModal();
+          var myNode = document.getElementById("post-url");
+          myNode.href = response.data.UpdateUrl;
+          toggleConfirmModal();
+        })
+        .catch(function(error) {});
     }
   }
-}
+};
 </script>
 
 <style scoped>
