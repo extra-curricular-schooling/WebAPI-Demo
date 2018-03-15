@@ -2,7 +2,7 @@
 using ECS.Models;
 using ECS.Repositories;
 using ECS.WebAPI.Filters;
-using ECS.WebAPI.Filters.AuthorizationFilters;
+using ECS.WebAPI.Filters.AuthenticationFilters;
 using ECS.WebAPI.Services;
 using Newtonsoft.Json.Linq;
 using System;
@@ -31,7 +31,7 @@ namespace ECS.WebAPI.Controllers
         #endregion
 
         // GET: LinkedIn]
-        [AuthorizationRequired]
+        [AuthenticationRequired]
         [HttpPost]
         [Route("SharePost")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
@@ -41,7 +41,7 @@ namespace ECS.WebAPI.Controllers
             string username = "";
             if(!JwtManager.Instance.ValidateToken(jwtToken, out username))
             {
-                return Unauthorized();
+               return Unauthorized();
             }
 
             LinkedIn access;

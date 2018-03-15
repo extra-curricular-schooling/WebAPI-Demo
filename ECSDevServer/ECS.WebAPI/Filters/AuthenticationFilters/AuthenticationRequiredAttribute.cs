@@ -6,26 +6,25 @@ using System.Diagnostics;
 using System.Web.Http;
 using System.Web.Http.Controllers;
 
-namespace ECS.WebAPI.Filters.AuthorizationFilters
+namespace ECS.WebAPI.Filters.AuthenticationFilters
 {
-    public class SsoAuthorizeAttribute : AuthorizeAttribute, IDisposable
+    public class AuthenticationRequiredAttribute : AuthorizeAttribute, IDisposable
     {
         private JwtRepository _jwtRepository = new JwtRepository();
 
         protected override bool IsAuthorized(HttpActionContext actionContext)
         {
             string accessTokenFromRequest = "";
-            if (actionContext.Request.Headers.Authorization != null)
+            if (actionContext.Request.Headers.Authorization.ToString() != null)
             {
-                // get the access token from the appropriate header...
+                // get the access token
+                accessTokenFromRequest = actionContext.Request.Headers.Authorization.ToString();
 
-
-
-                accessTokenFromRequest = actionContext.Request.Headers.Authorization.Parameter;
-
-                if (JwtManager.Instance.ValidateToken(accessTokenFromRequest, out string username))
+                string username = "";
+                if (JwtManager.Instance.ValidateToken(accessTokenFromRequest, out username))
                 {
-                    JWT accessToken = _jwtRepository.GetSingle(d => d.UserName == username, d => d.Account);
+                    string tempUsername = string.Copy(username);
+                    JWT accessToken = _jwtRepository.GetSingle(d => d.UserName == tempUsername, d => d.Account);
                     if (accessToken != null)
                     {
                         string accessTokenStored = accessToken.Value;
@@ -51,7 +50,7 @@ namespace ECS.WebAPI.Filters.AuthorizationFilters
             else
             {
                 return false;
-            }
+            }            
         }
 
         protected override void HandleUnauthorizedRequest(HttpActionContext actionContext)
@@ -62,7 +61,6 @@ namespace ECS.WebAPI.Filters.AuthorizationFilters
 
         public void Dispose()
         {
-            
         }
     }
 }

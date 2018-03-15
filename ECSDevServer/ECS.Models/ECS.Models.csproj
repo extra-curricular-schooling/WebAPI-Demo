@@ -53,6 +53,7 @@
     <Compile Include="Account.cs" />
     <Compile Include="AccountType.cs" />
     <Compile Include="Article.cs" />
+    <Compile Include="ECSClaim.cs" />
     <Compile Include="ECSContext.cs" />
     <Compile Include="InterestTag.cs" />
     <Compile Include="JWT.cs" />

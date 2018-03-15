@@ -1,46 +1,35 @@
-﻿using ECS.WebAPI.Services;
+﻿using ECS.Models;
+using ECS.Repositories;
+using ECS.WebAPI.Services;
 using System;
 using System.Diagnostics;
-using System.Security.Claims;
 using System.Web.Http;
 using System.Web.Http.Controllers;
 
 namespace ECS.WebAPI.Filters.AuthorizationFilters
 {
-    public class AuthorizationRequiredAttribute : AuthorizeAttribute, IDisposable
+    public class SsoAuthorizeAttribute : AuthorizeAttribute, IDisposable
     {
-        #region Constants and fields
-        private string _claim;
-        private string[] _claims;
-        private bool _isSingleClaim;
-        #endregion
-
-        public AuthorizationRequiredAttribute(string claim)
-        {
-            _claim = claim;
-            _isSingleClaim = true;
-        }
-
-        public AuthorizationRequiredAttribute(string[] claims)
-        {
-            _claims = claims;
-            _isSingleClaim = false;
-        }
+        private JwtRepository _jwtRepository = new JwtRepository();
 
         protected override bool IsAuthorized(HttpActionContext actionContext)
         {
             string accessTokenFromRequest = "";
-            if (actionContext.Request.Headers.Authorization.ToString() != null)
+            if (actionContext.Request.Headers.Authorization != null)
             {
-                // get the access token
+                // get the access token from the appropriate header...
+
+
+
                 accessTokenFromRequest = actionContext.Request.Headers.Authorization.ToString();
 
-                ClaimsPrincipal principal = JwtManager.Instance.GetPrincipal(accessTokenFromRequest);
-                if(principal != null)
+                if (JwtManager.Instance.ValidateToken(accessTokenFromRequest, out string username))
                 {
-                    if(_isSingleClaim)
+                    JWT accessToken = _jwtRepository.GetSingle(d => d.UserName == username, d => d.Account);
+                    if (accessToken != null)
                     {
-                        if(principal.HasClaim("AccountType", _claim))
+                        string accessTokenStored = accessToken.Value;
+                        if (accessTokenFromRequest == accessTokenStored)
                         {
                             return true;
                         }
@@ -51,13 +40,6 @@ namespace ECS.WebAPI.Filters.AuthorizationFilters
                     }
                     else
                     {
-                        foreach (string claim in _claims)
-                        {
-                            if (principal.HasClaim("AccountType", claim))
-                            {
-                                return true;
-                            }
-                        }
                         return false;
                     }
                 }
@@ -80,6 +62,7 @@ namespace ECS.WebAPI.Filters.AuthorizationFilters
 
         public void Dispose()
         {
+            
         }
     }
 }
