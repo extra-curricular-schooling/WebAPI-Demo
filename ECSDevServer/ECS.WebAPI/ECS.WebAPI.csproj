@@ -15,7 +15,7 @@
     <RootNamespace>ECS.WebAPI</RootNamespace>
     <AssemblyName>ECS.WebAPI</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <Use64BitIISExpress />
     <IISExpressSSLPort>44311</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
@@ -146,6 +146,7 @@
     <Compile Include="Filters\AuthorizationFilters\AuthorizationRequiredAttribute.cs" />
     <Compile Include="Filters\AuthorizationFilters\RequireHttpsAttribute.cs" />
     <Compile Include="Filters\AuthenticationFilters\SsoAuthenticateAttribute.cs" />
+    <Compile Include="Filters\ExceptionFilters\NotImplExceptionFilterAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -162,7 +163,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Filters\ExceptionFilters\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DotNetOpenAuth.LinkedInOAuth2\DotNetOpenAuth.LinkedInOAuth2.csproj">
