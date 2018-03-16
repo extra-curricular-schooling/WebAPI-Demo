@@ -10,7 +10,7 @@ export const request = {
       'Access-Control-Allow-Origin': 'http://localhost:8080',
       'Access-Control-Allow-Credentials': true,
       'Accept': 'application/json',
-      // 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InNjb3R0IiwibmJmIjoxNTIwODM0ODA1LCJleHAiOjE1MjA4MzU3MDUsImlhdCI6MTUyMDgzNDgwNSwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NDQzMTEvIn0.R3p9LzjtnhPUAi37tLwshQfIhhakckyV-C8AkU9gfi0',
+      'Authorization': '',
       'Content-Type': 'application/json',
       'X-Requested-With': 'XMLHttpRequest'
     }
@@ -22,7 +22,7 @@ export const request = {
   },
   mutations: {
     setAuthorizationHeader: function (state, token) {
-      state.requestHeaders.Authorization = 'Bearer ' + token
+      state.headers.Authorization = 'Bearer ' + token
     }
   },
   actions: {
