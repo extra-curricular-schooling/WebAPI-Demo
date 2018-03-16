@@ -3,4 +3,4 @@
 /dist/
 /*.js
 /test/unit/coverage/
-/src/components/LinkedInPostModal.vue
+/src/components/LinkedIn-Modal/index.vue

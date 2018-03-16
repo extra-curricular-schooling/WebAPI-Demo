@@ -49,7 +49,7 @@ export default new Router({
     {
       path: '/linkedin',
       name: 'LinkedIn',
-      component: () => import('@/components/pages/LinkedIn')
+      component: () => import('@/pages/LinkedIn')
     },
     {
       path: '/apitests',
