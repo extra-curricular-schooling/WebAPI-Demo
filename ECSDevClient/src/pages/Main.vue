@@ -1,6 +1,6 @@
 <template>
 <div class="container is-fullhd">
-  <navbar></navbar>
+  <navbar/>
     <section class="hero is-dark">
       <div class="hero-body">
         <div class="container is-fluid">
@@ -50,39 +50,7 @@
               <article class="tile is-child box">
                 <!-- Login Box Placeholder -->
                 <h1 class="title"><strong>Getting Started</strong></h1>
-                <div class="field">
-                  <label class="label field-element is-required">Username</label>
-                  <div class="control has-icons-left has-icons-right">
-                    <input class="input" type="text" placeholder="Username" required>
-                    <span class="icon is-small is-left">
-                      <i class="fas fa-user"></i>
-                    </span>
-                    <span class="icon is-small is-right">
-                      <i class="fas fa-check"></i>
-                    </span>
-                  </div>
-                </div>
-                <div class="field password">
-                  <label class="label field-element is-required">Password</label>
-                  <div class="control has-icons-left">
-                    <input class="input" type="password" placeholder="************" required>
-                    <span class="icon is-small is-left">
-                      <i class="fas fa-lock"></i>
-                    </span>
-                  </div>
-                </div>
-                <div class="field is-grouped is-grouped-centered">
-                  <p class="control">
-                    <button class="button is-primary login-button">
-                    Login
-                    </button>
-                  </p>
-                  <p class="control">
-                    <router-link to="/Registration" tag="button" class="button is-link register-button">
-                    Sign Up
-                    </router-link>
-                  </p>
-                </div>
+                <Login-Panel/>
                 <!-- End Login -->
               </article>
             </div>
@@ -175,14 +143,16 @@
 <script>
 /* eslint-disable */
 // import DefaultLayout from '@/layouts/Default'
-import Navbar from '@/components/Navbar'
+import Navbar from '@/components/Navbar/index'
+import LoginPanel from '@/components/Login-Panel/index'
 
 export default {
   name: "Main",
   components: {
     // DefaultLayout
     // This is causing an ambiguous root error when rendering.
-    Navbar
+    Navbar,
+    LoginPanel
   },
   data() {
     return {

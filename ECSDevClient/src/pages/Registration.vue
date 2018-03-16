@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import registrationForm from '@/components/RegistrationForm'
+import registrationForm from '@/components/Registration-Form/index'
 // import eventHub from '@/components/EventHub'
 
 export default {
@@ -25,7 +25,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .this-form {
   padding-left: 90px;
   padding-right: 90px;

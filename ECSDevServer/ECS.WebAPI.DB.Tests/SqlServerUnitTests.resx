@@ -129,19 +129,6 @@ EXECUTE @RC = [dbo].[AccountType_Delete] @Username, @Permission;
 
 SELECT * FROM [dbo].[AccountType] </value>
   </data>
-  <data name="Give_Account_Permission_TestAction.SqlScript" xml:space="preserve">
-    <value>-- database unit test for dbo.AccountType_Insert
-DECLARE @RC AS INT, @Username AS NVARCHAR (20), @Permission AS NVARCHAR (128), @RoleName AS NVARCHAR (MAX);
-
-SELECT @RC = 0,
-       @Username = 'test51',
-       @Permission = 'CanCreateUser',
-       @RoleName = 'Admin';
-
-EXECUTE @RC = [dbo].[AccountType_Insert] @Username, @Permission, @RoleName;
-
-SELECT * FROM [dbo].[AccountType] WHERE [UserName] = @UserName AND [Permission] = @Permission;</value>
-  </data>
   <data name="Delete_Account_TestAction.SqlScript" xml:space="preserve">
     <value>-- database unit test for dbo.Account_Delete
 DECLARE @RC AS INT, @UserName AS NVARCHAR (20);
@@ -157,7 +144,7 @@ SELECT * FROM [dbo].[Account];
   </data>
   <data name="Create_New_Account_TestAction.SqlScript" xml:space="preserve">
     <value>-- database unit test for dbo.Account_Insert
-DECLARE @RC AS INT, @UserName AS NVARCHAR (20), @Email AS NVARCHAR (128), @Password AS NVARCHAR (20), @Points AS INT, @AccountStatus AS BIT, @SuspensionTime AS DATETIME;
+DECLARE @RC AS INT, @UserName AS NVARCHAR (20), @Email AS NVARCHAR (128), @Password AS NVARCHAR (20), @Points AS INT, @AccountStatus AS BIT, @SuspensionTime AS DATETIME, @FirstTimeUser AS BIT;
 
 SELECT @RC = 0,
        @UserName = 'test51',
@@ -165,15 +152,16 @@ SELECT @RC = 0,
        @Password = 'aaaaaaa',
        @Points = 32,
        @AccountStatus = 1,
-       @SuspensionTime = getdate();
+       @SuspensionTime = getdate(),
+	   @FirstTimeUser = 1;
 
-EXECUTE @RC = [dbo].[Account_Insert] @UserName, @Email, @Password, @Points, @AccountStatus, @SuspensionTime;
+EXECUTE @RC = [dbo].[Account_Insert] @UserName, @Email, @Password, @Points, @AccountStatus, @SuspensionTime, @FirstTimeUser;
 
 SELECT * FROM [dbo].[Account] WHERE [UserName] = @UserName;</value>
   </data>
   <data name="Add_Points_Account_TestAction.SqlScript" xml:space="preserve">
     <value>-- database unit test for dbo.Account_Update
-DECLARE @RC AS INT, @UserName AS NVARCHAR (20), @Email AS NVARCHAR (128), @Password AS NVARCHAR (20), @Points AS INT, @AccountStatus AS BIT, @SuspensionTime AS DATETIME;
+DECLARE @RC AS INT, @UserName AS NVARCHAR (20), @Email AS NVARCHAR (128), @Password AS NVARCHAR (20), @Points AS INT, @AccountStatus AS BIT, @SuspensionTime AS DATETIME, @FirstTimeUser AS BIT;
 
 SELECT @RC = 0,
        @UserName = 'test2',
@@ -181,9 +169,10 @@ SELECT @RC = 0,
        @Password = 'aaaaaaaaaaaaa',
        @Points = 41,
        @AccountStatus = 1,
-       @SuspensionTime = getdate();
+       @SuspensionTime = getdate(),
+	   @FirstTimeUser = 1;
 
-EXECUTE @RC = [dbo].[Account_Update] @UserName, @Email, @Password, @Points, @AccountStatus, @SuspensionTime;
+EXECUTE @RC = [dbo].[Account_Update] @UserName, @Email, @Password, @Points, @AccountStatus, @SuspensionTime, @FirstTimeUser;
 
 SELECT * FROM [dbo].[Account] WHERE [UserName] = @UserName AND [Points] = @Points</value>
   </data>
@@ -315,17 +304,15 @@ SELECT * FROM [dbo].[SecurityQuestion];</value>
   </data>
   <data name="Update_SecurityQuestion_TestAction.SqlScript" xml:space="preserve">
     <value>-- database unit test for dbo.SecurityQuestion_Update
-DECLARE @RC AS INT, @SecurityQuestionID AS INT, @SecurityQuestions AS NVARCHAR (MAX);
+DECLARE @RC AS INT, @SecurityQuestionID AS INT, @SecQuestion AS NVARCHAR (MAX);
 
 SELECT @RC = 4,
        @SecurityQuestionID = 3,
-       @SecurityQuestions = 'This is a test?';
+       @SecQuestion = 'This is a test?';
 
-EXECUTE @RC = [dbo].[SecurityQuestion_Update] @SecurityQuestionID, @SecurityQuestions;
+EXECUTE @RC = [dbo].[SecurityQuestion_Update] @SecurityQuestionID, @SecQuestion;
 
-SELECT * FROM [dbo].[SecurityQuestion] WHERE [SecurityQuestions] = @SecurityQuestions
-
-</value>
+SELECT * FROM [dbo].[SecurityQuestion] WHERE [SecQuestion] = @SecQuestion</value>
   </data>
   <data name="Delete_User_TestAction.SqlScript" xml:space="preserve">
     <value>-- database unit test for dbo.User_Delete
@@ -366,22 +353,20 @@ SELECT * FROM [dbo].[User] WHERE [Email] = @Email AND [FirstName] = @FirstName;<
   </data>
   <data name="Delete_User_ZipLocation_TestAction.SqlScript" xml:space="preserve">
     <value>-- database unit test for dbo.ZipLocation_Delete
-DECLARE @RC AS INT, @Email AS NVARCHAR (128), @ZipCode AS NVARCHAR (10);
+DECLARE @RC AS INT, @ZipCodeId AS INT;
 
 SELECT @RC = 0,
-       @Email = 'test50@gmail.com',
-       @ZipCode = '111111';
+       @ZipCodeId = 5;
 
-EXECUTE @RC = [dbo].[ZipLocation_Delete] @Email, @ZipCode;
+EXECUTE @RC = [dbo].[ZipLocation_Delete] @ZipCodeId;
 
 SELECT * FROM [dbo].[ZipLocation];</value>
   </data>
   <data name="Add_User_ZipLocation_TestAction.SqlScript" xml:space="preserve">
     <value>-- database unit test for dbo.ZipLocation_Insert
-DECLARE @RC AS INT, @Email AS NVARCHAR (128), @ZipCode AS NVARCHAR (10), @Address AS NVARCHAR (MAX), @City AS NVARCHAR (MAX), @State AS NVARCHAR (MAX), @Latitude AS INT, @Longitude AS INT;
+DECLARE @RC AS INT, @ZipCode AS NVARCHAR (10), @Address AS NVARCHAR (MAX), @City AS NVARCHAR (MAX), @State AS NVARCHAR (MAX), @Latitude AS INT, @Longitude AS INT;
 
 SELECT @RC = 0,
-       @Email = 'test51@gmail.com',
        @ZipCode = '111111',
        @Address = '111 test',
        @City = 'Long Beaech',
@@ -389,32 +374,15 @@ SELECT @RC = 0,
        @Latitude = 0,
        @Longitude = 0;
 
-EXECUTE @RC = [dbo].[ZipLocation_Insert] @Email, @ZipCode, @Address, @City, @State, @Latitude, @Longitude;
+EXECUTE @RC = [dbo].[ZipLocation_Insert] @ZipCode, @Address, @City, @State, @Latitude, @Longitude;
 
 SELECT * FROM [dbo].[ZipLocation];
 
 </value>
   </data>
-  <data name="Update_User_ZipCode_TestAction.SqlScript" xml:space="preserve">
-    <value>-- database unit test for dbo.ZipLocation_Update
-DECLARE @RC AS INT, @Email AS NVARCHAR (128), @ZipCode AS NVARCHAR (10), @Address AS NVARCHAR (MAX), @City AS NVARCHAR (MAX), @State AS NVARCHAR (MAX), @Latitude AS INT, @Longitude AS INT;
-
-SELECT @RC = 0,
-       @Email = 'test50@gmail.com',
-       @ZipCode = '22222',
-       @Address = '111 test',
-       @City = 'Long Beach',
-       @State = 'CA',
-       @Latitude = 1,
-       @Longitude = 2;
-
-EXECUTE @RC = [dbo].[ZipLocation_Update] @Email, @ZipCode, @Address, @City, @State, @Latitude, @Longitude;
-
-SELECT * FROM [dbo].[ZipLocation] WHERE [Email] = @Email AND [ZipCode] = @ZipCode;</value>
-  </data>
   <data name="Create_Exist_Account_TestAction.SqlScript" xml:space="preserve">
     <value>-- database unit test for dbo.Account_Insert
-DECLARE @RC AS INT, @UserName AS NVARCHAR (20), @Email AS NVARCHAR (128), @Password AS NVARCHAR (20), @Points AS INT, @AccountStatus AS BIT, @SuspensionTime AS DATETIME;
+DECLARE @RC AS INT, @UserName AS NVARCHAR (20), @Email AS NVARCHAR (128), @Password AS NVARCHAR (20), @Points AS INT, @AccountStatus AS BIT, @SuspensionTime AS DATETIME, @FirstTimeUser AS BIT;
 
 SELECT @RC = 0,
        @UserName = 'test50',
@@ -422,7 +390,8 @@ SELECT @RC = 0,
        @Password = 'aaaaaaa',
        @Points = 32,
        @AccountStatus = 1,
-       @SuspensionTime = getdate();
+       @SuspensionTime = getdate(),
+	   @FirstTimeUser = 1;
 
 	BEGIN TRY
 		IF (EXISTS(SELECT * FROM [dbo].[Account] WHERE [UserName] = @UserName))
@@ -446,7 +415,7 @@ SELECT @RC = 0,
   </data>
   <data name="Suspend_Account_TestAction.SqlScript" xml:space="preserve">
     <value>-- database unit test for dbo.Account_Update
-DECLARE @RC AS INT, @UserName AS NVARCHAR (20), @Email AS NVARCHAR (128), @Password AS NVARCHAR (20), @Points AS INT, @AccountStatus AS BIT, @SuspensionTime AS DATETIME;
+DECLARE @RC AS INT, @UserName AS NVARCHAR (20), @Email AS NVARCHAR (128), @Password AS NVARCHAR (20), @Points AS INT, @AccountStatus AS BIT, @SuspensionTime AS DATETIME, @FirstTimeUser AS BIT;
 
 SELECT @RC = 0,
        @UserName = 'test2',
@@ -454,15 +423,16 @@ SELECT @RC = 0,
        @Password = 'aaaaaaaaaaaaa',
        @Points = 41,
        @AccountStatus = 0,
-       @SuspensionTime = getdate();
+       @SuspensionTime = getdate(),
+	   @FirstTimeUser = 1;
 
-EXECUTE @RC = [dbo].[Account_Update] @UserName, @Email, @Password, @Points, @AccountStatus, @SuspensionTime;
+EXECUTE @RC = [dbo].[Account_Update] @UserName, @Email, @Password, @Points, @AccountStatus, @SuspensionTime, @FirstTimeUser;
 
 SELECT * FROM [dbo].[Account] WHERE [UserName] = @UserName AND [AccountStatus] = @AccountStatus;</value>
   </data>
   <data name="Change_Password_TestAction.SqlScript" xml:space="preserve">
     <value>-- database unit test for dbo.Account_Update
-DECLARE @RC AS INT, @UserName AS NVARCHAR (20), @Email AS NVARCHAR (128), @Password AS NVARCHAR (20), @Points AS INT, @AccountStatus AS BIT, @SuspensionTime AS DATETIME;
+DECLARE @RC AS INT, @UserName AS NVARCHAR (20), @Email AS NVARCHAR (128), @Password AS NVARCHAR (20), @Points AS INT, @AccountStatus AS BIT, @SuspensionTime AS DATETIME, @FirstTimeUser AS BIT;
 
 SELECT @RC = 0,
        @UserName = 'test2',
@@ -470,9 +440,10 @@ SELECT @RC = 0,
        @Password = 'bbbbbbbbbbbbbb',
        @Points = 41,
        @AccountStatus = 1,
-       @SuspensionTime = getdate();
+       @SuspensionTime = getdate(),
+	   @FirstTimeUser = 1;
 
-EXECUTE @RC = [dbo].[Account_Update] @UserName, @Email, @Password, @Points, @AccountStatus, @SuspensionTime;
+EXECUTE @RC = [dbo].[Account_Update] @UserName, @Email, @Password, @Points, @AccountStatus, @SuspensionTime, @FirstTimeUser;
 
 SELECT * FROM [dbo].[Account] WHERE [UserName] = @UserName AND [Password] = @Password
 
@@ -543,10 +514,10 @@ SELECT * FROM [dbo].[User] WHERE [Email] = @Email AND [LastName] = @LastName;</v
   </data>
   <data name="Update_User_Address_TestAction.SqlScript" xml:space="preserve">
     <value>-- database unit test for dbo.ZipLocation_Update
-DECLARE @RC AS INT, @Email AS NVARCHAR (128), @ZipCode AS NVARCHAR (10), @Address AS NVARCHAR (MAX), @City AS NVARCHAR (MAX), @State AS NVARCHAR (MAX), @Latitude AS INT, @Longitude AS INT;
+DECLARE @RC AS INT, @ZipCodeId AS INT, @ZipCode AS NVARCHAR (10), @Address AS NVARCHAR (MAX), @City AS NVARCHAR (MAX), @State AS NVARCHAR (MAX), @Latitude AS INT, @Longitude AS INT;
 
 SELECT @RC = 0,
-       @Email = 'test51@gmail.com',
+	   @ZipCodeId = 5,
        @ZipCode = '111111',
        @Address = '222 test',
        @City = 'Long Beach',
@@ -554,16 +525,16 @@ SELECT @RC = 0,
        @Latitude = 1,
        @Longitude = 2;
 
-EXECUTE @RC = [dbo].[ZipLocation_Update] @Email, @ZipCode, @Address, @City, @State, @Latitude, @Longitude;
+EXECUTE @RC = [dbo].[ZipLocation_Update] @ZipCodeId, @ZipCode, @Address, @City, @State, @Latitude, @Longitude;
 
-SELECT * FROM [dbo].[ZipLocation] WHERE [Email] = @Email AND [Address] = @Address;</value>
+SELECT * FROM [dbo].[ZipLocation] WHERE [ZipCodeId] = @ZipCodeId AND [Address] = @Address;</value>
   </data>
   <data name="Update_User_City_TestAction.SqlScript" xml:space="preserve">
     <value>-- database unit test for dbo.ZipLocation_Update
-DECLARE @RC AS INT, @Email AS NVARCHAR (128), @ZipCode AS NVARCHAR (10), @Address AS NVARCHAR (MAX), @City AS NVARCHAR (MAX), @State AS NVARCHAR (MAX), @Latitude AS INT, @Longitude AS INT;
+DECLARE @RC AS INT, @ZipCodeId AS INT, @ZipCode AS NVARCHAR (10), @Address AS NVARCHAR (MAX), @City AS NVARCHAR (MAX), @State AS NVARCHAR (MAX), @Latitude AS INT, @Longitude AS INT;
 
 SELECT @RC = 0,
-       @Email = 'test51@gmail.com',
+	   @ZipCodeId = 5,
        @ZipCode = '111111',
        @Address = '111 test',
        @City = 'Redondo Beach',
@@ -571,16 +542,16 @@ SELECT @RC = 0,
        @Latitude = 1,
        @Longitude = 2;
 
-EXECUTE @RC = [dbo].[ZipLocation_Update] @Email, @ZipCode, @Address, @City, @State, @Latitude, @Longitude;
+EXECUTE @RC = [dbo].[ZipLocation_Update] @ZipCodeId, @ZipCode, @Address, @City, @State, @Latitude, @Longitude;
 
-SELECT * FROM [dbo].[ZipLocation] WHERE [Email] = @Email AND [City] = @City;</value>
+SELECT * FROM [dbo].[ZipLocation] WHERE [ZipCodeId] = @ZipCodeId AND [City] = @City;</value>
   </data>
   <data name="Update_User_State_TestAction.SqlScript" xml:space="preserve">
     <value>-- database unit test for dbo.ZipLocation_Update
-DECLARE @RC AS INT, @Email AS NVARCHAR (128), @ZipCode AS NVARCHAR (10), @Address AS NVARCHAR (MAX), @City AS NVARCHAR (MAX), @State AS NVARCHAR (MAX), @Latitude AS INT, @Longitude AS INT;
+DECLARE @RC AS INT, @ZipCodeId AS INT, @ZipCode AS NVARCHAR (10), @Address AS NVARCHAR (MAX), @City AS NVARCHAR (MAX), @State AS NVARCHAR (MAX), @Latitude AS INT, @Longitude AS INT;
 
 SELECT @RC = 0,
-       @Email = 'test51@gmail.com',
+	   @ZipCodeId = 5,
        @ZipCode = '111111',
        @Address = '111 test',
        @City = 'Long Beach',
@@ -588,9 +559,9 @@ SELECT @RC = 0,
        @Latitude = 1,
        @Longitude = 2;
 
-EXECUTE @RC = [dbo].[ZipLocation_Update] @Email, @ZipCode, @Address, @City, @State, @Latitude, @Longitude;
+EXECUTE @RC = [dbo].[ZipLocation_Update] @ZipCodeId, @ZipCode, @Address, @City, @State, @Latitude, @Longitude;
 
-SELECT * FROM [dbo].[ZipLocation] WHERE [Email] = @Email AND [State] = @State;</value>
+SELECT * FROM [dbo].[ZipLocation] WHERE [ZipCodeId] = @ZipCodeId AND [State] = @State;</value>
   </data>
   <data name="Delete_LinkedIn_Token_TestAction.SqlScript" xml:space="preserve">
     <value>-- database unit test for dbo.LinkedIn_Delete
@@ -651,7 +622,7 @@ SELECT @RC = 0,
                    @ErrorState)
 	END CATCH</value>
   </data>
-  <data name="dbo_JWT_DeleteTest_TestAction.SqlScript" xml:space="preserve">
+  <data name="Delete_JWT_TestAction.SqlScript" xml:space="preserve">
     <value>-- database unit test for dbo.JWT_Delete
 DECLARE @RC AS INT, @JWTID AS INT;
 
@@ -666,15 +637,96 @@ SELECT * FROM [dbo].[JWT];
   </data>
   <data name="Add_JWT_Token_TestAction.SqlScript" xml:space="preserve">
     <value>-- database unit test for dbo.JWT_Insert
-DECLARE @RC AS INT, @Token AS NVARCHAR (MAX), @Email AS NVARCHAR (128);
+DECLARE @RC AS INT, @Expiration AS DATETIME, @Issued AS NVARCHAR(max), @Salt AS NVARCHAR(max), @Email AS NVARCHAR (128);
 
 SELECT @RC = 0,
-       @Token = 'test',
+       @Expiration = getdate(),
+	   @Issued = 'ecs',
+	   @Salt = 'asfasrbarrn3nqn5bbdf',
        @Email = 'test7@gmail.com';
 
-EXECUTE @RC = [dbo].[JWT_Insert] @Token, @Email;
+EXECUTE @RC = [dbo].[JWT_Insert] @Expiration, @Issued, @Salt, @Email;
 
 SELECT * FROM [dbo].[JWT];</value>
+  </data>
+  <data name="Delete_Salt_TestAction.SqlScript" xml:space="preserve">
+    <value>-- database unit test for dbo.Salt_Delete
+DECLARE @RC AS INT, @SaltId AS INT;
+
+SELECT @RC = 0,
+       @SaltId = 6;
+
+EXECUTE @RC = [dbo].[Salt_Delete] @SaltId;
+
+SELECT * FROM [dbo].[Salt];
+
+</value>
+  </data>
+  <data name="Add_Password_Salt_TestAction.SqlScript" xml:space="preserve">
+    <value>-- database unit test for dbo.Salt_Insert
+DECLARE @RC AS INT, @PasswordSalt AS NVARCHAR (MAX), @UserName AS NVARCHAR (20);
+
+SELECT @RC = 0,
+       @PasswordSalt = 'ag98g4g2nq0nfomdqope',
+       @UserName = 'test6';
+
+EXECUTE @RC = [dbo].[Salt_Insert] @PasswordSalt, @UserName;
+
+SELECT * FROM [dbo].[Salt];
+
+</value>
+  </data>
+  <data name="Delete_Permission_From_List_TestAction.SqlScript" xml:space="preserve">
+    <value>-- database unit test for dbo.Permission_Delete
+DECLARE @RC AS INT, @PermissionName AS NVARCHAR (128), @RoleId AS INT;
+
+SELECT @RC = 0,
+       @PermissionName = 'CanDeletePoints',
+       @RoleId = 1;
+
+EXECUTE @RC = [dbo].[Permission_Delete] @PermissionName, @RoleId;
+
+SELECT * FROM [dbo].[Permission];
+
+</value>
+  </data>
+  <data name="Add_Permission_TestAction.SqlScript" xml:space="preserve">
+    <value>-- database unit test for dbo.Permission_Insert
+DECLARE @RC AS INT, @PermissionName AS NVARCHAR (128), @RoleId AS INT;
+
+SELECT @RC = 0,
+       @PermissionName = 'CanDeletePoints',
+       @RoleId = 1;
+
+EXECUTE @RC = [dbo].[Permission_Insert] @PermissionName, @RoleId;
+
+SELECT * FROM [dbo].[Permission];
+
+</value>
+  </data>
+  <data name="Delete_Role_TestAction.SqlScript" xml:space="preserve">
+    <value>-- database unit test for dbo.Role_Delete
+DECLARE @RC AS INT, @RoleId AS INT;
+
+SELECT @RC = 0,
+       @RoleId = 3;
+
+EXECUTE @RC = [dbo].[Role_Delete] @RoleId;
+
+SELECT * FROM [dbo].[Role];
+
+</value>
+  </data>
+  <data name="Add_Role_TestAction.SqlScript" xml:space="preserve">
+    <value>-- database unit test for dbo.Role_Insert
+DECLARE @RC AS INT, @RoleName AS NVARCHAR (MAX);
+
+SELECT @RC = 0,
+       @RoleName = 'developer';
+
+EXECUTE @RC = [dbo].[Role_Insert] @RoleName;
+
+SELECT * FROM [dbo].[Role];</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>

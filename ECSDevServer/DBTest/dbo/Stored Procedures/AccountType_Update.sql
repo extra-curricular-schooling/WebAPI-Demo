@@ -1,10 +1,10 @@
 ﻿CREATE PROCEDURE [dbo].[AccountType_Update]
     @Username [nvarchar](20),
-    @Permission [nvarchar](128),
-    @RoleName [nvarchar](max)
+    @PermissionName [nvarchar](128),
+    @RoleId [int]
 AS
 BEGIN
     UPDATE [dbo].[AccountType]
-    SET [RoleName] = @RoleName
-    WHERE (([Username] = @Username) AND ([Permission] = @Permission))
+    SET [RoleId] = @RoleId
+    WHERE (([Username] = @Username) AND ([PermissionName] = @PermissionName))
 END

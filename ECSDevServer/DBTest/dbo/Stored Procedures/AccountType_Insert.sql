@@ -1,9 +1,9 @@
 ﻿CREATE PROCEDURE [dbo].[AccountType_Insert]
     @Username [nvarchar](20),
-    @Permission [nvarchar](128),
-    @RoleName [nvarchar](max)
+    @PermissionName [nvarchar](128),
+    @RoleId [int]
 AS
 BEGIN
-    INSERT [dbo].[AccountType]([Username], [Permission], [RoleName])
-    VALUES (@Username, @Permission, @RoleName)
+    INSERT [dbo].[AccountType]([Username], [PermissionName], [RoleId])
+    VALUES (@Username, @PermissionName, @RoleId)
 END

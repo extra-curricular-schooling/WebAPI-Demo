@@ -1,9 +1,9 @@
 ﻿CREATE PROCEDURE [dbo].[SecurityQuestion_Update]
     @SecurityQuestionID [int],
-    @SecurityQuestions [nvarchar](max)
+    @SecQuestion [nvarchar](max)
 AS
 BEGIN
     UPDATE [dbo].[SecurityQuestion]
-    SET [SecurityQuestions] = @SecurityQuestions
+    SET [SecQuestion] = @SecQuestion
     WHERE ([SecurityQuestionID] = @SecurityQuestionID)
 END

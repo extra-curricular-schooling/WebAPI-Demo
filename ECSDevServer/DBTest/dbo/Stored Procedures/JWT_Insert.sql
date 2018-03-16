@@ -1,10 +1,12 @@
 ﻿CREATE PROCEDURE [dbo].[JWT_Insert]
-    @Token [nvarchar](max),
+    @Expiration [datetime],
+    @Issued [nvarchar](max),
+    @Salt [nvarchar](max),
     @Email [nvarchar](128)
 AS
 BEGIN
-    INSERT [dbo].[JWT]([Token], [Email])
-    VALUES (@Token, @Email)
+    INSERT [dbo].[JWT]([Expiration], [Issued], [Salt], [Email])
+    VALUES (@Expiration, @Issued, @Salt, @Email)
     
     DECLARE @JWTID int
     SELECT @JWTID = [JWTID]

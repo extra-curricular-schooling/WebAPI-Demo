@@ -115,7 +115,7 @@
           <span class="select">
             <select @change="getSelectionID(1, question1)" v-model="question1">
               <option disabled value="">--select--</option>
-              <option v-for="question in questions" v-bind:key="question.SecurityQuestionID"> {{ question.SecurityQuestions }} </option>
+              <option v-for="question in questions" v-bind:key="question.SecurityQuestionID"> {{ question.SecQuestion }} </option>
             </select>
           </span>
         </div>
@@ -132,7 +132,7 @@
           <span class="select">
             <select @change="getSelectionID(2, question2)" v-model="question2">
               <option disabled value="">--select--</option>
-              <option v-for="question in questions" v-bind:key="question.SecurityQuestionID"> {{ question.SecurityQuestions }} </option>
+              <option v-for="question in questions" v-bind:key="question.SecurityQuestionID"> {{ question.SecQuestion }} </option>
             </select>
           </span>
         </div>
@@ -149,7 +149,7 @@
           <span class="select">
             <select @change="getSelectionID(3, question3)" v-model="question3">
               <option disabled value="">--select--</option>
-              <option v-for="question in questions" v-bind:key="question.SecurityQuestionID"> {{ question.SecurityQuestions }} </option>
+              <option v-for="question in questions" v-bind:key="question.SecurityQuestionID"> {{ question.SecQuestion }} </option>
             </select>
           </span>
         </div>
@@ -197,8 +197,8 @@
 <script>
 /* eslint-disable */
 import axios from 'axios'
-import agreementModal from '@/components/AgreementModal'
-// import registrationAlert from '@/components/RegistrationAlert'
+import agreementModal from '@/components/Registration-Form/AgreementModal'
+// import registrationAlert from '@/components/Registration-Form/RegistrationAlert'
 
 export default {
   name: 'RegistrationForm',

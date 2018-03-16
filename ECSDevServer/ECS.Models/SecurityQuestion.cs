@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace ECS.Models
 { 
@@ -13,14 +8,14 @@ namespace ECS.Models
     /// </summary>
     public class SecurityQuestion
     {
-        //The ID for a specific security question
+        // The ID for a specific security question
         [Key]
         [Required]
         [Display(Name = "Security Questions")]
         public int SecurityQuestionID { get; set; }
 
-        //The security question
-        //Make securityQuestions singular
-        public string SecurityQuestions { get; set; }
+        // The security question
+        [Required]
+        public string SecQuestion { get; set; }
     }
 }
