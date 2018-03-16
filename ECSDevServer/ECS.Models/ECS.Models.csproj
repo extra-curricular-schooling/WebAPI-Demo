@@ -70,7 +70,10 @@
       <DependentUpon>201803140805086_LinkedIn_TokenId_Added_and_Removed_Value_as_Key.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Permission.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Role.cs" />
+    <Compile Include="Salt.cs" />
     <Compile Include="SecurityQuestion.cs" />
     <Compile Include="SecurityQuestionAccount.cs" />
     <Compile Include="SweepStake.cs" />

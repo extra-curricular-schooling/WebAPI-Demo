@@ -5,9 +5,12 @@
     [Points]         INT            NOT NULL,
     [AccountStatus]  BIT            NOT NULL,
     [SuspensionTime] DATETIME       NOT NULL,
+    [FirstTimeUser]  BIT            NOT NULL,
     CONSTRAINT [PK_dbo.Account] PRIMARY KEY CLUSTERED ([UserName] ASC),
     CONSTRAINT [FK_dbo.Account_dbo.User_Email] FOREIGN KEY ([Email]) REFERENCES [dbo].[User] ([Email]) ON DELETE CASCADE
 );
+
+
 
 
 GO

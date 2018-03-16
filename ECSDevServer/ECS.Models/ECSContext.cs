@@ -1,9 +1,5 @@
-﻿using System;
-using ECS.Models;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
-using System.Linq;
-using System.Net;
 
 namespace ECS.Models.ECSContext
 {
@@ -16,9 +12,9 @@ namespace ECS.Models.ECSContext
     {
         public ECSContext() : base("ECSContext")
         {
-            //Database.SetInitializer(new MigrateDatabaseToLatestVersion<ECSContext, ECS.Models.Migrations.Configuration>("ECSContext"));
         }
-        //Models to be implemented in the database
+
+        // Models to be implemented in the database
         public DbSet<Account> Accounts { get; set; }
 
         public DbSet<AccountType> AccountTypes { get; set; }
@@ -39,9 +35,15 @@ namespace ECS.Models.ECSContext
 
         public DbSet<SweepStake> SweepStakes { get; set; }
 
+        public DbSet<Salt> Salts { get; set; }
+
         public DbSet<User> Users { get; set; }
 
         public DbSet<ZipLocation> ZipLocations { get; set; }
+
+        public DbSet<Permission> Permissions { get; set; }
+
+        public DbSet<Role> Roles { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -49,14 +51,16 @@ namespace ECS.Models.ECSContext
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
 
 
-            //All relationships not defined here, are automatically handled by EF
-            //Navigation Properties allow you to define relationships between entities 
-            //in a way that makes sense in an object oriented language.
+            /**
+             * All relationships not defined here, are automatically handled by EF
+             * Navigation Properties allow you to define relationships between entities
+             * in a way that makes sense in an object oriented language.
+            **/
 
-            //Many to Many relationship with Account and Interest Tag model
-            //Define the navigation properties of Account and Interest Tag
-            //Map the foreign keys of each model
-            //Create table with custom name AccountTags
+            // Many to Many relationship with Account and Interest Tag model
+            // Define the navigation properties of Account and Interest Tag
+            // Map the foreign keys of each model
+            // Create table with custom name AccountTags
 
             modelBuilder.Entity<Account>()
                 .HasMany(c => c.AccountTags).WithMany(i => i.AccountUsername)
@@ -64,23 +68,33 @@ namespace ECS.Models.ECSContext
                 .MapRightKey("TagName")
                 .ToTable("AccountTags"));
 
+            modelBuilder.Entity<User>()
+                .HasMany(s => s.ZipLocations).WithMany(i => i.Users)
+                .Map(t => t.MapLeftKey("Email")
+                .MapRightKey("ZipCodeId")
+                .ToTable("Address"));
 
-            //One to Many relationship with Account and SecurityQuestionAccounts model
-            //Define navigation property of SecurityQuestionAccount in Account
-            //Define navigation property of Account in SecurityQuestionAccount
-            //Define ForeignKey of SecurityQuestionAccoun
+            // One to Many relationship with Account and SecurityQuestionAccounts model
+            // Define navigation property of SecurityQuestionAccount in Account
+            // Define navigation property of Account in SecurityQuestionAccount
+            // Define ForeignKey of SecurityQuestionAccount
             modelBuilder.Entity<Account>()
                 .HasMany<SecurityQuestionAccount>(g => g.SecurityAnswers)
                 .WithRequired(s => s.Accounts)
                 .HasForeignKey<string>(s => s.Username);
-            
-            
-            //Setting primary key of SecurityQuestionAccount model to custom primary key
+
+            modelBuilder.Entity<Role>()
+                .HasMany<Permission>(g => g.Permissions)
+                .WithRequired(s => s.Role)
+                .HasForeignKey<int>(s => s.RoleId);
+
+            // Setting primary key of SecurityQuestionAccount model to custom primary key
             modelBuilder.Entity<SecurityQuestionAccount>()
                 .HasKey(s => new { s.Username, s.SecurityQuestionID });
 
-            //Creating Stored Procedures for each class Insert, Delete, Update
+            // Creating Stored Procedures for each class Insert, Delete, Update
 
+            // Data sanitization before using stored procedurse that take parameters
             modelBuilder.Entity<Account>().MapToStoredProcedures();
 
             modelBuilder.Entity<Account>().HasMany(p => p.AccountTags)
@@ -109,27 +123,32 @@ namespace ECS.Models.ECSContext
 
             modelBuilder.Entity<JWT>().MapToStoredProcedures();
 
-            /**Many to Many Relationship with Account and Article model
-            Define the navigation properties of Account and Article
-            Map the foreign keys of each model
-            Create table with custom name AccountArticle
-            
-            modelBuilder.Entity<Account>()                
-                .HasMany(c => c.Article).WithMany(i => i.Account)
-                .Map(t => t.MapLeftKey("Username")
-                .MapRightKey("ArticleLink")
-                .ToTable("AccountArticle"));
+            modelBuilder.Entity<Salt>().MapToStoredProcedures();
 
-            
-            modelBuilder.Entity<InterestTag>()
-                .HasMany<Article>(a => a.ArticleTags)
-                .WithRequired(i => i.InterestTag)
-                .HasForeignKey<string>(i => i.ArticleLink);
-            
+            modelBuilder.Entity<Permission>().MapToStoredProcedures();
+
+            modelBuilder.Entity<Role>().MapToStoredProcedures();
+
+            /**
+             * This relationship defines an account history feature with articles,
+             * but we are not implementing this yet.
             **/
+            // Many to Many Relationship with Account and Article model
+            // Define the navigation properties of Account and Article
+            // Map the foreign keys of each model
+            // Create table with custom name AccountArticle
+            
+            // modelBuilder.Entity<Account>()                
+            //    .HasMany(c => c.Article).WithMany(i => i.Account)
+            //    .Map(t => t.MapLeftKey("Username")
+            //    .MapRightKey("ArticleLink")
+            //    .ToTable("AccountArticle"));
 
             
-
+            // modelBuilder.Entity<InterestTag>()
+            //    .HasMany<Article>(a => a.ArticleTags)
+            //    .WithRequired(i => i.InterestTag)
+            //    .HasForeignKey<string>(i => i.ArticleLink);
         }
     }
 }

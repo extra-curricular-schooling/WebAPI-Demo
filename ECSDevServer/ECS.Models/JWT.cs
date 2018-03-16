@@ -7,6 +7,7 @@ namespace ECS.Models
     /// This model represents the tokens passed from the server, JWT, which is just
     /// a hashed string.
     /// </summary>
+    // should be named ACcess token not JWT
     public class JWT
     {
         //Consists of claims, expiration date, where it comes from
