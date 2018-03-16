@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import registrationForm from '@/components/Registration-Form/index'
+import registrationForm from '@/components/registration-form/Index'
 // import eventHub from '@/components/EventHub'
 
 export default {

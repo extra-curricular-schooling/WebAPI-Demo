@@ -31,7 +31,7 @@ export default new Router({
       component: () => import('@/pages/Account')
     },
     {
-      path: '/sweepstakeAdmin',
+      path: '/sweepstake-admin',
       name: 'SweepstakeAdmin',
       component: () => import('@/pages/SweepstakeAdmin')
     },
@@ -42,7 +42,7 @@ export default new Router({
     },
     // Does not know how to handle 404 errors. Might want to build in a catch all page right here.
     {
-      path: '/404',
+      path: '/error',
       name: 'MissingPage',
       component: () => import('@/pages/MissingPage')
     },
@@ -52,7 +52,7 @@ export default new Router({
       component: () => import('@/pages/LinkedIn')
     },
     {
-      path: '/apitests',
+      path: '/api-tests',
       name: 'ApiTests',
       component: () => import('@/pages/ApiTests')
     }

@@ -11,7 +11,7 @@
 import Bulma from "bulma";
 import Vue from "vue";
 import Axios from "axios";
-import LinkedInPostModal from "@/components/LinkedIn-Modal/index";
+import LinkedInPostModal from "@/components/linkedin-modal/Index";
 
 // DELETE this during production, temporary token to access linkedin resource
 Vue.component("get-token", {

@@ -197,8 +197,8 @@
 <script>
 /* eslint-disable */
 import axios from 'axios'
-import agreementModal from '@/components/Registration-Form/AgreementModal'
-// import registrationAlert from '@/components/Registration-Form/RegistrationAlert'
+import agreementModal from '@/components/registration-form/elements/AgreementModal'
+// import registrationAlert from '@/components/registration-form/elements/RegistrationAlert'
 
 export default {
   name: 'RegistrationForm',

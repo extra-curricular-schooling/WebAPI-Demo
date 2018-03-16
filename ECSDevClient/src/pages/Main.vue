@@ -143,8 +143,8 @@
 <script>
 /* eslint-disable */
 // import DefaultLayout from '@/layouts/Default'
-import Navbar from '@/components/Navbar/index'
-import LoginPanel from '@/components/Login-Panel/index'
+import Navbar from '@/components/navbar/Index'
+import LoginPanel from '@/components/login-panel/Index'
 
 export default {
   name: "Main",
