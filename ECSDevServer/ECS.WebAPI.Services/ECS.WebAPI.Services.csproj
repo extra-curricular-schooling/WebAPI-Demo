@@ -81,7 +81,6 @@
     <Compile Include="Security\IJwtManager.cs" />
     <Compile Include="Security\JwtHelper.cs" />
     <Compile Include="Security\JwtManager.cs" />
-    <Compile Include="ParseHttpService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
