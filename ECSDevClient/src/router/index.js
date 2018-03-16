@@ -43,8 +43,8 @@ export default new Router({
     // Does not know how to handle 404 errors. Might want to build in a catch all page right here.
     {
       path: '/error',
-      name: 'MissingPage',
-      component: () => import('@/pages/MissingPage')
+      name: 'Error',
+      component: () => import('@/pages/Error')
     },
     {
       path: '/linkedin',

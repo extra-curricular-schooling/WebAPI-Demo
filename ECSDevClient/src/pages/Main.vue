@@ -1,6 +1,6 @@
 <template>
 <div class="container is-fullhd">
-  <navbar/>
+  <default-layout/>
     <section class="hero is-dark">
       <div class="hero-body">
         <div class="container is-fluid">
@@ -141,29 +141,27 @@
 </template>
 
 <script>
-/* eslint-disable */
-// import DefaultLayout from '@/layouts/Default'
-import Navbar from '@/components/navbar/Index'
+import DefaultLayout from '@/layouts/Default'
 import LoginPanel from '@/components/login-panel/Index'
 
 export default {
-  name: "Main",
+  name: 'Main',
   components: {
     // DefaultLayout
     // This is causing an ambiguous root error when rendering.
-    Navbar,
+    DefaultLayout,
     LoginPanel
   },
-  data() {
+  data () {
     return {
-      msg: "Welcome to Your Vue.js App"
-    };
+      msg: 'Welcome to Your Vue.js App'
+    }
   },
   methods: {
     // this.$router will talk to the vue-router (which is linked to the vue instance) to navigate to different pages.
     // this.$store will talk to the vuex store (which is linked to the vue instance) to get global data
   }
-};
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
