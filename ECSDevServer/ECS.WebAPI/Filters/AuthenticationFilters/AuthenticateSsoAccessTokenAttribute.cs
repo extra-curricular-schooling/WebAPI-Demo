@@ -6,9 +6,9 @@ using System.Diagnostics;
 using System.Web.Http;
 using System.Web.Http.Controllers;
 
-namespace ECS.WebAPI.Filters.AuthorizationFilters
+namespace ECS.WebAPI.Filters.AuthenticationFilters
 {
-    public class SsoAuthorizeAttribute : AuthorizeAttribute, IDisposable
+    public class AuthenticateSsoAccessTokenAttribute : AuthorizeAttribute, IDisposable
     {
         private JwtRepository _jwtRepository = new JwtRepository();
 

@@ -27,7 +27,6 @@ namespace ECS.WebAPI.Controllers
         /// <summary>
         /// Method accepts request to submit form using the POST method over HTTP
         /// </summary>
-        /// <remarks>Author: Scott Roberts</remarks>
         [HttpPost]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
         public IHttpActionResult SubmitRegistration(RegistrationDTO registrationForm)
@@ -92,22 +91,6 @@ namespace ECS.WebAPI.Controllers
             }
 
             // return Ok();
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <remarks>Author: Scott Roberts</remarks>
-        private IHttpActionResult PostRegistrationToSSO(string username)
-        {
-            using (HttpClientService client = HttpClientService.SsoInstance)
-            {
-                // Fix this up with a proper url.
-                var taskURL = client.PostAsJsonAsync("*****", JsonConverterService.SerializeObject(username));
-            }
-
-            // Change if needed.
-            return Ok();
         }
 
         /// <summary>

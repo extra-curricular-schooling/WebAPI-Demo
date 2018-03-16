@@ -5,7 +5,7 @@ using System.Security.Claims;
 using System.Web.Http;
 using System.Web.Http.Controllers;
 
-namespace ECS.WebAPI.Filters.AuthorizationFilters
+namespace ECS.WebAPI.Filters.AuthenticationFilters
 {
     public class AuthorizationRequiredAttribute : AuthorizeAttribute, IDisposable
     {

@@ -46,66 +46,24 @@ namespace ECS.Modules.HttpModules
             {
                 var request = app.Request;
                 var type = request.GetType();
-                bool isTrusted = false;
-                bool isAcceptedUrlAuthorityHeader = false;
-                bool isAcceptedRefererHeader = false;
-                bool isAcceptedOriginHeader = false;
-                bool isBadRequest = false;
-
-                // Check if the request has a "Referer" header
-                if (request.Headers["Referer"] != null && !isTrusted)
-                {
-                    if (acceptedUrls.Contains(request.Headers["Referer"]))
-                    {
-                        isAcceptedRefererHeader = true;
-                        isTrusted = true;
-                    }
-                    else
-                    {
-                        isBadRequest = true;
-                    }
-
-                }
-
-                // Check if the request has a recognized "Origin" header
-                if (request.Headers["Origin"] != null && !isTrusted)
-                {
-                    if (acceptedOrigins.Contains(request.Headers["Origin"]))
-                    {
-                        isAcceptedOriginHeader = true;
-                        isTrusted = true;
-                    }
-                    else
-                    {
-                        isBadRequest = true;
-                    }
-                }
-
-                // Check if the request Url authority is used
-                if (request.Url.Authority != null && !isTrusted)
-                {
-                    // Is it a recognized Url?
-                    if (acceptedAuthorities.Contains(request.Url.Authority))
-                    {
-                        isAcceptedUrlAuthorityHeader = true;
-                        isTrusted = true;
-                    }
-                    else
-                    {
-                        isBadRequest = true;
-                    }
-                }
+               
+                bool isAcceptedRefererHeader = CheckRefererHeader(request);
+                bool isAcceptedOriginHeader = CheckOriginHeader(request);
+                bool isAcceptedUrlAuthorityHeader = CheckUrlAuthority(request);
 
                 // Return the bad request
-                if (!isAcceptedRefererHeader && !isAcceptedOriginHeader && !isAcceptedUrlAuthorityHeader && !isBadRequest)
+                if (!isAcceptedRefererHeader && !isAcceptedOriginHeader && !isAcceptedUrlAuthorityHeader)
                 {
                     // Http Status Code 403: Request is correct, but our API refuses to serve for this request.
                     app.Response.StatusCode = 403;
                     app.Response.End();
                 }
 
+                // All requests from this point on are from valid sources.
+                // If you want to shortcut something, put it in after this point!
+
                 // For Preflight
-                if (app.Request.HttpMethod == "OPTIONS" && isTrusted)
+                if (app.Request.HttpMethod == "OPTIONS")
                 {
                     app.Response.StatusCode = 200;
                     // Change for production... String concat is costly.
@@ -126,6 +84,49 @@ namespace ECS.Modules.HttpModules
                 }
             }
             
+        }
+
+        // Check if the request has a "Referer" header
+        private bool CheckRefererHeader(HttpRequest request)
+        {
+            var isAccepted = false;
+            if (request.Headers["Referer"] != null)
+            {
+                if (acceptedUrls.Contains(request.Headers["Referer"]))
+                {
+                    isAccepted = true;
+                }
+            }
+            return isAccepted;
+        }
+
+        // Check if the request has a recognized "Origin" header
+        private bool CheckOriginHeader(HttpRequest request)
+        {
+            var isAccepted = false;
+            if (request.Headers["Origin"] != null)
+            {
+                if (acceptedOrigins.Contains(request.Headers["Origin"]))
+                {
+                    isAccepted = true;
+                }
+            }
+            return isAccepted;
+        }
+
+        // Check if the request Url authority is used
+        private bool CheckUrlAuthority(HttpRequest request)
+        {
+            var isAccepted = false;
+            if (request.Url.Authority != null)
+            {
+                // Is it a recognized Url?
+                if (acceptedAuthorities.Contains(request.Url.Authority))
+                {
+                    isAccepted = true;
+                }
+            }
+            return isAccepted;
         }
     }
 }

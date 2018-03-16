@@ -1,8 +1,8 @@
-﻿using ECS.WebAPI.Services;
-using System.Web.Http;
+﻿using System.Web.Http;
 using System.Web.Http.Cors;
 using ECS.Repositories;
 using ECS.Models;
+using ECS.WebAPI.Filters.AuthenticationFilters;
 using ECS.WebAPI.Filters.AuthorizationFilters;
 using System;
 using ECS.WebAPI.Services.Security;
@@ -14,6 +14,9 @@ using System.Net;
 /// <remarks>Author: Scott Roberts</remarks>
 namespace ECS.WebAPI.Controllers
 {
+    [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET,POST")]
+    [AuthenticateSsoAccessToken]
+    [AuthorizeSsoAccessToken]
     public class SsoController : ApiController
     {
         private readonly IAccountRepository accountRepository;
@@ -37,8 +40,6 @@ namespace ECS.WebAPI.Controllers
          * respond to the client
          */
         [HttpPost]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
-        [SsoAuthorize]
         public IHttpActionResult Registration()
         {
             var token = JwtHelper.Instance.GetJwtFromAuthorizationHeader(Request);
@@ -62,8 +63,6 @@ namespace ECS.WebAPI.Controllers
         /// </summary>
         /// <remarks>Author: Scott Roberts</remarks>
         [HttpPost]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
-        //[SsoAuthorize]
         public IHttpActionResult Login()
         {
             var token = JwtHelper.Instance.GetJwtFromAuthorizationHeader(Request);
@@ -97,10 +96,14 @@ namespace ECS.WebAPI.Controllers
         }
 
         [HttpPost]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
-        //[SsoAuthorize]
         public IHttpActionResult ResetPassword()
         {
+            // Transform Sso JWT into useful JWT
+
+            // Check if user exists
+
+            // If so... Hash and salt password
+            // And Save hashed password and salt in the appropriate tables.
             return Ok();
         }
     }
