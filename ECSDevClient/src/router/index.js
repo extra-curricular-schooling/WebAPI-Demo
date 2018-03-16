@@ -18,7 +18,7 @@ export default new Router({
     {
       path: '/registration',
       name: 'Registration',
-      component: () => import('@/pages/Registration')
+      component: () => import('@/components/pages/Registration')
     },
     {
       path: '/home',

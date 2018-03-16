@@ -1,10 +1,12 @@
 ﻿using ECS.DTO;
-using ECS.WebAPI.Services;
-using System.Net;
+using ECS.WebAPI.Filters;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace ECS.WebAPI.Controllers
 {
+    [RequireHttps]
+    [RoutePrefix("Login")]
     public class LoginController : ApiController
     {
         /// <summary>
@@ -12,6 +14,9 @@ namespace ECS.WebAPI.Controllers
         /// </summary>
         /// <remarks>Author: Scott Roberts</remarks>
         [HttpPost]
+        [AllowAnonymous]
+        [Route("SubmitLogin")]
+        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
         public IHttpActionResult SubmitLogin(AccountCredentialDTO credentials)
         {
             // Credentials is already read and deserialized into a DTO. Validate it.
