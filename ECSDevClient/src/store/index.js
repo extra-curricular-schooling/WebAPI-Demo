@@ -3,6 +3,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import { request } from './modules/request'
 import { auth } from './modules/auth'
+import { login } from '../components/Login-Panel/store/index'
 
 Vue.use(Vuex)
 
@@ -14,7 +15,8 @@ export default new Vuex.Store({
   // we could use modules to organize them.
   modules: {
     auth,
-    request
+    request,
+    login
   },
 
   // State is passed into any of your getters.
