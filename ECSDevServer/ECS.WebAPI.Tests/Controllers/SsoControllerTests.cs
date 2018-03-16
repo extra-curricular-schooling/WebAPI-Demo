@@ -127,7 +127,7 @@ namespace ECS.WebAPI.Tests.Controllers
                 // Act
 
                 // Assert
-                output.WriteLine(controllerName + "/" + actionName);
+                //output.WriteLine(controllerName + "/" + actionName);
             }
 
             // Does the post work?
@@ -179,20 +179,16 @@ namespace ECS.WebAPI.Tests.Controllers
                 controller.Url = mockUrlHelper.Object;
 
                 // Act
-                AccountCredentialDTO credential = new AccountCredentialDTO()
-                {
-                    Username = "Scott",
-                    Password = "pass"
-                };
-
-                var response = controller.Login();
+                var response = (HttpResponseMessage)controller.Login();
+                output.WriteLine(response.ToString());
 
                 // Assert
-                // Assert.AreEqual(locationUrl, response.Headers.Location.AbsoluteUri);
+                Assert.Equal(locationUrl, response.Headers.Location.AbsoluteUri);
             }
 
+            
             [Fact]
-            public void ReturnsJwtTokenWithOk()
+            public void ReturnsJwtTokenWithRedirect()
             {
                 // Arrange
                 var credential = new AccountCredentialDTO

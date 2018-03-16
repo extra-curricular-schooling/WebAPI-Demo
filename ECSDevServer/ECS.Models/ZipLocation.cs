@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ECS.Models
 {
@@ -14,38 +10,45 @@ namespace ECS.Models
     /// </summary>
     public class ZipLocation
     {
-        //The area code given during registration
-        //ZipCode should not be in ZipLocation
+        [Key]
         [Required]
-        [Key, Column(Order = 1)] 
+        public int ZipCodeId { get; set; }
+        // The area code given during registration
+        // ZipCode should not be in ZipLocation
+        [Required]
+        //[Key, Column(Order = 1)] 
         [Display(Name = "Zip Code")]
         [StringLength(10, MinimumLength = 5, ErrorMessage = "Zipcode must be 5-10 characters")]
         public string ZipCode { get; set; }
 
-        //The street number and street given during registration
+        // The street number and street given during registration
+        //[Key, Column(Order = 0)]
         [Required]
         public string Address { get; set; }
 
-        //The city given during registration
+        // The city given during registration
         [Required]
         public string City { get; set; }
 
-        //The state given during registration
+        // The state given during registration
         [Required]
         public string State { get; set; }
 
-        //The latitude of a given location.  This is optional because our system only refers to the SoCAL area
-        //Thus there should not be any duplicate combinations of cities streets and zipcodes.
+        // The latitude of a given location.  This is optional because our system only refers to the SoCAL area
+        // Thus there should not be any duplicate combinations of cities streets and zipcodes.
         public int Latitude { get; set; }
 
-        //The longitude of a given location.  This is optional because our system only refers to the SoCAL area
-        //Thus there should not be any duplicate combinations of cities streets and zipcodes.
+        // The longitude of a given location.  This is optional because our system only refers to the SoCAL area
+        // Thus there should not be any duplicate combinations of cities streets and zipcodes.
         public int Longitude { get; set; }
 
-        [Required]
-        [Key, Column(Order = 0)]
-        public string Email { get; set; }
+        //Foreign Key of Email
+        //[Required]
+        //[Key, Column(Order = 0)]
+        //public string Email { get; set; }
 
-        public User User { get; set; }
+        // Navigation property of Email
+        // DO not need this 
+        public ICollection<User> Users { get; set; }
     }
 }

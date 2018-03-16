@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class='greeting'>Hello {{name}}{{exclamationMarks}}</div>
+        <div class='greeting'>Helloooo {{name}}{{exclamationMarks}}</div>
     </div>
 </template>
 

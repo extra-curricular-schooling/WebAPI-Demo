@@ -18,7 +18,7 @@ export default {
   name: 'RegistrationAlert',
   methods: {
     showAlert: function () {
-      alert('Congratulations!  You have successfully registered your information.  You will now be redirected to the main page.')
+      alert('Congratulations!!!  You have successfully registered your information.  You will now be redirected to the main page.')
       this.$router.push('/')
     }
   }

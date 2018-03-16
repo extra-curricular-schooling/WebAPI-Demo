@@ -53,22 +53,16 @@ namespace ECS.WebAPI.Controllers
             {
                 Account account = new Account();
                 User user = new User();
-                string salt = HashService.CreateSaltKey();
-
+                ZipLocation zipLocation = new ZipLocation();
+                
                 user.FirstName = registrationForm.FirstName;
                 user.LastName = registrationForm.LastName;
                 account.UserName = registrationForm.Username;
                 user.Email = registrationForm.Email;
-                account.Password = HashService.HashPasswordWithSalt(salt, registrationForm.Password);
-                user.ZipLocation = new List<ZipLocation>
-                {
-                    new ZipLocation
-                    {
-                        ZipCode = Convert.ToString(registrationForm.ZipCode),
-                        Address = registrationForm.Address,
-                        City = registrationForm.City
-                    }
-                };
+                account.Password = registrationForm.Password;
+                zipLocation.ZipCode = registrationForm.ZipCode.ToString();
+                zipLocation.Address = registrationForm.Address;
+                zipLocation.City = registrationForm.City;
                 account.SecurityAnswers = new List<SecurityQuestionAccount>
                 {
                     new SecurityQuestionAccount
@@ -128,10 +122,10 @@ namespace ECS.WebAPI.Controllers
 
             // TEST ????
             List<SecurityQuestion> test = new List<SecurityQuestion> {
-                new SecurityQuestion{SecurityQuestionID = 1, SecurityQuestions = "Who?" },
-                new SecurityQuestion{SecurityQuestionID = 2, SecurityQuestions = "What?" },
-                new SecurityQuestion{SecurityQuestionID = 3, SecurityQuestions = "When?" },
-                new SecurityQuestion{SecurityQuestionID = 4, SecurityQuestions = "Why?" }
+                new SecurityQuestion{SecurityQuestionID = 1, SecQuestion = "Who?" },
+                new SecurityQuestion{SecurityQuestionID = 2, SecQuestion = "What?" },
+                new SecurityQuestion{SecurityQuestionID = 3, SecQuestion = "When?" },
+                new SecurityQuestion{SecurityQuestionID = 4, SecQuestion = "Why?" }
             };
             
             return Content(HttpStatusCode.OK, new JavaScriptSerializer().Serialize(test));

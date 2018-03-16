@@ -13,7 +13,7 @@ export default new Router({
     {
       path: '/about',
       name: 'About',
-      component: () => import('@/components/pages/About')
+      component: () => import('@/pages/About')
     },
     {
       path: '/registration',
@@ -23,28 +23,28 @@ export default new Router({
     {
       path: '/home',
       name: 'Home',
-      component: () => import('@/components/pages/Home')
+      component: () => import('@/pages/Home')
     },
     {
       path: '/account',
       name: 'Account',
-      component: () => import('@/components/pages/Account')
+      component: () => import('@/pages/Account')
     },
     {
-      path: '/sweepstakeAdmin',
+      path: '/sweepstake-admin',
       name: 'SweepstakeAdmin',
-      component: () => import('@/components/pages/SweepstakeAdmin')
+      component: () => import('@/pages/SweepstakeAdmin')
     },
     {
       path: '/sweepstake',
       name: 'Sweepstake',
-      component: () => import('@/components/pages/Sweepstake')
+      component: () => import('@/pages/Sweepstake')
     },
     // Does not know how to handle 404 errors. Might want to build in a catch all page right here.
     {
-      path: '/404',
+      path: '/error',
       name: 'MissingPage',
-      component: () => import('@/components/pages/MissingPage')
+      component: () => import('@/pages/MissingPage')
     },
     {
       path: '/linkedin',
@@ -52,9 +52,9 @@ export default new Router({
       component: () => import('@/pages/LinkedIn')
     },
     {
-      path: '/apitests',
+      path: '/api-tests',
       name: 'ApiTests',
-      component: () => import('@/components/pages/ApiTests')
+      component: () => import('@/pages/ApiTests')
     }
   ]
 })

@@ -1,5 +1,5 @@
 ﻿CREATE PROCEDURE [dbo].[ZipLocation_Update]
-    @Email [nvarchar](128),
+    @ZipCodeId [int],
     @ZipCode [nvarchar](10),
     @Address [nvarchar](max),
     @City [nvarchar](max),
@@ -9,6 +9,6 @@
 AS
 BEGIN
     UPDATE [dbo].[ZipLocation]
-    SET [Address] = @Address, [City] = @City, [State] = @State, [Latitude] = @Latitude, [Longitude] = @Longitude
-    WHERE (([Email] = @Email) AND ([ZipCode] = @ZipCode))
+    SET [ZipCode] = @ZipCode, [Address] = @Address, [City] = @City, [State] = @State, [Latitude] = @Latitude, [Longitude] = @Longitude
+    WHERE ([ZipCodeId] = @ZipCodeId)
 END
