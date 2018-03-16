@@ -8,7 +8,7 @@ export default new Router({
     {
       path: '/',
       name: 'Main',
-      component: () => import('@/components/pages/Main')
+      component: () => import('@/pages/Main')
     },
     {
       path: '/about',
@@ -18,7 +18,7 @@ export default new Router({
     {
       path: '/registration',
       name: 'Registration',
-      component: () => import('@/components/pages/Registration')
+      component: () => import('@/pages/Registration')
     },
     {
       path: '/home',
