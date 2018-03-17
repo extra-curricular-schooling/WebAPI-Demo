@@ -8,7 +8,7 @@ using System.Web.Script.Serialization;
 using ECS.Models;
 using ECS.Repositories;
 using ECS.WebAPI.Filters;
-using ECS.WebAPI.Services;
+using ECS.WebAPI.Services.Security.AccessTokens.Jwt;
 
 namespace ECS.WebAPI.Controllers
 {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ECS.WebAPI.Services.Security
+namespace ECS.WebAPI.Services.Security.Hash
 {
     public interface IHashService
     {

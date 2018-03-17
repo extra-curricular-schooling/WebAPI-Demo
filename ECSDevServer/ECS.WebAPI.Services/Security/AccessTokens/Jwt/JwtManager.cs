@@ -9,9 +9,9 @@ using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
 
-namespace ECS.WebAPI.Services
+namespace ECS.WebAPI.Services.Security.AccessTokens.Jwt
 {
-    public class JwtManager
+    public class JwtManager : IJwtHelper
     {
 
         #region Constants and fields
@@ -52,12 +52,6 @@ namespace ECS.WebAPI.Services
             var tokenHandler = new JwtSecurityTokenHandler();
 
             var now = DateTime.UtcNow;
-            // The SecurityTokenDescriptor won't take a list of strings, just one...
-            var aud = new List<string>
-            {
-                "http://localhost:8080",
-                "https://www.sso.com"
-            };
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Issuer = "https://localhost:44311/",
@@ -65,6 +59,7 @@ namespace ECS.WebAPI.Services
                         {
                             new Claim(ClaimTypes.Name, username)
                         }),
+                IssuedAt = now,
                 Expires = now.AddMinutes(Convert.ToInt32(expireMinutes)),
                 NotBefore = now,
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(symmetricKey), SecurityAlgorithms.HmacSha256Signature),

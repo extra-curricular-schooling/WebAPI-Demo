@@ -5,8 +5,8 @@ using ECS.Models;
 using ECS.WebAPI.Filters.AuthenticationFilters;
 using ECS.WebAPI.Filters.AuthorizationFilters;
 using System;
-using ECS.WebAPI.Services.Security;
 using System.Net;
+using ECS.WebAPI.Services.Security.AccessTokens.Jwt;
 
 /// <summary>
 /// 
@@ -42,9 +42,9 @@ namespace ECS.WebAPI.Controllers
         [HttpPost]
         public IHttpActionResult Registration()
         {
-            var token = JwtHelper.Instance.GetJwtFromAuthorizationHeader(Request);
+            var token = SsoJwtHelper.Instance.GetJwtFromAuthorizationHeader(Request);
             // Read the JWT, and grab the claims.
-            var username = JwtHelper.Instance.GetUsernameFromToken(token);
+            var username = SsoJwtHelper.Instance.GetUsernameFromToken(token);
 
             // Proccess any other information.
 
