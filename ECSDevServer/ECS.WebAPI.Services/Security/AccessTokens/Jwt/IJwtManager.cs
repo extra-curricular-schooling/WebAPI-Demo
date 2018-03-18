@@ -6,7 +6,7 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ECS.WebAPI.Services.Security
+namespace ECS.WebAPI.Services.Security.AccessTokens.Jwt
 {
     // Fill in the rest of the comments.
     public interface IJwtManager

@@ -5,7 +5,7 @@ using System.Web;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace ECS.WebAPI.Services
+namespace ECS.WebAPI.Services.Security.Hash
 {
     /// <summary>
     /// Static service class to hash a salted password using SHA 256

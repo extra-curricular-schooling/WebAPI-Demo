@@ -10,7 +10,7 @@ export const request = {
       'Access-Control-Allow-Origin': 'http://localhost:8080',
       'Access-Control-Allow-Credentials': true,
       'Accept': 'application/json',
-      'Authorization': '',
+      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNjb3R0IiwiYXBwbGljYXRpb24iOiJlY3MiLCJyb2xlVHlwZSI6InB1YmxpYyIsIm5iZiI6MTUyMTMyNjU0OSwiZXhwIjoxNTIxMzMyNTQ5LCJpYXQiOjE1MjEzMjY1NDksImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0OjQ0MzExLyJ9.iIqc0qNIHqUI3S3JaAQIcU0gFvYHe6q2EfwI5VSN8iQ',
       'Content-Type': 'application/json',
       'X-Requested-With': 'XMLHttpRequest'
     }

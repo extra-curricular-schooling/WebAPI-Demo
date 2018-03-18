@@ -1,6 +1,7 @@
 ﻿using Xunit;
 using Xunit.Abstractions;
 using System.Threading;
+using ECS.WebAPI.Services.Security.AccessTokens.Jwt;
 
 namespace ECS.WebAPI.Services.Tests
 {
@@ -43,6 +44,12 @@ namespace ECS.WebAPI.Services.Tests
                 Thread.Sleep(ms);
                 string token2 = JwtManager.Instance.GenerateToken("scott");
                 Assert.NotEqual(token1, token2);
+            }
+
+            [Fact]
+            public void PrintSsoToken()
+            {
+                output.WriteLine(SsoJwtManager.Instance.GenerateToken("scott", 100));
             }
         }
     }

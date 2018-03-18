@@ -1,30 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ECS.WebAPI.Services.Security
+namespace ECS.WebAPI.Services.Security.AccessTokens.Jwt
 {
-    public class JwtHelper
+    public class SsoJwtHelper : IJwtHelper
     {
         // Instance for Singleton Pattern
-        private static JwtHelper instance;
+        private static SsoJwtHelper instance;
 
-        private JwtHelper()
+        private SsoJwtHelper()
         {
         }
 
-        public static JwtHelper Instance
+        public static SsoJwtHelper Instance
         {
             get
             {
                 if (instance == null)
                 {
-                    instance = new JwtHelper();
+                    instance = new SsoJwtHelper();
                 }
                 return instance;
             }
@@ -48,7 +44,7 @@ namespace ECS.WebAPI.Services.Security
 
         public string GetUsernameFromToken(String token)
         {
-            var principal = JwtManager.Instance.GetPrincipal(token);
+            var principal = SsoJwtManager.Instance.GetPrincipal(token);
             if (null != principal)
             {
                 foreach (Claim claim in principal.Claims)

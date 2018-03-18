@@ -3,7 +3,7 @@ using ECS.Models;
 using ECS.Repositories;
 using ECS.WebAPI.Filters;
 using ECS.WebAPI.Filters.AuthenticationFilters;
-using ECS.WebAPI.Services;
+using ECS.WebAPI.Services.Security.AccessTokens.Jwt;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
