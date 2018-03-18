@@ -11,14 +11,13 @@ namespace ECS.Models.Migrations
         public Configuration()
         {
             // Changes in models will not affect the database
-            AutomaticMigrationsEnabled = false;
-            AutomaticMigrationDataLossAllowed = false;
+            AutomaticMigrationsEnabled = true;
+            AutomaticMigrationDataLossAllowed = true;
 
         }
 
         protected override void Seed(ECS.Models.ECSContext.ECSContext context)
         {
-            
             // Add entries to the User table
             var users = new List<User>
             {
@@ -27,6 +26,7 @@ namespace ECS.Models.Migrations
                     Email = "test1@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
+                    
                     },
                     new User
                     {
@@ -321,10 +321,14 @@ namespace ECS.Models.Migrations
                     Email = "test50@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
+                    
                     },
             };
             // For each item in the list user addorupdate a User object with an email
             users.ForEach(s => context.Users.AddOrUpdate(p => p.Email, s));
+            //var trackedChanges = context.Users.FirstOrDefault(p => p.Email == );
+            //context.Entry(trackedChanges).CurrentValues.SetValues(users);
+            //context.Entry(trackedChanges).State = EntityState.Modified;
             context.SaveChanges();
 
             var zipLocation = new List<ZipLocation>
@@ -337,10 +341,10 @@ namespace ECS.Models.Migrations
                    ZipCode = "123456",
                    Latitude = 123,
                    Longitude = 123,
-                   //Email = users.Single(s => s.Email == "test1@gmail.com").Email
                    Users = new List<User>
                    {
-                       users.Single(s => s.Email == "test1@gmail.com")
+                       users.Single(s => s.Email == "test1@gmail.com"),
+                       users.Single(s => s.Email == "test2@gmail.com")
                    }
                },
                new ZipLocation
@@ -351,10 +355,9 @@ namespace ECS.Models.Migrations
                    ZipCode = "98765",
                    Latitude = 123,
                    Longitude = 123,
-                   //Email = users.Single(s => s.Email == "test2@gmail.com").Email
                    Users = new List<User>
                    {
-                       users.Single(s => s.Email == "test2@gmail.com")
+                       users.Single(s => s.Email == "test1@gmail.com")
                    }
                },
                new ZipLocation
@@ -365,12 +368,6 @@ namespace ECS.Models.Migrations
                    ZipCode = "84756",
                    Latitude = 123,
                    Longitude = 123,
-                  // Email = users.Single(s => s.Email == "test3@gmail.com").Email,
-                   Users = new List<User>
-                   {
-                       users.Single(s => s.Email == "test3@gmail.com")
-                   }
-                   
                },
                new ZipLocation
                {
@@ -380,23 +377,11 @@ namespace ECS.Models.Migrations
                    ZipCode = "74652",
                    Latitude = 123,
                    Longitude = 123,
-                   //Email = users.Single(s => s.Email == "test3@gmail.com").Email,
-                   Users = new List<User>
-                   {
-                       users.Single(s => s.Email == "test3@gmail.com"),
-                       users.Single(s => s.Email == "test4@gmail.com"),
-                       users.Single(s => s.Email == "test5@gmail.com")
-                   }                   
                }
             };
             // For each item in the list zipLocation addorupdate a ZipLocation object with a ZipcOd
             zipLocation.ForEach(s => context.ZipLocations.AddOrUpdate(p => p.ZipCode, s));
             context.SaveChanges();
-
-
-            
-            //AddOrUpdateZipCode(context, 1, "test3@gmail.com");
-            //AddOrUpdateZipCode(context, 6, "test3@gmail.com");
 
             // Add entries to the Account table
             var accounts = new List<Account>
@@ -2466,66 +2451,55 @@ namespace ECS.Models.Migrations
             // For each item in the list securityQuestionAccount addorupdate a SecurityQuestionAccount object with an ID
             securityQuestionAccounts.ForEach(s => context.SecurityQuestionAccounts.AddOrUpdate(p => p.SecurityQuestionID, s));
             context.SaveChanges();
-
+            /**
             var roles = new List<Role>
             {
                 new Role
                 {
-                    RoleId = 1,
+                    // RoleId = 1,
                     RoleName = "admin"
                 },
                 new Role
                 {
-                    RoleId = 2,
+                    // RoleId = 2,
                     RoleName = "scholar"
                 }
             };
-            roles.ForEach(s => context.Roles.AddOrUpdate(p => p.RoleId, s));
+            roles.ForEach(s => context.Roles.AddOrUpdate(p => p.// RoleId, s));
             context.SaveChanges();
-
+            **/
             var permissions = new List<Permission>
             {
                 new Permission
                 {
-                    RoleId = roles.Single(i => i.RoleId == 1).RoleId,
+                    // // RoleId = roles.Single(i => i.// RoleId == 1).// RoleId,
                     PermissionName = "CanCreateUser"
                 },
                 new Permission
                 {
-                    RoleId = roles.Single(i => i.RoleId == 1).RoleId,
+                    // RoleId = roles.Single(i => i.// RoleId == 1).// RoleId,
                     PermissionName = "CanDeleteUser"
                 },
                 new Permission
                 {
-                    RoleId = roles.Single(i => i.RoleId == 1).RoleId,
+                    // RoleId = roles.Single(i => i.// RoleId == 1).// RoleId,
                     PermissionName = "CanModifyUser"
                 },
                 new Permission
                 {
-                    RoleId = roles.Single(i => i.RoleId == 1).RoleId,
+                    // RoleId = roles.Single(i => i.// RoleId == 1).// RoleId,
                     PermissionName = "CanEditInformation"
                 },
                 new Permission
                 {
-                    RoleId = roles.Single(i => i.RoleId == 2).RoleId,
+                    // RoleId = roles.Single(i => i.// RoleId == 2).// RoleId,
                     PermissionName = "CanEnterRaffle"
                 },
                 new Permission
                 {
-                    RoleId = roles.Single(i => i.RoleId == 2).RoleId,
+                    // RoleId = roles.Single(i => i.// RoleId == 2).// RoleId,
                     PermissionName = "CanViewArticle"
                 },
-                new Permission
-                {
-                    RoleId = roles.Single(i => i.RoleId == 2).RoleId,
-                    PermissionName = "CanCreateUser"
-                },
-                new Permission
-                {
-                    RoleId = roles.Single(i => i.RoleId == 2).RoleId,
-                    PermissionName = "CanEditInformation"
-                }
-
             };
             permissions.ForEach(s => context.Permissions.AddOrUpdate(p => p.PermissionName, s));
             context.SaveChanges();
@@ -2536,883 +2510,883 @@ namespace ECS.Models.Migrations
                      new AccountType
                      {
                         PermissionName = permissions.First(i => i.PermissionName == "CanCreateUser").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 1).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 1).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test1").UserName
                      },
                      new AccountType
                      {
                         PermissionName = permissions.First(i => i.PermissionName == "CanDeleteUser").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 1).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 1).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test1").UserName
                      },
                      new AccountType
                      {
                         PermissionName = permissions.First(i => i.PermissionName == "CanModifyUser").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 1).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 1).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test1").UserName
                      },
                      new AccountType
                      {
                         PermissionName = permissions.First(i => i.PermissionName == "CanEditInformation").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test2").UserName
                      },
                      new AccountType
                      {
                         PermissionName = permissions.First(i => i.PermissionName == "CanEnterRaffle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test2").UserName
                      },
                      new AccountType
                      {
                         PermissionName = permissions.First(i => i.PermissionName == "CanViewArticle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test2").UserName
                      },
                      new AccountType
                      {
                         PermissionName = permissions.First(i => i.PermissionName == "CanCreateUser").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 1).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 1).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test3").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i => i.PermissionName == "CanDeleteUser").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 1).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 1).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test3").UserName
                      },
                      new AccountType
                      {
                         PermissionName = permissions.First(i =>i.PermissionName == "CanModifyUser").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 1).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 1).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test3").UserName
                      },
                      new AccountType
                      {
                         PermissionName = permissions.First(i =>i.PermissionName == "CanCreateUser").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 1).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 1).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test4").UserName
                      },
                      new AccountType
                      {
                         PermissionName = permissions.First(i =>i.PermissionName == "CanDeleteUser").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 1).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 1).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test4").UserName
                      },
                      new AccountType
                      {
                         PermissionName = permissions.First(i =>i.PermissionName == "CanModifyUser").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 1).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 1).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test4").UserName
                      },
                      new AccountType
                      {
                         PermissionName = permissions.First(i =>i.PermissionName == "CanCreateUser").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 1).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 1).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test5").UserName
                      },
                      new AccountType
                      {
                         PermissionName = permissions.First(i =>i.PermissionName == "CanDeleteUser").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 1).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 1).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test5").UserName
                      },
                      new AccountType
                      {
                         PermissionName = permissions.First(i =>i.PermissionName == "CanModifyUser").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 1).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 1).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test5").UserName
                      },
                      new AccountType
                      {
                         PermissionName = permissions.First(i =>i.PermissionName == "CanCreateUser").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 1).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 1).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test6").UserName
                      },
                      new AccountType
                      {
                         PermissionName = permissions.First(i =>i.PermissionName == "CanDeleteUser").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 1).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 1).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test6").UserName
                      },
                      new AccountType
                      {
                         PermissionName = permissions.First(i =>i.PermissionName == "CanModifyUser").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 1).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 1).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test6").UserName
                      },
                      new AccountType
                      {
                         PermissionName = permissions.First(i =>i.PermissionName == "CanEditInformation").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test7").UserName
                      },
                      new AccountType
                      {
                         PermissionName = permissions.First(i =>i.PermissionName == "CanEnterRaffle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test7").UserName
                      },
                      new AccountType
                      {
                         PermissionName = permissions.First(i =>i.PermissionName == "CanViewArticle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test7").UserName
                      },
                      new AccountType
                      {
                         PermissionName = permissions.First(i =>i.PermissionName == "CanEditInformation").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test8").UserName
                      },
                      new AccountType
                      {
                         PermissionName = permissions.First(i =>i.PermissionName == "CanEnterRaffle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test8").UserName
                      },
                      new AccountType
                      {
                         PermissionName = permissions.First(i =>i.PermissionName == "CanViewArticle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test8").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEditInformation").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test9").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEnterRaffle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test9").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanViewArticle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test9").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEditInformation").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test10").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEnterRaffle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test10").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanViewArticle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test10").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEditInformation").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test11").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEnterRaffle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test11").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanViewArticle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test11").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEditInformation").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test12").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEnterRaffle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test12").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanViewArticle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test12").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEditInformation").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test13").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEnterRaffle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test13").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanViewArticle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test13").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEditInformation").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test14").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEnterRaffle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test14").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanViewArticle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test14").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEditInformation").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test15").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEnterRaffle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test15").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanViewArticle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test15").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEditInformation").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test16").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEnterRaffle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test16").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanViewArticle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test16").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEditInformation").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test17").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEnterRaffle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test17").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanViewArticle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test17").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEditInformation").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test18").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEnterRaffle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test18").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanViewArticle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test18").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEditInformation").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test19").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEnterRaffle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test19").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanViewArticle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test19").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEditInformation").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test20").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEnterRaffle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test20").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanViewArticle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test20").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEditInformation").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test21").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEnterRaffle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test21").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanViewArticle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test21").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEditInformation").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test22").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEnterRaffle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test22").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanViewArticle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test22").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEditInformation").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test23").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEnterRaffle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test23").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanViewArticle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test23").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEditInformation").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test24").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEnterRaffle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test24").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanViewArticle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test24").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEditInformation").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test25").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEnterRaffle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test25").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanViewArticle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test25").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEditInformation").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test26").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEnterRaffle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test26").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanViewArticle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test26").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEditInformation").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test27").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEnterRaffle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test27").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanViewArticle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test27").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEditInformation").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test28").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEnterRaffle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test28").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanViewArticle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test28").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEditInformation").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test29").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEnterRaffle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test29").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanViewArticle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test29").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEditInformation").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test30").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEnterRaffle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test30").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanViewArticle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test30").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEditInformation").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test31").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEnterRaffle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test31").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanViewArticle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test31").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEditInformation").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test32").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEnterRaffle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test32").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanViewArticle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test33").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEditInformation").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test34").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEnterRaffle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test34").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanViewArticle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test34").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEditInformation").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test35").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEnterRaffle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test35").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanViewArticle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test35").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEditInformation").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test36").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEnterRaffle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test36").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanViewArticle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test36").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEditInformation").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test37").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEnterRaffle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test37").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanViewArticle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test37").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEditInformation").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test38").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEnterRaffle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test38").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanViewArticle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test38").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEditInformation").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test39").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEnterRaffle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test39").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanViewArticle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test39").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEditInformation").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test40").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEnterRaffle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test40").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanViewArticle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test40").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEditInformation").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test41").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEnterRaffle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test41").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanViewArticle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test41").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEditInformation").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test42").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEnterRaffle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test42").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanViewArticle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test42").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEditInformation").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test43").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEnterRaffle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test43").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanViewArticle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test43").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEditInformation").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test44").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEnterRaffle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test44").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanViewArticle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test44").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEditInformation").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test45").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEnterRaffle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test45").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanViewArticle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test45").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEditInformation").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test46").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEnterRaffle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test46").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanViewArticle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test46").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEditInformation").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test47").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEnterRaffle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test47").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanViewArticle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test47").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEditInformation").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test48").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEnterRaffle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test48").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanViewArticle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test48").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEditInformation").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test49").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEnterRaffle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test49").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanViewArticle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test49").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEditInformation").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test50").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanEnterRaffle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test50").UserName
                      },
                      new AccountType
                      {
                        PermissionName = permissions.First(i =>i.PermissionName == "CanViewArticle").PermissionName,
-                        RoleId = permissions.First(i => i.RoleId == 2).RoleId,
+                        // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test50").UserName
                      },
             };
@@ -3421,6 +3395,7 @@ namespace ECS.Models.Migrations
             context.SaveChanges();
 
             // Add entries to the LinkedIn table
+            /**
             var linkedInTokens = new List<LinkedIn>
             {
                     new LinkedIn
@@ -3729,6 +3704,7 @@ namespace ECS.Models.Migrations
             // For each item in the list linkedIn addorupdate a LinkedIn object with a username
             linkedInTokens.ForEach(s => context.LinkedIn.AddOrUpdate(p => p.UserName, s));
             context.SaveChanges();
+            **/
 
             // Add entries to Sweepstakes table
             var sweepStakes = new List<SweepStake>
@@ -3820,8 +3796,29 @@ namespace ECS.Models.Migrations
             // For each item in the list sweepStakeEntry addorupdate a SweepStakeEntry object with a username
             sweepStakeEntries.ForEach(s => context.SweepStakeEntries.AddOrUpdate(p => p.UserName, s));
             context.SaveChanges();
-        }
 
+            var jwts = new List<JAccessToken>
+            {
+                new JAccessToken
+                {
+                    Value = "uyvguc76dccvyikbibo",
+                    UserName = accounts.Single(i => i.UserName == "test2").UserName, 
+                }
+            };
+
+            jwts.ForEach(s => context.JAccessTokens.AddOrUpdate(p => p.TokenId, s));
+            context.SaveChanges();
+            var salts = new List<Salt>
+            {
+                new Salt
+                {
+                    PasswordSalt = "ASOBBAOSUVNOIDVKSNLKPPPPPPPPAN",
+                    UserName = accounts.Single(i => i.UserName == "test2").UserName
+                }
+            };
+            salts.ForEach(s => context.Salts.AddOrUpdate(p => p.SaltId, s));
+            context.SaveChanges();
+        }
         void AddOrUpdateInterestTag(ECS.Models.ECSContext.ECSContext context, string accountUsername, string tagName)
         {
             var tag = context.Accounts.SingleOrDefault(c => c.UserName == accountUsername);
@@ -3837,6 +3834,7 @@ namespace ECS.Models.Migrations
             if (inst == null)
                 article.ArticleTags.Add(context.Articles.Single(i => i.ArticleLink == articleLink));
         }
+        /**
         void AddOrUpdateZipCode(ECS.Models.ECSContext.ECSContext context, int zipCodeId, string email)
         {
             var zip = context.Users.SingleOrDefault(c => c.Email == email);
@@ -3844,6 +3842,7 @@ namespace ECS.Models.Migrations
             if (inst == null)
                 zip.ZipLocations.Add(context.ZipLocations.Single(i => i.ZipCodeId == zipCodeId));
         }
+        **/
         /**
         void AddOrUpdateZipCode(ECS.Models.ECSContext.ECSContext context, string email, string zipCode)
         {

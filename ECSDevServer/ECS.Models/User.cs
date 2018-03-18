@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ECS.Models
 { 
@@ -33,9 +34,13 @@ namespace ECS.Models
         // MAke navigation a single ZipLocation
         public virtual ICollection<ZipLocation> ZipLocations { get; set; }
  
+        public User()
+        {
+            this.ZipLocations = new List<ZipLocation>();
+        }
         // Unimplemented because of switch to web-api, but potential addition if change back to mvc
         // Navigation property of cookies class
         // A user can have many cookies
-        //public virtual ICollection<Cookie> Cookies { get; set; }
+        // public virtual ICollection<Cookie> Cookies { get; set; }
     }
 }

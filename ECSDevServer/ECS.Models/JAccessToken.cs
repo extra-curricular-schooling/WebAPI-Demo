@@ -8,7 +8,7 @@ namespace ECS.Models
     /// a hashed string.
     /// </summary>
     // should be named ACcess token not JWT
-    public class JWT
+    public class JAccessToken
     {
         //Consists of claims, expiration date, where it comes from
         [Required]
