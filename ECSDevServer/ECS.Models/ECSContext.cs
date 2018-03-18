@@ -21,9 +21,9 @@ namespace ECS.Models.ECSContext
 
         public DbSet<InterestTag> InterestTags { get; set; }
 
-        public DbSet<LinkedIn> LinkedIn { get; set; }
+        // public DbSet<LinkedIn> LinkedIn { get; set; }
 
-        public DbSet<JWT> JWTs { get; set; }
+        public DbSet<JAccessToken> JAccessTokens { get; set; }
 
         public DbSet<Article> Articles { get; set; }
 
@@ -43,7 +43,7 @@ namespace ECS.Models.ECSContext
 
         public DbSet<Permission> Permissions { get; set; }
 
-        public DbSet<Role> Roles { get; set; }
+        // public DbSet<Role> Roles { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -83,10 +83,10 @@ namespace ECS.Models.ECSContext
                 .WithRequired(s => s.Accounts)
                 .HasForeignKey<string>(s => s.Username);
 
-            modelBuilder.Entity<Role>()
-                .HasMany<Permission>(g => g.Permissions)
-                .WithRequired(s => s.Role)
-                .HasForeignKey<int>(s => s.RoleId);
+            //modelBuilder.Entity<Role>()
+            //    .HasMany<Permission>(g => g.Permissions)
+            //    .WithRequired(s => s.Role)
+            //    .HasForeignKey<int>(s => s.RoleId);
 
             // Setting primary key of SecurityQuestionAccount model to custom primary key
             modelBuilder.Entity<SecurityQuestionAccount>()
@@ -119,15 +119,15 @@ namespace ECS.Models.ECSContext
 
             modelBuilder.Entity<SweepStakeEntry>().MapToStoredProcedures();
 
-            modelBuilder.Entity<LinkedIn>().MapToStoredProcedures();
+            // modelBuilder.Entity<LinkedIn>().MapToStoredProcedures();
 
-            modelBuilder.Entity<JWT>().MapToStoredProcedures();
+            modelBuilder.Entity<JAccessToken>().MapToStoredProcedures();
 
             modelBuilder.Entity<Salt>().MapToStoredProcedures();
 
             modelBuilder.Entity<Permission>().MapToStoredProcedures();
 
-            modelBuilder.Entity<Role>().MapToStoredProcedures();
+            // modelBuilder.Entity<Role>().MapToStoredProcedures();
 
             /**
              * This relationship defines an account history feature with articles,

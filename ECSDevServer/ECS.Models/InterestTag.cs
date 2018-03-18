@@ -21,5 +21,11 @@ namespace ECS.Models
 
         // Navigation Property
         public virtual ICollection<Article> ArticleTags { get; set; }
+
+        public InterestTag()
+        {
+            this.AccountUsername = new List<Account>();
+            this.ArticleTags = new List<Article>();
+        }
     }
 }

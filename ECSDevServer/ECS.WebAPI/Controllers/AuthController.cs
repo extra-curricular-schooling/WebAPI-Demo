@@ -25,7 +25,7 @@ namespace ECS.WebAPI.Controllers
         public HttpResponseMessage GenerateCookie()
         {
             var response = new HttpResponseMessage();
-            JWT token;
+            JAccessToken token;
 
             // JWT token already exists
             if (_jwtRepository.Exists(d => d.UserName == "test1", d => d.Account))
@@ -37,7 +37,7 @@ namespace ECS.WebAPI.Controllers
             // JWT does not exist for this user
             else
             {
-                token = new JWT
+                token = new JAccessToken
                 {
                     Value = JwtManager.Instance.GenerateToken("test1"),
                     UserName = "test1"

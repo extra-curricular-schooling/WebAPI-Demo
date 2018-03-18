@@ -8,18 +8,10 @@ namespace ECS.Models
     /// </summary>
     public class Permission
     {
-        // Foreign Key of Role
-        [Key]
-        [Column(Order = 1)]
-        public int RoleId { get; set; }
-
         // Name/value of the permission Foreign Key of role
         [Required]
         [Key]
         [Column(Order = 0)]
         public string PermissionName { get; set; }
-
-        // Navigation Property of Role
-        public Role Role { get; set; }
     }
 }

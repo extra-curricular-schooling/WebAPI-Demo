@@ -34,7 +34,7 @@ namespace ECS.Repositories
     /// <summary>
     /// 
     /// </summary>
-    public interface IJwtRepository: IRepositoryBase<JWT>
+    public interface IJwtRepository: IRepositoryBase<JAccessToken>
     {
     }
 
@@ -127,7 +127,7 @@ namespace ECS.Repositories
         }
     }
 
-    public class JwtRepository : RepositoryBase<JWT>, IJwtRepository
+    public class JwtRepository : RepositoryBase<JAccessToken>, IJwtRepository
     {
         public JwtRepository () : base (new ECSContext())
         {

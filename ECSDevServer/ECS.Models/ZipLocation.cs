@@ -50,5 +50,10 @@ namespace ECS.Models
         // Navigation property of Email
         // DO not need this 
         public ICollection<User> Users { get; set; }
+
+        public ZipLocation()
+        {
+            this.Users = new List<User>();
+        }
     }
 }

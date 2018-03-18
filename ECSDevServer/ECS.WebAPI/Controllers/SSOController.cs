@@ -7,6 +7,7 @@ using ECS.WebAPI.Filters.AuthorizationFilters;
 using System;
 using System.Net;
 using ECS.WebAPI.Services.Security.AccessTokens.Jwt;
+using ECS.WebAPI.Services.Security.Hash;
 
 /// <summary>
 /// 
@@ -15,8 +16,8 @@ using ECS.WebAPI.Services.Security.AccessTokens.Jwt;
 namespace ECS.WebAPI.Controllers
 {
     [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET,POST")]
-    [AuthenticateSsoAccessToken]
-    [AuthorizeSsoAccessToken]
+    //[AuthenticateSsoAccessToken]
+    //[AuthorizeSsoAccessToken]
     public class SsoController : ApiController
     {
         private readonly IAccountRepository accountRepository;
@@ -43,18 +44,22 @@ namespace ECS.WebAPI.Controllers
         public IHttpActionResult Registration()
         {
             var token = SsoJwtHelper.Instance.GetJwtFromAuthorizationHeader(Request);
-            // Read the JWT, and grab the claims.
+            // Read the JWT, and grab the username claim.
             var username = SsoJwtHelper.Instance.GetUsernameFromToken(token);
 
             // Proccess any other information.
 
+
             // Set some sort of flag up for the User in DB.
-
-            // When they try and register in our app after SSO's registration, check the flag.
-
-            Account account = new Account();
-            //accountRepository.Insert(account);
-
+            var salt = HashService.CreateSaltKey();
+            Account account = new Account()
+            {
+                UserName = username,
+                //Password = HashService.HashPasswordWithSalt(salt, password),
+                //RoleType = roleType,
+                FirstTimeUser = true,
+            };
+            accountRepository.Insert(account);
             return Ok();
         }
 
@@ -84,7 +89,7 @@ namespace ECS.WebAPI.Controllers
 
             // Store JWT in DB.
             // WHY IS THIS CONNECTED TO A USER AND NOT AN ACCOUNT???
-            JWT tokenModel = new JWT
+            JAccessToken tokenModel = new JAccessToken
             {
                 UserName = username,
                 Value = token
