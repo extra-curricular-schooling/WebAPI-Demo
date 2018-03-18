@@ -91,7 +91,7 @@ namespace ECS.WebAPI.Controllers
 
             // Store JWT in DB.
             // WHY IS THIS CONNECTED TO A USER AND NOT AN ACCOUNT???
-            JWT tokenModel = new JWT
+            JAccessToken tokenModel = new JAccessToken
             {
                 UserName = userName,
                 Value = token,

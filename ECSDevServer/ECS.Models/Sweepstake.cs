@@ -39,5 +39,10 @@ namespace ECS.Models
         // Navigation property of sweepstakeentry class
         // A sweepstake can have many sweepstake entries
         public virtual ICollection<SweepStakeEntry> SweepStakeEntry { get; set; }
+
+        public SweepStake()
+        {
+            this.SweepStakeEntry = new List<SweepStakeEntry>();
+        }
     }
 }

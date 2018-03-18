@@ -54,6 +54,14 @@ namespace ECS.Models
         // Navigation Property of many to many relationship
         // Create the join table manually
         public virtual ICollection<InterestTag> AccountTags { get; set; }
+
+        // Initializer for ICollection objects
+        public Account()
+        {
+            this.AccountTags = new List<InterestTag>();
+            this.SecurityAnswers = new List<SecurityQuestionAccount>();
+        }
+
         /**
          * Not Being Implemented
          * Navigation Property

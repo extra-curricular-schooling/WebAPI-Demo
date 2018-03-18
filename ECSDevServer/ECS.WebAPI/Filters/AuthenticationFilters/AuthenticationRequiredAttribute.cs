@@ -24,7 +24,7 @@ namespace ECS.WebAPI.Filters.AuthenticationFilters
                 if (JwtManager.Instance.ValidateToken(accessTokenFromRequest, out username))
                 {
                     string tempUsername = string.Copy(username);
-                    JWT accessToken = _jwtRepository.GetSingle(d => d.UserName == tempUsername, d => d.Account);
+                    JAccessToken accessToken = _jwtRepository.GetSingle(d => d.UserName == tempUsername, d => d.Account);
                     if (accessToken != null)
                     {
                         string accessTokenStored = accessToken.Value;

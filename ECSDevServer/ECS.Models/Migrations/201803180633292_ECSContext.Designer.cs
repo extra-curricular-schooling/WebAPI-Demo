@@ -7,13 +7,13 @@ namespace ECS.Models.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class LinkedIn_TokenId_Added_and_Removed_Value_as_Key : IMigrationMetadata
+    public sealed partial class ECSContext : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(LinkedIn_TokenId_Added_and_Removed_Value_as_Key));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(ECSContext));
         
         string IMigrationMetadata.Id
         {
-            get { return "201803140805086_LinkedIn_TokenId_Added_and_Removed_Value_as_Key"; }
+            get { return "201803180633292_ECSContext"; }
         }
         
         string IMigrationMetadata.Source

@@ -21,9 +21,9 @@ namespace ECS.Models
         // Foreign Key
         // Defines what type of user
         // Potentially will be a foreign key from Permissions for extensibility
-        [Required]
+        //[Required]
         //[Display(Name = "Role ID")]
-        public int RoleId{ get; set; }
+        //public int RoleId{ get; set; }
 
         // Foreign key coming from Account
         [Key]
