@@ -57,5 +57,22 @@ namespace ECS.WebAPI.Services.Security.AccessTokens.Jwt
             }
             return "";
         }
+
+        public Tuple<string,ClaimsPrincipal> GetUsernameAndPrincipalFromToken(String token)
+        {
+            string username = null;
+            var principal = SsoJwtManager.Instance.GetPrincipal(token);
+            if (null != principal)
+            {
+                foreach (Claim claim in principal.Claims)
+                {
+                    if (claim.Type.Equals("username"))
+                    {
+                        username = claim.Value;
+                    }
+                }
+            }
+            return new Tuple<string, ClaimsPrincipal>(username, principal);
+        }
     }
 }
