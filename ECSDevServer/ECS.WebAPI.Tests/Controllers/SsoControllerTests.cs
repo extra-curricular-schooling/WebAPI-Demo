@@ -101,7 +101,8 @@ namespace ECS.WebAPI.Tests.Controllers
                 string actionName = "Login";
                 Mock<IAccountRepository> accountRepository = new Mock<IAccountRepository>();
                 Mock<IJAccessTokenRepository> jwtRepository = new Mock<IJAccessTokenRepository>();
-                SsoController controller = new SsoController(accountRepository.Object, jwtRepository.Object);
+                Mock<ISaltRepository> saltRepository = new Mock<ISaltRepository>();
+                SsoController controller = new SsoController(accountRepository.Object, jwtRepository.Object, saltRepository.Object);
                 SetupControllerWithoutIdIntegration(HttpMethod.Post, controller, controllerName, actionName);
 
                 // Act
@@ -121,7 +122,8 @@ namespace ECS.WebAPI.Tests.Controllers
                 // Arrange
                 Mock<IAccountRepository> accountRepository = new Mock<IAccountRepository>();
                 Mock<IJAccessTokenRepository> jwtRepository = new Mock<IJAccessTokenRepository>();
-                SsoController controller = new SsoController(accountRepository.Object, jwtRepository.Object);
+                Mock<ISaltRepository> saltRepository = new Mock<ISaltRepository>();
+                SsoController controller = new SsoController(accountRepository.Object, jwtRepository.Object, saltRepository.Object);
                 SetupControllerWithoutIdIntegration(HttpMethod.Post, controller, controllerName, actionName);
 
                 // Act
@@ -137,8 +139,9 @@ namespace ECS.WebAPI.Tests.Controllers
                 // Arrange
                 Mock<IAccountRepository> accountRepository = new Mock<IAccountRepository>();
                 Mock<IJAccessTokenRepository> jwtRepository = new Mock<IJAccessTokenRepository>();
+                Mock<ISaltRepository> saltRepository = new Mock<ISaltRepository>();
                 // Setup rules for repositories
-                var controller = new SsoController(accountRepository.Object, jwtRepository.Object);
+                var controller = new SsoController(accountRepository.Object, jwtRepository.Object, saltRepository.Object);
                 // Need the information from the JWT to work here.
 
                 // Act
@@ -163,8 +166,9 @@ namespace ECS.WebAPI.Tests.Controllers
                 // This version uses a mock UrlHelper.
                 Mock<IAccountRepository> accountRepository = new Mock<IAccountRepository>();
                 Mock<IJAccessTokenRepository> jwtRepository = new Mock<IJAccessTokenRepository>();
+                Mock<ISaltRepository> saltRepository = new Mock<ISaltRepository>();
                 // Arrange
-                SsoController controller = new SsoController(accountRepository.Object, jwtRepository.Object)
+                SsoController controller = new SsoController(accountRepository.Object, jwtRepository.Object, saltRepository.Object)
                 {
                     Request = new HttpRequestMessage(),
                     Configuration = new HttpConfiguration()
@@ -198,11 +202,12 @@ namespace ECS.WebAPI.Tests.Controllers
                 };
                 Mock<IAccountRepository> accountRepository = new Mock<IAccountRepository>();
                 Mock<IJAccessTokenRepository> jwtRepository = new Mock<IJAccessTokenRepository>();
+                Mock<ISaltRepository> saltRepository = new Mock<ISaltRepository>();
                 // This is incorrect right now.
                 accountRepository.Setup(x => x.GetById(33)).Returns(new Account
                 {
                 });
-                SsoController controller = new SsoController(accountRepository.Object, jwtRepository.Object);
+                SsoController controller = new SsoController(accountRepository.Object, jwtRepository.Object, saltRepository.Object);
 
                 // Act
 

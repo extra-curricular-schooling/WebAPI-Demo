@@ -38,7 +38,7 @@ namespace ECS.Models
         public bool AccountStatus { get; set; }
 
         // If account status = disabled suspension time will give a duration in the form of an end date
-        [DataType(DataType.Date)]
+        [DataType(DataType.DateTime)]
         [Display(Name = "Suspension Time")]
         public DateTime SuspensionTime { get; set; }
 

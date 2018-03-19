@@ -3,7 +3,6 @@ using System.Web.Http.Cors;
 using ECS.Repositories;
 using ECS.Models;
 using ECS.WebAPI.Filters.AuthenticationFilters;
-using ECS.WebAPI.Filters.AuthorizationFilters;
 using System;
 using System.Net;
 using ECS.WebAPI.Services.Security.AccessTokens.Jwt;
@@ -22,16 +21,19 @@ namespace ECS.WebAPI.Controllers
     {
         private readonly IAccountRepository accountRepository;
         private readonly IJAccessTokenRepository jwtAccessTokenRepository;
+        private readonly ISaltRepository saltRepository;
 
         public SsoController()
         {
             accountRepository = new AccountRepository();
             jwtAccessTokenRepository = new JAccessTokenRepository();
+            saltRepository = new SaltRepository();
         }
-        public SsoController(IAccountRepository accountRepo, IJAccessTokenRepository jwtRepo)
+        public SsoController(IAccountRepository accountRepo, IJAccessTokenRepository jwtRepo, ISaltRepository saltRepo)
         {
             accountRepository = accountRepo;
             jwtAccessTokenRepository = jwtRepo;
+            saltRepository = saltRepo;
         }
 
         /*
@@ -49,7 +51,7 @@ namespace ECS.WebAPI.Controllers
             var token = SsoJwtManager.Instance.GetJwtFromAuthorizationHeader(Request);
             // Read the JWT, and grab the userName claim.
             var userName = SsoJwtManager.Instance.GetUsername(token);
-
+            var password = SsoJwtManager.Instance.GetPassword(token);
             // Proccess any other information.
 
             // Set some sort of flag up for the User in DB.
@@ -57,11 +59,22 @@ namespace ECS.WebAPI.Controllers
             Account account = new Account()
             {
                 UserName = userName,
-                //Password = HashService.HashPasswordWithSalt(salt, password),
+                Email = "datemail@csulb.net",
+                Password = HashService.Instance.HashPasswordWithSalt(salt, password),
+                AccountStatus = true,
+                SuspensionTime = DateTime.Now,
                 //RoleType = roleType,
                 FirstTimeUser = true,
             };
-            //accountRepository.Insert(account);
+
+            Salt salty = new Salt()
+            {
+                PasswordSalt = salt,
+                UserName = userName
+            };
+       
+            accountRepository.Insert(account);
+            saltRepository.Insert(salty);
             return Ok();
         }
 
