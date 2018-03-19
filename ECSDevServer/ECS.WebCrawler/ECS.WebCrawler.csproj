@@ -55,16 +55,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Article.cs" />
-    <Compile Include="ArticleContext.cs" />
     <Compile Include="BaseCrawler.cs" />
     <Compile Include="ICrawler.cs" />
-    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ECS.Models\ECS.Models.csproj">
+      <Project>{f8f04460-d2eb-4907-8b96-c3b915749a82}</Project>
+      <Name>ECS.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ECS.Repositories\ECS.Repositories.csproj">
+      <Project>{84b9525b-6d65-493c-8bc5-61ce7ab8c325}</Project>
+      <Name>ECS.Repositories</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

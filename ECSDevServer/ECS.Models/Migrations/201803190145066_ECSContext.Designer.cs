@@ -13,7 +13,7 @@ namespace ECS.Models.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201803180633292_ECSContext"; }
+            get { return "201803190145066_ECSContext"; }
         }
         
         string IMigrationMetadata.Source

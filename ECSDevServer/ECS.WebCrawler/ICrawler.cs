@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace ECS.WebCrawler
 {
-    interface ICrawler
+    public interface ICrawler
     {
         /// <summary>
         /// Starts the crawler asynchronously
@@ -26,7 +26,7 @@ namespace ECS.WebCrawler
         /// </summary>
         /// <param name="links"> The list of url's of the articles. </param>
         /// <returns> A list of Article objects </returns>
-        Task<List<Article>> ArticleCrawler(List<string[]> links);
+        Task<List<ECS.Models.Article>> ArticleCrawler(List<string[]> links);
 
     }
 }

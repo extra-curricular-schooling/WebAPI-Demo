@@ -5,6 +5,8 @@ using System.Data.Entity.Validation;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using ECS.Models;
+using ECS.Repositories;
 
 namespace ECS.WebCrawler
 {
@@ -12,8 +14,10 @@ namespace ECS.WebCrawler
     /// Crawls through a homepage to aggregrate articles, crawls through the articles to validate tags, stores valid articles to DB.
     /// Implements ICrawler
     /// </summary>
-    class BaseCrawler : ICrawler
+    public class BaseCrawler : ICrawler
     {
+        private readonly IArticleRepository articleRepository = new ArticleRepository();
+        private readonly IInterestTagRepository interestTagRepository = new InterestTagRepository();
         /// <summary>
         /// A List of KeyValuePair of (Strings and List of Strings)
         /// Key will be the URL String
@@ -44,10 +48,11 @@ namespace ECS.WebCrawler
         public async Task CrawlingAsync()
         {
             // Calls startCrawler with the given sites and stores valid articles to toStore.
-            List<Article> toStore = await StartCrawler(Sites);
+            List<ECS.Models.Article> toStore = await StartCrawler(Sites);
 
             // Instantiate new DBContext
-            ArticleContext storer = new ArticleContext();
+            //ArticleContext storer = new ArticleContext();
+            //ECS.Models.ECSContext.ECSContext storer = new ECS.Models.ECSContext.ECSContext();
 
             // Go through each article and store if not already in DB.
             foreach (var article in toStore)
@@ -55,16 +60,24 @@ namespace ECS.WebCrawler
                 try
                 {
 
-                    if (!storer.Articles.Any(a => a.ArticleLink == article.ArticleLink))
+                    //if (!storer.Articles.Any(a => a.ArticleLink == article.ArticleLink))
+                    if (!articleRepository.Exists(a => a.ArticleLink == article.ArticleLink))
                     {
-                        storer.Articles.Add(article);
-                        storer.SaveChanges();
+                        articleRepository.Insert(article);
+                        Console.WriteLine($"{article.ArticleTitle} added for {article.TagName}");
                     }
                 }
                 // Catch if DBContext fails to save.
                 catch (DbEntityValidationException e)
                 {
                     Console.WriteLine(DateTime.Now + ": Site " + article.ArticleLink + " response: " + e.Message);
+                    foreach (var validationErrors in e.EntityValidationErrors)
+                    {
+                        foreach (var validationError in validationErrors.ValidationErrors)
+                        {
+                            System.Console.WriteLine("Property: {0} Error: {1}", validationError.PropertyName, validationError.ErrorMessage);
+                        }
+                    }
                 }
             }
         }
@@ -74,7 +87,7 @@ namespace ECS.WebCrawler
         /// </summary>
         /// <param name="Sites"></param>
         /// <returns>Valid Articles</returns>
-        private async Task<List<Article>> StartCrawler(List<KeyValuePair<string, List<string>>> Sites)
+        private async Task<List<ECS.Models.Article>> StartCrawler(List<KeyValuePair<string, List<string>>> Sites)
         {
 
             // Links will hold the links gathered from the homepage.
@@ -155,10 +168,10 @@ namespace ECS.WebCrawler
         /// </summary>
         /// <param name="links"> List of gathered links</param>
         /// <returns> List of valid Articles </returns>
-        public async Task<List<Article>> ArticleCrawler(List<string[]> links)
+        public async Task<List<ECS.Models.Article>> ArticleCrawler(List<string[]> links)
         {
             // Will hold the valid Articles.
-            var list = new List<Article>();
+            var list = new List<ECS.Models.Article>();
 
             // Initiate new httpclient and htmlDocument to request and traverse html.
             var httpClient = new HttpClient();
@@ -212,12 +225,15 @@ namespace ECS.WebCrawler
 
                     // Split up tags 
                     string[] contentTags = tags.Split(' ');
+                    int tagCount = 0;
 
                     // For each tag in list, check if it is contained in HashSet of valid tags. If so, tagMatch = true, assign hit tag to Article tag then break.
                     foreach (var t in contentTags)
                     {
+                        Console.WriteLine($"The tag[{tagCount++}]:{t}");
                         if (Tags.Contains(t))
                         {
+                            Console.WriteLine($"Tag Hit with {t}");
                             tagMatch = true;
                             break;
                         }
@@ -240,15 +256,26 @@ namespace ECS.WebCrawler
                             description = descriptionString.GetAttributeValue(siteAttribute[17], "");
                         }
 
+                        InterestTag tag = interestTagRepository.GetSingle(d => d.TagName.Equals(siteAttribute[18]));
+                        if (title.Length > 45)
+                        {
+                            title = title.Substring(0, 45) + "...";
+                        }
+
+                        if (description.Length > 45)
+                        {
+                            description = description.Substring(0, 45) + "...";
+                        }
+
                         // Create new Article Object and assign the gathered variables.
-                        var goodArticle = new Article
+                        var goodArticle = new ECS.Models.Article
                         {
                             // Assigns articleType by attribute[18]. ie. Technology, Medical, etc.
-                            ArticleType = siteAttribute[18],
+                            TagName = tag.TagName,
                             ArticleTitle = title,
                             // Assigns the articleLink as the url from the article that is being crawled.
                             ArticleLink = art[0],
-                            ArticleDescription = description,
+                            ArticleDescription = description
 
                         };
 
@@ -261,11 +288,20 @@ namespace ECS.WebCrawler
                         // Add the valid article to the list of valid articles.
                         list.Add(goodArticle);
                     }
+                    else
+                    {
+                        Console.WriteLine($"{art[0]} not added to {siteAttribute[18]}");
+                    }
+
                 }
                 // Catch HttpRequestException if it fails to get a response from requested article.
                 catch (HttpRequestException e)
                 {
                     Console.WriteLine(DateTime.Now + ": Site " + art[0] + " response: " + e.Message);
+                }
+                catch (NullReferenceException e)
+                {
+                    Console.WriteLine(DateTime.Now + ": Received an '" + e.Message + "' Error from " + art[0]);
                 }
             }
             return list;

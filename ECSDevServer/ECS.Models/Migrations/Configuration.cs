@@ -1140,343 +1140,343 @@ namespace ECS.Models.Migrations
             {
                 new Article
                 {
-                    // ArticleTag = "CECS",
+                    //TagName = "CECS",
                     ArticleTitle = "Vong",
                     ArticleDescription = "This is a description",
                     ArticleLink = "www.test1.com",
                 },
                 new Article
                 {
-                    // ArticleTag = "English",
+                    // TagName = "English",
                     ArticleTitle = "English For Dummies",
                     ArticleDescription = "This is a description",
                     ArticleLink = "www.test2.com",
                  },
                 new Article
                 {
-                    // ArticleTag = "Art",
+                    // TagName = "Art",
                     ArticleTitle = "History of Art",
                     ArticleDescription = "This is a description",
                     ArticleLink = "www.test3.com",
                 },
                 new Article
                 {
-                    // ArticleTag = "CECS",
+                    // TagName = "CECS",
                     ArticleTitle = "Vong",
                     ArticleDescription = "This is a description",
                     ArticleLink = "www.test4.com",
                 },
                 new Article
                 {
-                    // ArticleTag = "English",
+                    // TagName = "English",
                     ArticleTitle = "English For Dummies",
                     ArticleDescription = "This is a description",
                     ArticleLink = "www.test5.com",
                 },
                 new Article
                 {
-                    // ArticleTag = "Art",
+                    // TagName = "Art",
                     ArticleTitle = "History of Art",
                     ArticleDescription = "This is a description",
                     ArticleLink = "www.test6.com",
                 },
                 new Article
                 {
-                    // ArticleTag = "CECS",
+                    // TagName = "CECS",
                     ArticleTitle = "Vong",
                     ArticleDescription = "This is a description",
                     ArticleLink = "www.test7.com",
                 },
                 new Article
                 {
-                    // ArticleTag = "English",
+                    // TagName = "English",
                     ArticleTitle = "English For Dummies",
                     ArticleDescription = "This is a description",
                     ArticleLink = "www.test8.com",
                 },
                 new Article
                 {
-                    // ArticleTag = "Art",
+                    // TagName = "Art",
                     ArticleTitle = "History of Art",
                     ArticleDescription = "This is a description",
                     ArticleLink = "www.test9.com",
                 },
                 new Article
                 {
-                    // ArticleTag = "CECS",
+                    // TagName = "CECS",
                     ArticleTitle = "Vong",
                     ArticleDescription = "This is a description",
                     ArticleLink = "www.test10.com",
                 },
                 new Article
                 {
-                    // ArticleTag = "English",
+                    // TagName = "English",
                     ArticleTitle = "English For Dummies",
                     ArticleDescription = "This is a description",
                     ArticleLink = "www.test11.com",
                 },
                 new Article
                 {
-                    // ArticleTag = "Art",
+                    // TagName = "Art",
                     ArticleTitle = "History of Art",
                     ArticleDescription = "This is a description",
                     ArticleLink = "www.test12.com",
                 },
                 new Article
                 {
-                    // ArticleTag = "CECS",
+                    // TagName = "CECS",
                     ArticleTitle = "Vong",
                     ArticleDescription = "This is a description",
                     ArticleLink = "www.test13.com",
                 },
                 new Article
                 {
-                    // ArticleTag = "English",
+                    // TagName = "English",
                     ArticleTitle = "English For Dummies",
                     ArticleDescription = "This is a description",
                     ArticleLink = "www.test14.com",
                 },
                 new Article
                 {
-                    // ArticleTag = "Art",
+                    // TagName = "Art",
                     ArticleTitle = "History of Art",
                     ArticleDescription = "This is a description",
                     ArticleLink = "www.test15.com",
                 },
                 new Article
                 {
-                    // ArticleTag = "CECS",
+                    // TagName = "CECS",
                     ArticleTitle = "Vong",
                     ArticleDescription = "This is a description",
                     ArticleLink = "www.test16.com",
                 },
                 new Article
                 {
-                    // ArticleTag = "English",
+                    // TagName = "English",
                     ArticleTitle = "English For Dummies",
                     ArticleDescription = "This is a description",
                     ArticleLink = "www.test17.com",
                 },
                 new Article
                 {
-                    // ArticleTag = "Art",
+                    // TagName = "Art",
                     ArticleTitle = "History of Art",
                     ArticleDescription = "This is a description",
                     ArticleLink = "www.test18.com",
                 },
                 new Article
                 {
-                    // ArticleTag = "CECS",
+                    // TagName = "CECS",
                     ArticleTitle = "Vong",
                     ArticleDescription = "This is a description",
                     ArticleLink = "www.test19.com",
                 },
                 new Article
                 {
-                    // ArticleTag = "English",
+                    // TagName = "English",
                     ArticleTitle = "English For Dummies",
                     ArticleDescription = "This is a description",
                     ArticleLink = "www.test20.com",
                 },
                 new Article
                 {
-                    // ArticleTag = "Art",
+                    // TagName = "Art",
                     ArticleTitle = "History of Art",
                     ArticleDescription = "This is a description",
                     ArticleLink = "www.test21.com",
                 },
                 new Article
                 {
-                    // ArticleTag = "CECS",
+                    // TagName = "CECS",
                     ArticleTitle = "Vong",
                     ArticleDescription = "This is a description",
                     ArticleLink = "www.test22.com",
                 },
                 new Article
                 {
-                    // ArticleTag = "English",
+                    // TagName = "English",
                     ArticleTitle = "English For Dummies",
                     ArticleDescription = "This is a description",
                     ArticleLink = "www.test23.com",
                 },
                 new Article
                 {
-                    // ArticleTag = "Art",
+                    // TagName = "Art",
                     ArticleTitle = "History of Art",
                     ArticleDescription = "This is a description",
                     ArticleLink = "www.test24.com",
                 },
                 new Article
                 {
-                    // ArticleTag = "CECS",
+                    // TagName = "CECS",
                     ArticleTitle = "Vong",
                     ArticleDescription = "This is a description",
                     ArticleLink = "www.test25.com",
                 },
                 new Article
                 {
-                    // ArticleTag = "English",
+                    // TagName = "English",
                     ArticleTitle = "English For Dummies",
                     ArticleDescription = "This is a description",
                     ArticleLink = "www.test26.com",
                 },
                 new Article
                 {
-                    // ArticleTag = "Art",
+                    // TagName = "Art",
                     ArticleTitle = "History of Art",
                     ArticleDescription = "This is a description",
                     ArticleLink = "www.test27.com",
                 },
                 new Article
                 {
-                    // ArticleTag = "CECS",
+                    // TagName = "CECS",
                     ArticleTitle = "Vong",
                     ArticleDescription = "This is a description",
                     ArticleLink = "www.test28.com",
                 },
                 new Article
                 {
-                    // ArticleTag = "English",
+                    // TagName = "English",
                     ArticleTitle = "English For Dummies",
                     ArticleDescription = "This is a description",
                     ArticleLink = "www.test29.com",
                 },
                 new Article
                 {
-                    // ArticleTag = "Art",
+                    // TagName = "Art",
                     ArticleTitle = "History of Art",
                     ArticleDescription = "This is a description",
                     ArticleLink = "www.test30.com",
                 },
                 new Article
                 {
-                    // ArticleTag = "CECS",
+                    // TagName = "CECS",
                     ArticleTitle = "Vong",
                     ArticleDescription = "This is a description",
                     ArticleLink = "www.test31.com",
                 },
                 new Article
                 {
-                    // ArticleTag = "English",
+                    // TagName = "English",
                     ArticleTitle = "English For Dummies",
                     ArticleDescription = "This is a description",
                     ArticleLink = "www.test32.com",
                 },
                 new Article
                 {
-                    // ArticleTag = "Art",
+                    // TagName = "Art",
                     ArticleTitle = "History of Art",
                     ArticleDescription = "This is a description",
                     ArticleLink = "www.test33.com",
                 },
                 new Article
                 {
-                    // ArticleTag = "CECS",
+                    // TagName = "CECS",
                     ArticleTitle = "Vong",
                     ArticleDescription = "This is a description",
                     ArticleLink = "www.test34.com",
                 },
                 new Article
                 {
-                    // ArticleTag = "English",
+                    // TagName = "English",
                     ArticleTitle = "English For Dummies",
                     ArticleDescription = "This is a description",
                     ArticleLink = "www.test35.com",
                 },
                 new Article
                 {
-                    // ArticleTag = "Art",
+                    // TagName = "Art",
                     ArticleTitle = "History of Art",
                     ArticleDescription = "This is a description",
                     ArticleLink = "www.test36.com",
                 },
                 new Article
                 {
-                    // ArticleTag = "CECS",
+                    // TagName = "CECS",
                     ArticleTitle = "Vong",
                     ArticleDescription = "This is a description",
                     ArticleLink = "www.test37.com",
                 },
                 new Article
                 {
-                    // ArticleTag = "English",
+                    // TagName = "English",
                     ArticleTitle = "English For Dummies",
                     ArticleDescription = "This is a description",
                     ArticleLink = "www.test38.com",
                 },
                 new Article
                 {
-                    // ArticleTag = "Art",
+                    // TagName = "Art",
                     ArticleTitle = "History of Art",
                     ArticleDescription = "This is a description",
                     ArticleLink = "www.test39.com",
                 },
                 new Article
                 {
-                    // ArticleTag = "CECS",
+                    // TagName = "CECS",
                     ArticleTitle = "Vong",
                     ArticleDescription = "This is a description",
                     ArticleLink = "www.test40.com",
                 },
                 new Article
                 {
-                    // ArticleTag = "English",
+                    // TagName = "English",
                     ArticleTitle = "English For Dummies",
                     ArticleDescription = "This is a description",
                     ArticleLink = "www.test41.com",
                 },
                 new Article
                 {
-                    // ArticleTag = "Art",
+                    // TagName = "Art",
                     ArticleTitle = "History of Art",
                     ArticleDescription = "This is a description",
                     ArticleLink = "www.test42.com",
                 },
                 new Article
                 {
-                    // ArticleTag = "CECS",
+                    // TagName = "CECS",
                     ArticleTitle = "Vong",
                     ArticleDescription = "This is a description",
                     ArticleLink = "www.test43.com",
                 },
                 new Article
                 {
-                    // ArticleTag = "English",
+                    // TagName = "English",
                     ArticleTitle = "English For Dummies",
                     ArticleDescription = "This is a description",
                     ArticleLink = "www.test44.com",
                 },
                 new Article
                 {
-                    // ArticleTag = "Art",
+                    // TagName = "Art",
                     ArticleTitle = "History of Art",
                     ArticleDescription = "This is a description",
                     ArticleLink = "www.test45.com",
                 },
                 new Article
                 {
-                    // ArticleTag = "CECS",
+                    // TagName = "CECS",
                     ArticleTitle = "Vong",
                     ArticleDescription = "This is a description",
                     ArticleLink = "www.test46.com",
                 },
                 new Article
                 {
-                    // ArticleTag = "English",
+                    // TagName = "English",
                     ArticleTitle = "English For Dummies",
                     ArticleDescription = "This is a description",
                     ArticleLink = "www.test47.com",
                 },
                 new Article
                 {
-                    // ArticleTag = "Art",
+                    // TagName = "Art",
                     ArticleTitle = "History of Art",
                     ArticleDescription = "This is a description",
                     ArticleLink = "www.test48.com",
                 },
                 new Article
                 {
-                    // ArticleTag = "CECS",
+                    // TagName = "CECS",
                     ArticleTitle = "Vong",
                     ArticleDescription = "This is a description",
                     ArticleLink = "www.test49.com",
