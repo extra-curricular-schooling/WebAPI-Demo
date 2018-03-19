@@ -56,12 +56,6 @@
     <Compile Include="ECSContext.cs" />
     <Compile Include="InterestTag.cs" />
     <Compile Include="JAccessToken.cs" />
-<<<<<<< Updated upstream
-    <Compile Include="LinkedIn.cs" />
-    <Compile Include="Migrations\201803180633292_ECSContext.cs" />
-    <Compile Include="Migrations\201803180633292_ECSContext.Designer.cs">
-      <DependentUpon>201803180633292_ECSContext.cs</DependentUpon>
-=======
     <Compile Include="Migrations\201803190141500_ECSContext_.cs" />
     <Compile Include="Migrations\201803190141500_ECSContext_.Designer.cs">
       <DependentUpon>201803190141500_ECSContext_.cs</DependentUpon>
@@ -69,7 +63,6 @@
     <Compile Include="Migrations\201803190145066_ECSContext.cs" />
     <Compile Include="Migrations\201803190145066_ECSContext.Designer.cs">
       <DependentUpon>201803190145066_ECSContext.cs</DependentUpon>
->>>>>>> Stashed changes
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Permission.cs" />

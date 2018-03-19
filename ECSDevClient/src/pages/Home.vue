@@ -5,10 +5,10 @@
     <div>Interests</div>
     <div class="container vue" id="Interests">
       <div class="column">
-        <div id ="groups" v-for="group in groups" :key="group.name">
+        <div id ="groups"  v-for="group in groups" :key="group.name">
           <a id="groupName" v-text="group.name"  @click="group.open=!group.open" ></a>
           <ul v-show="group.open">
-            <ul id="articles" v-for="article in group.articles" :key="article" v-text="article.title" v-on:click="target(article.url)">
+            <ul class="button is-link" id="articles" v-for="article in group.articles" :key="article" v-text="article.title" v-on:click="target(article.url)">
             </ul>
           </ul>
         </div>
@@ -22,33 +22,10 @@
       </div>
     </header>
     <h1>Welcome to Article Page</h1>
-<<<<<<< Updated upstream
-    <div id="myframe">
-    <iframe
-    src="https://ecschooling.org/"
-    name="FrameResult"
-    @load="mounted"
-    @error="alert('Frame not loaded')"
-    >
-    </iframe>
-    </div>
-    <vue-good-table name="CreateTable" :columns="columns" :rows="rows" styleClass="table condensed table-bordered table-striped" paginate=true>
-    <template slot="table-row" slot-scope="props">
-    <td>{{ props.row.articleType }}</td>
-    <td>{{ props.row.articleTitle }}</td>
-    <td>{{ props.row.articleLink }}</td>
-    <td>{{ props.row.articleDescription }}</td>
-    <td>{{ props.row.articleTag }}</td>
-    <a v-bind:href="props.row.articleLink" target="FrameResult">DISPLAY</a>
-    </template>
-    </vue-good-table>
-  </div>
-=======
-    <iframe src="https://ecschooling.org/" id = "FrameResult" name="FrameResult" height="700" width=100% style="border:8px solid black;"></iframe>
+    <iframe src="https://ecschooling.org/" id = "FrameResult" name="FrameResult" @load="mounted" @error="alert('Frame not loaded')" height="700" width=100% style="border:8px solid black;" ></iframe>
   </main>
   </Slideout>
 </div>
->>>>>>> Stashed changes
 </template>
 <script>
 
@@ -161,64 +138,11 @@ export default {
     Slideout
   },
   methods: {
-    open: function () {
-      console.log('slideoutOpen')
-    },
-    target: function (link) {
-      console.log('target clicked')
-      document.getElementById('FrameResult').src = link
-    }
-  },
-  data () {
-    return {
-<<<<<<< Updated upstream
-      columns: [
-        {
-          label: 'Article Type',
-          field: 'articleType'
-        },
-        {
-          label: 'Article Title',
-          field: 'articleTitle'
-        },
-        {
-          label: 'Article Link',
-          field: 'articleLink',
-          html: true
-        },
-        {
-          label: 'Article Description',
-          field: 'articleDescription'
-        },
-        {
-          label: 'Article Tag',
-          field: 'articleTag'
-        }
-      ],
-      rows: [
-        {articleType: 'School', articleTitle: 'main page', articleLink: 'http://www.ivc.edu/Pages/default.aspx', articleDescription: 'Famous School', articleTag: 'education'},
-        {articleType: 'Hookah', articleTitle: 'power', articleLink: 'https://www.hookah-shisha.com/', articleDescription: 'Famous', articleTag: 'entertainment'},
-        {articleType: 'King', articleTitle: 'Competition', articleLink: 'https://powerhookahus.com/', articleDescription: 'Famous Brands', articleTag: 'entertainment'},
-        {articleType: 'School', articleTitle: 'BeachBoard', articleLink: 'https://bbcsulb.desire2learn.com/d2l/login?logout=1', articleDescription: 'School', articleTag: 'education'},
-        {articleType: 'School', articleTitle: 'main page', articleLink: 'https://uci.edu/', articleDescription: 'Famous School', articleTag: 'education'},
-        {articleType: 'Lounge', articleTitle: 'Good Ones', articleLink: 'https://www.caspianrestaurant.com/hookah-lounge', articleDescription: 'Where I go To', articleTag: 'entertainment'},
-        {articleType: 'King', articleTitle: 'Competition', articleLink: 'https://www.texashookah.com/afzal.html', articleDescription: 'Famous Brands', articleTag: 'entertainment'},
-        {articleType: 'School', articleTitle: 'main page', articleLink: 'http://www.ivc.edu/Pages/default.aspx', articleDescription: 'Famous School', articleTag: 'education'},
-        {articleType: 'Hookah', articleTitle: 'power', articleLink: 'https://www.hookah-shisha.com/', articleDescription: 'Famous', articleTag: 'entertainment'},
-        {articleType: 'OC', articleTitle: 'Home', articleLink: 'https://www.yelp.com/', articleDescription: 'Famous OC', articleTag: 'Like'},
-        {articleType: 'Lounge', articleTitle: 'Good Ones', articleLink: 'http://myblufig.com/', articleDescription: 'Where I go To', articleTag: 'entertainment'}
-      ]
-=======
-      groups: groups
->>>>>>> Stashed changes
-    }
-  },
-  methods: {
     checkFrame: function () {
-      if (document.getElementById('myframe') == null) {
+      if (document.getElementById('FrameResult') == null) {
         alert('Frame not created. Please reload')
       } else {
-        document.getElementById('myframe').onload = alert('Done. You might be able to earn points after 1 minute.')
+        document.getElementById('FrameResult').onload = alert('Done. You might be able to earn points after 1 minute.')
       }
     },
     // timerPage: function () {
@@ -236,19 +160,22 @@ export default {
         this.checkFrame()
       }
       )
+    },
+    open: function () {
+      console.log('slideoutOpen')
+    },
+    target: function (link) {
+      console.log('target clicked')
+      document.getElementById('FrameResult').src = link
+    }
+  },
+  data () {
+    return {
+      groups: groups
     }
   }
 }
 </script>
-<<<<<<< Updated upstream
-<style scoped>
-iframe {
-  position: relative;
-  height: 700px;
-  width: 100%;
-  border: 8px solid black
-}
-=======
 <style>
   body {
     width: 100%;
@@ -324,5 +251,4 @@ iframe {
   #groupName:active{
     color:blue;
   }
->>>>>>> Stashed changes
 </style>
