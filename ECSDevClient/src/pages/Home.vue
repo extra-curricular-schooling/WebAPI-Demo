@@ -21,6 +21,19 @@ import VueGoodTable from 'vue-good-table'
 Vue.use(VueGoodTable)
 export default {
   name: 'test',
+  // methods: {
+  //   checkCurrentLogin () {
+  //     if (!this.$store.getters.isAuth && this.$route.path !== '/') {
+  //       this.$router.push('/?redirect=' + this.$route.path)
+  //     }
+  //   }
+  // },
+  // created () {
+  //   this.checkCurrentLogin()
+  // },
+  // updated () {
+  //   this.checkCurrentLogin()
+  // },
   data () {
     return {
       columns: [

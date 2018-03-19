@@ -5,19 +5,36 @@
 </template>
 
 <script>
-/* eslint-disable */
-import Bulma from 'bulma';
-import Vue from "vue";
-import FontAwesomeIcon from "@fortawesome/vue-fontawesome";
+import Bulma from 'bulma'
+// eslint-disable-next-line
+import Vue from 'vue'
 
 export default {
-  // eslint-disable-next-line
-  name: "App",
-  // eslint-disable-next-line
+  name: 'App',
   components: {
-    'FontAwesomeIcon': FontAwesomeIcon
+    Bulma
+  },
+  data () {
+    return {
+      lockedPaths: ['/Home']
+    }
+  },
+  methods: {
+    checkCurrentLogin () {
+      for (var path in this.lockedPaths) {
+        if (!this.$store.getters.isAuth && this.$route.path === this.lockedPaths[path]) {
+          this.$router.push('/?redirect=' + this.$route.path)
+        }
+      }
+    }
+  },
+  created () {
+    this.checkCurrentLogin()
+  },
+  updated () {
+    this.checkCurrentLogin()
   }
-};
+}
 </script>
 
 <style>

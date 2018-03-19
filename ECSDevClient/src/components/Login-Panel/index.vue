@@ -23,7 +23,7 @@
     </div>
     <div class="field is-grouped is-grouped-centered">
       <p class="control">
-        <button class="button is-primary login-button" v-on:click="logIn" :disabled="isDisabled">
+        <button class="button is-primary login-button" v-on:click="postCredentials" :disabled="isDisabled">
           Login
         </button>
       </p>
@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import postCredentials from './api/postCredentials.js'
+import Axios from 'axios'
 
 export default {
   name: 'LoginPanel',
@@ -51,8 +51,28 @@ export default {
     }
   },
   methods: {
-    logIn: function () {
-      postCredentials.postCredentials(this.loginURI, this.headers, this.username, this.password)
+    postCredentials: function () {
+      if (this.username != null) {
+        if (this.password != null) {
+          Axios({
+            method: 'POST',
+            url: this.$store.getters.getLoginPortal,
+            headers: this.$store.getters.getRequestHeaders,
+            data: {
+              username: this.username,
+              password: this.password
+            }
+          })
+            .then((response) => {
+              this.$store.dispatch('signIn', response.data.AuthToken)
+              this.$router.push('/Home')
+            })
+            .catch(function (error) {
+              console.log(error)
+              return error
+            })
+        }
+      }
     }
   },
   watch: {

@@ -3,7 +3,21 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import { request } from './modules/request'
 import { auth } from './modules/auth'
+import { linkedin } from '../components/LinkedIn-Modal/store/index'
 import { login } from '../components/Login-Panel/store/index'
+import VuexPersist from 'vuex-persist'
+
+const vuexLocalStorage = new VuexPersist({
+  key: 'ECSStore', // The key to store the state on in the storage provider.
+  storage: window.localStorage // or window.sessionStorage or localForage
+  // Function that passes the state and returns the state with only the objects you want to store.
+  // reducer: state => ({
+  //   authToken: state.authToken,
+  //   isAuthenticated: state.isAuthenticated
+  // })
+  // Function that passes a mutation and lets you decide if it should update the state in localStorage.
+  // filter: mutation => (true)
+})
 
 Vue.use(Vuex)
 
@@ -16,6 +30,7 @@ export default new Vuex.Store({
   modules: {
     auth,
     request,
+    linkedin,
     login
   },
 
@@ -40,5 +55,6 @@ export default new Vuex.Store({
   },
 
   // If strict should be enabled during development.
-  strict: debug
+  strict: debug,
+  plugins: [vuexLocalStorage.plugin]
 })

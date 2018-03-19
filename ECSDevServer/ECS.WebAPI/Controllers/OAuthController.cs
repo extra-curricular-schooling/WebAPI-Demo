@@ -1,10 +1,8 @@
 ﻿using DotNetOpenAuth.LinkedInOAuth2;
-using ECS.Models;
 using ECS.Repositories;
 using ECS.WebAPI.Filters;
 using ECS.WebAPI.Services.Security.AccessTokens.Jwt;
 using Microsoft.AspNet.Membership.OpenAuth;
-using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
@@ -21,9 +19,6 @@ namespace ECS.WebAPI.Controllers
     public class OAuthController : ApiController
     {
         #region Constants and fields
-        public object JsonWebToken { get; private set; }
-
-        private LinkedInRepository _linkedInRepository = new LinkedInRepository();
         private AccountRepository _accountRepository = new AccountRepository();
         #endregion
 
@@ -117,25 +112,7 @@ namespace ECS.WebAPI.Controllers
                     AccessToken = accessToken
                 });
 
-                if(ProviderName == "linkedin")
-                {
-                    if(_linkedInRepository.Exists(d => d.UserName == username, d => d.Account))
-                    {
-                        LinkedIn currentToken = _linkedInRepository.GetSingle(d => d.UserName == username, d => d.Account);
-                        currentToken.AccessToken = accessToken;
-                        currentToken.TokenCreation = DateTime.Now.ToUniversalTime();
-                        _linkedInRepository.Update(currentToken);
-                    }
-                    else
-                    {
-                        LinkedIn linkedinToken = new LinkedIn();
-                        linkedinToken.AccessToken = accessToken;
-                        linkedinToken.UserName = username;
-                        linkedinToken.TokenCreation = DateTime.Now.ToUniversalTime();
-                        _linkedInRepository.Insert(linkedinToken);
-                    }
-                }
-                return Ok();
+                return Json(new { LinkedInAccessToken = accessToken });
             }
         }
 

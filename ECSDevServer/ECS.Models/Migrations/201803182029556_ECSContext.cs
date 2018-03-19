@@ -97,7 +97,6 @@ namespace ECS.Models.Migrations
                     {
                         Username = c.String(nullable: false, maxLength: 20),
                         PermissionName = c.String(nullable: false, maxLength: 128),
-                        RoleId = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => new { t.Username, t.PermissionName })
                 .ForeignKey("dbo.Account", t => t.Username, cascadeDelete: true)
@@ -491,11 +490,10 @@ namespace ECS.Models.Migrations
                     {
                         Username = p.String(maxLength: 20),
                         PermissionName = p.String(maxLength: 128),
-                        RoleId = p.Int(),
                     },
                 body:
-                    @"INSERT [dbo].[AccountType]([Username], [PermissionName], [RoleId])
-                      VALUES (@Username, @PermissionName, @RoleId)"
+                    @"INSERT [dbo].[AccountType]([Username], [PermissionName])
+                      VALUES (@Username, @PermissionName)"
             );
             
             CreateStoredProcedure(
@@ -504,12 +502,9 @@ namespace ECS.Models.Migrations
                     {
                         Username = p.String(maxLength: 20),
                         PermissionName = p.String(maxLength: 128),
-                        RoleId = p.Int(),
                     },
                 body:
-                    @"UPDATE [dbo].[AccountType]
-                      SET [RoleId] = @RoleId
-                      WHERE (([Username] = @Username) AND ([PermissionName] = @PermissionName))"
+                    @"RETURN"
             );
             
             CreateStoredProcedure(

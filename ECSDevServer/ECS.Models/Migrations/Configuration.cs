@@ -401,7 +401,7 @@ namespace ECS.Models.Migrations
                     new Account
                     {
                         UserName = "test2",
-                        Password = "aaaaaaaaa",
+                        Password = "RdjQs93acMhCQatY1yqoaR3iQujrsA+Pi/edbWg9ESQ=",
                         Email = users.Single(s => s.Email == "test2@gmail.com").Email,
                         AccountStatus = true,
                         Points = 0,

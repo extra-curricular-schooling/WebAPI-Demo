@@ -25,7 +25,7 @@ namespace ECS.Models
         // Will be a hashed string about 44 characters, but for now it is plain text
         [Required]
         [Display(Name = "Password")]
-        [StringLength(20, MinimumLength = 5, ErrorMessage = "Password must be between 5-20 characters")]
+        [StringLength(50, MinimumLength = 5, ErrorMessage = "Password must be between 5-20 characters")]
         public string Password { get; set; }
 
         // Amount of points acquired from reading articles

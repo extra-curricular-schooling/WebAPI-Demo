@@ -48,7 +48,7 @@
                     </p>
                   </div>
                   <div class="container is-fluid">
-                    <div class="card">
+                    <div class="card is-fluid">
                       <div class="card-image">
                         <figure class="image is-square">
                           <img src="https://media.licdn.com/media/AAMABABqAAIAAQAAAAAAAA7yAAAAJGU1OTQ2NGFlLTNjNzEtNGZjOS04NjVkLWIxNjQ4NTY5ZjNlYw.png" alt="Placeholder image">
@@ -130,6 +130,12 @@ export default {
     };
   },
   methods: {
+    redirectToLinkedIn: function() {
+      window.location.assign(
+        "https://localhost:44311/OAuth/RedirectToLinkedIn?authtoken=" +
+          window.sessionStorage.auth_token
+      );
+    },
     toggleLinkedInModal: function() {
       this.isActive = !this.isActive;
     },
@@ -139,13 +145,10 @@ export default {
     shareToLinkedIn: function() {
       Axios({
         method: "POST",
-        url: "https://localhost:44311/LinkedIn/SharePost",
-        headers: {
-          "Access-Control-Allow-Origin": "http://localhost:8080",
-          Authorization:
-            window.sessionStorage.auth_token
-        },
+        url: this.$store.getters.getLinkedInPostURI,
+        headers: this.$store.getters.getRequestHeaders,
         data: {
+          accesstoken: this.$store.getters.getLinkedInAccessToken,
           comment: this.postData.comment,
           title: this.postData.title,
           description: this.postData.description,
@@ -159,7 +162,9 @@ export default {
           myNode.href = response.data.UpdateUrl;
           toggleConfirmModal();
         })
-        .catch(function(error) {});
+        .catch(function(error) {
+          redirectToLinkedIn()
+        });
     }
   }
 };

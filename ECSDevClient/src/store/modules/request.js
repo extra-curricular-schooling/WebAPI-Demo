@@ -10,8 +10,7 @@ export const request = {
       'Access-Control-Allow-Origin': 'http://localhost:8080',
       'Access-Control-Allow-Credentials': true,
       'Accept': 'application/json',
-      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNjb3R0IiwiYXBwbGljYXRpb24iOiJlY3MiLCJyb2xlVHlwZSI6InB1YmxpYyIsIm5iZiI6MTUyMTM0MDQ0NSwiZXhwIjoxNTIxMzQ2NDQ1LCJpYXQiOjE1MjEzNDA0NDUsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0OjQ0MzExLyJ9.yvIgsAE98Ddz736Z3ZnQT2eEnnjtRI0tYKaI1HMmVF0',
-      'Content-Type': 'application/json',
+      'Authorization': 'null',
       'X-Requested-With': 'XMLHttpRequest'
     }
   },
@@ -26,8 +25,8 @@ export const request = {
     }
   },
   actions: {
-    updateToken: function (context, token) {
-      context.commit('setAuthorizationHeader', token)
+    updateToken: function (context, payload) {
+      context.commit('setAuthorizationHeader', payload)
     }
   }
 }

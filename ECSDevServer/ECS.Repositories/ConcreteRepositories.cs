@@ -38,10 +38,8 @@ namespace ECS.Repositories
     {
     }
 
-    /// <summary>
-    /// 
     /// </summary>
-    public interface ILinkedInRepository : IRepositoryBase<LinkedIn>
+    public interface ISaltRepository : IRepositoryBase<Salt>
     {
     }
 
@@ -138,9 +136,9 @@ namespace ECS.Repositories
     /// <summary>
     /// 
     /// </summary>
-    public class LinkedInRepository : RepositoryBase<LinkedIn>, ILinkedInRepository
+    public class SaltRepository : RepositoryBase<Salt>, ISaltRepository
     {
-        public LinkedInRepository() : base(new ECSContext())
+        public SaltRepository() : base(new ECSContext())
         {
         }
     }

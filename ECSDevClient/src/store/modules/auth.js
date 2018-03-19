@@ -22,9 +22,13 @@ export const auth = {
     }
   },
   actions: {
-    signIn: function (context, payload) {
+    signIn: function ({commit}, payload) {
       // Commit = Call this method in the mutations.
-      context.commit('signIn', payload)
+      commit('signIn', payload)
+    },
+    signOut: function ({commit}) {
+      // Commit = Call this method in the mutations.
+      commit('signOut')
     }
   }
 }
