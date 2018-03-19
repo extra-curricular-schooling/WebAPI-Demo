@@ -1,4 +1,6 @@
-﻿using ECS.WebAPI.Services.Security.AccessTokens.Jwt;
+﻿using ECS.Repositories;
+using ECS.WebAPI.Services.Security.AccessTokens.Jwt;
+using ECS.WebAPI.Services.Security.Hash;
 using System;
 using System.Linq;
 using System.Net;
@@ -15,7 +17,19 @@ namespace ECS.WebAPI.Filters.AuthenticationFilters
 {
     public class AuthenticateSsoAccessTokenAttribute : Attribute, IAuthenticationFilter, IDisposable
     {
+        private readonly IAccountRepository accountRepository;
+        private readonly ISaltRepository saltRepository;
+        private IHashService hashService;
+
+        public AuthenticateSsoAccessTokenAttribute()
+        {
+            accountRepository = new AccountRepository();
+            saltRepository = new SaltRepository();
+            hashService = HashService.Instance;
+        }
+
         // Not allowed to authenticate more than once.
+        // Change to "true" if you allow multiple AuthenticateSsoAccessToken attribute filters.
         public bool AllowMultiple
         {
             get { return false; }
@@ -57,20 +71,29 @@ namespace ECS.WebAPI.Filters.AuthenticationFilters
                 return;
             }
 
-            // 6. Gather necessary information to check the claims.
+            // 6. Gather necessary information to check the token.
             var token = authorization.Parameter;
-            Tuple<string, ClaimsPrincipal> usernameAndPrincipal = SsoJwtHelper.Instance.GetUsernameAndPrincipalFromToken(token);
-            var username = usernameAndPrincipal.Item1;
-            var principal = usernameAndPrincipal.Item2;
 
-            // 7. If the principal is wrong, then the claims are wrong.
-            if (principal == null)
-            {
-                context.ErrorResult = new AuthenticationFailureResult("Invalid credentials", request);
-            }
+            // 7. If the username and password do not match, set the error result.
+            Tuple<string, string> usernameAndPassword = SsoJwtManager.Instance.GetUsernameAndPassword(token);
+            var username = usernameAndPassword.Item1;
+            var password = usernameAndPassword.Item2;
+
+            //var saltModel = saltRepository.GetById(username);
+            //var salt = saltModel.PasswordSalt;
+
+            //var hashedPassword = hashService.HashPasswordWithSalt(salt, password);
+
+            //var account = accountRepository.GetById(username);
+            //if (!account.Password.Equals(hashedPassword))
+            //{
+            //    context.ErrorResult = new AuthenticationFailureResult("Incorrect username/password", request);
+            //    return;
+            //}
 
             // 8. Authentication was successful, set the principal to notify other filters that
             // the request is authenticated.
+            IPrincipal principal = SsoJwtManager.Instance.GetPrincipal(token);
             await Task.Run(() =>
             {
                 context.Principal = principal;
@@ -84,6 +107,7 @@ namespace ECS.WebAPI.Filters.AuthenticationFilters
             return Task.FromResult(0);
         }
 
+        // FIGURE OUT HOW TO IMPLEMENT DISPOSE PROPERLY!!!!!!!!!!!!!!!!!!!
         public void Dispose()
         {
             throw new NotImplementedException();
@@ -109,9 +133,11 @@ namespace ECS.WebAPI.Filters.AuthenticationFilters
 
         private HttpResponseMessage Execute()
         {
-            HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.Unauthorized);
-            response.RequestMessage = Request;
-            response.ReasonPhrase = ReasonPhrase;
+            HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.Unauthorized)
+            {
+                RequestMessage = Request,
+                ReasonPhrase = ReasonPhrase
+            };
             return response;
         }
     }
@@ -130,6 +156,7 @@ namespace ECS.WebAPI.Filters.AuthenticationFilters
 
         public IHttpActionResult InnerResult { get; private set; }
 
+        // This portion gets called after the controller has finished. (The reverse invokation of the pipeline)
         public async Task<HttpResponseMessage> ExecuteAsync(CancellationToken cancellationToken)
         {
             HttpResponseMessage response = await InnerResult.ExecuteAsync(cancellationToken);

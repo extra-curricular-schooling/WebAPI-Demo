@@ -21,17 +21,17 @@ namespace ECS.WebAPI.Controllers
     public class SsoController : ApiController
     {
         private readonly IAccountRepository accountRepository;
-        private readonly IJwtRepository jwtRepository;
+        private readonly IJAccessTokenRepository jwtAccessTokenRepository;
 
         public SsoController()
         {
             accountRepository = new AccountRepository();
-            jwtRepository = new JwtRepository();
+            jwtAccessTokenRepository = new JAccessTokenRepository();
         }
-        public SsoController(IAccountRepository accountRepo, IJwtRepository jwtRepo)
+        public SsoController(IAccountRepository accountRepo, IJAccessTokenRepository jwtRepo)
         {
             accountRepository = accountRepo;
-            jwtRepository = jwtRepo;
+            jwtAccessTokenRepository = jwtRepo;
         }
 
         /*
@@ -46,14 +46,14 @@ namespace ECS.WebAPI.Controllers
             
             // call the transformer
 
-            var token = SsoJwtHelper.Instance.GetJwtFromAuthorizationHeader(Request);
+            var token = SsoJwtManager.Instance.GetJwtFromAuthorizationHeader(Request);
             // Read the JWT, and grab the userName claim.
-            var userName = SsoJwtHelper.Instance.GetUsernameFromToken(token);
+            var userName = SsoJwtManager.Instance.GetUsername(token);
 
             // Proccess any other information.
 
             // Set some sort of flag up for the User in DB.
-            var salt = HashService.CreateSaltKey();
+            var salt = HashService.Instance.CreateSaltKey();
             Account account = new Account()
             {
                 UserName = userName,
@@ -72,9 +72,9 @@ namespace ECS.WebAPI.Controllers
         [HttpPost]
         public IHttpActionResult Login()
         {
-            var token = SsoJwtHelper.Instance.GetJwtFromAuthorizationHeader(Request);
+            var token = SsoJwtManager.Instance.GetJwtFromAuthorizationHeader(Request);
             // Read the JWT, and grab the claims.
-            var userName = SsoJwtHelper.Instance.GetUsernameFromToken(token);
+            var userName = SsoJwtManager.Instance.GetUsername(token);
 
             // Proccess any other information.
 

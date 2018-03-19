@@ -10,8 +10,25 @@ namespace ECS.WebAPI.Services.Security.Hash
     /// <summary>
     /// Static service class to hash a salted password using SHA 256
     /// </summary>
-    public static class HashService
+    public class HashService : IHashService
     {
+        private static HashService instance;
+        private HashService()
+        {
+        }
+
+        public static HashService Instance
+        {
+            get
+            {
+                if(instance == null)
+                {
+                    instance = new HashService();
+                }
+                return instance;
+            }
+        }
+
         /// <summary>
         /// 64-bit Salt property
         /// </summary>
@@ -21,7 +38,7 @@ namespace ECS.WebAPI.Services.Security.Hash
         /// Generates salt
         /// </summary>
         /// <returns>The salt key.</returns>
-        public static string CreateSaltKey()
+        public string CreateSaltKey()
         {
             RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
             byte[] rand = new byte[SaltSize];
@@ -37,7 +54,7 @@ namespace ECS.WebAPI.Services.Security.Hash
         /// <returns>The password with salt.</returns>
         /// <param name="password">Password.</param>
         /// <param name="salt">Salt.</param>
-        public static string HashPasswordWithSalt(string salt, string password)
+        public string HashPasswordWithSalt(string salt, string password)
         {
             string saltedPassword = String.Concat(salt, password);
 

@@ -34,7 +34,7 @@ namespace ECS.Repositories
     /// <summary>
     /// 
     /// </summary>
-    public interface IJwtRepository: IRepositoryBase<JAccessToken>
+    public interface IJAccessTokenRepository: IRepositoryBase<JAccessToken>
     {
     }
 
@@ -42,6 +42,13 @@ namespace ECS.Repositories
     /// 
     /// </summary>
     public interface ILinkedInRepository : IRepositoryBase<LinkedIn>
+    {
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public interface ISaltRepository: IRepositoryBase<Salt>
     {
     }
 
@@ -127,9 +134,12 @@ namespace ECS.Repositories
         }
     }
 
-    public class JwtRepository : RepositoryBase<JAccessToken>, IJwtRepository
+    /// <summary>
+    /// 
+    /// </summary>
+    public class JAccessTokenRepository : RepositoryBase<JAccessToken>, IJAccessTokenRepository
     {
-        public JwtRepository () : base (new ECSContext())
+        public JAccessTokenRepository () : base (new ECSContext())
         {
 
         }
@@ -141,6 +151,16 @@ namespace ECS.Repositories
     public class LinkedInRepository : RepositoryBase<LinkedIn>, ILinkedInRepository
     {
         public LinkedInRepository() : base(new ECSContext())
+        {
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public class SaltRepository : RepositoryBase<Salt>, ISaltRepository
+    {
+        public SaltRepository() : base(new ECSContext())
         {
         }
     }

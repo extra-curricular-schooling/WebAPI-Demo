@@ -1,10 +1,12 @@
-﻿using ECS.Repositories;
+﻿using ECS.Models;
+using ECS.Repositories;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Net.Http;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Text;
@@ -23,7 +25,7 @@ namespace ECS.WebAPI.Services.Security.AccessTokens.Jwt
         private const string Secret = "db3OIsj+BXE9NZDy0t8W3TcNekrF+2d/1sFnWG4HnV8TZY30iTOdtVWJG8abWvB1GlOgJuQZdcF2Luqm/hccMw==";
 
         // Single repository to query users associated with tokens.
-        private static AccountRepository _accountRepository;
+        private IAccountRepository accountRepository;
 
         // Instance for Singleton Pattern
         private static SsoJwtManager instance;
@@ -31,7 +33,7 @@ namespace ECS.WebAPI.Services.Security.AccessTokens.Jwt
 
         private SsoJwtManager()
         {
-            _accountRepository = new AccountRepository();
+            accountRepository = new AccountRepository();
         }
 
         public static SsoJwtManager Instance
@@ -50,9 +52,12 @@ namespace ECS.WebAPI.Services.Security.AccessTokens.Jwt
         {
             var issuer = "https://localhost:44311/";
 
+            // var account = accountRepository.GetById(username);
             var claimsIdentity = new ClaimsIdentity(new List<Claim>()
             {
                 new Claim("username", username),
+                //new Claim("password", account.Password),
+                new Claim("password", "pass"),
                 new Claim("application", "ecs"),
                 new Claim("roleType", "public")
             }, "Custom");
@@ -148,7 +153,7 @@ namespace ECS.WebAPI.Services.Security.AccessTokens.Jwt
             string tempUsername = string.Copy(username);
 
             // More validation to check whether username exists in system
-            if (!_accountRepository.Exists(d => d.UserName == tempUsername, d => d.User))
+            if (!accountRepository.Exists(d => d.UserName == tempUsername, d => d.User))
             {
                 return false;
             }
@@ -170,6 +175,56 @@ namespace ECS.WebAPI.Services.Security.AccessTokens.Jwt
                 return Task.FromResult(user);
             }
             return Task.FromResult<IPrincipal>(null);
+        }
+
+        // Should be deleted... Unless we need multiple JWTs from different headers.
+        public List<string> GetJwtsFromHttpHeaders(HttpRequestMessage request)
+        {
+            var jwtList = new List<string>();
+            if (request.Headers.Authorization != null)
+            {
+                jwtList.Add(request.Headers.Authorization.Parameter);
+            }
+            return jwtList;
+        }
+
+        public string GetJwtFromAuthorizationHeader(HttpRequestMessage request)
+        {
+            return request.Headers.Authorization.Parameter;
+        }
+
+        public Claim GetClaim(string token, string claimName)
+        {
+            // This line is called multiple times during execution... Figure out a way to get it out.
+            var principal = GetPrincipal(token);
+            if (null != principal)
+            {
+                foreach (Claim claim in principal.Claims)
+                {
+                    if (claim.Type.Equals(claimName))
+                    {
+                        return claim;
+                    }
+                }
+            }
+            return null;
+        }
+
+        public string GetUsername(string token)
+        {
+            return GetClaim(token, "username").Value;
+        }
+
+        public string GetPassword(string token)
+        {
+            return GetClaim(token, "password").Value;
+        }
+
+        public Tuple<string, string> GetUsernameAndPassword(string token)
+        {
+            Claim username = GetClaim(token, "username");
+            Claim password = GetClaim(token, "password");
+            return new Tuple<string, string>(username.Value, password.Value);
         }
     }
 }

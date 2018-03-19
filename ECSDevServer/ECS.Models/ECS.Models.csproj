@@ -56,6 +56,7 @@
     <Compile Include="ECSContext.cs" />
     <Compile Include="InterestTag.cs" />
     <Compile Include="JAccessToken.cs" />
+    <Compile Include="LinkedIn.cs" />
     <Compile Include="Migrations\201803180633292_ECSContext.cs" />
     <Compile Include="Migrations\201803180633292_ECSContext.Designer.cs">
       <DependentUpon>201803180633292_ECSContext.cs</DependentUpon>
@@ -63,6 +64,7 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Permission.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Role.cs" />
     <Compile Include="Salt.cs" />
     <Compile Include="SecurityQuestion.cs" />
     <Compile Include="SecurityQuestionAccount.cs" />

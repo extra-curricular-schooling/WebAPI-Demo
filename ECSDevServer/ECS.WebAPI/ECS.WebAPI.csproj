@@ -151,7 +151,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="HttpMessageHandlers\DelegatingHandlers\JwtAccessTokenValidationHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -165,6 +164,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="HttpMessageHandlers\DelegatingHandlers\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DotNetOpenAuth.LinkedInOAuth2\DotNetOpenAuth.LinkedInOAuth2.csproj">

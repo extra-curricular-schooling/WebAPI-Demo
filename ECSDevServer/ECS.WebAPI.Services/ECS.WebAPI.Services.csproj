@@ -83,7 +83,6 @@
     <Compile Include="Security\AccessTokens\Jwt\JwtHelper.cs" />
     <Compile Include="Security\AccessTokens\Jwt\JwtManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Security\AccessTokens\Jwt\SsoJwtHelper.cs" />
     <Compile Include="Security\AccessTokens\Jwt\SsoJwtManager.cs" />
   </ItemGroup>
   <ItemGroup>
