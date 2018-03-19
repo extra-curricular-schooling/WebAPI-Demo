@@ -41,9 +41,9 @@ namespace ECS.Repositories
     /// <summary>
     /// 
     /// </summary>
-    //public interface ILinkedInRepository : IRepositoryBase<LinkedIn>
-    //{
-    //}
+    public interface ILinkedInRepository : IRepositoryBase<LinkedIn>
+    {
+    }
 
     /// <summary>
     /// 
@@ -148,12 +148,12 @@ namespace ECS.Repositories
     /// <summary>
     /// 
     /// </summary>
-    //public class LinkedInRepository : RepositoryBase<LinkedIn>, ILinkedInRepository
-    //{
-    //    public LinkedInRepository() : base(new ECSContext())
-    //    {
-    //    }
-    //}
+    public class LinkedInRepository : RepositoryBase<LinkedIn>, ILinkedInRepository
+    {
+        public LinkedInRepository() : base(new ECSContext())
+        {
+        }
+    }
 
     /// <summary>
     /// 
