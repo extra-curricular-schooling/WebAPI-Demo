@@ -113,7 +113,7 @@
         <div class="control">
           <!-- <input v-model="question1" class="input" type="number" placeholder="Question 1" required> -->
           <span class="select">
-            <select @change="getSelectionID(1, question1)" v-model="question1">
+            <select @change="getSelectionID(0, question1)" v-model="question1">
               <option disabled value="">--select--</option>
               <option v-for="question in questions" v-bind:key="question.SecurityQuestionID"> {{ question.SecQuestion }} </option>
             </select>
@@ -130,7 +130,7 @@
         <div class="control">
           <!-- <input v-model="question2" class="input" type="number" placeholder="Question 2" required> -->
           <span class="select">
-            <select @change="getSelectionID(2, question2)" v-model="question2">
+            <select @change="getSelectionID(1, question2)" v-model="question2">
               <option disabled value="">--select--</option>
               <option v-for="question in questions" v-bind:key="question.SecurityQuestionID"> {{ question.SecQuestion }} </option>
             </select>
@@ -147,7 +147,7 @@
         <div class="control">
           <!-- <input v-model="question3" class="input" type="number" placeholder="Question 1" required> -->
           <span class="select">
-            <select @change="getSelectionID(3, question3)" v-model="question3">
+            <select @change="getSelectionID(2, question3)" v-model="question3">
               <option disabled value="">--select--</option>
               <option v-for="question in questions" v-bind:key="question.SecurityQuestionID"> {{ question.SecQuestion }} </option>
             </select>
@@ -270,9 +270,9 @@ export default {
       return document.getElementById(answer).value;
     },
     getSelectionID (i, selected) {
-      for (var key in this.questions) {
-        var question = this.questions[key]
-        if (question.SecurityQuestions === selected) {
+      for (var key in this.$data.questions) {
+        var question = this.$data.questions[key]
+        if (question.SecQuestion === selected) {
           var ID = question.SecurityQuestionID
         }
       }
@@ -406,15 +406,15 @@ export default {
           'zipCode': Number(this.$data.zipCode),
           'securityQuestions': [
             {
-              'question': Number(this.$data.questionIDs[1]),
+              'question': Number(this.$data.questionIDs[0]),
               'answer': this.getSecurityAnswer(1)
             },
             {
-              'question': Number(this.$data.questionIDs[2]),
+              'question': Number(this.$data.questionIDs[1]),
               'answer': this.getSecurityAnswer(2)
             },
             {
-              'question': Number(this.$data.questionIDs[3]),
+              'question': Number(this.$data.questionIDs[2]),
               'answer': this.getSecurityAnswer(3)
             }
           ]
