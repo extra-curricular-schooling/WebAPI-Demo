@@ -16,7 +16,7 @@ namespace ECS.WebAPI.Controllers
     [RoutePrefix("Auth")]
     public class AuthController : ApiController
     {
-        private JwtRepository _jwtRepository = new JwtRepository();
+        private JAccessTokenRepository _jwtRepository = new JAccessTokenRepository();
 
         [HttpGet]
         [AllowAnonymous]

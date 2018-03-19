@@ -12,18 +12,21 @@ namespace ECS.Models
         // Display is not right impleneation for column names, use Column(name:..)
         // The name of the article stored.
         [Required]
-        [Display(Name = "Article Title")]
         public string ArticleTitle { get; set; }
 
         // The full URL link of the article stored
         [Key]
         [Required]
-        [Display(Name = "Article Link")]
         public string ArticleLink { get; set; }
 
         // A brief description that is attached to the article stored.
-        [Display(Name = "Article Description")]
         public string ArticleDescription { get; set; }
+
+        /// <summary>
+        /// Will hold the Type of Article it is. ie. Technology, Medical, Business, etc.
+        /// </summary>
+        //[Required]
+        public string TagName { get; set; }
 
         // Navigation Property of Interest Tag
         public virtual InterestTag InterestTag { get; set; }

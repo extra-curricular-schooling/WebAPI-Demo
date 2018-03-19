@@ -10,6 +10,7 @@ export const request = {
       'Access-Control-Allow-Origin': 'http://localhost:8080',
       'Access-Control-Allow-Credentials': true,
       'Accept': 'application/json',
+      'Content-Type': 'application/json',
       'Authorization': 'null',
       'X-Requested-With': 'XMLHttpRequest'
     }

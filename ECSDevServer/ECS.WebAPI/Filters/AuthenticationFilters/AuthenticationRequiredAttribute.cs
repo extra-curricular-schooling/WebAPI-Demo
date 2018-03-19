@@ -10,7 +10,7 @@ namespace ECS.WebAPI.Filters.AuthenticationFilters
 {
     public class AuthenticationRequiredAttribute : AuthorizeAttribute, IDisposable
     {
-        private JwtRepository _jwtRepository = new JwtRepository();
+        private JAccessTokenRepository _jwtRepository = new JAccessTokenRepository();
 
         protected override bool IsAuthorized(HttpActionContext actionContext)
         {

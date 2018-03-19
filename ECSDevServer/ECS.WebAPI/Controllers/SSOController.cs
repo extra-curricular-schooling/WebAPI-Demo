@@ -16,22 +16,22 @@ using ECS.WebAPI.Services.Security.Hash;
 namespace ECS.WebAPI.Controllers
 {
     [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET,POST")]
-    //[AuthenticateSsoAccessToken]
+    [AuthenticateSsoAccessToken]
     //[AuthorizeSsoAccessToken]
     public class SsoController : ApiController
     {
         private readonly IAccountRepository accountRepository;
-        private readonly IJwtRepository jwtRepository;
+        private readonly IJAccessTokenRepository jwtAccessTokenRepository;
 
         public SsoController()
         {
             accountRepository = new AccountRepository();
-            jwtRepository = new JwtRepository();
+            jwtAccessTokenRepository = new JAccessTokenRepository();
         }
-        public SsoController(IAccountRepository accountRepo, IJwtRepository jwtRepo)
+        public SsoController(IAccountRepository accountRepo, IJAccessTokenRepository jwtRepo)
         {
             accountRepository = accountRepo;
-            jwtRepository = jwtRepo;
+            jwtAccessTokenRepository = jwtRepo;
         }
 
         /*
@@ -43,23 +43,25 @@ namespace ECS.WebAPI.Controllers
         [HttpPost]
         public IHttpActionResult Registration()
         {
-            var token = SsoJwtHelper.Instance.GetJwtFromAuthorizationHeader(Request);
-            // Read the JWT, and grab the username claim.
-            var username = SsoJwtHelper.Instance.GetUsernameFromToken(token);
+            
+            // call the transformer
+
+            var token = SsoJwtManager.Instance.GetJwtFromAuthorizationHeader(Request);
+            // Read the JWT, and grab the userName claim.
+            var userName = SsoJwtManager.Instance.GetUsername(token);
 
             // Proccess any other information.
 
-
             // Set some sort of flag up for the User in DB.
-            var salt = HashService.CreateSaltKey();
+            var salt = HashService.Instance.CreateSaltKey();
             Account account = new Account()
             {
-                UserName = username,
+                UserName = userName,
                 //Password = HashService.HashPasswordWithSalt(salt, password),
                 //RoleType = roleType,
                 FirstTimeUser = true,
             };
-            accountRepository.Insert(account);
+            //accountRepository.Insert(account);
             return Ok();
         }
 
@@ -70,14 +72,14 @@ namespace ECS.WebAPI.Controllers
         [HttpPost]
         public IHttpActionResult Login()
         {
-            var token = JwtHelper.Instance.GetJwtFromAuthorizationHeader(Request);
+            var token = SsoJwtManager.Instance.GetJwtFromAuthorizationHeader(Request);
             // Read the JWT, and grab the claims.
-            var username = JwtHelper.Instance.GetUsernameFromToken(token);
+            var userName = SsoJwtManager.Instance.GetUsername(token);
 
             // Proccess any other information.
 
             // Should we make an AccountDTO for this and make a repository for that???
-            // Account account = accountRepository.GetById(username);
+            // Account account = accountRepository.GetById(userName);
             var thing = accountRepository.SearchFor(x => x.UserName == "test1");
 
             // Check if the User is a firstTimeUser
@@ -91,10 +93,10 @@ namespace ECS.WebAPI.Controllers
             // WHY IS THIS CONNECTED TO A USER AND NOT AN ACCOUNT???
             JAccessToken tokenModel = new JAccessToken
             {
-                UserName = username,
-                Value = token
+                UserName = userName,
+                Value = token,
             };
-            jwtRepository.Update(tokenModel);
+            //jwtRepository.Update(tokenModel);
 
             // Redirect them to our Home page with their credentials logged.
             return Content(HttpStatusCode.Redirect, new Uri("https://localhost:44311/#/Home"));

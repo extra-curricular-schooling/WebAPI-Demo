@@ -28,6 +28,8 @@ namespace ECS.WebAPI
                 true, 
                 "application/json"));
 
+            // config.MessageHandlers.Add(new );
+
             // Web API routes
             config.MapHttpAttributeRoutes();
 

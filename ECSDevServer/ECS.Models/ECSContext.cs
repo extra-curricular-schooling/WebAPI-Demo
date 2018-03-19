@@ -103,7 +103,7 @@ namespace ECS.Models.ECSContext
             modelBuilder.Entity<User>().MapToStoredProcedures();
 
             modelBuilder.Entity<Article>().MapToStoredProcedures(s => s.Insert (
-                i => i.Parameter(p => p.InterestTag.TagName, "tag_name")));
+                i => i.Parameter(p => p.TagName, "TagName")));
 
             modelBuilder.Entity<InterestTag>().MapToStoredProcedures();
 

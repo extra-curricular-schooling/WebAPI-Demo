@@ -17,7 +17,7 @@ namespace ECS.WebAPI.Controllers
     {
         #region Constants and Fields
         private readonly IAccountRepository _accountRepository = new AccountRepository();
-        private readonly IJwtRepository _jwtRepository = new JwtRepository();
+        private readonly IJAccessTokenRepository _jwtRepository = new JAccessTokenRepository();
         private readonly ISaltRepository _saltRepository = new SaltRepository();
         #endregion
 
@@ -101,7 +101,7 @@ namespace ECS.WebAPI.Controllers
             }
 
             // Issue login information
-            if (account.Password == HashService.HashPasswordWithSalt(salt.PasswordSalt, credentials.Password))
+            if (account.Password == HashService.Instance.HashPasswordWithSalt(salt.PasswordSalt, credentials.Password))
             {
                 var response = new HttpResponseMessage();
                 JAccessToken token;

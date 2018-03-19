@@ -26,19 +26,14 @@ namespace ECS.Repositories
             context = datacontext;
             dbSet = context.Set<T>();
         }
-
         
         public void Insert(T entity)
         {
             //Use the context object and entity state to save the entity
-
-
-            // CAUSING PROBLEMS!!! Scott: Maybe because my sql isn't installed correctly.
             dbSet.Add(entity);
             context.Entry(entity).State = EntityState.Added;
             context.SaveChanges();
         }
-
         
         public void Delete(T entity)
         {
@@ -47,7 +42,6 @@ namespace ECS.Repositories
             context.Entry(entity).State = EntityState.Deleted;
             context.SaveChanges();
         }
-
         
         public void Update(T entity)
         {

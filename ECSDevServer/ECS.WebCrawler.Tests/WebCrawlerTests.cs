@@ -6,31 +6,24 @@ using System.Net.Http;
 using HtmlAgilityPack;
 using System.Linq;
 using System.Collections.Generic;
+using System;
+using System.Threading.Tasks;
 
 namespace ECS.WebCrawler.Tests
 {
     public class WebCrawlerTests
     {
-        [Table("articleListing")]
+
         public class Article
         {
-            [Key]
-            public string ArticleLink { get; set; }
-            public string ArticleType { get; set; }
             public string ArticleTitle { get; set; }
+            public string ArticleLink { get; set; }
             public string ArticleDescription { get; set; }
+            public string TagName { get; set; }
         }
-        static List<string> actualLinks = new List<string> {
-            "http://hugogarcia.me/site/testSite1.html",
-            "http://www.hugogarcia.me/site/testSite2.html",
-            "http://hugogarcia.me/site/testSite3.html",
-            "http://hugogarcia.me/site/testSite4.html",
-            "http://hugogarcia.me/site/testSite5.html"
-        };
-        static KeyValuePair<string, List<string>> siteAttributes = new KeyValuePair<string, List<string>>("http://hugogarcia.me/site/testing.html", new List<string> { "div", "class", "test", "a", "href", "http://hugogarcia.me/site/", "meta", "name", "keywords", "content", "meta", "property", "og:title", "content", "meta", "name", "description", "content", "Testing" });
-        static HashSet<string> Tags = new HashSet<string> { "hm", "test", "tester" };
 
-        
+
+
 
         public class HomeCrawler
         {
@@ -38,21 +31,35 @@ namespace ECS.WebCrawler.Tests
             [Fact]
             public async void ReturnHTMLString()
             {
+                KeyValuePair<string, List<string>> siteAttributes = new KeyValuePair<string, List<string>>("http://hugogarcia.me/site/testing.html", new List<string> { "div", "class", "test", "a", "href", "http://hugogarcia.me/site/", "meta", "name", "keywords", "content", "meta", "property", "og:title", "content", "meta", "name", "description", "content", "Testing" });
+
+
+
                 TestSite testSite = new TestSite();
                 var httpClient = new HttpClient();
                 var html = await httpClient.GetStringAsync(siteAttributes.Key);
+
+
+
                 Assert.Equal(testSite.SiteHtml, html);
 
             }
+
             [Fact]
             public async void LoadHTMLBlocks()
             {
+                KeyValuePair<string, List<string>> siteAttributes = new KeyValuePair<string, List<string>>("http://hugogarcia.me/site/testing.html", new List<string> { "div", "class", "test", "a", "href", "http://hugogarcia.me/site/", "meta", "name", "keywords", "content", "meta", "property", "og:title", "content", "meta", "name", "description", "content", "Testing" });
                 List<string> attributes = siteAttributes.Value;
+
+
                 var httpClient = new HttpClient();
                 var html = await httpClient.GetStringAsync(siteAttributes.Key);
                 var htmlDoc = new HtmlDocument();
                 htmlDoc.LoadHtml(html);
                 var blocks = htmlDoc.DocumentNode.Descendants(attributes[0]).Where(node => node.GetAttributeValue(attributes[1], "").Equals(attributes[2])).ToList();
+
+
+
                 Assert.Equal(5, blocks.Count);
 
             }
@@ -60,6 +67,15 @@ namespace ECS.WebCrawler.Tests
             [Fact]
             public async void ReturnArticleLinks()
             {
+                KeyValuePair<string, List<string>> siteAttributes = new KeyValuePair<string, List<string>>("http://hugogarcia.me/site/testing.html", new List<string> { "div", "class", "test", "a", "href", "http://hugogarcia.me/site/", "meta", "name", "keywords", "content", "meta", "property", "og:title", "content", "meta", "name", "description", "content", "Testing" });
+                List<string> actualLinks = new List<string> {
+                    "http://hugogarcia.me/site/testSite1.html",
+                    "http://www.hugogarcia.me/site/testSite2.html",
+                    "http://hugogarcia.me/site/testSite3.html",
+                    "http://hugogarcia.me/site/testSite4.html",
+                    "http://hugogarcia.me/site/testSite5.html"
+                };
+
                 List<string> attributes = siteAttributes.Value;
                 var links = new List<string>();
                 var httpClient = new HttpClient();
@@ -77,23 +93,33 @@ namespace ECS.WebCrawler.Tests
 
                     links.Add(articleLink);
                 }
+
+
+
                 Assert.Equal(actualLinks, links);
             }
-            
+
             [Fact]
             public async void CheckArticleTags()
             {
+                KeyValuePair<string, List<string>> siteAttributes = new KeyValuePair<string, List<string>>("http://hugogarcia.me/site/testing.html", new List<string> { "div", "class", "test", "a", "href", "http://hugogarcia.me/site/", "meta", "name", "keywords", "content", "meta", "property", "og:title", "content", "meta", "name", "description", "content", "Testing" });
+                HashSet<string> Tags = new HashSet<string> { "hm", "test", "tester" };
+                List<Article> testArticles = new List<Article> {
+                new Article() {ArticleLink = "http://hugogarcia.me/site/testSite1.html", TagName= "Testing", ArticleTitle="testing testing 1 2 4", ArticleDescription ="This is testSite 1" },
+                new Article() {ArticleLink = "http://www.hugogarcia.me/site/testSite2.html", TagName= "Testing", ArticleTitle="testing testing 1 2 4", ArticleDescription ="This is testSite 2" },
+                new Article() {ArticleLink = "http://hugogarcia.me/site/testSite4.html", TagName= "Testing", ArticleTitle="testing testing 1 2 4", ArticleDescription ="This is testSite 4" },
+                new Article() {ArticleLink = "http://hugogarcia.me/site/testSite5.html", TagName= "Testing", ArticleTitle="testing testing 1 2 4", ArticleDescription ="This is testSite 5" },
+                };
+                List<string> actualLinks = new List<string> {
+                    "http://hugogarcia.me/site/testSite1.html",
+                    "http://www.hugogarcia.me/site/testSite2.html",
+                    "http://hugogarcia.me/site/testSite3.html",
+                    "http://hugogarcia.me/site/testSite4.html",
+                    "http://hugogarcia.me/site/testSite5.html"
+                };
 
-            List<Article> testArticles = new List<Article> {
-                new Article() {ArticleLink = "http://hugogarcia.me/site/testSite1.html", ArticleType= "Testing", ArticleTitle="testing testing 1 2 4", ArticleDescription ="This is testSite 1" },
-                new Article() {ArticleLink = "http://www.hugogarcia.me/site/testSite2.html", ArticleType= "Testing", ArticleTitle="testing testing 1 2 4", ArticleDescription ="This is testSite 2" },
-                new Article() {ArticleLink = "http://hugogarcia.me/site/testSite4.html", ArticleType= "Testing", ArticleTitle="testing testing 1 2 4", ArticleDescription ="This is testSite 4" },
-                new Article() {ArticleLink = "http://hugogarcia.me/site/testSite5.html", ArticleType= "Testing", ArticleTitle="testing testing 1 2 4", ArticleDescription ="This is testSite 5" },
-
-            };
                 var links = actualLinks;
                 List<string> list = new List<string>();
-   
                 var httpClient = new HttpClient();
                 var htmlDoc = new HtmlDocument();
 
@@ -157,6 +183,15 @@ namespace ECS.WebCrawler.Tests
             [Fact]
             public async void ReturnArticleDescription()
             {
+                KeyValuePair<string, List<string>> siteAttributes = new KeyValuePair<string, List<string>>("http://hugogarcia.me/site/testing.html", new List<string> { "div", "class", "test", "a", "href", "http://hugogarcia.me/site/", "meta", "name", "keywords", "content", "meta", "property", "og:title", "content", "meta", "name", "description", "content", "Testing" });
+                List<string> actualLinks = new List<string> {
+                    "http://hugogarcia.me/site/testSite1.html",
+                    "http://www.hugogarcia.me/site/testSite2.html",
+                    "http://hugogarcia.me/site/testSite3.html",
+                    "http://hugogarcia.me/site/testSite4.html",
+                    "http://hugogarcia.me/site/testSite5.html"
+                };
+
                 var testSite = actualLinks[0];
                 string description = "";
 
@@ -181,6 +216,16 @@ namespace ECS.WebCrawler.Tests
             [Fact]
             public async void ReturnArticleTitle()
             {
+                KeyValuePair<string, List<string>> siteAttributes = new KeyValuePair<string, List<string>>("http://hugogarcia.me/site/testing.html", new List<string> { "div", "class", "test", "a", "href", "http://hugogarcia.me/site/", "meta", "name", "keywords", "content", "meta", "property", "og:title", "content", "meta", "name", "description", "content", "Testing" });
+                List<string> actualLinks = new List<string> {
+                    "http://hugogarcia.me/site/testSite1.html",
+                    "http://www.hugogarcia.me/site/testSite2.html",
+                    "http://hugogarcia.me/site/testSite3.html",
+                    "http://hugogarcia.me/site/testSite4.html",
+                    "http://hugogarcia.me/site/testSite5.html"
+                };
+
+
                 var testSite = actualLinks[0];
                 string title = "";
 
@@ -201,6 +246,23 @@ namespace ECS.WebCrawler.Tests
                 Assert.Equal("testing testing 1 2 4", title);
 
             }
+
+            [Fact]
+            public async Task CatchRequestError_Throws_HttpRequestException()
+            {
+
+                KeyValuePair<string, List<string>> siteAttributes = new KeyValuePair<string, List<string>>("https://techxplore.com/", new List<string> { "div", "class", "article--header", "a", "href", "https://theconversation.com", "meta", "name", "news_keywords", "content", "meta", "property", "og:title", "content", "meta", "property", "og:description", "content", "Technology" });
+
+
+                var httpClient = new HttpClient();
+                Exception e = await Assert.ThrowsAsync<HttpRequestException>(() => httpClient.GetStringAsync(siteAttributes.Key));
+
+
+                Assert.True(e is HttpRequestException);
+            }
+
+
+
         }
     }
 }

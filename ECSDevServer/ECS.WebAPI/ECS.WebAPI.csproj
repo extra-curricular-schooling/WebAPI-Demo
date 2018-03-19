@@ -164,6 +164,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="HttpMessageHandlers\DelegatingHandlers\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DotNetOpenAuth.LinkedInOAuth2\DotNetOpenAuth.LinkedInOAuth2.csproj">

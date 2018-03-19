@@ -34,12 +34,14 @@ namespace ECS.Repositories
     /// <summary>
     /// 
     /// </summary>
-    public interface IJwtRepository: IRepositoryBase<JAccessToken>
+    public interface IJAccessTokenRepository: IRepositoryBase<JAccessToken>
     {
     }
 
+    /// <summary>
+    /// 
     /// </summary>
-    public interface ISaltRepository : IRepositoryBase<Salt>
+    public interface ISaltRepository: IRepositoryBase<Salt>
     {
     }
 
@@ -125,9 +127,12 @@ namespace ECS.Repositories
         }
     }
 
-    public class JwtRepository : RepositoryBase<JAccessToken>, IJwtRepository
+    /// <summary>
+    /// 
+    /// </summary>
+    public class JAccessTokenRepository : RepositoryBase<JAccessToken>, IJAccessTokenRepository
     {
-        public JwtRepository () : base (new ECSContext())
+        public JAccessTokenRepository () : base (new ECSContext())
         {
 
         }
