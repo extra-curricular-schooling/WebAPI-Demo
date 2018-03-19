@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import Home from '@/components/Home/Home'
+import Home from '@/pages/Home'
 
 // helper function that mounts and returns the rendered text
 // function getRenderedText (Component, propsData) {
