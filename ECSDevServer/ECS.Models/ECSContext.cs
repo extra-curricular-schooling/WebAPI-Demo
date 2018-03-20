@@ -1,7 +1,7 @@
 ﻿using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 
-namespace ECS.Models.ECSContext
+namespace ECS.Models
 {
     /// <summary>
     /// This class initializes the database to the connectionstring ECSContext which is found in web.config.
@@ -18,6 +18,8 @@ namespace ECS.Models.ECSContext
         public DbSet<Account> Accounts { get; set; }
 
         public DbSet<AccountType> AccountTypes { get; set; }
+
+        public DbSet<ExpiredAccessToken> ExpiredAccessTokens { get; set; }
 
         public DbSet<InterestTag> InterestTags { get; set; }
 
@@ -119,13 +121,15 @@ namespace ECS.Models.ECSContext
 
             modelBuilder.Entity<SweepStakeEntry>().MapToStoredProcedures();
 
-            // modelBuilder.Entity<LinkedIn>().MapToStoredProcedures();
+            //modelBuilder.Entity<LinkedIn>().MapToStoredProcedures();
 
             modelBuilder.Entity<JAccessToken>().MapToStoredProcedures();
 
             modelBuilder.Entity<Salt>().MapToStoredProcedures();
 
             modelBuilder.Entity<Permission>().MapToStoredProcedures();
+
+            modelBuilder.Entity<ExpiredAccessToken>().MapToStoredProcedures();
 
             // modelBuilder.Entity<Role>().MapToStoredProcedures();
 
@@ -137,14 +141,14 @@ namespace ECS.Models.ECSContext
             // Define the navigation properties of Account and Article
             // Map the foreign keys of each model
             // Create table with custom name AccountArticle
-            
+
             // modelBuilder.Entity<Account>()                
             //    .HasMany(c => c.Article).WithMany(i => i.Account)
             //    .Map(t => t.MapLeftKey("Username")
             //    .MapRightKey("ArticleLink")
             //    .ToTable("AccountArticle"));
 
-            
+
             // modelBuilder.Entity<InterestTag>()
             //    .HasMany<Article>(a => a.ArticleTags)
             //    .WithRequired(i => i.InterestTag)

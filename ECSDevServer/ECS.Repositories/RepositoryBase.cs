@@ -51,22 +51,22 @@ namespace ECS.Repositories
         }
 
         // Haven't tested these yet!!!!!!!!!!!!!!!!!
+        // TODO: @Scott Find can be very slow. Try to change to SingleOrDefault<>()
         public T GetById(int id)
         {
-            return dbSet.Single(x => x.Equals(id));
+            return dbSet.Find(id);
         }
 
         // Haven't tested these yet!!!!!!!!!!!!!!!!!
         public T GetById(string id)
         {
-            return dbSet.Single(x => x.Equals(id));
+            return dbSet.Find(id);
         }
 
         public IQueryable<T> SearchFor(Expression<Func<T, bool>> predicate)
         {
             return dbSet.Where(predicate);
         }
-
         
         public IList<T> GetAll(params Expression<Func<T, object>>[] navigationProperties)
         {

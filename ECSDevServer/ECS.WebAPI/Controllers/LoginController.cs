@@ -85,7 +85,7 @@ namespace ECS.WebAPI.Controllers
             {
                 salt = _saltRepository.GetSingle(d => d.UserName == credentials.Username, d => d.Account);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return BadRequest("Invalid credentials.");
             }
@@ -96,7 +96,7 @@ namespace ECS.WebAPI.Controllers
             {
                 account = _accountRepository.GetSingle(d => d.UserName == credentials.Username, d => d.User);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return BadRequest("Invalid credentials.");
             }

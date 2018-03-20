@@ -11,7 +11,7 @@ export const request = {
       'Access-Control-Allow-Credentials': true,
       'Accept': 'application/json',
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNjb3R0IiwicGFzc3dvcmQiOiJwYXNzIiwiYXBwbGljYXRpb24iOiJlY3MiLCJyb2xlVHlwZSI6InB1YmxpYyIsIm5iZiI6MTUyMTUxOTU0NCwiZXhwIjoxNTIxNTI1NTQ0LCJpYXQiOjE1MjE1MTk1NDQsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0OjQ0MzExLyJ9.1dofmWWQNwa-rWt5ykr8C8VNqpezU8CY_YnIefpDuQI',
+      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNjb3R0IiwicGFzc3dvcmQiOiJwYXNzIiwiYXBwbGljYXRpb24iOiJlY3MiLCJyb2xlVHlwZSI6InB1YmxpYyIsIm5iZiI6MTUyMTUzMzg1MywiZXhwIjoxNTIxNTM3NDUzLCJpYXQiOjE1MjE1MzM4NTN9.7WmrroG6SjJGNSZ97lDIgTVedWXKyYblLmapK9XMrMw',
       'X-Requested-With': 'XMLHttpRequest'
     }
   },

@@ -3,7 +3,7 @@ namespace ECS.Models.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class ECSContext : DbMigration
+    public partial class Scott_Init : DbMigration
     {
         public override void Up()
         {
@@ -111,6 +111,14 @@ namespace ECS.Models.Migrations
                         PermissionName = c.String(nullable: false, maxLength: 128),
                     })
                 .PrimaryKey(t => t.PermissionName);
+            
+            CreateTable(
+                "dbo.ExpiredAccessToken",
+                c => new
+                    {
+                        Token = c.String(nullable: false, maxLength: 128),
+                    })
+                .PrimaryKey(t => t.Token);
             
             CreateTable(
                 "dbo.JAccessToken",
@@ -551,6 +559,38 @@ namespace ECS.Models.Migrations
             );
             
             CreateStoredProcedure(
+                "dbo.ExpiredAccessToken_Insert",
+                p => new
+                    {
+                        Token = p.String(maxLength: 128),
+                    },
+                body:
+                    @"INSERT [dbo].[ExpiredAccessToken]([Token])
+                      VALUES (@Token)"
+            );
+            
+            CreateStoredProcedure(
+                "dbo.ExpiredAccessToken_Update",
+                p => new
+                    {
+                        Token = p.String(maxLength: 128),
+                    },
+                body:
+                    @"RETURN"
+            );
+            
+            CreateStoredProcedure(
+                "dbo.ExpiredAccessToken_Delete",
+                p => new
+                    {
+                        Token = p.String(maxLength: 128),
+                    },
+                body:
+                    @"DELETE [dbo].[ExpiredAccessToken]
+                      WHERE ([Token] = @Token)"
+            );
+            
+            CreateStoredProcedure(
                 "dbo.JAccessToken_Insert",
                 p => new
                     {
@@ -777,6 +817,9 @@ namespace ECS.Models.Migrations
             DropStoredProcedure("dbo.JAccessToken_Delete");
             DropStoredProcedure("dbo.JAccessToken_Update");
             DropStoredProcedure("dbo.JAccessToken_Insert");
+            DropStoredProcedure("dbo.ExpiredAccessToken_Delete");
+            DropStoredProcedure("dbo.ExpiredAccessToken_Update");
+            DropStoredProcedure("dbo.ExpiredAccessToken_Insert");
             DropStoredProcedure("dbo.Permission_Delete");
             DropStoredProcedure("dbo.Permission_Update");
             DropStoredProcedure("dbo.Permission_Insert");
@@ -838,6 +881,7 @@ namespace ECS.Models.Migrations
             DropTable("dbo.SweepStakeEntry");
             DropTable("dbo.Salt");
             DropTable("dbo.JAccessToken");
+            DropTable("dbo.ExpiredAccessToken");
             DropTable("dbo.Permission");
             DropTable("dbo.AccountType");
             DropTable("dbo.ZipLocation");

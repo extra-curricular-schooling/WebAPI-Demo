@@ -56,9 +56,9 @@
     <Compile Include="ECSContext.cs" />
     <Compile Include="InterestTag.cs" />
     <Compile Include="JAccessToken.cs" />
-    <Compile Include="Migrations\201803191914102_ECSContext.cs" />
-    <Compile Include="Migrations\201803191914102_ECSContext.Designer.cs">
-      <DependentUpon>201803191914102_ECSContext.cs</DependentUpon>
+    <Compile Include="Migrations\201803201801370_Scott_Init.cs" />
+    <Compile Include="Migrations\201803201801370_Scott_Init.Designer.cs">
+      <DependentUpon>201803201801370_Scott_Init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Permission.cs" />
@@ -67,6 +67,7 @@
     <Compile Include="Salt.cs" />
     <Compile Include="SecurityQuestion.cs" />
     <Compile Include="SecurityQuestionAccount.cs" />
+    <Compile Include="ExpiredAccessToken.cs" />
     <Compile Include="SweepStake.cs" />
     <Compile Include="SweepStakeEntry.cs" />
     <Compile Include="User.cs" />
@@ -77,8 +78,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201803191914102_ECSContext.resx">
-      <DependentUpon>201803191914102_ECSContext.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201803201801370_Scott_Init.resx">
+      <DependentUpon>201803201801370_Scott_Init.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
