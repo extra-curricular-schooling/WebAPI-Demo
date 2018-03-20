@@ -37,6 +37,13 @@ namespace ECS.Repositories
         T GetById(int id);
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        T GetById(string id);
+
+        /// <summary>
         /// LINQ to SQL search for the Generic Type (T).
         /// </summary>
         /// <param name="predicate">
@@ -73,5 +80,7 @@ namespace ECS.Repositories
         T GetSingle(Func<T, bool> where, params Expression<Func<T, object>>[] navigationProperties);
 
         bool Exists(Func<T, bool> where, params Expression<Func<T, object>>[] navigationProperties);
+
+        
     }
 }

@@ -1,6 +1,7 @@
 ﻿using ECS.Models;
 using ECS.Models.ECSContext;
 
+// TODO: @Scooter Split the repositories into different class files.
 namespace ECS.Repositories
 {
     /// <summary>

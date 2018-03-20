@@ -1,15 +1,12 @@
-﻿using ECS.Models;
-using ECS.Repositories;
+﻿using ECS.Repositories;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Security.Principal;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ECS.WebAPI.Services.Security.AccessTokens.Jwt
@@ -25,33 +22,31 @@ namespace ECS.WebAPI.Services.Security.AccessTokens.Jwt
         private const string Secret = "db3OIsj+BXE9NZDy0t8W3TcNekrF+2d/1sFnWG4HnV8TZY30iTOdtVWJG8abWvB1GlOgJuQZdcF2Luqm/hccMw==";
 
         // Single repository to query users associated with tokens.
-        private IAccountRepository accountRepository;
+        private readonly IAccountRepository _accountRepository;
 
         // Instance for Singleton Pattern
-        private static SsoJwtManager instance;
+        private static SsoJwtManager _instance;
         #endregion
 
         private SsoJwtManager()
         {
-            accountRepository = new AccountRepository();
+            _accountRepository = new AccountRepository();
         }
 
         public static SsoJwtManager Instance
         {
             get
             {
-                if (instance == null)
+                if (_instance == null)
                 {
-                    instance = new SsoJwtManager();
+                    _instance = new SsoJwtManager();
                 }
-                return instance;
+                return _instance;
             }
         }
 
         public string GenerateToken(string username, int expireMinutes = 15)
         {
-            var issuer = "https://localhost:44311/";
-
             // var account = accountRepository.GetById(username);
             var claimsIdentity = new ClaimsIdentity(new List<Claim>()
             {
@@ -68,11 +63,8 @@ namespace ECS.WebAPI.Services.Security.AccessTokens.Jwt
             
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Issuer = issuer,
                 Subject = claimsIdentity,
                 IssuedAt = now,
-                Expires = now.AddMinutes(Convert.ToInt32(expireMinutes)),
-                NotBefore = now,
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(symmetricKey), SecurityAlgorithms.HmacSha256Signature),
             };
 
@@ -88,9 +80,8 @@ namespace ECS.WebAPI.Services.Security.AccessTokens.Jwt
             try
             {
                 var tokenHandler = new JwtSecurityTokenHandler();
-                var jwtToken = tokenHandler.ReadToken(token) as JwtSecurityToken;
 
-                if (jwtToken == null)
+                if (!(tokenHandler.ReadToken(token) is JwtSecurityToken))
                     return null;
 
                 var symmetricKey = Convert.FromBase64String(Secret);
@@ -104,7 +95,7 @@ namespace ECS.WebAPI.Services.Security.AccessTokens.Jwt
                     IssuerSigningKey = new SymmetricSecurityKey(symmetricKey)
                 };
 
-                var principal = tokenHandler.ValidateToken(token, validationParameters, out SecurityToken securityToken);
+                var principal = tokenHandler.ValidateToken(token, validationParameters, out var _);
 
                 return principal;
             }
@@ -119,7 +110,7 @@ namespace ECS.WebAPI.Services.Security.AccessTokens.Jwt
         {
             username = null;
             var simplePrinciple = GetPrincipal(token);
-            ClaimsIdentity identity = null;
+            ClaimsIdentity identity;
 
             try
             {
@@ -150,20 +141,15 @@ namespace ECS.WebAPI.Services.Security.AccessTokens.Jwt
             }
 
             // Cannot use a ref or out string in a lambda expression, thus make a copy
-            string tempUsername = string.Copy(username);
+            var tempUsername = string.Copy(username);
 
             // More validation to check whether username exists in system
-            if (!accountRepository.Exists(d => d.UserName == tempUsername, d => d.User))
-            {
-                return false;
-            }
-
-            return true;
+            return _accountRepository.Exists(d => d.UserName == tempUsername, d => d.User);
         }
 
         protected Task<IPrincipal> AuthenticateJwtToken(string token)
         {
-            if (ValidateToken(token, out string username))
+            if (ValidateToken(token, out var username))
             {
                 // based on username to get more information from database in order to build local identity  
                 var claims = new List<Claim> {
@@ -193,21 +179,11 @@ namespace ECS.WebAPI.Services.Security.AccessTokens.Jwt
             return request.Headers.Authorization.Parameter;
         }
 
-        public Claim GetClaim(string token, string claimName)
+        public Claim GetClaim(string token, string claimType)
         {
             // This line is called multiple times during execution... Figure out a way to get it out.
             var principal = GetPrincipal(token);
-            if (null != principal)
-            {
-                foreach (Claim claim in principal.Claims)
-                {
-                    if (claim.Type.Equals(claimName))
-                    {
-                        return claim;
-                    }
-                }
-            }
-            return null;
+            return principal.FindFirst(claimType);
         }
 
         public string GetUsername(string token)
@@ -222,8 +198,8 @@ namespace ECS.WebAPI.Services.Security.AccessTokens.Jwt
 
         public Tuple<string, string> GetUsernameAndPassword(string token)
         {
-            Claim username = GetClaim(token, "username");
-            Claim password = GetClaim(token, "password");
+            var username = GetClaim(token, "username");
+            var password = GetClaim(token, "password");
             return new Tuple<string, string>(username.Value, password.Value);
         }
     }

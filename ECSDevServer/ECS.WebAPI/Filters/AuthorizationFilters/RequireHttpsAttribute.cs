@@ -5,7 +5,7 @@ using System.Text;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
 
-namespace ECS.WebAPI.Filters
+namespace ECS.WebAPI.Filters.AuthorizationFilters
 {
     // Source: https://blogs.msdn.microsoft.com/carlosfigueira/2012/03/09/implementing-requirehttps-with-asp-net-web-api/
     public class RequireHttpsAttribute : AuthorizationFilterAttribute
@@ -16,10 +16,12 @@ namespace ECS.WebAPI.Filters
             if (request.RequestUri.Scheme != Uri.UriSchemeHttps)
             {
                 HttpResponseMessage response;
-                UriBuilder uri = new UriBuilder(request.RequestUri);
-                uri.Scheme = Uri.UriSchemeHttps;
-                uri.Port = 443;
-                string body = string.Format("The resource can be found at: {0}", uri.Uri.AbsoluteUri);
+                var uri = new UriBuilder(request.RequestUri)
+                {
+                    Scheme = Uri.UriSchemeHttps,
+                    Port = 443
+                };
+                var body = string.Format("The resource can be found at: {0}", uri.Uri.AbsoluteUri);
                 if (request.Method.Equals(HttpMethod.Get) || request.Method.Equals(HttpMethod.Head))
                 {
                     response = request.CreateResponse(HttpStatusCode.Found);

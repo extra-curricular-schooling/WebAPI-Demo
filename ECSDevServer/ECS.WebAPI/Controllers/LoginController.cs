@@ -8,6 +8,7 @@ using System;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using ECS.WebAPI.Filters.AuthorizationFilters;
 
 namespace ECS.WebAPI.Controllers
 {

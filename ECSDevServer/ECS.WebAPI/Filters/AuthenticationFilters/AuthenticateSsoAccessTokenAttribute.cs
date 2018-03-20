@@ -6,7 +6,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
@@ -17,23 +16,20 @@ namespace ECS.WebAPI.Filters.AuthenticationFilters
 {
     public class AuthenticateSsoAccessTokenAttribute : Attribute, IAuthenticationFilter, IDisposable
     {
-        private readonly IAccountRepository accountRepository;
-        private readonly ISaltRepository saltRepository;
-        private IHashService hashService;
+        private readonly IAccountRepository _accountRepository;
+        private readonly ISaltRepository _saltRepository;
+        private readonly IHashService _hashService;
 
         public AuthenticateSsoAccessTokenAttribute()
         {
-            accountRepository = new AccountRepository();
-            saltRepository = new SaltRepository();
-            hashService = HashService.Instance;
+            _accountRepository = new AccountRepository();
+            _saltRepository = new SaltRepository();
+            _hashService = HashService.Instance;
         }
 
         // Not allowed to authenticate more than once.
         // Change to "true" if you allow multiple AuthenticateSsoAccessToken attribute filters.
-        public bool AllowMultiple
-        {
-            get { return false; }
-        }
+        public bool AllowMultiple => false;
 
         public async Task AuthenticateAsync(HttpAuthenticationContext context, CancellationToken cancellationToken)
         {
@@ -75,29 +71,31 @@ namespace ECS.WebAPI.Filters.AuthenticationFilters
             var token = authorization.Parameter;
 
             // 7. If the username and password do not match, set the error result.
-            Tuple<string, string> usernameAndPassword = SsoJwtManager.Instance.GetUsernameAndPassword(token);
+            var usernameAndPassword = SsoJwtManager.Instance.GetUsernameAndPassword(token);
             var username = usernameAndPassword.Item1;
             var password = usernameAndPassword.Item2;
 
-            //var saltModel = saltRepository.GetById(username);
-            //var salt = saltModel.PasswordSalt;
+            // TODO: @Scooter WINNING!!! [-scott]
+            var saltModel = _saltRepository.GetById(username);
+            var salt = saltModel.PasswordSalt;
 
-            //var hashedPassword = hashService.HashPasswordWithSalt(salt, password);
+            var hashedPassword = _hashService.HashPasswordWithSalt(salt, password);
 
-            //var account = accountRepository.GetById(username);
-            //if (!account.Password.Equals(hashedPassword))
-            //{
-            //    context.ErrorResult = new AuthenticationFailureResult("Incorrect username/password", request);
-            //    return;
-            //}
+            var account = _accountRepository.GetById(username);
+            if (!account.Password.Equals(hashedPassword))
+            {
+                context.ErrorResult = new AuthenticationFailureResult("Incorrect username/password", request);
+                return;
+            }
 
             // 8. Authentication was successful, set the principal to notify other filters that
             // the request is authenticated.
             IPrincipal principal = SsoJwtManager.Instance.GetPrincipal(token);
             await Task.Run(() =>
             {
+                Thread.CurrentPrincipal = principal;
                 context.Principal = principal;
-            });
+            }, cancellationToken);
         }
 
         public Task ChallengeAsync(HttpAuthenticationChallengeContext context, CancellationToken cancellationToken)
@@ -122,9 +120,9 @@ namespace ECS.WebAPI.Filters.AuthenticationFilters
             Request = request;
         }
 
-        public string ReasonPhrase { get; private set; }
+        public string ReasonPhrase { get; }
 
-        public HttpRequestMessage Request { get; private set; }
+        public HttpRequestMessage Request { get; }
 
         public Task<HttpResponseMessage> ExecuteAsync(CancellationToken cancellationToken)
         {
@@ -152,22 +150,21 @@ namespace ECS.WebAPI.Filters.AuthenticationFilters
             InnerResult = innerResult;
         }
 
-        public AuthenticationHeaderValue Challenge { get; private set; }
+        public AuthenticationHeaderValue Challenge { get; }
 
-        public IHttpActionResult InnerResult { get; private set; }
+        public IHttpActionResult InnerResult { get; }
 
-        // This portion gets called after the controller has finished. (The reverse invokation of the pipeline)
+        // This portion gets called after the controller has finished. (The reverse invocation of the pipeline)
         public async Task<HttpResponseMessage> ExecuteAsync(CancellationToken cancellationToken)
         {
-            HttpResponseMessage response = await InnerResult.ExecuteAsync(cancellationToken);
+            var response = await InnerResult.ExecuteAsync(cancellationToken);
 
-            if (response.StatusCode == HttpStatusCode.Unauthorized)
+            if (response.StatusCode != HttpStatusCode.Unauthorized) return response;
+
+            // Only add one challenge per authentication scheme.
+            if (response.Headers.WwwAuthenticate.All(h => h.Scheme != Challenge.Scheme))
             {
-                // Only add one challenge per authentication scheme.
-                if (!response.Headers.WwwAuthenticate.Any((h) => h.Scheme == Challenge.Scheme))
-                {
-                    response.Headers.WwwAuthenticate.Add(Challenge);
-                }
+                response.Headers.WwwAuthenticate.Add(Challenge);
             }
 
             return response;

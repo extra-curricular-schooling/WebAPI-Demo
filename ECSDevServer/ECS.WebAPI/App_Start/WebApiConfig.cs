@@ -1,12 +1,7 @@
 ﻿using Newtonsoft.Json.Serialization;
 using System;
-using System.Net;
-using System.Net.Http;
 using System.Net.Http.Formatting;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Web.Http;
-using System.Web.Http.Cors;
 
 namespace ECS.WebAPI
 {
@@ -27,8 +22,6 @@ namespace ECS.WebAPI
                 StringComparison.InvariantCultureIgnoreCase, 
                 true, 
                 "application/json"));
-
-            // config.MessageHandlers.Add(new );
 
             // Web API routes
             config.MapHttpAttributeRoutes();

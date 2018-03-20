@@ -48,49 +48,58 @@ namespace ECS.WebAPI.Controllers
                 registrationForm.SecurityQuestions[2].Answer == null)
                 return BadRequest("Improper Request");
 
-            using (RegistrationController regController = new RegistrationController())
+            // Temporary Objects
+            List<ZipLocation> zipLocationListObj = new List<ZipLocation>
             {
-                Account account = new Account();
-                User user = new User();
-                ZipLocation zipLocation = new ZipLocation();
-                
-                user.FirstName = registrationForm.FirstName;
-                user.LastName = registrationForm.LastName;
-                account.UserName = registrationForm.Username;
-                user.Email = registrationForm.Email;
-                account.Password = registrationForm.Password;
-                zipLocation.ZipCode = registrationForm.ZipCode.ToString();
-                zipLocation.Address = registrationForm.Address;
-                zipLocation.City = registrationForm.City;
-                account.SecurityAnswers = new List<SecurityQuestionAccount>
+                new ZipLocation
                 {
-                    new SecurityQuestionAccount
-                    {
-                        Answer = registrationForm.SecurityQuestions[0].Answer,
-                        SecurityQuestionID = registrationForm.SecurityQuestions[0].Question
-                    },
-                    new SecurityQuestionAccount
-                    {
-                        Answer = registrationForm.SecurityQuestions[1].Answer,
-                        SecurityQuestionID = registrationForm.SecurityQuestions[1].Question
-                    },
-                    new SecurityQuestionAccount
-                    {
-                        Answer = registrationForm.SecurityQuestions[2].Answer,
-                        SecurityQuestionID = registrationForm.SecurityQuestions[2].Question
-                    }
-                };
+                    ZipCode = registrationForm.ZipCode.ToString(),
+                    Address = registrationForm.Address,
+                    City = registrationForm.City,
+                    State = registrationForm.State
+                }
+            };
 
-                regController.accountRepository.Insert(account);
-                regController.userRepository.Insert(user);
-                // context.Accounts.Add(account);
-                // context.Users.Add(user);
-                // context.SaveChanges();
-                // return Content(HttpStatusCode.OK, new JavaScriptSerializer().Serialize(regController));
-                return Ok();
-            }
+            List<SecurityQuestionAccount> securityQuestionAccountListObj = new List<SecurityQuestionAccount>
+            {
+                new SecurityQuestionAccount
+                {
+                    Answer = registrationForm.SecurityQuestions[0].Answer,
+                    SecurityQuestionID = registrationForm.SecurityQuestions[0].Question
+                },
+                new SecurityQuestionAccount
+                {
+                    Answer = registrationForm.SecurityQuestions[1].Answer,
+                    SecurityQuestionID = registrationForm.SecurityQuestions[1].Question
+                },
+                new SecurityQuestionAccount
+                {
+                    Answer = registrationForm.SecurityQuestions[2].Answer,
+                    SecurityQuestionID = registrationForm.SecurityQuestions[2].Question
+                }
+            };
 
-            // return Ok();
+            // DTO to Model
+            User user = new User()
+            {
+                Email = registrationForm.Email,
+                FirstName = registrationForm.FirstName,
+                LastName = registrationForm.LastName,
+                ZipLocations = zipLocationListObj
+            };
+            userRepository.Insert(user);
+
+            Account account = new Account()
+            {
+                UserName = registrationForm.Username,
+                Password = registrationForm.Password,
+                AccountStatus = true,
+                FirstTimeUser = true,
+                SecurityAnswers = securityQuestionAccountListObj
+            };
+            accountRepository.Insert(account);
+
+            return Ok();
         }
 
         /// <summary>
