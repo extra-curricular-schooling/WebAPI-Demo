@@ -1,32 +1,30 @@
 <template>
-  <div>
-    <button class="button is-primary submit-button" v-on:click="showAlert">
-    Submit
-    </button>
-  </div>
-  <!-- NOT A FAN OF ALERT().. -->
-  <!-- I like Bulma's notifiacation components better... will implement in future -->
-  <!-- <div class="notification is-primary">
-    <button class="delete"></button>
+  <div class="notification is-success" v-bind:class="{ 'is-hidden' : isHidden }">
+    <button class="delete" v-on:click.prevent="toggleNotification"></button>
     <strong>Congratulations!</strong><br>
-    You've successfully registered your information.  Log back in to start learning!
-  </div> -->
+    <p>You've successfully registered your information.  Make sure to login to start learning!</P>
+  </div>
 </template>
 
 <script>
+/* eslint-disable */
 export default {
-  name: 'RegistrationAlert',
+ name: 'RegistrationAlert',
+  data () {
+    return {
+      isHidden: true
+    }
+  },
   methods: {
-    showAlert: function () {
-      alert('Congratulations!!!  You have successfully registered your information.  You will now be redirected to the main page.')
-      this.$router.push('/')
+    toggleNotification: function () {
+      this.isHidden = !this.isHidden
     }
   }
 }
 </script>
 
 <style>
-button {
-  width: 175px;
+.notification {
+  padding: 20px 20px 20px 20px;
 }
 </style>

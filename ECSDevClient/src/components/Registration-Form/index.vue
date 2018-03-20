@@ -170,7 +170,7 @@
       <label class="checkbox">
         <agreement-modal ref="modal"></agreement-modal>
         <input type="checkbox">
-        I agree to the <a @click.prevent="toggleModal">Terms and Conditions</a>.
+        I agree to the <a @click.prevent="toggle">Terms and Conditions</a>.
       </label>
     </div>
 
@@ -391,7 +391,7 @@ export default {
         this.$data.zipCodeMessage = '';
       }
     },
-    toggleModal () {
+    toggle () {
       this.$refs.modal.toggleModal()
     },
     // APIs
@@ -426,7 +426,14 @@ export default {
           ]
         }
       })
-        .then(response => console.log(response))
+        .then(response => {
+          console.log(response)
+          // this.$store.dispatch('hasRegistered', true)
+          this.$router.push({
+            name: 'Main',
+            params: { isSuccess: true } 
+            })
+          })
         .catch(response => console.log(response))
     },
     fetchSecurityQuestions () {
