@@ -168,7 +168,9 @@
         Remember me
       </label><br>
       <label class="checkbox">
-        <agreement-modal></agreement-modal>
+        <agreement-modal ref="modal"></agreement-modal>
+        <input type="checkbox">
+        I agree to the <a @click.prevent="toggleModal">Terms and Conditions</a>.
       </label>
     </div>
 
@@ -203,7 +205,7 @@ import agreementModal from '@/components/registration-form/elements/AgreementMod
 export default {
   name: 'RegistrationForm',
   components: {
-    'agreement-modal': agreementModal,
+    'agreement-modal': agreementModal
     // 'registration-alert': registrationAlert
   },
   data () {
@@ -389,6 +391,10 @@ export default {
         this.$data.zipCodeMessage = '';
       }
     },
+    toggleModal () {
+      this.$refs.modal.toggleModal()
+    },
+    // APIs
     submit () {
       axios({
         method: 'POST',
