@@ -48,37 +48,12 @@ namespace ECS.WebCrawler
         public async Task CrawlingAsync()
         {
             // Calls startCrawler with the given sites and stores valid articles to toStore.
-            List<ECS.Models.Article> toStore = await StartCrawler(Sites);
-
-            // Instantiate new DBContext
-            //ArticleContext storer = new ArticleContext();
-            //ECS.Models.ECSContext.ECSContext storer = new ECS.Models.ECSContext.ECSContext();
+            List<Article> toStore = await StartCrawler(Sites);
 
             // Go through each article and store if not already in DB.
             foreach (var article in toStore)
             {
-                try
-                {
-
-                    //if (!storer.Articles.Any(a => a.ArticleLink == article.ArticleLink))
-                    if (!articleRepository.Exists(a => a.ArticleLink == article.ArticleLink))
-                    {
-                        articleRepository.Insert(article);
-                        Console.WriteLine($"{article.ArticleTitle} added for {article.TagName}");
-                    }
-                }
-                // Catch if DBContext fails to save.
-                catch (DbEntityValidationException e)
-                {
-                    Console.WriteLine(DateTime.Now + ": Site " + article.ArticleLink + " response: " + e.Message);
-                    foreach (var validationErrors in e.EntityValidationErrors)
-                    {
-                        foreach (var validationError in validationErrors.ValidationErrors)
-                        {
-                            System.Console.WriteLine("Property: {0} Error: {1}", validationError.PropertyName, validationError.ErrorMessage);
-                        }
-                    }
-                }
+                ArticleStorer(article);
             }
         }
 
@@ -87,13 +62,25 @@ namespace ECS.WebCrawler
         /// </summary>
         /// <param name="Sites"></param>
         /// <returns>Valid Articles</returns>
-        private async Task<List<ECS.Models.Article>> StartCrawler(List<KeyValuePair<string, List<string>>> Sites)
+        private async Task<List<Article>> StartCrawler(List<KeyValuePair<string, List<string>>> Sites)
         {
 
             // Links will hold the links gathered from the homepage.
             List<string[]> links = new List<string[]>();
 
             // For each site from given Sites. Crawl through and gather article links.
+            links = await GatherArticles(Sites);
+            return await ArticleCrawler(links);
+        }
+
+        /// <summary>
+        /// Gathers articel from list of sites
+        /// </summary>
+        /// <param name="Sites"></param>
+        /// <returns> A List of Strings with article links </returns>
+        public async Task<List<string[]>> GatherArticles(List<KeyValuePair<string, List<string>>> Sites)
+        {
+            List<string[]> links = new List<string[]>();
             foreach (var site in Sites)
             {
                 List<string> attributes = site.Value;
@@ -105,10 +92,8 @@ namespace ECS.WebCrawler
                 }
 
             }
-
-            return await ArticleCrawler(links);
+            return links;
         }
-
 
         /// <summary>
         /// Crawls through given site for articles.
@@ -168,22 +153,14 @@ namespace ECS.WebCrawler
         /// </summary>
         /// <param name="links"> List of gathered links</param>
         /// <returns> List of valid Articles </returns>
-        public async Task<List<ECS.Models.Article>> ArticleCrawler(List<string[]> links)
+        public async Task<List<Article>> ArticleCrawler(List<string[]> links)
         {
             // Will hold the valid Articles.
-            var list = new List<ECS.Models.Article>();
+            var list = new List<Article>();
 
             // Initiate new httpclient and htmlDocument to request and traverse html.
             var httpClient = new HttpClient();
             var htmlDoc = new HtmlDocument();
-
-            // Will hold the article info.
-            string tags = "";
-            string title = "";
-            string description = "";
-
-            // Boolean to check if article matches a keyword/tag
-            bool tagMatch = false;
 
             // For each article, check if valid
             foreach (var art in links)
@@ -205,70 +182,30 @@ namespace ECS.WebCrawler
                         }
                     }
 
-                    // Gather the blocks where the keywords/tags are held in the article. 
-                    var tagList = htmlDoc.DocumentNode.Descendants(siteAttribute[6]).Where(node => node.GetAttributeValue(siteAttribute[7], "").Equals(siteAttribute[8])).ToList();
 
-                    // Gather each tag from the block.
-                    foreach (var lt in tagList)
-                    {
-                        tags = lt.GetAttributeValue(siteAttribute[9], "");
-                    }
 
-                    // Lowercase the tags for easier comparison
-                    tags = tags.ToLower();
+                    // Boolean to check if article matches a keyword/tag
+                    bool tagMatch = false;
 
-                    // Reset tagMatch to false.
-                    tagMatch = false;
+                    string[] contentTags = GatherTags(htmlDoc, siteAttribute);
 
-                    // Replace any ',' if site stored tags as a CSV.
-                    tags = tags.Replace(",", "");
-
-                    // Split up tags 
-                    string[] contentTags = tags.Split(' ');
-                    int tagCount = 0;
-
-                    // For each tag in list, check if it is contained in HashSet of valid tags. If so, tagMatch = true, assign hit tag to Article tag then break.
-                    foreach (var t in contentTags)
-                    {
-                        Console.WriteLine($"The tag[{tagCount++}]:{t}");
-                        if (Tags.Contains(t))
-                        {
-                            Console.WriteLine($"Tag Hit with {t}");
-                            tagMatch = true;
-                            break;
-                        }
-                    }
+                    tagMatch = MatchTags(contentTags);
 
                     // If tagMatched, gather the rest of the necessary Article information.
                     if (tagMatch)
                     {
-                        // Gather blocks that hold the Title information and store to title.
-                        var titleHolder = htmlDoc.DocumentNode.Descendants(siteAttribute[10]).Where(node => node.GetAttributeValue(siteAttribute[11], "").Equals(siteAttribute[12]));
-                        foreach (var titleName in titleHolder)
-                        {
-                            title = titleName.GetAttributeValue(siteAttribute[13], "");
-                        }
+                        // Will hold the article info.
+                        string title = GatherTitle(htmlDoc, siteAttribute);
+                        string description = GatherDescription(htmlDoc, siteAttribute);
 
-                        // Gather blocks that hold the Description information and store to description.
-                        var descriptionHolder = htmlDoc.DocumentNode.Descendants(siteAttribute[14]).Where(node => node.GetAttributeValue(siteAttribute[15], "").Equals(siteAttribute[16]));
-                        foreach (var descriptionString in descriptionHolder)
-                        {
-                            description = descriptionString.GetAttributeValue(siteAttribute[17], "");
-                        }
-
+                        // Gather Tag info
                         InterestTag tag = interestTagRepository.GetSingle(d => d.TagName.Equals(siteAttribute[18]));
-                        if (title.Length > 45)
-                        {
-                            title = title.Substring(0, 45) + "...";
-                        }
 
-                        if (description.Length > 45)
-                        {
-                            description = description.Substring(0, 45) + "...";
-                        }
+
+
 
                         // Create new Article Object and assign the gathered variables.
-                        var goodArticle = new ECS.Models.Article
+                        var goodArticle = new Article
                         {
                             // Assigns articleType by attribute[18]. ie. Technology, Medical, etc.
                             TagName = tag.TagName,
@@ -283,6 +220,12 @@ namespace ECS.WebCrawler
                         if (goodArticle.ArticleTitle == "")
                         {
                             goodArticle.ArticleTitle = goodArticle.ArticleDescription;
+                        }
+
+                        //Ran into some articles that did not have a description, decided to input my own placeholder description.
+                        if (goodArticle.ArticleDescription == "")
+                        {
+                            goodArticle.ArticleDescription = "Click to read article!";
                         }
 
                         // Add the valid article to the list of valid articles.
@@ -306,5 +249,145 @@ namespace ECS.WebCrawler
             }
             return list;
         }
+
+        /// <summary>
+        ///  Gathers the tags from within the article
+        /// </summary>
+        /// <param name="htmlDoc"></param>
+        /// <param name="siteAttribute"></param>
+        /// <returns> A String of tags</returns>
+        public string[] GatherTags(HtmlDocument htmlDoc, List<string> siteAttribute)
+        {
+            string tags = "";
+            // Gather the blocks where the keywords/tags are held in the article. 
+            var tagList = htmlDoc.DocumentNode.Descendants(siteAttribute[6]).Where(node => node.GetAttributeValue(siteAttribute[7], "").Equals(siteAttribute[8])).ToList();
+
+            // Gather each tag from the block.
+            foreach (var lt in tagList)
+            {
+                tags = lt.GetAttributeValue(siteAttribute[9], "");
+            }
+
+            // Lowercase the tags for easier comparison
+            tags = tags.ToLower();
+
+
+
+            // Replace any ',' if site stored tags as a CSV.
+            tags = tags.Replace(",", " ");
+
+            // Split up tags 
+            string[] contentTags = tags.Split(' ');
+            return contentTags;
+        }
+
+
+
+        /// <summary>
+        /// Checks if any of the tags match the requested tags
+        /// </summary>
+        /// <param name="contentTags"></param>
+        /// <returns> A boolean wethere it matched or not</returns>
+        public bool MatchTags(string[] contentTags)
+        {
+            // For each tag in list, check if it is contained in HashSet of valid tags. If so, tagMatch = true, assign hit tag to Article tag then break.
+            bool tagMatch = false;
+            int tagCount = 0;
+            foreach (var t in contentTags)
+            {
+                Console.WriteLine($"The tag[{tagCount++}]:{t}");
+                if (Tags.Contains(t))
+                {
+                    Console.WriteLine($"Tag Hit with {t}");
+                    tagMatch = true;
+                    break;
+                }
+            }
+            return tagMatch;
+
+        }
+
+
+        /// <summary>
+        /// Gathers the title of the article.
+        /// </summary>
+        /// <param name="htmlDoc"></param>
+        /// <param name="siteAttribute"></param>
+        /// <returns> Returns the title of the article</returns>
+        public string GatherTitle(HtmlDocument htmlDoc, List<string> siteAttribute)
+        {
+            string title = "";
+            // Gather blocks that hold the Title information and store to title.
+            var titleHolder = htmlDoc.DocumentNode.Descendants(siteAttribute[10]).Where(node => node.GetAttributeValue(siteAttribute[11], "").Equals(siteAttribute[12]));
+            foreach (var titleName in titleHolder)
+            {
+                title = titleName.GetAttributeValue(siteAttribute[13], "");
+            }
+            if (title.Length > 45)
+            {
+                title = title.Substring(0, 45) + "...";
+            }
+            return title;
+        }
+
+
+        /// <summary>
+        /// Gathers the description of the article.
+        /// </summary>
+        /// <param name="htmlDoc"></param>
+        /// <param name="siteAttribute"></param>
+        /// <returns> The description of the article.</returns>
+        public string GatherDescription(HtmlDocument htmlDoc, List<string> siteAttribute)
+        {
+
+            string description = "";
+            // Gather blocks that hold the Description information and store to description.
+            var descriptionHolder = htmlDoc.DocumentNode.Descendants(siteAttribute[14]).Where(node => node.GetAttributeValue(siteAttribute[15], "").Equals(siteAttribute[16]));
+            foreach (var descriptionString in descriptionHolder)
+            {
+                description = descriptionString.GetAttributeValue(siteAttribute[17], "");
+            }
+            if (description.Length > 45)
+            {
+                description = description.Substring(0, 45) + "...";
+            }
+            return description;
+        }
+
+        /// <summary>
+        /// Stores the article to the DB
+        /// </summary>
+        /// <param name="article"></param>
+        /// <returns> A bool telling whether the article exists in the database.</returns>
+        public bool ArticleStorer(Article article)
+        {
+            try
+            {
+
+                if (!articleRepository.Exists(a => a.ArticleLink == article.ArticleLink))
+                {
+                    articleRepository.Insert(article);
+                    Console.WriteLine($"{article.ArticleTitle} added for {article.TagName}");
+                    return true;
+                }
+                return false;
+            }
+            // Catch if DBContext fails to save.
+            catch (DbEntityValidationException e)
+            {
+                Console.WriteLine(DateTime.Now + ": Site " + article.ArticleLink + " response: " + e.Message);
+                foreach (var validationErrors in e.EntityValidationErrors)
+                {
+                    foreach (var validationError in validationErrors.ValidationErrors)
+                    {
+                        System.Console.WriteLine("Property: {0} Error: {1}", validationError.PropertyName, validationError.ErrorMessage);
+                    }
+                }
+                return false;
+            }
+
+        }
+
+
     }
 }

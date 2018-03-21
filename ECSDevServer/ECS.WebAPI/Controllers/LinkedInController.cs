@@ -67,7 +67,7 @@ namespace ECS.WebAPI.Controllers
                     return Unauthorized();
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return Unauthorized();
             }

@@ -29,7 +29,7 @@ namespace ECS.WebCrawler.Tests
         {
 
             [Fact]
-            public async void ReturnHTMLString()
+            public async void HomeCrawler_ReturnHTMLString()
             {
                 KeyValuePair<string, List<string>> siteAttributes = new KeyValuePair<string, List<string>>("http://hugogarcia.me/site/testing.html", new List<string> { "div", "class", "test", "a", "href", "http://hugogarcia.me/site/", "meta", "name", "keywords", "content", "meta", "property", "og:title", "content", "meta", "name", "description", "content", "Testing" });
 
@@ -46,7 +46,7 @@ namespace ECS.WebCrawler.Tests
             }
 
             [Fact]
-            public async void LoadHTMLBlocks()
+            public async void HomeCrawler_LoadHTMLBlocks()
             {
                 KeyValuePair<string, List<string>> siteAttributes = new KeyValuePair<string, List<string>>("http://hugogarcia.me/site/testing.html", new List<string> { "div", "class", "test", "a", "href", "http://hugogarcia.me/site/", "meta", "name", "keywords", "content", "meta", "property", "og:title", "content", "meta", "name", "description", "content", "Testing" });
                 List<string> attributes = siteAttributes.Value;
@@ -65,7 +65,7 @@ namespace ECS.WebCrawler.Tests
             }
 
             [Fact]
-            public async void ReturnArticleLinks()
+            public async void HomeCrawler_GatherArticles()
             {
                 KeyValuePair<string, List<string>> siteAttributes = new KeyValuePair<string, List<string>>("http://hugogarcia.me/site/testing.html", new List<string> { "div", "class", "test", "a", "href", "http://hugogarcia.me/site/", "meta", "name", "keywords", "content", "meta", "property", "og:title", "content", "meta", "name", "description", "content", "Testing" });
                 List<string> actualLinks = new List<string> {
@@ -82,6 +82,8 @@ namespace ECS.WebCrawler.Tests
                 var html = await httpClient.GetStringAsync(siteAttributes.Key);
                 var htmlDoc = new HtmlDocument();
                 htmlDoc.LoadHtml(html);
+
+
                 var blocks = htmlDoc.DocumentNode.Descendants(attributes[0]).Where(node => node.GetAttributeValue(attributes[1], "").Equals(attributes[2])).ToList();
                 foreach (var li in blocks)
                 {
@@ -99,6 +101,13 @@ namespace ECS.WebCrawler.Tests
                 Assert.Equal(actualLinks, links);
             }
 
+
+            /// TODO: @Hugo Finish tests.
+            [Fact]
+            public void ArticleCrawler_GatherTags()
+            {
+
+            }
             [Fact]
             public async void CheckArticleTags()
             {

@@ -142,7 +142,7 @@ namespace ECS.WebAPI.Controllers
                         };
                         _linkedInAccessTokenRepository.Insert(token);
                     }
-                } catch (Exception ex)
+                } catch (Exception)
                 {
                     return InternalServerError();
                 }
@@ -152,7 +152,7 @@ namespace ECS.WebAPI.Controllers
                     try
                     {
                         return Redirect(returnURI);
-                    } catch (Exception ex)
+                    } catch (Exception)
                     {
                         return BadRequest("Invalid return url.");
                     }
