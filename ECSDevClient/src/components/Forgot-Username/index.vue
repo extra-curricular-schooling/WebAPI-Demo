@@ -3,12 +3,12 @@
     <div class="modal-background">
       <div class="modal-card">
         <header class="modal-card-head">
-          <p class="modal-card-title">So you forgot your password too, huh?</p>
+          <p class="modal-card-title">Smh</p>
           <button v-on:click.prevent="toggle" class="delete" aria-label="close"></button>
         </header>
         <section class="modal-card-body">
           <p class="body">
-            Dumbass...
+            -_____-
           </p>
         </section>
         <!-- <footer class="modal-card-foot">
@@ -20,9 +20,7 @@
 
 <script>
 export default {
-  // The forgot password component should request to the portal that
-  // the password will be changed.
-  name: 'ForgotPassword',
+  name: 'ForgotUsername',
   data () {
     return {
       isActive: false
@@ -33,9 +31,6 @@ export default {
       this.isActive = !this.isActive
     }
   }
-  // mounted () {
-  //   console.log('Forgot password component mounted')
-  // }
 }
 </script>
 

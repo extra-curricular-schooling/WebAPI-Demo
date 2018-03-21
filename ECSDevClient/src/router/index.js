@@ -21,6 +21,11 @@ export default new Router({
       component: () => import('@/pages/Registration')
     },
     {
+      path: '/partialregistration',
+      name: 'PartialRegistration',
+      component: () => import('@/pages/PartialRegistration')
+    },
+    {
       path: '/home',
       name: 'Home',
       component: () => import('@/pages/Home')

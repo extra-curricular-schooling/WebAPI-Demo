@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using ECS.Models;
 
 // TODO: @Scooter Split the repositories into different class files.
@@ -52,6 +53,7 @@ namespace ECS.Repositories
     /// </summary>
     public interface ISecurityQuestionRepository : IRepositoryBase<SecurityQuestion>
     {
+        List<SecurityQuestion> GetAllQuestions();
     }
 
     /// <summary>
@@ -169,6 +171,11 @@ namespace ECS.Repositories
     {
         public SecurityQuestionRepository() : base(new ECSContext())
         {
+        }
+
+        public List<SecurityQuestion> GetAllQuestions()
+        {
+            return dbSet.ToList();
         }
     }
 
