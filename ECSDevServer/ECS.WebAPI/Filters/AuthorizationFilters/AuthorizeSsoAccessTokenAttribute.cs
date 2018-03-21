@@ -22,8 +22,7 @@ namespace ECS.WebAPI.Filters.AuthorizationFilters
 
         protected override bool IsAuthorized(HttpActionContext actionContext)
         {
-            // Authentication has already occured, so we don't need to validate the token again to get the principal.
-            // TODO: @Scott Is this correct to assume?
+            // Authentication has already occured, so we don't need to validate the token again to get the principal
             var requestPrincipal = actionContext.RequestContext.Principal;
 
             if (requestPrincipal != null)

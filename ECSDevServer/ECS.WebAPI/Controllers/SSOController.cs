@@ -125,6 +125,14 @@ namespace ECS.WebAPI.Controllers
             return Content(HttpStatusCode.Redirect, new Uri("https://localhost:44311/#/Home"));
         }
 
+        // TODO: @Scott Start working on the Login Get Request
+        [HttpGet]
+        public IHttpActionResult Login([FromUri] string accessToken)
+        {
+            // This will be the controller that returns the homepage with the user logged in to our app.
+            return Ok();
+        }
+
         [HttpPost]
         public IHttpActionResult ResetPassword()
         {
