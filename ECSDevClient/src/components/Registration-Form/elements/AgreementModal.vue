@@ -4,7 +4,7 @@
       <div class="modal-card">
         <header class="modal-card-head">
           <p class="modal-card-title">Terms and Conditions</p>
-          <button v-on:click.prevent="toggleModal" class="delete" aria-label="close"></button>
+          <button v-on:click.prevent="toggle" class="delete" aria-label="close"></button>
         </header>
         <section class="modal-card-body">
           <p class="body">
@@ -30,7 +30,7 @@ export default {
     }
   },
   methods: {
-    toggleModal: function () {
+    toggle: function () {
       this.isActive = !this.isActive
     }
   }

@@ -171,7 +171,7 @@
         <agreement-modal ref="modal"></agreement-modal>
         <!-- <input type="checkbox"> -->
         <input type="checkbox" @click="checkBox" v-bind:class="{ 'checked' : agreementIsChecked }">
-        I agree to the <a @click.prevent="toggle">Terms and Conditions</a>.
+        I agree to the <a @click.prevent="toggleModal">Terms and Conditions</a>.
       </label>
     </div>
 
@@ -469,8 +469,8 @@ export default {
       }
     },
     // Togglers
-    toggle () {
-      this.$refs.modal.toggleModal()
+    toggleModal () {
+      this.$refs.modal.toggle()
     },
     checkBox () {
       this.agreementIsChecked = !this.agreementIsChecked
