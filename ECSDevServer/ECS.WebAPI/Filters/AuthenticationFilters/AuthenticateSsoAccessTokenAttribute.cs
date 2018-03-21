@@ -9,7 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Filters;
-using ECS.WebAPI.Services.Security.AccessTokens.Jwt;
+using ECS.Security.AccessTokens.Jwt;
 
 //Have the message handler set the princpal
 //httpmessagehandler

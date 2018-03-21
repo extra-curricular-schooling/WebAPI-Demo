@@ -151,6 +151,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="HttpMessageHandlers\AccessTokenAuthenticationMessageHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -186,6 +187,10 @@
     <ProjectReference Include="..\ECS.Repositories\ECS.Repositories.csproj">
       <Project>{84b9525b-6d65-493c-8bc5-61ce7ab8c325}</Project>
       <Name>ECS.Repositories</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ECS.Security\ECS.Security.csproj">
+      <Project>{31f4e181-8b78-4fcf-a79c-4c50be2ab1dd}</Project>
+      <Name>ECS.Security</Name>
     </ProjectReference>
     <ProjectReference Include="..\ECS.WebAPI.Services\ECS.WebAPI.Services.csproj">
       <Project>{e8ff7a08-685c-4b1f-a669-3628ae5a8e01}</Project>

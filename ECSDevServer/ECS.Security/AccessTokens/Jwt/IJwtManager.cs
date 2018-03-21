@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Security.Principal;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Security.Claims;
 
-namespace ECS.WebAPI.Services.Security.AccessTokens.Jwt
+namespace ECS.Security.AccessTokens.Jwt
 {
     // Fill in the rest of the comments.
     public interface IJwtManager

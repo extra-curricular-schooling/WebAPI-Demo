@@ -5,8 +5,8 @@ using ECS.Models;
 using ECS.WebAPI.Filters.AuthenticationFilters;
 using System;
 using System.Net;
-using ECS.WebAPI.Services.Security.AccessTokens.Jwt;
-using ECS.WebAPI.Services.Security.Hash;
+using ECS.Security.AccessTokens.Jwt;
+using ECS.Security.Hash;
 
 namespace ECS.WebAPI.Controllers
 {

@@ -1,18 +1,18 @@
-﻿using ECS.Repositories;
-using Microsoft.IdentityModel.Tokens;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
-using System.Net.Http;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
+using ECS.Repositories;
+using Microsoft.IdentityModel.Tokens;
 
-namespace ECS.WebAPI.Services.Security.AccessTokens.Jwt
+namespace ECS.Security.AccessTokens.Jwt
 {
-    public class SsoJwtManager : IJwtManager
+    public class JwtManager : IJwtManager
     {
+
         #region Constants and fields
         /// <summary>
         /// Use the below code to generate symmetric Secret Key
@@ -22,53 +22,48 @@ namespace ECS.WebAPI.Services.Security.AccessTokens.Jwt
         private const string Secret = "db3OIsj+BXE9NZDy0t8W3TcNekrF+2d/1sFnWG4HnV8TZY30iTOdtVWJG8abWvB1GlOgJuQZdcF2Luqm/hccMw==";
 
         // Single repository to query users associated with tokens.
-        private readonly IAccountRepository _accountRepository;
+        private static AccountRepository _accountRepository;
 
         // Instance for Singleton Pattern
-        private static SsoJwtManager _instance;
+        private static JwtManager instance;
         #endregion
 
-        private SsoJwtManager()
+        private JwtManager()
         {
             _accountRepository = new AccountRepository();
         }
 
-        public static SsoJwtManager Instance
+        public static JwtManager Instance
         {
             get
             {
-                if (_instance == null)
+                if (instance == null)
                 {
-                    _instance = new SsoJwtManager();
+                    instance = new JwtManager();
                 }
-                return _instance;
+                return instance;
             }
         }
 
         public string GenerateToken(string username, int expireMinutes = 15)
         {
-            // var account = accountRepository.GetById(username);
-            var claimsIdentity = new ClaimsIdentity(new List<Claim>()
-            {
-                new Claim("username", username),
-                //new Claim("password", account.Password),
-                new Claim("password", "pass"),
-                new Claim("application", "ecs"),
-                new Claim("roleType", "public")
-            }, "Custom");
+            var symmetricKey = Convert.FromBase64String(Secret);
+            var tokenHandler = new JwtSecurityTokenHandler();
 
             var now = DateTime.UtcNow;
-
-            var symmetricKey = Convert.FromBase64String(Secret);
-            
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = claimsIdentity,
+                Issuer = "https://localhost:44311/",
+                Subject = new ClaimsIdentity(new[]
+                        {
+                            new Claim(ClaimTypes.Name, username)
+                        }),
                 IssuedAt = now,
+                Expires = now.AddMinutes(Convert.ToInt32(expireMinutes)),
+                NotBefore = now,
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(symmetricKey), SecurityAlgorithms.HmacSha256Signature),
             };
-
-            var tokenHandler = new JwtSecurityTokenHandler();
+            
             var stoken = tokenHandler.CreateToken(tokenDescriptor);
             var token = tokenHandler.WriteToken(stoken);
 
@@ -80,8 +75,9 @@ namespace ECS.WebAPI.Services.Security.AccessTokens.Jwt
             try
             {
                 var tokenHandler = new JwtSecurityTokenHandler();
+                var jwtToken = tokenHandler.ReadToken(token) as JwtSecurityToken;
 
-                if (!(tokenHandler.ReadToken(token) is JwtSecurityToken))
+                if (jwtToken == null)
                     return null;
 
                 var symmetricKey = Convert.FromBase64String(Secret);
@@ -95,7 +91,7 @@ namespace ECS.WebAPI.Services.Security.AccessTokens.Jwt
                     IssuerSigningKey = new SymmetricSecurityKey(symmetricKey)
                 };
 
-                var principal = tokenHandler.ValidateToken(token, validationParameters, out var _);
+                var principal = tokenHandler.ValidateToken(token, validationParameters, out SecurityToken securityToken);
 
                 return principal;
             }
@@ -110,13 +106,12 @@ namespace ECS.WebAPI.Services.Security.AccessTokens.Jwt
         {
             username = null;
             var simplePrinciple = GetPrincipal(token);
-            ClaimsIdentity identity;
+            ClaimsIdentity identity = null;
 
             try
             {
                 identity = simplePrinciple.Identity as ClaimsIdentity;
-            }
-            catch (Exception ex)
+            } catch(Exception ex)
             {
                 Debug.WriteLine(ex.Source + "\n" + ex.Message + "\n" + ex.StackTrace);
                 return false;
@@ -141,15 +136,20 @@ namespace ECS.WebAPI.Services.Security.AccessTokens.Jwt
             }
 
             // Cannot use a ref or out string in a lambda expression, thus make a copy
-            var tempUsername = string.Copy(username);
+            string tempUsername = string.Copy(username);
 
             // More validation to check whether username exists in system
-            return _accountRepository.Exists(d => d.UserName == tempUsername, d => d.User);
+            if(!_accountRepository.Exists(d => d.UserName == tempUsername, d => d.User))
+            {
+                return false;
+            }
+
+            return true;
         }
 
         protected Task<IPrincipal> AuthenticateJwtToken(string token)
         {
-            if (ValidateToken(token, out var username))
+            if (ValidateToken(token, out string username))
             {
                 // based on username to get more information from database in order to build local identity  
                 var claims = new List<Claim> {
@@ -161,46 +161,6 @@ namespace ECS.WebAPI.Services.Security.AccessTokens.Jwt
                 return Task.FromResult(user);
             }
             return Task.FromResult<IPrincipal>(null);
-        }
-
-        // Should be deleted... Unless we need multiple JWTs from different headers.
-        public List<string> GetJwtsFromHttpHeaders(HttpRequestMessage request)
-        {
-            var jwtList = new List<string>();
-            if (request.Headers.Authorization != null)
-            {
-                jwtList.Add(request.Headers.Authorization.Parameter);
-            }
-            return jwtList;
-        }
-
-        public string GetJwtFromAuthorizationHeader(HttpRequestMessage request)
-        {
-            return request.Headers.Authorization.Parameter;
-        }
-
-        public Claim GetClaim(string token, string claimType)
-        {
-            // This line is called multiple times during execution... Figure out a way to get it out.
-            var principal = GetPrincipal(token);
-            return principal.FindFirst(claimType);
-        }
-
-        public string GetUsername(string token)
-        {
-            return GetClaim(token, "username").Value;
-        }
-
-        public string GetPassword(string token)
-        {
-            return GetClaim(token, "password").Value;
-        }
-
-        public Tuple<string, string> GetUsernameAndPassword(string token)
-        {
-            var username = GetClaim(token, "username");
-            var password = GetClaim(token, "password");
-            return new Tuple<string, string>(username.Value, password.Value);
         }
     }
 }

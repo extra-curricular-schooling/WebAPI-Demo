@@ -1,7 +1,7 @@
 ﻿using Xunit;
 using Xunit.Abstractions;
 using System.Threading;
-using ECS.WebAPI.Services.Security.AccessTokens.Jwt;
+using ECS.Security.AccessTokens.Jwt;
 
 namespace ECS.WebAPI.Services.Tests
 {

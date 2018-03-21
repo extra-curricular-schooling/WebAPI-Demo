@@ -4,6 +4,7 @@ using System.Web.Http.Cors;
 using ECS.DTO;
 using ECS.Models;
 using ECS.WebAPI.Services;
+using ECS.WebAPI.Services.HttpClients;
 
 namespace ECS.WebAPI.Controllers
 {
