@@ -57,20 +57,17 @@
     <Compile Include="InterestTag.cs" />
     <Compile Include="JAccessToken.cs" />
     <Compile Include="LinkedInAccessToken.cs" />
-    <Compile Include="Migrations\201803191914102_ECSContext.cs" />
-    <Compile Include="Migrations\201803191914102_ECSContext.Designer.cs">
-      <DependentUpon>201803191914102_ECSContext.cs</DependentUpon>
     <Compile Include="Migrations\201803201801370_Scott_Init.cs" />
     <Compile Include="Migrations\201803201801370_Scott_Init.Designer.cs">
       <DependentUpon>201803201801370_Scott_Init.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201803200631522_Reintroduced_LinkedIn_Table.cs" />
-    <Compile Include="Migrations\201803200631522_Reintroduced_LinkedIn_Table.Designer.cs">
-      <DependentUpon>201803200631522_Reintroduced_LinkedIn_Table.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\201803211944497_Update_ExpiredAccessToken.cs" />
     <Compile Include="Migrations\201803211944497_Update_ExpiredAccessToken.Designer.cs">
       <DependentUpon>201803211944497_Update_ExpiredAccessToken.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201803212034306_LinkedIn_Table_Reintroduced.cs" />
+    <Compile Include="Migrations\201803212034306_LinkedIn_Table_Reintroduced.Designer.cs">
+      <DependentUpon>201803212034306_LinkedIn_Table_Reintroduced.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Permission.cs" />
@@ -93,11 +90,11 @@
     <EmbeddedResource Include="Migrations\201803201801370_Scott_Init.resx">
       <DependentUpon>201803201801370_Scott_Init.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201803200631522_Reintroduced_LinkedIn_Table.resx">
-      <DependentUpon>201803200631522_Reintroduced_LinkedIn_Table.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201803211944497_Update_ExpiredAccessToken.resx">
       <DependentUpon>201803211944497_Update_ExpiredAccessToken.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803212034306_LinkedIn_Table_Reintroduced.resx">
+      <DependentUpon>201803212034306_LinkedIn_Table_Reintroduced.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

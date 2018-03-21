@@ -1,9 +1,6 @@
-﻿using ECS.DTO;
-using ECS.Models;
+﻿using ECS.Models;
 using ECS.Repositories;
-using ECS.WebAPI.Filters;
 using ECS.WebAPI.Filters.AuthenticationFilters;
-using ECS.WebAPI.Services.Security.AccessTokens.Jwt;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -16,6 +13,8 @@ using System.Web.Http.Cors;
 using System.Web.Http.Results;
 using System.Web.Script.Serialization;
 using ECS.WebAPI.Filters.AuthorizationFilters;
+using ECS.DTO;
+using ECS.Security.AccessTokens.Jwt;
 
 namespace ECS.WebAPI.Controllers
 {

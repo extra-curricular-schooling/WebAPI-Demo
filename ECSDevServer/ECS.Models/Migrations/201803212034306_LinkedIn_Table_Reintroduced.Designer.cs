@@ -7,18 +7,18 @@ namespace ECS.Models.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class Reintroduced_LinkedIn_Table : IMigrationMetadata
+    public sealed partial class LinkedIn_Table_Reintroduced : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(Reintroduced_LinkedIn_Table));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(LinkedIn_Table_Reintroduced));
         
         string IMigrationMetadata.Id
         {
-            get { return "201803200631522_Reintroduced_LinkedIn_Table"; }
+            get { return "201803212034306_LinkedIn_Table_Reintroduced"; }
         }
         
         string IMigrationMetadata.Source
         {
-            get { return null; }
+            get { return Resources.GetString("Source"); }
         }
         
         string IMigrationMetadata.Target

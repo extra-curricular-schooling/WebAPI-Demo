@@ -143,11 +143,11 @@ export default {
   },
   methods: {
     checkFrame: function () {
-      if (document.getElementById('FrameResult') == null) {
-        alert('Frame not created. Please reload')
-      } else {
-        document.getElementById('FrameResult').onload = alert('Done. You might be able to earn points after 1 minute.')
-      }
+      // if (document.getElementById('FrameResult') == null) {
+      //   alert('Frame not created. Please reload')
+      // } else {
+      //   document.getElementById('FrameResult').onload = alert('Done. You might be able to earn points after 1 minute.')
+      // }
     },
     // timerPage: function () {
     //   setTimeout(function () {
