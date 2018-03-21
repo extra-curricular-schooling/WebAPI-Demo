@@ -1,5 +1,4 @@
 ﻿using ECS.Repositories;
-using ECS.WebAPI.Services.Security.AccessTokens.Jwt;
 using System;
 using System.Linq;
 using System.Net;
@@ -10,7 +9,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Filters;
-using ECS.Models;
+using ECS.WebAPI.Services.Security.AccessTokens.Jwt;
+
+//Have the message handler set the princpal
+//httpmessagehandler
+//
 
 namespace ECS.WebAPI.Filters.AuthenticationFilters
 {
@@ -35,42 +38,40 @@ namespace ECS.WebAPI.Filters.AuthenticationFilters
                 actionDescriptor.ControllerDescriptor.GetCustomAttributes<AllowAnonymousAttribute>(true).Any();
             if (isAnonymousAllowed)
             {
-                return;
+                //return;
             }
 
             // 1. Look for credentials in the request.
             var request = context.Request;
             var authorization = request.Headers.Authorization;
 
-            // 2. If there are no credentials, do nothing.
+            // 2. If there are no credentials, do nothing. We can't authenticate you.
             if (authorization == null)
             {
-                return;
+                //return;
             }
 
             // 3. If there are credentials but the filter does not recognize the 
             //    authentication scheme, do nothing.
             if (authorization.Scheme != "Bearer")
             {
-                return;
+                //return;
             }
 
             // 4. If there are credentials that the filter understands, try to validate them.
             // 5. If the credentials are malformed, set the error result.
-            if (string.IsNullOrEmpty(authorization.Parameter))
+            var token = authorization.Parameter;
+            if (string.IsNullOrEmpty(token))
             {
                 context.ErrorResult = new AuthenticationFailureResult("Malformed credentials", request);
-                return;
+                //return;
             }
-
-            // 6. Gather necessary information to check the token.
-            var token = authorization.Parameter;
 
             // 7. Check for replay tokens.
             if (_expiredAccessTokenRepository.GetById(token) != null)
             {
                 context.ErrorResult = new AuthenticationFailureResult("Invalid token", request);
-                return;
+                //return;
             }
 
             // TODO: @Scott The expired access token insert is causing a EntityValidationError. Fix
@@ -80,6 +81,19 @@ namespace ECS.WebAPI.Filters.AuthenticationFilters
             // 8. Authentication was successful, set the principal to notify other filters that
             // the request is authenticated.
             IPrincipal principal = SsoJwtManager.Instance.GetPrincipal(token);
+            if (principal == null)
+            {
+                context.ErrorResult = new AuthenticationFailureResult("Principal is null", request);
+                //return;
+            }
+
+            //Task.fromresult.completedtask...
+            //.completedTask return
+            //taskcompletion source
+            //var tcs = new Task()
+            // tcs.setresult();
+            // return tcs.Task;
+            
             await Task.Run(() =>
             {
                 Thread.CurrentPrincipal = principal;
