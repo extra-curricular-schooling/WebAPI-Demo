@@ -21,7 +21,7 @@ namespace ECS.Models.ECSContext
 
         public DbSet<InterestTag> InterestTags { get; set; }
 
-        // public DbSet<LinkedIn> LinkedIn { get; set; }
+        public DbSet<LinkedInAccessToken> LinkedInAccessTokens { get; set; }
 
         public DbSet<JAccessToken> JAccessTokens { get; set; }
 

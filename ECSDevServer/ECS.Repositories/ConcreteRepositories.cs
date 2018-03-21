@@ -41,6 +41,13 @@ namespace ECS.Repositories
     /// <summary>
     /// 
     /// </summary>
+    public interface ILinkedInAccessTokenRepository: IRepositoryBase<LinkedInAccessToken>
+    {
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
     public interface ISaltRepository: IRepositoryBase<Salt>
     {
     }
@@ -133,6 +140,17 @@ namespace ECS.Repositories
     public class JAccessTokenRepository : RepositoryBase<JAccessToken>, IJAccessTokenRepository
     {
         public JAccessTokenRepository () : base (new ECSContext())
+        {
+
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public class LinkedInAccessTokenRepository: RepositoryBase<LinkedInAccessToken>, ILinkedInAccessTokenRepository
+    {
+        public LinkedInAccessTokenRepository () : base (new ECSContext())
         {
 
         }

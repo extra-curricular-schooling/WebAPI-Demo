@@ -23,7 +23,7 @@
     </div>
     <div class="field is-grouped is-grouped-centered">
       <p class="control">
-        <button class="button is-primary login-button" v-on:click="postCredentials" :disabled="isDisabled">
+        <button class="button is-primary login-button" @keyup.enter="postCredentials" v-on:click="postCredentials" :disabled="isDisabled">
           Login
         </button>
       </p>
@@ -65,6 +65,7 @@ export default {
           })
             .then((response) => {
               this.$store.dispatch('signIn', response.data.AuthToken)
+              this.$store.dispatch('updateToken', response.data.AuthToken)
               this.$router.push('/Home')
             })
             .catch(function (error) {

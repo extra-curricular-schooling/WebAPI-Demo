@@ -9,7 +9,7 @@ namespace ECS.Models
     /// have one access token.
     /// </summary>
     // ASk luis if this is an API key not a token
-    public class LinkedIn
+    public class LinkedInAccessToken
     {
         //Identifier for JWT's
         [Key]
@@ -28,7 +28,7 @@ namespace ECS.Models
         [Required]
         [Column(Order = 2)]
         [StringLength(2000)]
-        public string AccessToken { get; set; }
+        public string Value { get; set; }
 
         // The date and time the token was created
         [Required]
@@ -42,7 +42,7 @@ namespace ECS.Models
         //token has one Account
         public Account Account { get; set; }
 
-        public LinkedIn()
+        public LinkedInAccessToken()
         {
             Expired = false;
         }

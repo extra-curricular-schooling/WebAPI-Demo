@@ -1,8 +1,10 @@
 ﻿using DotNetOpenAuth.LinkedInOAuth2;
+using ECS.Models;
 using ECS.Repositories;
 using ECS.WebAPI.Filters;
 using ECS.WebAPI.Services.Security.AccessTokens.Jwt;
 using Microsoft.AspNet.Membership.OpenAuth;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
@@ -19,7 +21,8 @@ namespace ECS.WebAPI.Controllers
     public class OAuthController : ApiController
     {
         #region Constants and fields
-        private AccountRepository _accountRepository = new AccountRepository();
+        private readonly IAccountRepository _accountRepository = new AccountRepository();
+        private readonly ILinkedInAccessTokenRepository _linkedInAccessTokenRepository = new LinkedInAccessTokenRepository();
         #endregion
 
         [AllowAnonymous]
@@ -30,6 +33,7 @@ namespace ECS.WebAPI.Controllers
             string ProviderName = OpenAuth.GetProviderNameFromCurrentRequest();
 
             string username = "";
+            string returnURI = "";
             if (ProviderName == null || ProviderName == "")
             {
                 var nvs = Request.GetQueryNameValuePairs();
@@ -56,6 +60,12 @@ namespace ECS.WebAPI.Controllers
                     else
                     {
                         return Unauthorized();
+                    }
+
+                    if (provideritem["returnURI"] != null)
+                    {
+                        returnURI = provideritem["returnURI"];
+                        returnURI = returnURI.Replace(":/", "://");
                     }
                 }
                 else
@@ -112,7 +122,44 @@ namespace ECS.WebAPI.Controllers
                     AccessToken = accessToken
                 });
 
-                return Json(new { LinkedInAccessToken = accessToken });
+                try
+                {
+                    if (_linkedInAccessTokenRepository.Exists(d => d.UserName == username, d => d.Account))
+                    {
+                        LinkedInAccessToken token = _linkedInAccessTokenRepository.GetSingle(d => d.UserName == username, d => d.Account);
+                        token.Expired = false;
+                        token.TokenCreation = DateTime.UtcNow;
+                        token.Value = accessToken;
+                        _linkedInAccessTokenRepository.Update(token);
+                    }
+                    else
+                    {
+                        LinkedInAccessToken token = new LinkedInAccessToken()
+                        {
+                            UserName = username,
+                            TokenCreation = DateTime.UtcNow,
+                            Value = accessToken
+                        };
+                        _linkedInAccessTokenRepository.Insert(token);
+                    }
+                } catch (Exception ex)
+                {
+                    return InternalServerError();
+                }
+
+                if(returnURI != "null")
+                {
+                    try
+                    {
+                        return Redirect(returnURI);
+                    } catch (Exception ex)
+                    {
+                        return BadRequest("Invalid return url.");
+                    }
+                    
+                }
+
+                return Ok();
             }
         }
 
@@ -120,14 +167,14 @@ namespace ECS.WebAPI.Controllers
         [HttpGet]
         [Route("RedirectToLinkedIn")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET")]
-        public IHttpActionResult RedirectToLinkedIn(string authtoken)
+        public IHttpActionResult RedirectToLinkedIn(string authtoken, string returnURI)
         {
             string username;
             
             if (JwtManager.Instance.ValidateToken(authtoken, out username))
             {
                 string provider = "linkedin";
-                var redirectUrl = "~/OAuth/ExternalLoginCallback?username=" + username;
+                var redirectUrl = "~/OAuth/ExternalLoginCallback?username=" + username + "&returnURI=" + returnURI;
                 OpenAuth.RequestAuthentication(provider, redirectUrl);
                 return Ok();
             }

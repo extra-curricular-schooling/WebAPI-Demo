@@ -8,7 +8,7 @@
         <div id ="groups"  v-for="group in groups" :key="group.name">
           <a id="groupName" v-text="group.name"  @click="group.open=!group.open" ></a>
           <ul v-show="group.open">
-            <ul class="button is-link" id="articles" v-for="article in group.articles" :key="article" v-text="article.title" v-on:click="target(article.url)">
+            <ul class="button is-link" id="articles" v-for="article in group.articles" :key="article.title" v-text="article.title" v-on:click="target(article.title, article.url)">
             </ul>
           </ul>
         </div>
@@ -25,11 +25,13 @@
     <iframe src="https://ecschooling.org/" id = "FrameResult" name="FrameResult" @load="mounted" @error="alert('Frame not loaded')" height="700" width=100% style="border:8px solid black;" ></iframe>
   </main>
   </Slideout>
+  <LinkedInPostModal/>
+  <RedirectModal/>
 </div>
 </template>
 <script>
-
-// import Vue from 'vue'
+import LinkedInPostModal from '../components/LinkedIn-Modal/Index'
+import RedirectModal from '../components/Redirect-Modal/index'
 import Slideout from 'vue-slideout'
 var groups = {
   'Arts & Design': {
@@ -135,6 +137,8 @@ var groups = {
 export default {
   name: 'home',
   components: {
+    LinkedInPostModal,
+    RedirectModal,
     Slideout
   },
   methods: {
@@ -164,9 +168,12 @@ export default {
     open: function () {
       console.log('slideoutOpen')
     },
-    target: function (link) {
+    target: function (title, link) {
       console.log('target clicked')
       document.getElementById('FrameResult').src = link
+      this.$store.dispatch('updateArticle', link)
+      this.$store.dispatch('updateTitle', title)
+      this.$emit('articleChosen')
     }
   },
   data () {

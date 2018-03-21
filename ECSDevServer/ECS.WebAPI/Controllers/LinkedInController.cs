@@ -1,6 +1,9 @@
 ﻿using ECS.DTO;
+using ECS.Models;
+using ECS.Repositories;
 using ECS.WebAPI.Filters;
 using ECS.WebAPI.Filters.AuthenticationFilters;
+using ECS.WebAPI.Services.Security.AccessTokens.Jwt;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -23,6 +26,8 @@ namespace ECS.WebAPI.Controllers
 
         #region Constants and fields
         private const string _defaultAccessGateway = "https://api.linkedin.com/v1/";
+        private readonly IJAccessTokenRepository _jAccessTokenRepository = new JAccessTokenRepository();
+        private readonly ILinkedInAccessTokenRepository _linkedInAccessTokenRepository = new LinkedInAccessTokenRepository();
         #endregion
 
         // GET: LinkedIn]
@@ -32,6 +37,41 @@ namespace ECS.WebAPI.Controllers
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
         public IHttpActionResult SharePost(LinkedInPostDTO postData)
         {
+            // Credentials is already read and deserialized into a DTO. Validate it.
+            Validate(postData);
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            string jwtToken = Request.Headers.Authorization.Parameter;
+            string username = "";
+            if (!JwtManager.Instance.ValidateToken(jwtToken, out username))
+            {
+                return Unauthorized();
+            }
+
+            LinkedInAccessToken access;
+
+            try
+            {
+                if (_linkedInAccessTokenRepository.Exists(d => d.UserName == username, d => d.Account))
+                {
+                    access = _linkedInAccessTokenRepository.GetSingle(d => d.UserName == username, d => d.Account);
+                    if (access.TokenCreation.AddDays(60).CompareTo(DateTime.Now.ToUniversalTime()) <= 0 || access.Expired == true)
+                    {
+                        return BadRequest("ERR7");
+                    }
+                }
+                else
+                {
+                    return Unauthorized();
+                }
+            }
+            catch (Exception ex)
+            {
+                return Unauthorized();
+            }
+
             var requestUrl = _defaultAccessGateway + "people/~/shares?format=json";
             var webRequest = (HttpWebRequest)WebRequest.Create(requestUrl);
 
@@ -43,12 +83,13 @@ namespace ECS.WebAPI.Controllers
             var requestHeaders = new NameValueCollection
             {
                 {"x-li-format", "json" },
-                {"Authorization", "Bearer " + postData.AccessToken}, //It is important "Bearer " is included with the access token here.
+                {"Authorization", "Bearer " + access.Value}, //It is important "Bearer " is included with the access token here.
             };
 
             webRequest.Headers.Add(requestHeaders);
 
             //Build JSON request.
+            // "https://media-exp2.licdn.com/media/AAMABABqAAIAAQAAAAAAAA7yAAAAJGU1OTQ2NGFlLTNjNzEtNGZjOS04NjVkLWIxNjQ4NTY5ZjNlYw.png" 
             var jsonMsg = new
             {
                 comment = postData.Comment,
@@ -57,7 +98,7 @@ namespace ECS.WebAPI.Controllers
                     { "title", postData.Title },
                     { "description", postData.Description },
                     { "submitted-url", postData.SubmittedUrl },
-                    { "submitted-image-url", "https://media-exp2.licdn.com/media/AAMABABqAAIAAQAAAAAAAA7yAAAAJGU1OTQ2NGFlLTNjNzEtNGZjOS04NjVkLWIxNjQ4NTY5ZjNlYw.png" }
+                    { "submitted-image-url", "" }
                 },
                 visibility = new
                 {
@@ -88,6 +129,10 @@ namespace ECS.WebAPI.Controllers
                         var json = JObject.Parse(response);
                         var updateKey = json.Value<string>("updateKey");
                         var updateUrl = json.Value<string>("updateUrl");
+
+                        access.Expired = true;
+                        _linkedInAccessTokenRepository.Update(access);
+
                         return Json(new { UpdateKey = updateKey, UpdateUrl = updateUrl });
                     }
                 }

@@ -3,6 +3,7 @@ using ECS.Repositories;
 using ECS.WebAPI.Services.Security.AccessTokens.Jwt;
 using System;
 using System.Diagnostics;
+using System.Net.Http.Headers;
 using System.Web.Http;
 using System.Web.Http.Controllers;
 
@@ -17,8 +18,21 @@ namespace ECS.WebAPI.Filters.AuthenticationFilters
             string accessTokenFromRequest = "";
             if (actionContext.Request.Headers.Authorization.ToString() != null)
             {
+                var authHeader = actionContext.Request.Headers.Authorization;
+                if (authHeader != null)
+                {
+                    var authHeaderVal = AuthenticationHeaderValue.Parse(authHeader.ToString());
+
+                    // RFC 2617 sec 1.2, "scheme" name is case-insensitive
+                    if (authHeaderVal.Scheme.Equals("bearer",
+                            StringComparison.OrdinalIgnoreCase) &&
+                        authHeaderVal.Parameter != null)
+                    {
+                        accessTokenFromRequest = authHeaderVal.Parameter;
+                    }
+                }
                 // get the access token
-                accessTokenFromRequest = actionContext.Request.Headers.Authorization.ToString();
+                // accessTokenFromRequest = actionContext.Request.Headers.Authorization.ToString();
 
                 string username = "";
                 if (JwtManager.Instance.ValidateToken(accessTokenFromRequest, out username))

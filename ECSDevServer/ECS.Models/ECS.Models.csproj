@@ -56,9 +56,14 @@
     <Compile Include="ECSContext.cs" />
     <Compile Include="InterestTag.cs" />
     <Compile Include="JAccessToken.cs" />
+    <Compile Include="LinkedInAccessToken.cs" />
     <Compile Include="Migrations\201803191914102_ECSContext.cs" />
     <Compile Include="Migrations\201803191914102_ECSContext.Designer.cs">
       <DependentUpon>201803191914102_ECSContext.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201803200631522_Reintroduced_LinkedIn_Table.cs" />
+    <Compile Include="Migrations\201803200631522_Reintroduced_LinkedIn_Table.Designer.cs">
+      <DependentUpon>201803200631522_Reintroduced_LinkedIn_Table.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Permission.cs" />
@@ -79,6 +84,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201803191914102_ECSContext.resx">
       <DependentUpon>201803191914102_ECSContext.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803200631522_Reintroduced_LinkedIn_Table.resx">
+      <DependentUpon>201803200631522_Reintroduced_LinkedIn_Table.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,8 +1,8 @@
 <template>
   <div>
-    <button v-on:click="toggleLinkedInModal" class="button is-primary">Share on LinkedIn!</button>
+    <button v-if="isButtonVisible" v-on:click="modalActions" class="button is-primary">Share on LinkedIn!</button>
     <div class="modal" v-bind:class="{ 'is-active' : isActive }">
-      <div class="modal-background"></div>
+      <div v-on:click="toggleLinkedInModal" class="modal-background"></div>
       <div id="linkedin-modal" class="modal-card">
         <header class="modal-card-head">
           <p class="modal-card-title">Share this article on LinkedIn!</p>
@@ -112,43 +112,62 @@
 </template>
 
 <script>
-import Axios from "axios";
+import Axios from 'axios'
+import EventBus from '../../assets/js/EventBus.js'
+
 export default {
-  name: "LinkedInPostModal",
+  name: 'LinkedInPostModal',
   data() {
     return {
       isActive: false,
+      isButtonVisible: true,
       isConfirm: false,
+      isRedirect: false,
       postData: {
-        comment: "Check this article I found on ECS!",
-        title: "Placeholder title",
-        description: "",
-        submittedurl: "https://developer.linkedin.com/",
-        code: "connections-only"
+        comment: 'Check this article I found on ECS!',
+        title: '',
+        description: '',
+        submittedurl: '',
+        code: 'connections-only'
       },
       currentDateTime: new Date()
-    };
+    }
   },
   methods: {
-    redirectToLinkedIn: function() {
-      window.location.assign(
-        "https://localhost:44311/OAuth/RedirectToLinkedIn?authtoken=" +
-          window.sessionStorage.auth_token
-      );
+    updateArticleInfo: function () {
+      this.postData.title = this.$store.getters.getArticleTitle
+      this.postData.submittedurl = this.$store.getters.getCurrentArticle
+      this.currentDateTime = new Date()
     },
     toggleLinkedInModal: function() {
       this.isActive = !this.isActive;
     },
+    modalActions: function () {
+      this.updateArticleInfo()
+      this.toggleLinkedInModal()
+    },
     toggleConfirmModal: function() {
       this.isConfirm = !this.isConfirm;
     },
+    toggleRedirectModal: function () {
+      this.$store.dispatch('updateRedirectUri', 'https://localhost:44311/OAuth/RedirectToLinkedIn?authtoken=' +
+          this.$store.getters.getAuthToken + '&returnuri=' + window.location.href)
+      this.$store.dispatch('updateErrorMessage', 'Your LinkedIn session has expired, do you wish to renew it?')
+      this.$store.dispatch('updateRedirectVisiblity', true)
+      EventBus.$emit('redirect')
+    },
+    redirectToLinkedIn: function () {
+      window.location.assign(
+        'https://localhost:44311/OAuth/RedirectToLinkedIn?authtoken=' +
+          this.$store.getters.getAuthToken + '&returnuri=' + window.location.href
+      )
+    },
     shareToLinkedIn: function() {
       Axios({
-        method: "POST",
+        method: 'POST',
         url: this.$store.getters.getLinkedInPostURI,
         headers: this.$store.getters.getRequestHeaders,
         data: {
-          accesstoken: this.$store.getters.getLinkedInAccessToken,
           comment: this.postData.comment,
           title: this.postData.title,
           description: this.postData.description,
@@ -162,12 +181,15 @@ export default {
           myNode.href = response.data.UpdateUrl;
           toggleConfirmModal();
         })
-        .catch(function(error) {
-          redirectToLinkedIn()
-        });
+        .catch( (error) => {
+          if(error.response.data.message === 'ERR7') {
+            this.toggleLinkedInModal()
+            this.toggleRedirectModal()
+          }
+        })
     }
   }
-};
+}
 </script>
 
 <style scoped>
