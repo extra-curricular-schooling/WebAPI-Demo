@@ -2,6 +2,7 @@
 using System;
 using System.Net.Http.Formatting;
 using System.Web.Http;
+using ECS.WebAPI.HttpMessageHandlers;
 
 namespace ECS.WebAPI
 {
@@ -31,6 +32,14 @@ namespace ECS.WebAPI
                 name: "Index",
                 routeTemplate: "{id}.html",
                 defaults: new { id = "index" });
+
+            config.Routes.MapHttpRoute(
+                name: "Sso",
+                routeTemplate: "Sso/{action}/{id}",
+                defaults: new {id = RouteParameter.Optional, action = "Registration"},
+                constraints: null,
+                handler: new AccessTokenAuthenticationMessageHandler()
+            );
 
             // Default Controller Route
             config.Routes.MapHttpRoute(

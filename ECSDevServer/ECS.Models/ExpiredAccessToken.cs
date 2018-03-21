@@ -1,19 +1,15 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ECS.Models
 {
     public class ExpiredAccessToken
     {
-        public ExpiredAccessToken()
-        {
-
-        }
-        public ExpiredAccessToken(string token)
-        {
-            Token = token;
-        }
-
         [Key]
-        public string Token { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public string ExpiredTokenId { get; set; }
+
+        [Required]
+        public string ExpiredTokenValue { get; set; }
     }
 }

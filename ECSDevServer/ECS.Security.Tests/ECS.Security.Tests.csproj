@@ -67,7 +67,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="JwtManagerTest.cs" />
+    <Compile Include="AccessTokens\Jwt\SsoJwtManagerTest.cs" />
+    <Compile Include="AccessTokens\Jwt\JwtManagerTest.cs" />
+    <Compile Include="Hash\HashServiceTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

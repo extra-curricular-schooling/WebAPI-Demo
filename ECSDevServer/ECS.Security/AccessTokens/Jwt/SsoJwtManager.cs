@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http;
 using System.Security.Claims;
-using System.Security.Principal;
-using System.Threading.Tasks;
 using ECS.Repositories;
 using Microsoft.IdentityModel.Tokens;
 
@@ -88,7 +85,6 @@ namespace ECS.Security.AccessTokens.Jwt
 
                 var validationParameters = new TokenValidationParameters()
                 {
-                    RequireExpirationTime = true,
                     // Should be true?
                     ValidateIssuer = false,
                     ValidateAudience = false,
@@ -108,59 +104,7 @@ namespace ECS.Security.AccessTokens.Jwt
 
         public bool ValidateToken(string token, out string username)
         {
-            username = null;
-            var simplePrinciple = GetPrincipal(token);
-            ClaimsIdentity identity;
-
-            try
-            {
-                identity = simplePrinciple.Identity as ClaimsIdentity;
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.Source + "\n" + ex.Message + "\n" + ex.StackTrace);
-                return false;
-            }
-
-            if (identity == null)
-            {
-                return false;
-            }
-
-            if (!identity.IsAuthenticated)
-            {
-                return false;
-            }
-
-            var usernameClaim = identity.FindFirst(ClaimTypes.Name);
-            username = usernameClaim?.Value;
-
-            if (string.IsNullOrEmpty(username))
-            {
-                return false;
-            }
-
-            // Cannot use a ref or out string in a lambda expression, thus make a copy
-            var tempUsername = string.Copy(username);
-
-            // More validation to check whether username exists in system
-            return _accountRepository.Exists(d => d.UserName == tempUsername, d => d.User);
-        }
-
-        protected Task<IPrincipal> AuthenticateJwtToken(string token)
-        {
-            if (ValidateToken(token, out var username))
-            {
-                // based on username to get more information from database in order to build local identity  
-                var claims = new List<Claim> {
-                    new Claim(ClaimTypes.Name, username)  
-                    // Add more claims if needed: Roles, ...  
-                };
-                var identity = new ClaimsIdentity(claims, "Jwt");
-                IPrincipal user = new ClaimsPrincipal(identity);
-                return Task.FromResult(user);
-            }
-            return Task.FromResult<IPrincipal>(null);
+            throw new NotImplementedException();
         }
 
         // Should be deleted... Unless we need multiple JWTs from different headers.
@@ -186,21 +130,10 @@ namespace ECS.Security.AccessTokens.Jwt
             return principal.FindFirst(claimType);
         }
 
-        public string GetUsername(string token)
+        public string GetClaimValue(string token, string claimType)
         {
-            return GetClaim(token, "username").Value;
-        }
-
-        public string GetPassword(string token)
-        {
-            return GetClaim(token, "password").Value;
-        }
-
-        public Tuple<string, string> GetUsernameAndPassword(string token)
-        {
-            var username = GetClaim(token, "username");
-            var password = GetClaim(token, "password");
-            return new Tuple<string, string>(username.Value, password.Value);
+            var principal = GetPrincipal(token);
+            return principal.FindFirst(claimType).Value;
         }
     }
 }

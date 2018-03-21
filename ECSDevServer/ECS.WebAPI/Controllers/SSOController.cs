@@ -48,8 +48,8 @@ namespace ECS.WebAPI.Controllers
             var token = SsoJwtManager.Instance.GetJwtFromAuthorizationHeader(Request);
 
             // Read the JWT, and grab the userName claim.
-            var userName = SsoJwtManager.Instance.GetUsername(token);
-            var password = SsoJwtManager.Instance.GetPassword(token);
+            var userName = SsoJwtManager.Instance.GetClaimValue(token, "username");
+            var password = SsoJwtManager.Instance.GetClaimValue(token, "password");
 
             // Proccess any other information.
 
@@ -94,8 +94,8 @@ namespace ECS.WebAPI.Controllers
             var token = SsoJwtManager.Instance.GetJwtFromAuthorizationHeader(Request);
 
             // Read the JWT, and grab the userName claim.
-            var username = SsoJwtManager.Instance.GetUsername(token);
-            var password = SsoJwtManager.Instance.GetPassword(token);
+            var username = SsoJwtManager.Instance.GetClaimValue(token, "username");
+            var password = SsoJwtManager.Instance.GetClaimValue(token, "password");
 
             // TODO: @Scooter Get the salt repository able to grab salt by username.
             var saltModel = _saltRepository.GetSaltByUsername(username);
@@ -109,7 +109,10 @@ namespace ECS.WebAPI.Controllers
 
             // Set old token to expired list.
             var oldAccessToken = _jwtAccessTokenRepository.GetById(username);
-            var deadToken = new ExpiredAccessToken(oldAccessToken.Value);
+            var deadToken = new ExpiredAccessToken
+            {
+                ExpiredTokenValue = oldAccessToken.Value
+            };
             _expiredAccessTokenRepository.Insert(deadToken);
 
             // Store JWT in DB.
@@ -140,13 +143,13 @@ namespace ECS.WebAPI.Controllers
             var token = SsoJwtManager.Instance.GetJwtFromAuthorizationHeader(Request);
 
             // Retrieve username
-            var username = SsoJwtManager.Instance.GetUsername(token);
+            var username = SsoJwtManager.Instance.GetClaimValue(token, "username");
             
             // Get related account from username
             var account = _accountRepository.GetById(username);
 
             // Retrieve password, create salt, create salted password
-            var password = SsoJwtManager.Instance.GetPassword(token);
+            var password = SsoJwtManager.Instance.GetClaimValue(token, "password");
             var passwordSalt = HashService.Instance.CreateSaltKey();
             var hashedPassword = HashService.Instance.HashPasswordWithSalt(passwordSalt, password);
 

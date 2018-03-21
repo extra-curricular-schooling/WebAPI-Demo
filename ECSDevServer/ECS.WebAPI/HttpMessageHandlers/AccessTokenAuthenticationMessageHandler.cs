@@ -12,7 +12,7 @@ namespace ECS.WebAPI.HttpMessageHandlers
 {
     public class AccessTokenAuthenticationMessageHandler : HttpMessageHandler
     {
-        private readonly IExpiredAccessTokenRepository _expiredAccessTokenRepository;
+        private IExpiredAccessTokenRepository _expiredAccessTokenRepository;
 
         public AccessTokenAuthenticationMessageHandler()
         {
@@ -46,16 +46,19 @@ namespace ECS.WebAPI.HttpMessageHandlers
             else
             {
                 // TODO: @Scott The expired access token insert is causing a EntityValidationError. Fix
+                // The problem is that the token is longer than 128 characters? Doesn't seem right but ok...
                 // Insert One time token
                 _expiredAccessTokenRepository.Insert(new ExpiredAccessToken
                 {
-                    Token = token
+                    ExpiredTokenValue = token
                 });
 
                 // 5. Authentication was successful, set the principal to notify other filters that
                 // the request is authenticated.
                 try
                 {
+                    // TODO: @Scott SsoJwtManager is the only dependency from making this generic.
+                    // Need to figure out how to validate and get token.
                     IPrincipal principal = SsoJwtManager.Instance.GetPrincipal(token);
                     Thread.CurrentPrincipal = principal;
                     request.GetRequestContext().Principal = principal;

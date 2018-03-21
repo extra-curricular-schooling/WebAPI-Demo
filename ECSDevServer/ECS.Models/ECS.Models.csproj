@@ -60,6 +60,10 @@
     <Compile Include="Migrations\201803201801370_Scott_Init.Designer.cs">
       <DependentUpon>201803201801370_Scott_Init.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201803211944497_Update_ExpiredAccessToken.cs" />
+    <Compile Include="Migrations\201803211944497_Update_ExpiredAccessToken.Designer.cs">
+      <DependentUpon>201803211944497_Update_ExpiredAccessToken.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Permission.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -80,6 +84,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201803201801370_Scott_Init.resx">
       <DependentUpon>201803201801370_Scott_Init.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803211944497_Update_ExpiredAccessToken.resx">
+      <DependentUpon>201803211944497_Update_ExpiredAccessToken.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

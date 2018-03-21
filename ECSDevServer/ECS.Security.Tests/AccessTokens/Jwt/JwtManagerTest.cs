@@ -1,9 +1,9 @@
-﻿using Xunit;
-using Xunit.Abstractions;
-using System.Threading;
+﻿using System.Threading;
 using ECS.Security.AccessTokens.Jwt;
+using Xunit;
+using Xunit.Abstractions;
 
-namespace ECS.WebAPI.Services.Tests
+namespace ECS.Security.Tests.AccessTokens.Jwt
 {
     public class JwtManagerTest
     {

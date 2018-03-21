@@ -12,11 +12,15 @@ using System;
 using ECS.DTO;
 using Moq;
 using ECS.Models;
+using ECS.Security.AccessTokens.Jwt;
 
 namespace ECS.WebAPI.Tests.Controllers
 {
     public class SsoControllerTests
     {
+        private const string Username = "user";
+        private const string Password = "pass";
+
         // This is an integration test worthy method because it has so many dependencies
         private static void SetupControllerIntegration(HttpMethod verb,
             ApiController controller, string controllerName, string actionName, int id)
@@ -51,15 +55,35 @@ namespace ECS.WebAPI.Tests.Controllers
             controller.Request.Properties[HttpPropertyKeys.HttpConfigurationKey] = config;
         }
 
-        public class Login
+        // Make a controller and pass it back.
+        // Only use this if you do not need repository functionality in the unit test.
+        private static SsoController SetupControllerWithEmptyRepoMocks()
+        {
+            var accountRepository = new Mock<IAccountRepository>();
+            var jwtRepository = new Mock<IJAccessTokenRepository>();
+            var saltRepository = new Mock<ISaltRepository>();
+            var expiredAccessTokenRepository = new Mock<IExpiredAccessTokenRepository>();
+            var controller = new SsoController(accountRepository.Object, jwtRepository.Object, saltRepository.Object, expiredAccessTokenRepository.Object);
+            return controller;
+        }
+
+        // TODO: @Scott Test the post methods for SSO registration
+        public class PostRegistration
+        {
+
+        }
+
+        
+        public class PostLogin
         {
             private readonly ITestOutputHelper _output;
 
-            public Login(ITestOutputHelper output)
+            public PostLogin(ITestOutputHelper output)
             {
-
                 _output = output;
             }
+
+            
 
             // Creates a new mocked Controller
             private static void SetupDummyController()
@@ -91,15 +115,14 @@ namespace ECS.WebAPI.Tests.Controllers
             public void RouteIsRecognized()
             {
                 // Arrange
-                string controllerName = "Sso";
-                string actionName = "Login";
-                Mock<IAccountRepository> accountRepository = new Mock<IAccountRepository>();
-                Mock<IJAccessTokenRepository> jwtRepository = new Mock<IJAccessTokenRepository>();
-                Mock<ISaltRepository> saltRepository = new Mock<ISaltRepository>();
+                var accountRepository = new Mock<IAccountRepository>();
+                var jwtRepository = new Mock<IJAccessTokenRepository>();
+                var saltRepository = new Mock<ISaltRepository>();
                 var expiredAccessTokenRepository = new Mock<IExpiredAccessTokenRepository>();
-                SsoController controller = new SsoController(accountRepository.Object,
+                var controller = new SsoController(accountRepository.Object,
                     jwtRepository.Object, saltRepository.Object, expiredAccessTokenRepository.Object);
-                SetupControllerWithoutIdIntegration(HttpMethod.Post, controller, controllerName, actionName);
+
+                //SetupControllerWithoutIdIntegration(HttpMethod.Post, controller, controllerName, actionName);
 
                 // Act
                 // Make sure that you actually simulate calling a route... might be hard to test.
@@ -132,17 +155,19 @@ namespace ECS.WebAPI.Tests.Controllers
 
             // Does the post work?
             [Fact]
-            public void PostReturnsCreatedStatusCode()
+            public void PostReturnsRedirectStatusCode()
             {
                 // Arrange
+                
+                var ssoJwtManager = new Mock<SsoJwtManager>();
                 var accountRepository = new Mock<IAccountRepository>();
                 var jwtRepository = new Mock<IJAccessTokenRepository>();
                 var saltRepository = new Mock<ISaltRepository>();
                 var expiredAccessTokenRepository = new Mock<IExpiredAccessTokenRepository>();
-                // Setup rules for repositories
+                // Setup rules for Mocks
+                //ssoJwtManager.Setup(manager => manager.GenerateToken(Username, 15)).Returns()
                 var controller = new SsoController(accountRepository.Object,
                     jwtRepository.Object, saltRepository.Object, expiredAccessTokenRepository.Object);
-                // Need the information from the JWT to work here.
 
                 // Act
                 var result = controller.Login();
@@ -227,6 +252,9 @@ namespace ECS.WebAPI.Tests.Controllers
 
             // Do I send a successful response back?
 
+            // Calls the JWT Manager to validate the token
+
+
 
 
             // The following are not the responsiblity of the controller:
@@ -245,9 +273,19 @@ namespace ECS.WebAPI.Tests.Controllers
             // Do the credentials get saved into the repository/gateway? (Data access response)
 
         }
-        public class Register
+
+        // TODO: @Scott Test the get methods for SSO Login
+        public class GetLogin
         {
 
         }
+
+        // TODO: @Scott Test the post methods for SSO Reset Password
+        public class PostResetPassword
+        {
+
+        }
+
+        
     }
 }
