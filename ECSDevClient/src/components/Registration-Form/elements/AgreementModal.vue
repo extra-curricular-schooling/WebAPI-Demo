@@ -1,27 +1,26 @@
 <template>
-  <div>
-    <input type="checkbox">
-    I agree to the <a v-on:click="showModal">Terms and Conditions</a>.
-    <!-- Agreement Modal -->
-    <div class="modal" v-bind:class="{ 'is-active' : isActive }">
-      <div class="modal-background">
-        <div class="modal-content">
-          <div class="box">
-            <h1>Terms and Conditions</h1><br>
-            <p>{{ body }}</p>
-          </div>
-        </div>
+  <div class="modal" v-bind:class="{ 'is-active' : isActive }">
+    <div class="modal-background">
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">Terms and Conditions</p>
+          <button v-on:click.prevent="toggle" class="delete" aria-label="close"></button>
+        </header>
+        <section class="modal-card-body">
+          <p class="body">
+            <span v-html="body"></span>
+          </p>
+        </section>
+        <!-- <footer class="modal-card-foot">
+        </footer> -->
       </div>
-      <button v-on:click="hideModal" class="modal-close"></button>
     </div>
-    <!-- End Modal -->
   </div>
 </template>
 
 <script>
 /* eslint-disable */
-import content from '!!raw-loader!@/assets/raw/agreement-content.txt'
-
+import content from '!!html-loader!@/assets/raw/agreement-content.html'
 export default {
   name: 'AgreementModal',
   data () {
@@ -31,10 +30,7 @@ export default {
     }
   },
   methods: {
-    showModal: function () {
-      this.isActive = !this.isActive
-    },
-    hideModal: function () {
+    toggle: function () {
       this.isActive = !this.isActive
     }
   }
@@ -42,11 +38,13 @@ export default {
 </script>
 
 <style scoped>
-h1 {
-    text-align: center;
+.body {
+  text-align: justify;
 }
-
-p {
-    text-align: justify;
+.delete {
+  position: relative;
+}
+.modal-card {
+  top: 20px;
 }
 </style>

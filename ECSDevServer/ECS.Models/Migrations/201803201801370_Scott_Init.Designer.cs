@@ -7,13 +7,13 @@ namespace ECS.Models.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class ECSContext : IMigrationMetadata
+    public sealed partial class Scott_Init : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(ECSContext));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Scott_Init));
         
         string IMigrationMetadata.Id
         {
-            get { return "201803191914102_ECSContext"; }
+            get { return "201803201801370_Scott_Init"; }
         }
         
         string IMigrationMetadata.Source

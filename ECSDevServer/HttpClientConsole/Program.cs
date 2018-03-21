@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using ECS.DTO;
 using System.Net.Http.Headers;
 using System.Net;
+using ECS.WebAPI.Services.HttpClients;
 
 namespace HttpClientConsole
 {

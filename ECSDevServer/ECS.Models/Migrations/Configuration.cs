@@ -6,7 +6,7 @@ namespace ECS.Models.Migrations
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<ECS.Models.ECSContext.ECSContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<Models.ECSContext>
     {
         public Configuration()
         {
@@ -16,7 +16,7 @@ namespace ECS.Models.Migrations
 
         }
 
-        protected override void Seed(ECS.Models.ECSContext.ECSContext context)
+        protected override void Seed(Models.ECSContext context)
         {
             // Add entries to the User table
             var users = new List<User>
@@ -3819,7 +3819,7 @@ namespace ECS.Models.Migrations
             salts.ForEach(s => context.Salts.AddOrUpdate(p => p.SaltId, s));
             context.SaveChanges();
         }
-        void AddOrUpdateInterestTag(ECS.Models.ECSContext.ECSContext context, string accountUsername, string tagName)
+        void AddOrUpdateInterestTag(Models.ECSContext context, string accountUsername, string tagName)
         {
             var tag = context.Accounts.SingleOrDefault(c => c.UserName == accountUsername);
             var inst = tag.AccountTags.SingleOrDefault(i => i.TagName == tagName);
@@ -3827,7 +3827,7 @@ namespace ECS.Models.Migrations
                 tag.AccountTags.Add(context.InterestTags.Single(i => i.TagName == tagName));
         }
 
-        void AddOrUpdateArticle(ECS.Models.ECSContext.ECSContext context, string tagName, string articleLink)
+        void AddOrUpdateArticle(Models.ECSContext context, string tagName, string articleLink)
         {
             var article = context.InterestTags.SingleOrDefault(c => c.TagName == tagName);
             var inst = article.ArticleTags.SingleOrDefault(i => i.ArticleLink == articleLink);

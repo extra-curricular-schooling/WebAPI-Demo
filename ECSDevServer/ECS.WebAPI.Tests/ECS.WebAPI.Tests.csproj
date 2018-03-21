@@ -97,6 +97,10 @@
       <Project>{84B9525B-6D65-493C-8BC5-61CE7AB8C325}</Project>
       <Name>ECS.Repositories</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ECS.Security\ECS.Security.csproj">
+      <Project>{31F4E181-8B78-4FCF-A79C-4C50BE2AB1DD}</Project>
+      <Name>ECS.Security</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ECS.WebAPI\ECS.WebAPI.csproj">
       <Project>{5d619797-a7bb-4852-85d5-2bce200773f8}</Project>
       <Name>ECS.WebAPI</Name>

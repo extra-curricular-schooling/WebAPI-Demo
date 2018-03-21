@@ -20,7 +20,7 @@ namespace ECS.Repositories
         /// <param name="datacontext">
         /// The "database" that is used to produce the generated repository.
         /// </param>
-        public RepositoryBase(DbContext datacontext)
+        protected RepositoryBase(DbContext datacontext)
         {
             //You can use the cpmt
             context = datacontext;
@@ -51,34 +51,34 @@ namespace ECS.Repositories
         }
 
         // Haven't tested these yet!!!!!!!!!!!!!!!!!
+        // TODO: @Scott Find can be very slow. Try to change to SingleOrDefault<>()
         public T GetById(int id)
         {
-            return dbSet.Single(x => x.Equals(id));
+            return dbSet.Find(id);
         }
 
         // Haven't tested these yet!!!!!!!!!!!!!!!!!
         public T GetById(string id)
         {
-            return dbSet.Single(x => x.Equals(id));
+            return dbSet.Find(id);
         }
 
         public IQueryable<T> SearchFor(Expression<Func<T, bool>> predicate)
         {
             return dbSet.Where(predicate);
         }
-
         
         public IList<T> GetAll(params Expression<Func<T, object>>[] navigationProperties)
         {
             IQueryable<T> query = dbSet;
-            List<T> list = new List<T>();
+            var list = new List<T>();
 
             //Apply eager loading
-            foreach (Expression<Func<T, object>> navigationProperty in navigationProperties)
+            foreach (var navigationProperty in navigationProperties)
             {
-                query = query.Include<T, object>(navigationProperty);
+                query = query.Include(navigationProperty);
 
-                list = query.AsNoTracking().ToList<T>();
+                list = query.AsNoTracking().ToList();
             }
             return list;
         }
@@ -119,10 +119,10 @@ namespace ECS.Repositories
             try
             {
                 item = query.AsNoTracking().Single(where);
-            } catch (ArgumentNullException ex)
+            } catch (ArgumentNullException)
             {
                 return false;
-            } catch (InvalidOperationException ex)
+            } catch (InvalidOperationException)
             {
                 return false;
             }

@@ -1,38 +1,47 @@
 import Vue from 'vue'
 import Home from '@/pages/Home'
 
-// helper function that mounts and returns the rendered text
-// function getRenderedText (Component, propsData) {
-//   const Constructor = Vue.extend(Component)
-//   const vm = new Constructor({ propsData: propsData }).$mount()
-//   return vm.$el.textContent
-// }
-
+const assert = require('assert')
 describe('Home.vue', () => {
-  it('should render correct contents', () => {
-    const Constructor = Vue.extend(Home)
-    const vm = new Constructor().$mount()
+  const Constructor = Vue.extend(Home)
+  const vm = new Constructor().$mount()
+  it('Should Have Correct Titles', () => {
     expect(vm.$el.querySelector('h1').textContent)
       .to.equal('Welcome to Article Page')
   })
-  it('test for iframe creation', () => {
-    document.getElementsByName(frameElement, 'frameResult')
-    expect('frameResult')
-      .to.equal('frameResult')
+  var originalFrame = vm.$el.querySelector('iframe')
+  var fakeFrame = document.createElement('iframe')
+  it('check the iframe name', () => {
+    fakeFrame.name = 'FrameResult'
+    assert.equal(originalFrame.name, fakeFrame.name)
   })
-  it('test 2 for iframe creation', () => {
-    document.getElementsByTagName(HTMLIFrameElement)
-    expect('frameResult')
-      .to.equal('frameResult')
+  it('iframe does not load up the link/source', () => {
+    document.body.appendChild(fakeFrame)
+    fakeFrame.src = 'http://lol/'
   })
-  it('test for table creation', () => {
-    document.getElementById('table')
-    expect('table')
-      .to.equal('table')
+  it('checks for original source and change the source of iframes', () => {
+    assert.equal(originalFrame.src, 'https://ecschooling.org/')
+    originalFrame.src = 'http://num/'
+    fakeFrame.src = 'http://yum/'
+    assert.notEqual(originalFrame.src, fakeFrame.src)
   })
-  it('test for columns of tables', () => {
-    document.getElementsByTagName('td')
-    expect('articleType')
-      .to.equal('articleType')
+  it('change the name of the iframes', () => {
+    fakeFrame.name = 'dodo'
+    fakeFrame.name = 'hehehe'
+    originalFrame.name = 'hmph'
+    originalFrame.name = 'okay'
+  })
+  it('remove the iframe and the instance', function () {
+    document.body.appendChild(fakeFrame)
+    fakeFrame.parentNode.removeChild(fakeFrame)
+    originalFrame = null
+    fakeFrame = null
+  })
+})
+describe('Just a random test', function () {
+  describe('#indexOf()', function () {
+    it('should return -1 when the value is not present', function () {
+      assert.equal([1, 2, 3].indexOf(4), -1)
+    })
   })
 })

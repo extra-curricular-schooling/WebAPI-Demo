@@ -2,14 +2,14 @@ using System;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace ECS.WebAPI.Services.Security.Hash
+namespace ECS.Security.Hash
 {
     /// <summary>
     /// Static service class to hash a salted password using SHA 256
     /// </summary>
     public class HashService : IHashService
     {
-        private static HashService instance;
+        private static HashService _instance;
         private HashService()
         {
         }
@@ -18,11 +18,11 @@ namespace ECS.WebAPI.Services.Security.Hash
         {
             get
             {
-                if(instance == null)
+                if(_instance == null)
                 {
-                    instance = new HashService();
+                    _instance = new HashService();
                 }
-                return instance;
+                return _instance;
             }
         }
 

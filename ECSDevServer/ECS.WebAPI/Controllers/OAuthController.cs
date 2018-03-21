@@ -1,8 +1,6 @@
 ﻿using DotNetOpenAuth.LinkedInOAuth2;
 using ECS.Models;
 using ECS.Repositories;
-using ECS.WebAPI.Filters;
-using ECS.WebAPI.Services.Security.AccessTokens.Jwt;
 using Microsoft.AspNet.Membership.OpenAuth;
 using System;
 using System.Collections.Generic;
@@ -12,6 +10,8 @@ using System.Net.Http;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using ECS.Security.AccessTokens.Jwt;
+using ECS.WebAPI.Filters.AuthorizationFilters;
 
 namespace ECS.WebAPI.Controllers
 {

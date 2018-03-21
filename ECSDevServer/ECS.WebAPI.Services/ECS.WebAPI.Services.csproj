@@ -71,19 +71,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Security\AccessTokens\Jwt\IJwtHelper.cs" />
-    <Compile Include="Security\Hash\HashService.cs" />
-    <Compile Include="HttpClient\HttpClientService.cs" />
-    <Compile Include="HttpClient\IHttpClient.cs" />
-    <Compile Include="HttpClient\IHttpClientAsync.cs" />
-    <Compile Include="JsonSerialization\IJsonConverter.cs" />
-    <Compile Include="JsonSerialization\JsonConverterService.cs" />
-    <Compile Include="Security\Hash\IHashService.cs" />
-    <Compile Include="Security\AccessTokens\Jwt\IJwtManager.cs" />
-    <Compile Include="Security\AccessTokens\Jwt\JwtHelper.cs" />
-    <Compile Include="Security\AccessTokens\Jwt\JwtManager.cs" />
+    <Compile Include="HttpClients\HttpClientService.cs" />
+    <Compile Include="HttpClients\IHttpClient.cs" />
+    <Compile Include="HttpClients\IHttpClientAsync.cs" />
+    <Compile Include="JsonSerialization\IJsonSerializationFacade.cs" />
+    <Compile Include="JsonSerialization\JsonSerializationFacade.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Security\AccessTokens\Jwt\SsoJwtManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -102,8 +95,6 @@
       <Name>ECS.Repositories</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Transformers\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

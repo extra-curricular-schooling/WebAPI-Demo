@@ -43,7 +43,7 @@
             <i class="fas fa-envelope"></i>
           </span>
           <span class="icon is-small is-right">
-            <i class="fas fa-exclamation-triangle"></i>
+            <i class="fas fa-check"></i>
           </span>
         </div>
         <p id="emailControl" class="help">{{ emailMessage }}</p>
@@ -88,20 +88,19 @@
         </div>
         <p id="cityControl" class="help">{{ cityMessage }}</p>
       </div>
-      <div class="field is-grouped mailing-adress">
-        <p class="control">
-          <input v-model="state" id="state" class="input" text="text" @keyup="validateState" autocomplete="address-line2" placeholder="State">
-          <!-- <span class="select">
-            <select>
-              <option selected>State</option>
-            </select>
-          </span> -->
-        </p>
-        <p id="stateControl" class="help">{{ stateMessage }}</p>
-        <p class="control">
-          <input v-model="zipCode" id="zipCode" class="input" type="number" @keyup="validateZipCode" autocomplete="postal-code" placeholder="Zip Code">
-        </p>
-        <p id="zipCodeControl" class="help">{{ zipCodeMessage }}</p>
+      <div class="is-table">
+        <div class="field mailing-adress state">
+          <p class="control">
+            <input v-model="state" id="state" class="input" text="text" @keyup="validateState" autocomplete="address-line2" placeholder="State">
+          </p>
+          <p id="stateControl" class="help">{{ stateMessage }}</p>
+        </div>
+        <div class="field mailing-address zip">
+          <p class="control">
+            <input v-model="zipCode" id="zipCode" class="input" @keyup="validateZipCode" autocomplete="postal-code" placeholder="Zip Code">
+          </p>
+          <p id="zipCodeControl" class="help">{{ zipCodeMessage }}</p>
+        </div>
       </div>
     </div>
     <!-- END mailing address fields -->
@@ -113,7 +112,7 @@
         <div class="control">
           <!-- <input v-model="question1" class="input" type="number" placeholder="Question 1" required> -->
           <span class="select">
-            <select @change="getSelectionID(1, question1)" v-model="question1">
+            <select @change="getSelectionID(0, question1)" v-model="question1">
               <option disabled value="">--select--</option>
               <option v-for="question in questions" v-bind:key="question.SecurityQuestionID"> {{ question.SecQuestion }} </option>
             </select>
@@ -122,7 +121,7 @@
       </div>
       <div class="field security-questions-answers">
         <div class="control">
-          <input id="answer1" class="input" type="text" placeholder="Answer 1" required>
+          <input id="answer1" class="input" type="text" @keyup="validateAnswers" placeholder="Answer 1" required>
         </div>
       </div>
 
@@ -130,7 +129,7 @@
         <div class="control">
           <!-- <input v-model="question2" class="input" type="number" placeholder="Question 2" required> -->
           <span class="select">
-            <select @change="getSelectionID(2, question2)" v-model="question2">
+            <select @change="getSelectionID(1, question2)" v-model="question2">
               <option disabled value="">--select--</option>
               <option v-for="question in questions" v-bind:key="question.SecurityQuestionID"> {{ question.SecQuestion }} </option>
             </select>
@@ -139,7 +138,7 @@
       </div>
       <div class="field security-questions-answers">
         <div class="control">
-          <input id="answer2" class="input" type="text" placeholder="Answer 2" required>
+          <input id="answer2" class="input" type="text" @keyup="validateAnswers" placeholder="Answer 2" required>
         </div>
       </div>
 
@@ -147,7 +146,7 @@
         <div class="control">
           <!-- <input v-model="question3" class="input" type="number" placeholder="Question 1" required> -->
           <span class="select">
-            <select @change="getSelectionID(3, question3)" v-model="question3">
+            <select @change="getSelectionID(2, question3)" v-model="question3">
               <option disabled value="">--select--</option>
               <option v-for="question in questions" v-bind:key="question.SecurityQuestionID"> {{ question.SecQuestion }} </option>
             </select>
@@ -156,9 +155,10 @@
       </div>
       <div class="field security-questions-answers">
         <div class="control">
-          <input id="answer3" class="input" type="text" placeholder="Answer 3" required>
+          <input id="answer3" class="input" type="text" @keyup="validateAnswers" placeholder="Answer 3" required>
         </div>
       </div>
+      <p id="answersControl" class="help">{{ answersMessage }}</p>
     </div>
     <!-- END security questions -->
 
@@ -168,7 +168,10 @@
         Remember me
       </label><br>
       <label class="checkbox">
-        <agreement-modal></agreement-modal>
+        <agreement-modal ref="modal"></agreement-modal>
+        <!-- <input type="checkbox"> -->
+        <input type="checkbox" @click="checkBox" v-bind:class="{ 'checked' : agreementIsChecked }">
+        I agree to the <a @click.prevent="toggleModal">Terms and Conditions</a>.
       </label>
     </div>
 
@@ -180,11 +183,6 @@
         </router-link>
       </p>
       <p class="control">
-        <!-- NOTE: Issues with properly checking if required fields have been entered -->
-        <!-- <registration-alert v-on:click="submit"></registration-alert> -->
-        <!-- <router-link to="/" tag="button" class="button is-primary submit-button" v-on:click="submit">
-        Submit
-        </router-link> -->
         <button class="button is-primary submit-button" v-on:click.prevent="submit">
         Submit
         </button>
@@ -203,7 +201,7 @@ import agreementModal from '@/components/registration-form/elements/AgreementMod
 export default {
   name: 'RegistrationForm',
   components: {
-    'agreement-modal': agreementModal,
+    'agreement-modal': agreementModal
     // 'registration-alert': registrationAlert
   },
   data () {
@@ -212,6 +210,7 @@ export default {
       question1: '',
       question2: '',
       question3: '',
+      agreementIsChecked: false,
 
       // Request Data
       firstName: '',
@@ -238,6 +237,7 @@ export default {
       cityMessage: '',
       stateMessage: '',
       zipCodeMessage: '',
+      answersMessage: '',
 
       // Regular Expressions
       NAME_REGEX: /^[a-zA-Z ]{1,50}$/,
@@ -270,9 +270,9 @@ export default {
       return document.getElementById(answer).value;
     },
     getSelectionID (i, selected) {
-      for (var key in this.questions) {
-        var question = this.questions[key]
-        if (question.SecurityQuestions === selected) {
+      for (var key in this.$data.questions) {
+        var question = this.$data.questions[key]
+        if (question.SecQuestion === selected) {
           var ID = question.SecurityQuestionID
         }
       }
@@ -282,8 +282,12 @@ export default {
     validateFirstName () {
       if (!this.$data.NAME_REGEX.test(this.$data.firstName) && this.$data.firstName != '') {
         document.getElementById('firstName').className = 'input';
-        document.getElementById('firstNameControl').className = 'help is-warning';
-        this.$data.firstNameMessage = 'Sorry, the name you entered is too long.';
+        document.getElementById('firstNameControl').className = 'help is-info';
+        this.$data.firstNameMessage = 'Sorry, the name you entered either contains invalid characters or is too long.';
+      } else if (this.$data.firstName == '') {
+        document.getElementById('firstName').className = 'input';
+        document.getElementById('firstNameControl').className = 'help';
+        this.$data.firstNameMessage = '';
       } else {
         document.getElementById('firstName').className = 'input is-success';
         document.getElementById('firstNameControl').className = 'help';
@@ -291,10 +295,14 @@ export default {
       }
     },
     validateLastName () {
-      if (!this.$data.NAME_REGEX.test(this.$data.lastName) && this.$data.firstName != '') {
+      if (!this.$data.NAME_REGEX.test(this.$data.lastName) && this.$data.lastName != '') {
         document.getElementById('lastName').className = 'input';
-        document.getElementById('lastNameControl').className = 'help is-warning';
-        this.$data.lastNameMessage = 'Sorry, the name you entered is too long.';
+        document.getElementById('lastNameControl').className = 'help is-info';
+        this.$data.lastNameMessage = 'Sorry, the name you entered either contains invalid characters or is too long.';
+      } else if (this.$data.lastName == '') {
+        document.getElementById('lastName').className = 'input';
+        document.getElementById('lastNameControl').className = 'help';
+        this.$data.lastNameMessage = '';
       } else {
         document.getElementById('lastName').className = 'input is-success';
         document.getElementById('lastNameControl').className = 'help';
@@ -302,10 +310,14 @@ export default {
       }
     },
     validateUsername () {
-      if (!this.$data.USERNAME_REGEX.test(this.$data.username)) {
+      if (!this.$data.USERNAME_REGEX.test(this.$data.username) && this.$data.username != '') {
         document.getElementById('username').className = 'input';
-        document.getElementById('usernameControl').className = 'help is-warning';
+        document.getElementById('usernameControl').className = 'help is-info';
         this.$data.usernameMessage = 'Username must be 8-120 characters long, must not contain any spaces, and must contain at least 1 lowercase letter, 1 uppercase letter, and 1 number.';
+      } else if (this.$data.username == '') {
+        document.getElementById('username').className = 'input';
+        document.getElementById('usernameControl').className = 'help';
+        this.$data.usernameMessage = '';
       } else {
         document.getElementById('username').className = 'input is-success';
         document.getElementById('usernameControl').className = 'help';
@@ -313,10 +325,14 @@ export default {
       }
     },
     validateEmail () {
-      if (!this.$data.EMAIL_REGEX.test(this.$data.email)) {
+      if (!this.$data.EMAIL_REGEX.test(this.$data.email) && this.$data.email != '') {
         document.getElementById('email').className = 'input';
-        document.getElementById('emailControl').className = 'help is-warning';
+        document.getElementById('emailControl').className = 'help is-info';
         this.$data.emailMessage = 'Email is not a valid email.';
+      } else if (this.$data.email == '') {
+        document.getElementById('email').className = 'input';
+        document.getElementById('emailControl').className = 'help';
+        this.$data.emailMessage = '';
       } else {
         document.getElementById('email').className = 'input is-success';
         document.getElementById('emailControl').className = 'help';
@@ -324,10 +340,14 @@ export default {
       }
     },
     validatePassword () {
-      if (!this.$data.PASSWORD_REGEX.test(document.getElementById('password').value)) {
+      if (!this.$data.PASSWORD_REGEX.test(document.getElementById('password').value) && document.getElementById('password').value != '') {
         document.getElementById('password').className = 'input';
-        document.getElementById('passwordControl').className = 'help is-warning';
+        document.getElementById('passwordControl').className = 'help is-info';
         this.$data.passwordMessage = 'Password must be 8-64 characters long, must not contain any spaces, and must contain at least 1 lowercase letter, 1 uppercase letter, 1 number, and 1 special character.';
+      } else if (document.getElementById('password').value == '') {
+        document.getElementById('password').className = 'input';
+        document.getElementById('passwordControl').className = 'help';
+        this.$data.passwordMessage = '';
       } else {
         document.getElementById('password').className = 'input is-success';
         document.getElementById('passwordControl').className = 'help';
@@ -335,10 +355,14 @@ export default {
       }
     },
     validateConfirmPassword () {
-      if (document.getElementById('password').value != document.getElementById('confirmPassword').value) {
+      if (document.getElementById('password').value != document.getElementById('confirmPassword').value && document.getElementById('confirmPassword').value != '') {
         document.getElementById('confirmPassword').className = 'input';
-        document.getElementById('confirmPasswordControl').className = 'help is-warning';
+        document.getElementById('confirmPasswordControl').className = 'help is-info';
         this.$data.confirmPasswordMessage = 'Retype Password';
+      } else if (document.getElementById('confirmPassword').value == '') {
+        document.getElementById('confirmPassword').className = 'input';
+        document.getElementById('confirmPasswordControl').className = 'help';
+        this.$data.confirmPasswordMessage = '';
       } else if (document.getElementById('password').value == document.getElementById('confirmPassword').value) {
         document.getElementById('confirmPassword').className = 'input is-success';
         document.getElementById('confirmPasswordControl').className = 'help';
@@ -346,10 +370,14 @@ export default {
       }
     },
     validateAddress () {
-      if (!this.$data.ADDRESS_REGEX.test(this.$data.address)) {
+      if (!this.$data.ADDRESS_REGEX.test(this.$data.address) && this.$data.address != '') {
         document.getElementById('address').className = 'input';
-        document.getElementById('addressControl').className = 'help is-warning';
+        document.getElementById('addressControl').className = 'help is-info';
         this.$data.addressMessage = 'The address you entered contains invalid characters.';
+      } else if (this.$data.address == '') {
+        document.getElementById('address').className = 'input';
+        document.getElementById('addressControl').className = 'help';
+        this.$data.addressMessage = '';
       } else {
         document.getElementById('address').className = 'input is-success';
         document.getElementById('addressControl').className = 'help';
@@ -357,10 +385,14 @@ export default {
       }
     },
     validateCity () {
-      if (!this.$data.CITY_REGEX.test(this.$data.city)) {
+      if (!this.$data.CITY_REGEX.test(this.$data.city) && this.$data.city != '') {
         document.getElementById('city').className = 'input';
-        document.getElementById('cityControl').className = 'help is-warning';
+        document.getElementById('cityControl').className = 'help is-info';
         this.$data.cityMessage = 'The city you entered contains invalid characters.';
+      } else if (this.$data.city == '') {
+        document.getElementById('city').className = 'input';
+        document.getElementById('cityControl').className = 'help';
+        this.$data.cityMessage = '';
       } else {
         document.getElementById('city').className = 'input is-success';
         document.getElementById('cityControl').className = 'help';
@@ -368,10 +400,14 @@ export default {
       }
     },
     validateState () {
-      if (!this.$data.STATE_REGEX.test(this.$data.state)) {
+      if (!this.$data.STATE_REGEX.test(this.$data.state) && this.$data.state != '') {
         document.getElementById('state').className = 'input';
-        document.getElementById('stateControl').className = 'help is-warning';
+        document.getElementById('stateControl').className = 'help is-info';
         this.$data.stateMessage = 'State must be in abbreviated format.';
+      } else if (this.$data.state == '') {
+        document.getElementById('state').className = 'input';
+        document.getElementById('stateControl').className = 'help';
+        this.$data.stateMessage = '';
       } else {
         document.getElementById('state').className = 'input is-success';
         document.getElementById('stateControl').className = 'help';
@@ -379,49 +415,112 @@ export default {
       }
     },
     validateZipCode () {
-      if (!this.$data.ZIPCODE_REGEX.test(this.$data.zipCode)) {
+      if (!this.$data.ZIPCODE_REGEX.test(this.$data.zipCode) && this.$data.zipCode != '') {
         document.getElementById('zipCode').className = 'input';
-        document.getElementById('zipCodeControl').className = 'help is-warning';
-        this.$data.zipCodeMessage = 'ZipCode must follow proper format as defined by the U.S. Postal Service.';
+        document.getElementById('zipCodeControl').className = 'help is-info';
+        this.$data.zipCodeMessage = 'ZIP Code must be a valid ZIP Code';
+      } else if (this.$data.zipCode == '') {
+        document.getElementById('zipCode').className = 'input';
+        document.getElementById('zipCodeControl').className = 'help';
+        this.$data.zipCodeMessage = '';
       } else {
         document.getElementById('zipCode').className = 'input is-success';
         document.getElementById('zipCodeControl').className = 'help';
         this.$data.zipCodeMessage = '';
       }
     },
+    validateAnswers () {
+      if (document.getElementById('answer1').value == '' && document.getElementById('answer2').value == '' && document.getElementById('answer3').value == '') {
+        document.getElementById('answer1').className = 'input';
+        document.getElementById('answer2').className = 'input';
+        document.getElementById('answer3').className = 'input';
+        document.getElementById('answersControl').className = 'help';
+        this.$data.answersMessage = '';
+      } else if (document.getElementById('answer1').value != '' && document.getElementById('answer2').value != '' && document.getElementById('answer3').value != '') {
+        document.getElementById('answer1').className = 'input is-success';
+        document.getElementById('answer2').className = 'input is-success';
+        document.getElementById('answer3').className = 'input is-success';
+        document.getElementById('answersControl').className = 'help';
+        this.$data.answersMessage = '';
+      } else {
+        document.getElementById('answer1').className = 'input';
+        document.getElementById('answer2').className = 'input';
+        document.getElementById('answer3').className = 'input';
+        document.getElementById('answersControl').className = 'help is-info';
+        this.$data.answersMessage = 'Please provide answers to all questions.';
+      }
+    },
+    isValidForm () {
+      if (document.getElementById('firstName').className == 'input is-success' &&
+        document.getElementById('lastName').className == 'input is-success' &&
+        document.getElementById('username').className == 'input is-success' &&
+        document.getElementById('email').className == 'input is-success' &&
+        document.getElementById('password').className == 'input is-success' &&
+        document.getElementById('confirmPassword').className == 'input is-success' &&
+        this.$data.questionIDs[0] != null &&
+        document.getElementById('answer1').className == 'input is-success' &&
+        this.$data.questionIDs[1] != null &&
+        document.getElementById('answer2').className == 'input is-success' &&
+        this.$data.questionIDs[2] != null &&
+        document.getElementById('answer3').className == 'input is-success') {
+        return true
+      } else {
+        return false
+      }
+    },
+    // Togglers
+    toggleModal () {
+      this.$refs.modal.toggle()
+    },
+    checkBox () {
+      this.agreementIsChecked = !this.agreementIsChecked
+    },
+    // APIs
     submit () {
-      axios({
-        method: 'POST',
-        url: this.$store.getters.getBaseAppUrl + 'Registration/SubmitRegistration',
-        headers: this.$store.getters.getRequestHeaders,
-        data: {
-          'firstName': this.$data.firstName,
-          'lastName': this.$data.lastName,
-          'username': this.$data.username,
-          'email': this.$data.email,
-          'password': this.getPassword(),
-          'address': this.$data.address,
-          'city': this.$data.city,
-          'state': this.$data.state,
-          'zipCode': Number(this.$data.zipCode),
-          'securityQuestions': [
-            {
-              'question': Number(this.$data.questionIDs[1]),
-              'answer': this.getSecurityAnswer(1)
-            },
-            {
-              'question': Number(this.$data.questionIDs[2]),
-              'answer': this.getSecurityAnswer(2)
-            },
-            {
-              'question': Number(this.$data.questionIDs[3]),
-              'answer': this.getSecurityAnswer(3)
-            }
-          ]
-        }
-      })
-        .then(response => console.log(response))
-        .catch(response => console.log(response))
+      if (!this.isValidForm()) { 
+        alert('It seems either your form is incomplete or some of your inputs are invalid...') 
+      } else if (!this.$data.agreementIsChecked) {
+        alert('You must agree to our Terms and Conditions to continue...')
+      } else {
+        axios({
+          method: 'POST',
+          url: this.$store.getters.getBaseAppUrl + 'Registration/SubmitRegistration',
+          headers: this.$store.getters.getRequestHeaders,
+          data: {
+            'firstName': this.$data.firstName,
+            'lastName': this.$data.lastName,
+            'username': this.$data.username,
+            'email': this.$data.email,
+            'password': this.getPassword(),
+            'address': this.$data.address,
+            'city': this.$data.city,
+            'state': this.$data.state,
+            'zipCode': Number(this.$data.zipCode),
+            'securityQuestions': [
+              {
+                'question': Number(this.$data.questionIDs[0]),
+                'answer': this.getSecurityAnswer(1)
+              },
+              {
+                'question': Number(this.$data.questionIDs[1]),
+                'answer': this.getSecurityAnswer(2)
+              },
+              {
+                'question': Number(this.$data.questionIDs[2]),
+                'answer': this.getSecurityAnswer(3)
+              }
+            ]
+          }
+        })
+          .then(response => {
+            console.log(response)
+            this.$router.push({
+              name: 'Main',
+              params: { isSuccess: true } 
+              })
+            })
+          .catch(response => console.log(response))
+      }
     },
     fetchSecurityQuestions () {
       axios({
@@ -466,13 +565,27 @@ export default {
   color: red;
 }
 
+.is-table {
+  width: 100%;
+  display: table;
+  table-layout: fixed;
+}
+
 .modal-content {
   padding-top: 100px;
+}
+
+.state {
+  display: table-cell;
 }
 
 .warning {
   color: red;
   font-size: 12px;
+}
+
+.zip {
+  display: table-cell;
 }
 
 button {

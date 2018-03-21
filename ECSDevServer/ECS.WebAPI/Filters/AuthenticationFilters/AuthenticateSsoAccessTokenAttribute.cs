@@ -1,39 +1,34 @@
 ﻿using ECS.Repositories;
-using ECS.WebAPI.Services.Security.AccessTokens.Jwt;
-using ECS.WebAPI.Services.Security.Hash;
 using System;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Filters;
+using ECS.Security.AccessTokens.Jwt;
+
+//Have the message handler set the princpal
+//httpmessagehandler
+//
 
 namespace ECS.WebAPI.Filters.AuthenticationFilters
 {
     public class AuthenticateSsoAccessTokenAttribute : Attribute, IAuthenticationFilter, IDisposable
     {
-        private readonly IAccountRepository accountRepository;
-        private readonly ISaltRepository saltRepository;
-        private IHashService hashService;
+        private readonly IExpiredAccessTokenRepository _expiredAccessTokenRepository;
 
         public AuthenticateSsoAccessTokenAttribute()
         {
-            accountRepository = new AccountRepository();
-            saltRepository = new SaltRepository();
-            hashService = HashService.Instance;
+            _expiredAccessTokenRepository = new ExpiredAccessTokenRepository();
         }
 
         // Not allowed to authenticate more than once.
         // Change to "true" if you allow multiple AuthenticateSsoAccessToken attribute filters.
-        public bool AllowMultiple
-        {
-            get { return false; }
-        }
+        public bool AllowMultiple => false;
 
         public async Task AuthenticateAsync(HttpAuthenticationContext context, CancellationToken cancellationToken)
         {
@@ -43,61 +38,67 @@ namespace ECS.WebAPI.Filters.AuthenticationFilters
                 actionDescriptor.ControllerDescriptor.GetCustomAttributes<AllowAnonymousAttribute>(true).Any();
             if (isAnonymousAllowed)
             {
-                return;
+                //return;
             }
 
             // 1. Look for credentials in the request.
-            HttpRequestMessage request = context.Request;
-            AuthenticationHeaderValue authorization = request.Headers.Authorization;
+            var request = context.Request;
+            var authorization = request.Headers.Authorization;
 
-            // 2. If there are no credentials, do nothing.
+            // 2. If there are no credentials, do nothing. We can't authenticate you.
             if (authorization == null)
             {
-                return;
+                //return;
             }
 
             // 3. If there are credentials but the filter does not recognize the 
             //    authentication scheme, do nothing.
             if (authorization.Scheme != "Bearer")
             {
-                return;
+                //return;
             }
 
             // 4. If there are credentials that the filter understands, try to validate them.
             // 5. If the credentials are malformed, set the error result.
-            if (String.IsNullOrEmpty(authorization.Parameter))
+            var token = authorization.Parameter;
+            if (string.IsNullOrEmpty(token))
             {
                 context.ErrorResult = new AuthenticationFailureResult("Malformed credentials", request);
-                return;
+                //return;
             }
 
-            // 6. Gather necessary information to check the token.
-            var token = authorization.Parameter;
+            // 7. Check for replay tokens.
+            if (_expiredAccessTokenRepository.GetById(token) != null)
+            {
+                context.ErrorResult = new AuthenticationFailureResult("Invalid token", request);
+                //return;
+            }
 
-            // 7. If the username and password do not match, set the error result.
-            Tuple<string, string> usernameAndPassword = SsoJwtManager.Instance.GetUsernameAndPassword(token);
-            var username = usernameAndPassword.Item1;
-            var password = usernameAndPassword.Item2;
-
-            //var saltModel = saltRepository.GetById(username);
-            //var salt = saltModel.PasswordSalt;
-
-            //var hashedPassword = hashService.HashPasswordWithSalt(salt, password);
-
-            //var account = accountRepository.GetById(username);
-            //if (!account.Password.Equals(hashedPassword))
-            //{
-            //    context.ErrorResult = new AuthenticationFailureResult("Incorrect username/password", request);
-            //    return;
-            //}
+            // TODO: @Scott The expired access token insert is causing a EntityValidationError. Fix
+            // Insert One time token
+            //_expiredAccessTokenRepository.Insert(new ExpiredAccessToken(token));
 
             // 8. Authentication was successful, set the principal to notify other filters that
             // the request is authenticated.
             IPrincipal principal = SsoJwtManager.Instance.GetPrincipal(token);
+            if (principal == null)
+            {
+                context.ErrorResult = new AuthenticationFailureResult("Principal is null", request);
+                //return;
+            }
+
+            //Task.fromresult.completedtask...
+            //.completedTask return
+            //taskcompletion source
+            //var tcs = new Task()
+            // tcs.setresult();
+            // return tcs.Task;
+            
             await Task.Run(() =>
             {
+                Thread.CurrentPrincipal = principal;
                 context.Principal = principal;
-            });
+            }, cancellationToken);
         }
 
         public Task ChallengeAsync(HttpAuthenticationChallengeContext context, CancellationToken cancellationToken)
@@ -122,9 +123,9 @@ namespace ECS.WebAPI.Filters.AuthenticationFilters
             Request = request;
         }
 
-        public string ReasonPhrase { get; private set; }
+        private string ReasonPhrase { get; }
 
-        public HttpRequestMessage Request { get; private set; }
+        private HttpRequestMessage Request { get; }
 
         public Task<HttpResponseMessage> ExecuteAsync(CancellationToken cancellationToken)
         {
@@ -133,7 +134,7 @@ namespace ECS.WebAPI.Filters.AuthenticationFilters
 
         private HttpResponseMessage Execute()
         {
-            HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.Unauthorized)
+            var response = new HttpResponseMessage(HttpStatusCode.Unauthorized)
             {
                 RequestMessage = Request,
                 ReasonPhrase = ReasonPhrase
@@ -152,22 +153,21 @@ namespace ECS.WebAPI.Filters.AuthenticationFilters
             InnerResult = innerResult;
         }
 
-        public AuthenticationHeaderValue Challenge { get; private set; }
+        private AuthenticationHeaderValue Challenge { get; }
 
-        public IHttpActionResult InnerResult { get; private set; }
+        private IHttpActionResult InnerResult { get; }
 
-        // This portion gets called after the controller has finished. (The reverse invokation of the pipeline)
+        // This portion gets called after the controller has finished. (The reverse invocation of the pipeline)
         public async Task<HttpResponseMessage> ExecuteAsync(CancellationToken cancellationToken)
         {
-            HttpResponseMessage response = await InnerResult.ExecuteAsync(cancellationToken);
+            var response = await InnerResult.ExecuteAsync(cancellationToken);
 
-            if (response.StatusCode == HttpStatusCode.Unauthorized)
+            if (response.StatusCode != HttpStatusCode.Unauthorized) return response;
+
+            // Only add one challenge per authentication scheme.
+            if (response.Headers.WwwAuthenticate.All(h => h.Scheme != Challenge.Scheme))
             {
-                // Only add one challenge per authentication scheme.
-                if (!response.Headers.WwwAuthenticate.Any((h) => h.Scheme == Challenge.Scheme))
-                {
-                    response.Headers.WwwAuthenticate.Add(Challenge);
-                }
+                response.Headers.WwwAuthenticate.Add(Challenge);
             }
 
             return response;

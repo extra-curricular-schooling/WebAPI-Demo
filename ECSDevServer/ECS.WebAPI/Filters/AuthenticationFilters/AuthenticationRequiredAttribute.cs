@@ -1,11 +1,11 @@
 ﻿using ECS.Models;
 using ECS.Repositories;
-using ECS.WebAPI.Services.Security.AccessTokens.Jwt;
 using System;
 using System.Diagnostics;
 using System.Net.Http.Headers;
 using System.Web.Http;
 using System.Web.Http.Controllers;
+using ECS.Security.AccessTokens.Jwt;
 
 namespace ECS.WebAPI.Filters.AuthenticationFilters
 {

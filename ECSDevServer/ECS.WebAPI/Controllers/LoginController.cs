@@ -1,13 +1,13 @@
 ﻿using ECS.DTO;
 using ECS.Models;
 using ECS.Repositories;
-using ECS.WebAPI.Filters;
-using ECS.WebAPI.Services.Security.AccessTokens.Jwt;
-using ECS.WebAPI.Services.Security.Hash;
 using System;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using ECS.Security.AccessTokens.Jwt;
+using ECS.Security.Hash;
+using ECS.WebAPI.Filters.AuthorizationFilters;
 
 namespace ECS.WebAPI.Controllers
 {
@@ -84,7 +84,7 @@ namespace ECS.WebAPI.Controllers
             {
                 salt = _saltRepository.GetSingle(d => d.UserName == credentials.Username, d => d.Account);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return BadRequest("Invalid credentials.");
             }
@@ -95,7 +95,7 @@ namespace ECS.WebAPI.Controllers
             {
                 account = _accountRepository.GetSingle(d => d.UserName == credentials.Username, d => d.User);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return BadRequest("Invalid credentials.");
             }

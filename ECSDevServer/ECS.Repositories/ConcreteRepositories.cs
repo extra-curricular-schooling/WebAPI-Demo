@@ -1,6 +1,8 @@
-﻿using ECS.Models;
-using ECS.Models.ECSContext;
+﻿using System.Collections.Generic;
+using System.Linq;
+using ECS.Models;
 
+// TODO: @Scooter Split the repositories into different class files.
 namespace ECS.Repositories
 {
     /// <summary>
@@ -50,6 +52,7 @@ namespace ECS.Repositories
     /// </summary>
     public interface ISaltRepository: IRepositoryBase<Salt>
     {
+        Salt GetSaltByUsername(string username);
     }
 
     /// <summary>
@@ -57,12 +60,20 @@ namespace ECS.Repositories
     /// </summary>
     public interface ISecurityQuestionRepository : IRepositoryBase<SecurityQuestion>
     {
+        List<SecurityQuestion> GetAllQuestions();
     }
 
     /// <summary>
     /// 
     /// </summary>
     public interface ISecurityQuestionAccountRepository : IRepositoryBase<SecurityQuestionAccount>
+    {
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public interface IExpiredAccessTokenRepository : IRepositoryBase<ExpiredAccessToken>
     {
     }
 
@@ -164,6 +175,11 @@ namespace ECS.Repositories
         public SaltRepository() : base(new ECSContext())
         {
         }
+
+        public Salt GetSaltByUsername(string username)
+        {
+            return dbSet.SingleOrDefault(x => x.UserName == username);
+        }
     }
 
     /// <summary>
@@ -174,6 +190,11 @@ namespace ECS.Repositories
         public SecurityQuestionRepository() : base(new ECSContext())
         {
         }
+
+        public List<SecurityQuestion> GetAllQuestions()
+        {
+            return dbSet.ToList();
+        }
     }
 
     /// <summary>
@@ -182,6 +203,16 @@ namespace ECS.Repositories
     public class SecurityQuestionAccountRepository : RepositoryBase<SecurityQuestionAccount>, ISecurityQuestionAccountRepository
     {
         public SecurityQuestionAccountRepository() : base(new ECSContext())
+        {
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public class ExpiredAccessTokenRepository : RepositoryBase<ExpiredAccessToken>, IExpiredAccessTokenRepository
+    {
+        public ExpiredAccessTokenRepository() : base(new ECSContext())
         {
         }
     }

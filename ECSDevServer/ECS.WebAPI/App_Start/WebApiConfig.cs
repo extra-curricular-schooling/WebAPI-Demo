@@ -1,12 +1,8 @@
 ﻿using Newtonsoft.Json.Serialization;
 using System;
-using System.Net;
-using System.Net.Http;
 using System.Net.Http.Formatting;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Web.Http;
-using System.Web.Http.Cors;
+using ECS.WebAPI.HttpMessageHandlers;
 
 namespace ECS.WebAPI
 {
@@ -28,8 +24,6 @@ namespace ECS.WebAPI
                 true, 
                 "application/json"));
 
-            // config.MessageHandlers.Add(new );
-
             // Web API routes
             config.MapHttpAttributeRoutes();
 
@@ -38,6 +32,14 @@ namespace ECS.WebAPI
                 name: "Index",
                 routeTemplate: "{id}.html",
                 defaults: new { id = "index" });
+
+            config.Routes.MapHttpRoute(
+                name: "Sso",
+                routeTemplate: "Sso/{action}/{id}",
+                defaults: new {id = RouteParameter.Optional, action = "Registration"},
+                constraints: null,
+                handler: new AccessTokenAuthenticationMessageHandler()
+            );
 
             // Default Controller Route
             config.Routes.MapHttpRoute(

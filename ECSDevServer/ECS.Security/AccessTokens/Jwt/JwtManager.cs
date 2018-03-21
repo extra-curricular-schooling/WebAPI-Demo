@@ -1,16 +1,16 @@
-﻿using ECS.Repositories;
-using Microsoft.IdentityModel.Tokens;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
+using ECS.Repositories;
+using Microsoft.IdentityModel.Tokens;
 
-namespace ECS.WebAPI.Services.Security.AccessTokens.Jwt
+namespace ECS.Security.AccessTokens.Jwt
 {
-    public class JwtManager : IJwtHelper
+    public class JwtManager : IJwtManager
     {
 
         #region Constants and fields

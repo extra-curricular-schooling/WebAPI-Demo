@@ -21,6 +21,16 @@
         </span>
       </div>
     </div>
+    <div class="forgot-credentials">
+      <span class="forgot-username">
+        <forgot-username ref="username"/>
+        <a @click.prevent="rememberUsername">Forgot Username?</a><br>
+      </span>
+      <span class="forgot-password">
+        <forgot-password ref="password"/>
+        <a @click.prevent="changePassword">Forgot Password?</a>
+      </span>
+    </div>
     <div class="field is-grouped is-grouped-centered">
       <p class="control">
         <button class="button is-primary login-button" @keyup.enter="postCredentials" v-on:click="postCredentials" :disabled="isDisabled">
@@ -38,9 +48,15 @@
 
 <script>
 import Axios from 'axios'
+import forgotPassword from '@/components/Forgot-Password/index'
+import forgotUsername from '@/components/Forgot-Username/index'
 
 export default {
   name: 'LoginPanel',
+  components: {
+    'forgot-password': forgotPassword,
+    'forgot-username': forgotUsername
+  },
   data () {
     return {
       username: '',
@@ -51,6 +67,12 @@ export default {
     }
   },
   methods: {
+    changePassword () {
+      this.$refs.password.toggle()
+    },
+    rememberUsername () {
+      this.$refs.username.toggle()
+    },
     postCredentials: function () {
       if (this.username != null) {
         if (this.password != null) {

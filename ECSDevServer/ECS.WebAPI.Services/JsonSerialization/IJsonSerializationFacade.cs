@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ECS.WebAPI.Services
+namespace ECS.WebAPI.Services.JsonSerialization
 {
-    public interface IJsonConverter
+    public interface IJsonSerializationFacade
     {
         /// <summary>
         /// 
@@ -14,7 +10,7 @@ namespace ECS.WebAPI.Services
         /// <typeparam name="T"></typeparam>
         /// <param name="obj"></param>
         /// <returns></returns>
-        T DeserializeObject<T>(String obj);
+        T DeserializeObject<T>(string obj);
 
         /// <summary>
         /// 
@@ -22,6 +18,6 @@ namespace ECS.WebAPI.Services
         /// <typeparam name="T"></typeparam>
         /// <param name="obj"></param>
         /// <returns></returns>
-        String SerializeObject<T>(T obj);
+        string SerializeObject<T>(T obj);
     }
 }

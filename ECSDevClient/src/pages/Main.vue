@@ -8,6 +8,7 @@
         </div>
       </div>
     </section>
+    <registration-alert ref="alert"/>
     <section class="hero is-light">
         <div class="hero-body">
             <div class="container is-fluid">
@@ -143,6 +144,7 @@
 <script>
 import DefaultLayout from '@/layouts/Default'
 import LoginPanel from '@/components/login-panel/Index'
+import RegistrationAlert from '@/components/Registration-Form/elements/RegistrationAlert'
 
 export default {
   name: 'Main',
@@ -150,11 +152,17 @@ export default {
     // DefaultLayout
     // This is causing an ambiguous root error when rendering.
     DefaultLayout,
-    LoginPanel
+    LoginPanel,
+    RegistrationAlert
   },
   data () {
     return {
       msg: 'Welcome to Your Vue.js App'
+    }
+  },
+  mounted () {
+    if (JSON.stringify(this.$route.params) !== JSON.stringify({})) {
+      this.$refs.alert.toggleNotification()
     }
   },
   methods: {

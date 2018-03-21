@@ -1,5 +1,6 @@
 ﻿using ECS.WebAPI.Filters;
 using System.Web.Http;
+using ECS.WebAPI.Filters.AuthorizationFilters;
 
 namespace ECS.WebAPI.Controllers
 {
