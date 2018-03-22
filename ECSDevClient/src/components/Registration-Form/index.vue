@@ -246,11 +246,11 @@ export default {
       EMAIL_REGEX: /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
       ADDRESS_REGEX: /^[a-zA-Z0-9#.,-/ ]{0,}$/,
       CITY_REGEX: /^[a-zA-Z ]{0,}$/,
-      STATE_REGEX: /^[A-Z]{0,2}$/,
+      STATE_REGEX: /^[a-zA-Z]{0,2}$/,
       ZIPCODE_REGEX: /^\d{5}(?:[-\s]\d{4})?$/,
     }
   },
-  mounted () {
+  created () {
     this.fetchSecurityQuestions()
   },
   methods: {
@@ -403,7 +403,7 @@ export default {
       if (!this.$data.STATE_REGEX.test(this.$data.state) && this.$data.state != '') {
         document.getElementById('state').className = 'input';
         document.getElementById('stateControl').className = 'help is-info';
-        this.$data.stateMessage = 'State must be in abbreviated format.';
+        this.$data.stateMessage = 'State must be in abbreviated format (i.e. IA for Iowa).';
       } else if (this.$data.state == '') {
         document.getElementById('state').className = 'input';
         document.getElementById('stateControl').className = 'help';
