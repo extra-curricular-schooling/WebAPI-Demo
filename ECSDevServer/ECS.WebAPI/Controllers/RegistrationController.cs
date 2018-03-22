@@ -58,6 +58,18 @@ namespace ECS.WebAPI.Controllers
                 registrationForm.SecurityQuestions[2].Answer == null)
                 return BadRequest("Improper Request");
 
+            // Check if user already exists
+            if (_accountRepository.Exists(d => d.UserName == registrationForm.Username, d => d.User))
+            {
+                string summary = "Username Exists";
+                var error = new
+                {
+                    summary
+                };
+
+                return Content(HttpStatusCode.BadRequest, new JavaScriptSerializer().Serialize(error));
+            }
+
             // Create Salt
             var mySalt = HashService.Instance.CreateSaltKey();
 
@@ -138,7 +150,20 @@ namespace ECS.WebAPI.Controllers
 
             } catch (Exception ex)
             {
-                return Content(HttpStatusCode.InternalServerError, ex.Source + "\n" + ex.Message + "\n" + ex.StackTrace);
+                string summary = "Data Access Error";
+                string source = ex.Source;
+                string message = ex.Message;
+                string stackTrace = ex.StackTrace;
+
+                var error = new
+                {
+                    summary,
+                    source,
+                    message,
+                    stackTrace
+                };
+
+                return Content(HttpStatusCode.InternalServerError, error);
             }
         }
 
@@ -156,13 +181,33 @@ namespace ECS.WebAPI.Controllers
 
                 if (allQuestions == null)
                 {
-                    return Content(HttpStatusCode.ServiceUnavailable, "No Content");
+                    string summary = "No Content";
+
+                    var error = new
+                    {
+                        summary
+                    };
+
+                    return Content(HttpStatusCode.ServiceUnavailable, new JavaScriptSerializer().Serialize(error));
                 }
                 return Content(HttpStatusCode.OK, new JavaScriptSerializer().Serialize(allQuestions));
             }
             catch (Exception ex)
             {
-                return Content(HttpStatusCode.InternalServerError, ex.Source + "\n" + ex.Message + "\n" + ex.StackTrace);
+                string summary = "Data Access Error";
+                string source = ex.Source;
+                string message = ex.Message;
+                string stackTrace = ex.StackTrace;
+
+                var error = new
+                {
+                    summary,
+                    source,
+                    message,
+                    stackTrace
+                };
+
+                return Content(HttpStatusCode.InternalServerError, new JavaScriptSerializer().Serialize(error));
             }
         }
     }

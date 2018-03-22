@@ -225,6 +225,7 @@ export default {
 
       // Response Data
       questions: [],
+      error: {},
 
       // Validation Messages
       firstNameMessage: '',
@@ -517,9 +518,22 @@ export default {
             this.$router.push({
               name: 'Main',
               params: { isSuccess: true } 
-              })
             })
-          .catch(response => console.log(response))
+          })
+          .catch(error => {
+            console.log(error.response)
+            this.$data.error = JSON.parse(error.response.data)
+
+            // HTTP Status 400 - Username in request exists
+            if (this.$data.error.summary == 'Username Exists') {
+              alert('Good news!  According to our records, you already have an account with us!')
+            }
+
+            // HTTP Status 500
+            if (error.response.status === 500) {
+              alert('We apologize.  We are unable to process your request at this time.')
+            }
+          })
       }
     },
     fetchSecurityQuestions () {
@@ -531,7 +545,16 @@ export default {
         .then(response => {
           this.$data.questions = JSON.parse(response.data)
         })
-        .catch(response => console.log(response))
+        .catch(error => {
+          console.log(error.response)
+
+          // HTTP Status 503 - No questions in resource
+          
+          // HTTP Status 500
+          if (error.response.status === 500) {
+            alert('We apologize.  We are unable to process your request at this time.')
+          }
+        })
     }
   }
 }
