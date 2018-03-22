@@ -47,7 +47,7 @@ namespace ECS.WebAPI.Controllers
             string username = "";
             if (!JwtManager.Instance.ValidateToken(jwtToken, out username))
             {
-                if (!JwtManager.Instance.ValidateExpiredToken(jwtToken, out username) {
+                if (!JwtManager.Instance.ValidateExpiredToken(jwtToken, out username)) {
                     return Unauthorized();
                 }
             }
