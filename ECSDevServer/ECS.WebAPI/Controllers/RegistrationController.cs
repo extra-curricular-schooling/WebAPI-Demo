@@ -129,7 +129,7 @@ namespace ECS.WebAPI.Controllers
                 Password = hashedPassword,
                 Points = 0,
                 AccountStatus = true,
-                SuspensionTime = DateTime.UtcNow,
+                SuspensionTime = DateTime.UtcNow,  // TODO: @Trish
                 FirstTimeUser = true,
                 SecurityAnswers = securityQuestionAccountListObj
             };
@@ -165,6 +165,16 @@ namespace ECS.WebAPI.Controllers
 
                 return Content(HttpStatusCode.InternalServerError, error);
             }
+        }
+
+        /// <summary>
+        /// Method accepts request to submit incomplete form using the POST method over HTTP
+        /// </summary>
+        [HttpPost]
+        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
+        public IHttpActionResult FinishRegistration(RegistrationDTO registrationForm)
+        {
+            return Ok();
         }
 
         /// <summary>
