@@ -27,11 +27,14 @@
   </Slideout>
   <LinkedInPostModal/>
   <RedirectModal/>
+  <ErrorModal/>
 </div>
 </template>
 <script>
+import ErrorModal from '../components/Error-Modal/index'
 import LinkedInPostModal from '../components/LinkedIn-Modal/Index'
 import RedirectModal from '../components/Redirect-Modal/index'
+import EventBus from '../assets/js/EventBus.js'
 import Slideout from 'vue-slideout'
 var groups = {
   'Arts & Design': {
@@ -137,6 +140,7 @@ var groups = {
 export default {
   name: 'home',
   components: {
+    ErrorModal,
     LinkedInPostModal,
     RedirectModal,
     Slideout
@@ -173,7 +177,7 @@ export default {
       document.getElementById('FrameResult').src = link
       this.$store.dispatch('updateArticle', link)
       this.$store.dispatch('updateTitle', title)
-      this.$emit('articleChosen')
+      EventBus.$emit('articleChosen')
     }
   },
   data () {

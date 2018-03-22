@@ -24,37 +24,6 @@ namespace ECS.WebAPI.Controllers
         /// <summary>
         /// 
         /// </summary>
-        /// <remarks>Author: Scott Roberts</remarks>
-        [HttpPost]
-        [AllowAnonymous]
-        [Route("SubmitLogin")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
-        public IHttpActionResult SubmitLogin(AccountCredentialDTO credentials)
-        {
-            // Credentials is already read and deserialized into a DTO. Validate it.
-            Validate(credentials);
-
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            // Proccess any other information.
-
-            // Check app DB for user.
-
-            // Issue login information
-
-            return Ok();
-
-            // Return successful response with a "redirect" to where the token will be given
-            // Post methods should not return data, but should return responses and location headers of 
-            // what was created in the post.
-
-            //return CreatedAtRoute("DefaultApi", new { id = product.Id }, product);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
         /// <remarks>Author: Luis Pedroza-Soto</remarks>
         [HttpPost]
         [AllowAnonymous]
@@ -111,6 +80,7 @@ namespace ECS.WebAPI.Controllers
                 {
                     token = _jwtRepository.GetSingle(d => d.UserName == account.UserName, d => d.Account);
                     token.Value = JwtManager.Instance.GenerateToken(account.UserName);
+                    token.DateTimeIssued = DateTime.UtcNow;
                     _jwtRepository.Update(token);
                 }
                 // JWT does not exist for this user
@@ -118,8 +88,9 @@ namespace ECS.WebAPI.Controllers
                 {
                     token = new JAccessToken
                     {
-                        Value = JwtManager.Instance.GenerateToken("test1"),
-                        UserName = account.UserName
+                        Value = JwtManager.Instance.GenerateToken(account.UserName),
+                        UserName = account.UserName,
+                        DateTimeIssued = DateTime.UtcNow
                     };
                     _jwtRepository.Insert(token);
                 }

@@ -65,9 +65,9 @@
     <Compile Include="Migrations\201803211944497_Update_ExpiredAccessToken.Designer.cs">
       <DependentUpon>201803211944497_Update_ExpiredAccessToken.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201803212034306_LinkedIn_Table_Reintroduced.cs" />
-    <Compile Include="Migrations\201803212034306_LinkedIn_Table_Reintroduced.Designer.cs">
-      <DependentUpon>201803212034306_LinkedIn_Table_Reintroduced.cs</DependentUpon>
+    <Compile Include="Migrations\201803220610284_DateTime_Added_To_JAccessToken.cs" />
+    <Compile Include="Migrations\201803220610284_DateTime_Added_To_JAccessToken.Designer.cs">
+      <DependentUpon>201803220610284_DateTime_Added_To_JAccessToken.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Permission.cs" />
@@ -93,8 +93,8 @@
     <EmbeddedResource Include="Migrations\201803211944497_Update_ExpiredAccessToken.resx">
       <DependentUpon>201803211944497_Update_ExpiredAccessToken.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201803212034306_LinkedIn_Table_Reintroduced.resx">
-      <DependentUpon>201803212034306_LinkedIn_Table_Reintroduced.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201803220610284_DateTime_Added_To_JAccessToken.resx">
+      <DependentUpon>201803220610284_DateTime_Added_To_JAccessToken.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -28,6 +28,34 @@ namespace ECS.WebAPI.Controllers
         [AllowAnonymous]
         [HttpGet]
         [Route("ExternalLoginCallback")]
+        public IHttpActionResult ExternalLoginCallback(string error, string error_description, string state)
+        {
+            var nvs = Request.GetQueryNameValuePairs();
+            string stateParam = nvs.LastOrDefault(d => d.Key == "state").Value;
+            string returnURI = "https://localhost:8080/#/Home";
+            if (state != null)
+            {
+                // We need some variables from our state parameter.
+                    NameValueCollection provideritem = HttpUtility.ParseQueryString(stateParam);
+                    if (provideritem["returnURI"] != null)
+                    {
+                    returnURI = provideritem["returnURI"];
+                }
+            }
+
+            try
+            {
+                return Redirect(returnURI);
+            }
+            catch (Exception)
+            {
+                return BadRequest("Invalid return url.");
+            }
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("ExternalLoginCallback")]
         public IHttpActionResult ExternalLoginCallback(string code, string state)
         {
             string ProviderName = OpenAuth.GetProviderNameFromCurrentRequest();
@@ -65,7 +93,6 @@ namespace ECS.WebAPI.Controllers
                     if (provideritem["returnURI"] != null)
                     {
                         returnURI = provideritem["returnURI"];
-                        returnURI = returnURI.Replace(":/", "://");
                     }
                 }
                 else
@@ -154,7 +181,7 @@ namespace ECS.WebAPI.Controllers
                         return Redirect(returnURI);
                     } catch (Exception)
                     {
-                        return BadRequest("Invalid return url.");
+                        return Ok("Return url was invalid though.");
                     }
                     
                 }
@@ -174,7 +201,7 @@ namespace ECS.WebAPI.Controllers
             if (JwtManager.Instance.ValidateToken(authtoken, out username))
             {
                 string provider = "linkedin";
-                var redirectUrl = "~/OAuth/ExternalLoginCallback?username=" + username + "&returnURI=" + returnURI;
+                var redirectUrl = "~/OAuth/ExternalLoginCallback?username=" + username + "&returnURI=" + HttpUtility.UrlEncode(returnURI);
                 OpenAuth.RequestAuthentication(provider, redirectUrl);
                 return Ok();
             }

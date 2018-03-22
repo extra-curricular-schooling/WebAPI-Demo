@@ -3,7 +3,7 @@
     <div v-on:click="toggleRedirectModal" class="modal-background"></div>
     <div class="modal-card">
       <header class="modal-card-head">
-        <p class="modal-card-title">Whoops! Something Happened.</p>
+        <p class="modal-card-title">Redirection Notice</p>
         <button v-on:click="toggleRedirectModal" class="delete" aria-label="close"></button>
       </header>
       <section class="modal-card-body">

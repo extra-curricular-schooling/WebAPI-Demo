@@ -16,13 +16,13 @@ export default {
   },
   data () {
     return {
-      lockedPaths: ['/Home']
+      authorizationRequired: ['/Home']
     }
   },
   methods: {
     checkCurrentLogin () {
-      for (var path in this.lockedPaths) {
-        if (!this.$store.getters.isAuth && this.$route.path === this.lockedPaths[path]) {
+      for (var path in this.authorizationRequired) {
+        if (!this.$store.getters.isAuth && this.$route.path === this.authorizationRequired[path]) {
           this.$router.push('/?redirect=' + this.$route.path)
         }
       }

@@ -120,7 +120,7 @@ export default {
   data() {
     return {
       isActive: false,
-      isButtonVisible: true,
+      isButtonVisible: false,
       isConfirm: false,
       isRedirect: false,
       postData: {
@@ -133,7 +133,16 @@ export default {
       currentDateTime: new Date()
     }
   },
+  mounted () {
+    EventBus.$on('articleChosen', () => {
+      this.toggleShareButton()
+    })
+  },
   methods: {
+    getLinkedInTokenUri: function () {
+      return 'https://localhost:44311/OAuth/RedirectToLinkedIn?authtoken=' +
+          this.$store.getters.getAuthToken + '&returnuri=' + encodeURIComponent(window.location.href)
+    },
     updateArticleInfo: function () {
       this.postData.title = this.$store.getters.getArticleTitle
       this.postData.submittedurl = this.$store.getters.getCurrentArticle
@@ -149,18 +158,21 @@ export default {
     toggleConfirmModal: function() {
       this.isConfirm = !this.isConfirm;
     },
-    toggleRedirectModal: function () {
-      this.$store.dispatch('updateRedirectUri', 'https://localhost:44311/OAuth/RedirectToLinkedIn?authtoken=' +
-          this.$store.getters.getAuthToken + '&returnuri=' + window.location.href)
-      this.$store.dispatch('updateErrorMessage', 'Your LinkedIn session has expired, do you wish to renew it?')
+    toggleShareButton: function () {
+      this.isButtonVisible = true
+    },
+    toggleErrorModal: function (message) {
+      this.$store.dispatch('updateErrorMessage', message)
+      EventBus.$emit('error')
+    },
+    toggleRedirectModal: function (uri, message) {
+      this.$store.dispatch('updateRedirectUri', uri)
+      this.$store.dispatch('updateErrorMessage', message)
       this.$store.dispatch('updateRedirectVisiblity', true)
       EventBus.$emit('redirect')
     },
     redirectToLinkedIn: function () {
-      window.location.assign(
-        'https://localhost:44311/OAuth/RedirectToLinkedIn?authtoken=' +
-          this.$store.getters.getAuthToken + '&returnuri=' + window.location.href
-      )
+      window.location.assign(this.getLinkedInTokenUri())
     },
     shareToLinkedIn: function() {
       Axios({
@@ -184,7 +196,15 @@ export default {
         .catch( (error) => {
           if(error.response.data.message === 'ERR7') {
             this.toggleLinkedInModal()
-            this.toggleRedirectModal()
+            this.toggleRedirectModal(this.getLinkedInTokenUri(), 'Your LinkedIn session has expired, do you wish to renew it?')
+          }
+          else if(error.response.data.message === 'ERR1') {
+            this.toggleLinkedInModal()
+            this.toggleRedirectModal(this.getLinkedInTokenUri(), 'Your account does not seem to be linked to LinkedIn, would you like to start that process now?')
+          }
+          else {
+            this.toggleLinkedInModal();
+            this.toggleErrorModal('Seems like LinkedIn did not like that post! Please try again later!');
           }
         })
     }

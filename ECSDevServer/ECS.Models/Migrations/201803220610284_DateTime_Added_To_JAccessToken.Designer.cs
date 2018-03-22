@@ -7,18 +7,18 @@ namespace ECS.Models.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class LinkedIn_Table_Reintroduced : IMigrationMetadata
+    public sealed partial class DateTime_Added_To_JAccessToken : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(LinkedIn_Table_Reintroduced));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(DateTime_Added_To_JAccessToken));
         
         string IMigrationMetadata.Id
         {
-            get { return "201803212034306_LinkedIn_Table_Reintroduced"; }
+            get { return "201803220610284_DateTime_Added_To_JAccessToken"; }
         }
         
         string IMigrationMetadata.Source
         {
-            get { return Resources.GetString("Source"); }
+            get { return null; }
         }
         
         string IMigrationMetadata.Target

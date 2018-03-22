@@ -6,6 +6,7 @@ using System.Net.Http.Headers;
 using System.Web.Http;
 using System.Web.Http.Controllers;
 using ECS.Security.AccessTokens.Jwt;
+using System.Security.Claims;
 
 namespace ECS.WebAPI.Filters.AuthenticationFilters
 {
@@ -56,9 +57,40 @@ namespace ECS.WebAPI.Filters.AuthenticationFilters
                         return false;
                     }
                 }
+                // Token is either not valid or expired
                 else
                 {
-                    return false;
+                    if(JwtManager.Instance.ValidateExpiredToken(accessTokenFromRequest, out username))
+                    {
+                        if (_jwtRepository.Exists(d => d.UserName == username, d => d.Account))
+                        {
+                            JAccessToken accessToken = _jwtRepository.GetSingle(d => d.UserName == username, d => d.Account);
+                            if (accessToken != null)
+                            {
+                                string accessTokenStored = accessToken.Value;
+                                if (accessTokenFromRequest == accessTokenStored && accessToken.DateTimeIssued.AddDays(1).CompareTo(DateTime.Now.ToUniversalTime()) > 0)
+                                {
+                                    return true;
+                                }
+                                else
+                                {
+                                    return false;
+                                }
+                            }
+                            else
+                            {
+                                return false;
+                            }
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+                    else
+                    {
+                        return false;  
+                    }
                 }
             }
             else
