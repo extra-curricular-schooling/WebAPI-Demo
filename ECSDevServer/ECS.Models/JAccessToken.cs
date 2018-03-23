@@ -33,5 +33,10 @@ namespace ECS.Models
 
         //Navigation Property of User
         public Account Account { get; set; }
+
+        public JAccessToken ()
+        {
+            DateTimeIssued = DateTime.UtcNow;
+        }
     }
 }
