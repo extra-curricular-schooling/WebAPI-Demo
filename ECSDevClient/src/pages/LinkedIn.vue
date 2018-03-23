@@ -17,7 +17,7 @@ Vue.component('connect-to-linkedin', {
     redirectToLinkedIn: function () {
       window.location.assign(
         'https://localhost:44311/OAuth/RedirectToLinkedIn?authtoken=' +
-          this.$store.getters.getAuthToken + '&returnuri=' + window.location.href
+          this.$store.getters.getAuthToken + '&returnuri=' + encodeURIComponent(window.location.href)
       )
     }
   }

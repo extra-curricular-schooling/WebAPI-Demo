@@ -3802,7 +3802,8 @@ namespace ECS.Models.Migrations
                 new JAccessToken
                 {
                     Value = "uyvguc76dccvyikbibo",
-                    UserName = accounts.Single(i => i.UserName == "test2").UserName, 
+                    UserName = accounts.Single(i => i.UserName == "test2").UserName,
+                    DateTimeIssued = DateTime.UtcNow
                 }
             };
 
