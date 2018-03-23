@@ -9,10 +9,10 @@ namespace ECS.Repositories
     public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class
     {
         // DbContext represents the data context (database connection) currently in use.
-        protected DbContext context;
+        private readonly DbContext _context;
 
         // DbSet represents the "table" that you are performing operations on.
-        protected IDbSet<T> dbSet;
+        protected readonly IDbSet<T> DbSet;
 
         /// <summary>
         /// Repository base class contructor.
@@ -23,54 +23,53 @@ namespace ECS.Repositories
         protected RepositoryBase(DbContext datacontext)
         {
             //You can use the cpmt
-            context = datacontext;
-            dbSet = context.Set<T>();
+            _context = datacontext;
+            DbSet = _context.Set<T>();
         }
         
         public void Insert(T entity)
         {
             //Use the context object and entity state to save the entity
-            dbSet.Add(entity);
-            context.Entry(entity).State = EntityState.Added;
-            context.SaveChanges();
+            DbSet.Add(entity);
+            _context.Entry(entity).State = EntityState.Added;
+            _context.SaveChanges();
         }
         
         public void Delete(T entity)
         {
             //Use the context object and entity state to delete the entity
-            dbSet.Remove(entity);
-            context.Entry(entity).State = EntityState.Deleted;
-            context.SaveChanges();
+            DbSet.Remove(entity);
+            _context.Entry(entity).State = EntityState.Deleted;
+            _context.SaveChanges();
         }
         
         public void Update(T entity)
         {
             //Use the context object and entity state to update the entity
-            context.Entry(entity).State = EntityState.Modified;
-            context.SaveChanges();
+            _context.Entry(entity).State = EntityState.Modified;
+            _context.SaveChanges();
         }
 
-        // Haven't tested these yet!!!!!!!!!!!!!!!!!
-        // TODO: @Scott Find can be very slow. Try to change to SingleOrDefault<>()
+        // TODO: @Team NOT TESTED YET!
         public T GetById(int id)
         {
-            return dbSet.Find(id);
+            return DbSet.Find(id);
         }
 
-        // Haven't tested these yet!!!!!!!!!!!!!!!!!
+        // TODO: @Team NOT TESTED YET!
         public T GetById(string id)
         {
-            return dbSet.Find(id);
+            return DbSet.Find(id);
         }
 
         public IQueryable<T> SearchFor(Expression<Func<T, bool>> predicate)
         {
-            return dbSet.Where(predicate);
+            return DbSet.Where(predicate);
         }
         
         public IList<T> GetAll(params Expression<Func<T, object>>[] navigationProperties)
         {
-            IQueryable<T> query = dbSet;
+            IQueryable<T> query = DbSet;
             var list = new List<T>();
 
             //Apply eager loading
@@ -90,7 +89,7 @@ namespace ECS.Repositories
         // } 
         public T GetSingle(Func<T, bool> where, params Expression<Func<T, object>>[] navigationProperties)
         {
-            IQueryable<T> query = dbSet;
+            IQueryable<T> query = DbSet;
             T item = null;
 
             foreach (Expression<Func<T, object>> navigationProperty in navigationProperties)
@@ -100,17 +99,9 @@ namespace ECS.Repositories
             return item;
         }
 
-        /// <summary>
-        /// Garbage Collection is not implemented.
-        /// </summary>
-        public void Dispose()
-        {
-            throw new NotImplementedException();
-        }
-
         public bool Exists(Func<T, bool> where, params Expression<Func<T, object>>[] navigationProperties)
         {
-            IQueryable<T> query = dbSet;
+            IQueryable<T> query = DbSet;
             T item = null;
 
             foreach (Expression<Func<T, object>> navigationProperty in navigationProperties)
@@ -128,6 +119,11 @@ namespace ECS.Repositories
             }
 
             return true;
+        }
+
+        public void Dispose()
+        {
+            _context?.Dispose();
         }
     }
 }

@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.Http;
 using System.Security.Claims;
 using System.Web.Http;
 using System.Web.Http.Controllers;
@@ -12,7 +13,9 @@ namespace ECS.WebAPI.Filters.AuthorizationFilters
         #region Constants and fields
         //{"Scott", {"}
         // Authorize({{"scott", {"DUH", "Hello"}}})
+        // Authorize("hello")
         private List<Dictionary<string, List<string>>> _claims;
+        
         #endregion
 
         public AuthorizeSsoAccessTokenAttribute(List<Dictionary<string, List<string>>> claims)
@@ -23,7 +26,8 @@ namespace ECS.WebAPI.Filters.AuthorizationFilters
         protected override bool IsAuthorized(HttpActionContext actionContext)
         {
             // Authentication has already occured, so we don't need to validate the token again to get the principal
-            var requestPrincipal = actionContext.RequestContext.Principal;
+            var requestPrincipal = (ClaimsPrincipal) actionContext.Request.GetRequestContext().Principal;
+
 
             if (requestPrincipal != null)
             {

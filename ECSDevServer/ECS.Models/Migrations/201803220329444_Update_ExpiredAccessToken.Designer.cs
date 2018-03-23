@@ -13,7 +13,7 @@ namespace ECS.Models.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201803211944497_Update_ExpiredAccessToken"; }
+            get { return "201803220329444_Update_ExpiredAccessToken"; }
         }
         
         string IMigrationMetadata.Source

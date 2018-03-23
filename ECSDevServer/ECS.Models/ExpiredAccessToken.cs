@@ -7,9 +7,12 @@ namespace ECS.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public string ExpiredTokenId { get; set; }
+        public int ExpiredTokenId { get; set; }
 
         [Required]
         public string ExpiredTokenValue { get; set; }
+
+        [Required]
+        public bool CanReuse { get; set; }
     }
 }

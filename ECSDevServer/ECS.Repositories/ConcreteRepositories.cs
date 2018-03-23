@@ -52,7 +52,6 @@ namespace ECS.Repositories
     /// </summary>
     public interface ISaltRepository: IRepositoryBase<Salt>
     {
-        Salt GetSaltByUsername(string username);
     }
 
     /// <summary>
@@ -60,7 +59,7 @@ namespace ECS.Repositories
     /// </summary>
     public interface ISecurityQuestionRepository : IRepositoryBase<SecurityQuestion>
     {
-        List<SecurityQuestion> GetAllQuestions();
+        //List<SecurityQuestion> GetAllQuestions();
     }
 
     /// <summary>
@@ -175,11 +174,6 @@ namespace ECS.Repositories
         public SaltRepository() : base(new ECSContext())
         {
         }
-
-        public Salt GetSaltByUsername(string username)
-        {
-            return dbSet.SingleOrDefault(x => x.UserName == username);
-        }
     }
 
     /// <summary>
@@ -193,7 +187,7 @@ namespace ECS.Repositories
 
         public List<SecurityQuestion> GetAllQuestions()
         {
-            return dbSet.ToList();
+            return DbSet.ToList();
         }
     }
 

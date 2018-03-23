@@ -6,13 +6,13 @@ using System.Web.Http.Filters;
 namespace ECS.WebAPI.Filters.ExceptionFilters
 {
     // This is an example of a Exception filter we can put at the global, controller, or action levels.
-    public class NotImplExceptionFilterAttribute : ExceptionFilterAttribute
+    public class NotImplExceptionFilterAttribute : AnyExceptionFilterAttribute
     {
-        public override void OnException(HttpActionExecutedContext context)
+        public override void OnException(HttpActionExecutedContext actionExecutedContextcontext)
         {
-            if (context.Exception is NotImplementedException)
+            if (actionExecutedContextcontext.Exception is NotImplementedException)
             {
-                context.Response = new HttpResponseMessage(HttpStatusCode.NotImplemented);
+                actionExecutedContextcontext.Response = new HttpResponseMessage(HttpStatusCode.NotImplemented);
             }
         }
     }

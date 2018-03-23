@@ -101,7 +101,7 @@ namespace ECS.WebAPI.Controllers
             }
 
             // Issue login information
-            if (account.Password == HashService.Instance.HashPasswordWithSalt(salt.PasswordSalt, credentials.Password))
+            if (account.Password == HashService.Instance.HashPasswordWithSalt(salt.PasswordSalt, credentials.Password, true))
             {
                 var response = new HttpResponseMessage();
                 JAccessToken token;

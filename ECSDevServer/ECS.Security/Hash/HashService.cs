@@ -9,6 +9,9 @@ namespace ECS.Security.Hash
     /// </summary>
     public class HashService : IHashService
     {
+        // Purpose of writing a Singleton: If we want other Hash services that perform
+        // hashing with different algorithms, we need an Interface that controls that
+        // allows for multiple objects to have "hashing" capabilities.
         private static HashService _instance;
         private HashService()
         {
@@ -51,9 +54,10 @@ namespace ECS.Security.Hash
         /// <returns>The password with salt.</returns>
         /// <param name="password">Password.</param>
         /// <param name="salt">Salt.</param>
-        public string HashPasswordWithSalt(string salt, string password)
+        /// <param name="isPrependSalt"></param>
+        public string HashPasswordWithSalt(string salt, string password, bool isPrependSalt)
         {
-            string saltedPassword = String.Concat(salt, password);
+            string saltedPassword = isPrependSalt ? string.Concat(salt, password) : string.Concat(password, salt);
 
             UTF8Encoding encoder = new UTF8Encoding();
             SHA256Managed hasher = new SHA256Managed();

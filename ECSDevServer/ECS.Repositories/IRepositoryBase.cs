@@ -37,10 +37,14 @@ namespace ECS.Repositories
         T GetById(int id);
 
         /// <summary>
-        /// 
+        /// Returns the object with the specified list identifier.
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <param name="id">
+        /// Unique identifier
+        /// </param>
+        /// <returns>
+        /// Generic object.
+        /// </returns>
         T GetById(string id);
 
         /// <summary>

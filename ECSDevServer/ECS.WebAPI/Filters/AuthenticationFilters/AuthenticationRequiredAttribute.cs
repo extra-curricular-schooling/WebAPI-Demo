@@ -11,7 +11,12 @@ namespace ECS.WebAPI.Filters.AuthenticationFilters
 {
     public class AuthenticationRequiredAttribute : AuthorizeAttribute, IDisposable
     {
-        private JAccessTokenRepository _jwtRepository = new JAccessTokenRepository();
+        private readonly IJAccessTokenRepository _jwtRepository;
+
+        public AuthenticationRequiredAttribute()
+        {
+            _jwtRepository = new JAccessTokenRepository();
+        }
 
         protected override bool IsAuthorized(HttpActionContext actionContext)
         {

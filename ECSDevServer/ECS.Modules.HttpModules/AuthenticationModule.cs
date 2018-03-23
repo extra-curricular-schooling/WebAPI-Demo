@@ -46,9 +46,9 @@ namespace ECS.Modules.HttpModules
                 var request = app.Request;
                 var type = request.GetType();
 
-                var isAcceptedRefererHeader = CheckRefererHeader(request);
-                var isAcceptedOriginHeader = CheckOriginHeader(request);
-                var isAcceptedUrlAuthorityHeader = CheckUrlAuthority(request);
+                var isAcceptedRefererHeader = request.Headers["Referer"] != null && _acceptedUrls.Contains(request.Headers["Referer"]);
+                var isAcceptedOriginHeader = request.Headers["Origin"] != null && _acceptedOrigins.Contains(request.Headers["Origin"]);
+                var isAcceptedUrlAuthorityHeader = _acceptedAuthorities.Contains(request.Url.Authority);
 
                 // Return the bad request
                 if (!isAcceptedRefererHeader && !isAcceptedOriginHeader && !isAcceptedUrlAuthorityHeader)
@@ -82,24 +82,6 @@ namespace ECS.Modules.HttpModules
                     app.Response.End();
                 }
             }
-        }
-
-        // Check if the request has a "Referer" header
-        private bool CheckRefererHeader(HttpRequest request)
-        {
-            return request.Headers["Referer"] != null && _acceptedUrls.Contains(request.Headers["Referer"]);
-        }
-
-        // Check if the request has a recognized "Origin" header
-        private bool CheckOriginHeader(HttpRequest request)
-        {
-            return request.Headers["Origin"] != null && _acceptedOrigins.Contains(request.Headers["Origin"]);
-        }
-
-        // Check if the request Url authority is used
-        private bool CheckUrlAuthority(HttpRequest request)
-        {
-            return _acceptedAuthorities.Contains(request.Url.Authority);
         }
     }
 }

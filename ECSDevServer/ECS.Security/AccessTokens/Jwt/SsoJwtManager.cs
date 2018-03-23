@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http;
 using System.Security.Claims;
+using System.Security.Principal;
+using System.Text;
 using ECS.Repositories;
 using Microsoft.IdentityModel.Tokens;
 
@@ -42,14 +45,58 @@ namespace ECS.Security.AccessTokens.Jwt
             }
         }
 
+        private ClaimsIdentity CreateClaimsIdentity(List<Claim> claims)
+        {
+            var claimsIdentityTest = new ClaimsIdentity();
+
+            foreach (var claim in claims)
+            {
+                claimsIdentityTest.AddClaim(claim);
+            }
+
+            return claimsIdentityTest;
+        }
+
+        public string GenerateTokenTest(string username, int expireMinutes = 15)
+        {
+            //CreateClaimsIdentity((List<Claim>) claimList);
+
+            //var account = _accountRepository.GetSingle(acc => acc.UserName == username);
+            var claimsIdentity = new ClaimsIdentity(new List<Claim>()
+            {
+                new Claim("username", "test5"),
+                new Claim("password", "aaaaaaaaa"),
+                new Claim("application", "ecs"),
+                new Claim("roleType", "public")
+            }, "Custom");
+
+            var now = DateTime.UtcNow;
+
+            var symmetricKey = Convert.FromBase64String(Secret);
+            
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = claimsIdentity,
+                IssuedAt = now,
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(symmetricKey), SecurityAlgorithms.HmacSha256Signature),
+            };
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var stoken = tokenHandler.CreateToken(tokenDescriptor);
+            var token = tokenHandler.WriteToken(stoken);
+
+            return token;
+        }
+        
+
         public string GenerateToken(string username, int expireMinutes = 15)
         {
-            // var account = accountRepository.GetById(username);
+            
+            //var account = _accountRepository.GetSingle(acc => acc.UserName == username);
             var claimsIdentity = new ClaimsIdentity(new List<Claim>()
             {
                 new Claim("username", username),
-                //new Claim("password", account.Password),
-                new Claim("password", "pass"),
+                new Claim("password", "aaaaaaaaa"),
                 new Claim("application", "ecs"),
                 new Claim("roleType", "public")
             }, "Custom");
@@ -81,16 +128,18 @@ namespace ECS.Security.AccessTokens.Jwt
                 if (!(tokenHandler.ReadToken(token) is JwtSecurityToken))
                     return null;
 
-                var symmetricKey = Convert.FromBase64String(Secret);
+                var symmetricKey = Encoding.UTF8.GetBytes(Secret);   
 
+                // The checks that occur during validation of the JWT.
                 var validationParameters = new TokenValidationParameters()
                 {
-                    // Should be true?
                     ValidateIssuer = false,
                     ValidateAudience = false,
                     IssuerSigningKey = new SymmetricSecurityKey(symmetricKey)
                 };
 
+                // The JwtSecurityTokenHandler will check all of the validation parameters to ensure
+                // the Jwt is acceptable to use.
                 var principal = tokenHandler.ValidateToken(token, validationParameters, out var _);
 
                 return principal;
@@ -118,22 +167,23 @@ namespace ECS.Security.AccessTokens.Jwt
             return jwtList;
         }
 
-        public string GetJwtFromAuthorizationHeader(HttpRequestMessage request)
+        public string GetAccessToken(HttpRequestMessage request)
         {
             return request.Headers.Authorization.Parameter;
         }
 
-        public Claim GetClaim(string token, string claimType)
+        public Claim GetClaim(IPrincipal principal, string claimType)
         {
             // This line is called multiple times during execution... Figure out a way to get it out.
-            var principal = GetPrincipal(token);
-            return principal.FindFirst(claimType);
+            var claimsPrincipal = (ClaimsPrincipal) principal;
+            return claimsPrincipal.FindFirst(claimType);
         }
 
-        public string GetClaimValue(string token, string claimType)
+        public string GetClaimValue(IPrincipal principal, string claimType)
         {
-            var principal = GetPrincipal(token);
-            return principal.FindFirst(claimType).Value;
+            // This line is called multiple times during execution... Figure out a way to get it out.
+            var claimsPrincipal = (ClaimsPrincipal) principal;
+            return claimsPrincipal.FindFirst(claimType).Value;
         }
     }
 }

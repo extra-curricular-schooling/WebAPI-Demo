@@ -1,8 +1,12 @@
 ﻿using Newtonsoft.Json.Serialization;
 using System;
+using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Web.Http;
+using System.Web.Http.Dispatcher;
+using ECS.WebAPI.Filters.ExceptionFilters;
 using ECS.WebAPI.HttpMessageHandlers;
+using ECS.WebAPI.HttpMessageHandlers.DelegatingHandlers;
 
 namespace ECS.WebAPI
 {
@@ -33,12 +37,18 @@ namespace ECS.WebAPI
                 routeTemplate: "{id}.html",
                 defaults: new { id = "index" });
 
+            // Important that this route exists before the default.
+            // If the route is specific, put it before the more general routes.
+
             config.Routes.MapHttpRoute(
                 name: "Sso",
                 routeTemplate: "Sso/{action}/{id}",
-                defaults: new {id = RouteParameter.Optional, action = "Registration"},
+                defaults: new { id = RouteParameter.Optional },
                 constraints: null,
-                handler: new AccessTokenAuthenticationMessageHandler()
+                handler: 
+                HttpClientFactory.CreatePipeline(
+                    new HttpControllerDispatcher(config), 
+                    new DelegatingHandler[]{new AccessTokenAuthenticationDelegatingHandler()})
             );
 
             // Default Controller Route
@@ -47,6 +57,9 @@ namespace ECS.WebAPI
                 routeTemplate: "{controller}/{action}/{id}",
                 defaults: new { id = RouteParameter.Optional, action = "Get" }
             );
+
+            // Exception Filters
+            // config.Filters.Add(new AnyExceptionFilterAttribute());
         }
     }
 }

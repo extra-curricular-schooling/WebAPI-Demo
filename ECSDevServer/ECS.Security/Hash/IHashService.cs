@@ -3,6 +3,6 @@
     public interface IHashService
     {
         string CreateSaltKey();
-        string HashPasswordWithSalt(string salt, string password);
+        string HashPasswordWithSalt(string salt, string password, bool isPrependSalt);
     }
 }

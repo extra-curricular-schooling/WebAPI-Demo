@@ -118,7 +118,7 @@ namespace ECS.WebAPI.Controllers
         public IHttpActionResult GetSecurityQuestions()
         {
             List<SecurityQuestion> allQuestions;
-            allQuestions = _securityQuestionRepository.GetAllQuestions();
+            allQuestions = (List<SecurityQuestion>) _securityQuestionRepository.GetAll();
 
             // TODO: @Trish change to Ok()
             return Content(HttpStatusCode.OK, new JavaScriptSerializer().Serialize(allQuestions));

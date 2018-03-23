@@ -3,7 +3,7 @@ using Moq;
 
 namespace ECS.Security.Tests.Hash
 {
-    public class HashServiceTest
+    public class HashServiceUnitTests
     {
         public class CreateSaltKey
         {
@@ -12,14 +12,22 @@ namespace ECS.Security.Tests.Hash
             {
 
             }
-
             // Add more...
         }
 
         public class HashPasswordWithSalt
         {
             [Fact]
-            public void AddsSaltToPassword()
+            public void AddsPrependedSaltToPassword()
+            {
+                //const string salt = "aaa";
+                //const string password = "pass";
+                //const bool isPrependSalt = true;
+
+            }
+
+            [Fact]
+            public void AddsAppendedSaltToPassword()
             {
 
             }

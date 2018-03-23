@@ -177,8 +177,7 @@ namespace ECS.WebAPI.Tests.Controllers
                 Assert.IsType<OkResult>(result);
             }
 
-            [Theory]
-            [InlineData()]
+            [Fact]
             public void BadPostReturnsBadResponse()
             {
 
