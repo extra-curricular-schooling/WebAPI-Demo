@@ -995,12 +995,12 @@ namespace ECS.Models.Migrations
             {
                     new InterestTag
                     {
-                        TagName = "CompSci",
+                        TagName = "Technology",
                         ArticleTags = new List<Article>()
                     },
                     new InterestTag
                     {
-                        TagName = "Chemistry",
+                        TagName = "Medical",
                         ArticleTags = new List<Article>()
                     },
                     new InterestTag
@@ -1010,12 +1010,12 @@ namespace ECS.Models.Migrations
                     },
                     new InterestTag
                     {
-                        TagName = "Art",
+                        TagName = "Art & Design",
                         ArticleTags = new List<Article>()
                     },
                     new InterestTag
                     {
-                        TagName = "Math",
+                        TagName = "Education",
                         ArticleTags = new List<Article>()
                     },
                     new InterestTag
@@ -1025,7 +1025,7 @@ namespace ECS.Models.Migrations
                     },
                     new InterestTag
                     {
-                        TagName = "Engineering",
+                        TagName = "Environment",
                         ArticleTags = new List<Article>()
                     },
                     new InterestTag
@@ -1050,88 +1050,88 @@ namespace ECS.Models.Migrations
             context.SaveChanges();
 
             // Add entries to the join table AccountTags
-            AddOrUpdateInterestTag(context, "test1", "CompSci");
-            AddOrUpdateInterestTag(context, "test1", "Math");
-            AddOrUpdateInterestTag(context, "test2", "CompSci");
+            AddOrUpdateInterestTag(context, "test1", "Technology");
+            AddOrUpdateInterestTag(context, "test1", "Education");
+            AddOrUpdateInterestTag(context, "test2", "Technology");
             AddOrUpdateInterestTag(context, "test2", "English");
-            AddOrUpdateInterestTag(context, "test3", "Math");
-            AddOrUpdateInterestTag(context, "test3", "Art");
-            AddOrUpdateInterestTag(context, "test2", "Art");
-            AddOrUpdateInterestTag(context, "test2", "Math");
+            AddOrUpdateInterestTag(context, "test3", "Education");
+            AddOrUpdateInterestTag(context, "test3", "Art & Design");
+            AddOrUpdateInterestTag(context, "test2", "Art & Design");
+            AddOrUpdateInterestTag(context, "test2", "Education");
             AddOrUpdateInterestTag(context, "test3", "English");
-            AddOrUpdateInterestTag(context, "test4", "CompSci");
+            AddOrUpdateInterestTag(context, "test4", "Technology");
             AddOrUpdateInterestTag(context, "test5", "Biology");
             AddOrUpdateInterestTag(context, "test6", "Biology");
-            AddOrUpdateInterestTag(context, "test6", "Engineering");
-            AddOrUpdateInterestTag(context, "test7", "Engineering");
-            AddOrUpdateInterestTag(context, "test7", "Art");
-            AddOrUpdateInterestTag(context, "test8", "Art");
-            AddOrUpdateInterestTag(context, "test8", "Math");
+            AddOrUpdateInterestTag(context, "test6", "Environment");
+            AddOrUpdateInterestTag(context, "test7", "Environment");
+            AddOrUpdateInterestTag(context, "test7", "Art & Design");
+            AddOrUpdateInterestTag(context, "test8", "Art & Design");
+            AddOrUpdateInterestTag(context, "test8", "Education");
             AddOrUpdateInterestTag(context, "test9", "English");
-            AddOrUpdateInterestTag(context, "test9", "CompSci");
-            AddOrUpdateInterestTag(context, "test9", "Math");
+            AddOrUpdateInterestTag(context, "test9", "Technology");
+            AddOrUpdateInterestTag(context, "test9", "Education");
             AddOrUpdateInterestTag(context, "test10", "Sociology");
             AddOrUpdateInterestTag(context, "test11", "English");
-            AddOrUpdateInterestTag(context, "test12", "Math");
-            AddOrUpdateInterestTag(context, "test12", "Art");
+            AddOrUpdateInterestTag(context, "test12", "Education");
+            AddOrUpdateInterestTag(context, "test12", "Art & Design");
             AddOrUpdateInterestTag(context, "test12", "English");
             AddOrUpdateInterestTag(context, "test12", "Political Science");
             AddOrUpdateInterestTag(context, "test13", "English");
-            AddOrUpdateInterestTag(context, "test13", "CompSci");
-            AddOrUpdateInterestTag(context, "test14", "Math");
-            AddOrUpdateInterestTag(context, "test15", "CompSci");
+            AddOrUpdateInterestTag(context, "test13", "Technology");
+            AddOrUpdateInterestTag(context, "test14", "Education");
+            AddOrUpdateInterestTag(context, "test15", "Technology");
             AddOrUpdateInterestTag(context, "test16", "English");
-            AddOrUpdateInterestTag(context, "test16", "Math");
-            AddOrUpdateInterestTag(context, "test16", "Art");
-            AddOrUpdateInterestTag(context, "test17", "Art");
-            AddOrUpdateInterestTag(context, "test17", "Math");
+            AddOrUpdateInterestTag(context, "test16", "Education");
+            AddOrUpdateInterestTag(context, "test16", "Art & Design");
+            AddOrUpdateInterestTag(context, "test17", "Art & Design");
+            AddOrUpdateInterestTag(context, "test17", "Education");
             AddOrUpdateInterestTag(context, "test19", "English");
-            AddOrUpdateInterestTag(context, "test20", "CompSci");
-            AddOrUpdateInterestTag(context, "test21", "Math");
+            AddOrUpdateInterestTag(context, "test20", "Technology");
+            AddOrUpdateInterestTag(context, "test21", "Education");
             AddOrUpdateInterestTag(context, "test22", "Biology");
-            AddOrUpdateInterestTag(context, "test22", "Engineering");
-            AddOrUpdateInterestTag(context, "test23", "Math");
-            AddOrUpdateInterestTag(context, "test23", "Art");
-            AddOrUpdateInterestTag(context, "test25", "Art");
-            AddOrUpdateInterestTag(context, "test25", "Chemistry");
+            AddOrUpdateInterestTag(context, "test22", "Environment");
+            AddOrUpdateInterestTag(context, "test23", "Education");
+            AddOrUpdateInterestTag(context, "test23", "Art & Design");
+            AddOrUpdateInterestTag(context, "test25", "Art & Design");
+            AddOrUpdateInterestTag(context, "test25", "Medical");
             AddOrUpdateInterestTag(context, "test26", "English");
-            AddOrUpdateInterestTag(context, "test27", "CompSci");
-            AddOrUpdateInterestTag(context, "test27", "Math");
-            AddOrUpdateInterestTag(context, "test29", "CompSci");
+            AddOrUpdateInterestTag(context, "test27", "Technology");
+            AddOrUpdateInterestTag(context, "test27", "Education");
+            AddOrUpdateInterestTag(context, "test29", "Technology");
             AddOrUpdateInterestTag(context, "test29", "English");
-            AddOrUpdateInterestTag(context, "test30", "Math");
-            AddOrUpdateInterestTag(context, "test30", "Art");
-            AddOrUpdateInterestTag(context, "test32", "Art");
-            AddOrUpdateInterestTag(context, "test32", "Math");
+            AddOrUpdateInterestTag(context, "test30", "Education");
+            AddOrUpdateInterestTag(context, "test30", "Art & Design");
+            AddOrUpdateInterestTag(context, "test32", "Art & Design");
+            AddOrUpdateInterestTag(context, "test32", "Education");
             AddOrUpdateInterestTag(context, "test33", "English");
-            AddOrUpdateInterestTag(context, "test34", "CompSci");
+            AddOrUpdateInterestTag(context, "test34", "Technology");
             AddOrUpdateInterestTag(context, "test35", "Biology");
             AddOrUpdateInterestTag(context, "test36", "Biology");
-            AddOrUpdateInterestTag(context, "test36", "Engineering");
-            AddOrUpdateInterestTag(context, "test37", "Engineering");
-            AddOrUpdateInterestTag(context, "test37", "Art");
-            AddOrUpdateInterestTag(context, "test38", "Art");
-            AddOrUpdateInterestTag(context, "test38", "Math");
+            AddOrUpdateInterestTag(context, "test36", "Environment");
+            AddOrUpdateInterestTag(context, "test37", "Environment");
+            AddOrUpdateInterestTag(context, "test37", "Art & Design");
+            AddOrUpdateInterestTag(context, "test38", "Art & Design");
+            AddOrUpdateInterestTag(context, "test38", "Education");
             AddOrUpdateInterestTag(context, "test39", "English");
-            AddOrUpdateInterestTag(context, "test39", "CompSci");
-            AddOrUpdateInterestTag(context, "test39", "Math");
+            AddOrUpdateInterestTag(context, "test39", "Technology");
+            AddOrUpdateInterestTag(context, "test39", "Education");
             AddOrUpdateInterestTag(context, "test40", "Sociology");
             AddOrUpdateInterestTag(context, "test41", "English");
-            AddOrUpdateInterestTag(context, "test42", "Math");
-            AddOrUpdateInterestTag(context, "test42", "Art");
+            AddOrUpdateInterestTag(context, "test42", "Education");
+            AddOrUpdateInterestTag(context, "test42", "Art & Design");
             AddOrUpdateInterestTag(context, "test42", "English");
             AddOrUpdateInterestTag(context, "test42", "Political Science");
             AddOrUpdateInterestTag(context, "test43", "English");
-            AddOrUpdateInterestTag(context, "test43", "CompSci");
-            AddOrUpdateInterestTag(context, "test44", "Math");
-            AddOrUpdateInterestTag(context, "test45", "CompSci");
+            AddOrUpdateInterestTag(context, "test43", "Technology");
+            AddOrUpdateInterestTag(context, "test44", "Education");
+            AddOrUpdateInterestTag(context, "test45", "Technology");
             AddOrUpdateInterestTag(context, "test46", "English");
-            AddOrUpdateInterestTag(context, "test46", "Math");
-            AddOrUpdateInterestTag(context, "test46", "Art");
-            AddOrUpdateInterestTag(context, "test47", "Art");
-            AddOrUpdateInterestTag(context, "test47", "Math");
+            AddOrUpdateInterestTag(context, "test46", "Education");
+            AddOrUpdateInterestTag(context, "test46", "Art & Design");
+            AddOrUpdateInterestTag(context, "test47", "Art & Design");
+            AddOrUpdateInterestTag(context, "test47", "Education");
             AddOrUpdateInterestTag(context, "test49", "English");
-            AddOrUpdateInterestTag(context, "test49", "Math");
+            AddOrUpdateInterestTag(context, "test49", "Education");
             context.SaveChanges();
 
 
@@ -1488,55 +1488,55 @@ namespace ECS.Models.Migrations
             context.SaveChanges();
 
             // Add entries to foreign key of Article which is the Interest Tag Name
-            AddOrUpdateArticle(context, "Chemistry", "www.test1.com");
-            AddOrUpdateArticle(context, "Chemistry", "www.test2.com");
-            AddOrUpdateArticle(context, "Chemistry", "www.test3.com");
-            AddOrUpdateArticle(context, "Art", "www.test4.com");
-            AddOrUpdateArticle(context, "Art", "www.test5.com");
-            AddOrUpdateArticle(context, "Art", "www.test6.com");
+            AddOrUpdateArticle(context, "Medical", "www.test1.com");
+            AddOrUpdateArticle(context, "Medical", "www.test2.com");
+            AddOrUpdateArticle(context, "Medical", "www.test3.com");
+            AddOrUpdateArticle(context, "Art & Design", "www.test4.com");
+            AddOrUpdateArticle(context, "Art & Design", "www.test5.com");
+            AddOrUpdateArticle(context, "Art & Design", "www.test6.com");
             AddOrUpdateArticle(context, "English", "www.test7.com");
             AddOrUpdateArticle(context, "English", "www.test8.com");
             AddOrUpdateArticle(context, "English", "www.test9.com");
-            AddOrUpdateArticle(context, "Math", "www.test10.com");
-            AddOrUpdateArticle(context, "Math", "www.test11.com");
-            AddOrUpdateArticle(context, "Math", "www.test12.com");
-            AddOrUpdateArticle(context, "Math", "www.test13.com");
+            AddOrUpdateArticle(context, "Education", "www.test10.com");
+            AddOrUpdateArticle(context, "Education", "www.test11.com");
+            AddOrUpdateArticle(context, "Education", "www.test12.com");
+            AddOrUpdateArticle(context, "Education", "www.test13.com");
             AddOrUpdateArticle(context, "Biology", "www.test14.com");
             AddOrUpdateArticle(context, "Biology", "www.test15.com");
             AddOrUpdateArticle(context, "Biology", "www.test16.com");
             AddOrUpdateArticle(context, "Sociology", "www.test17.com");
             AddOrUpdateArticle(context, "Sociology", "www.test18.com");
             AddOrUpdateArticle(context, "Sociology", "www.test19.com");
-            AddOrUpdateArticle(context, "Engineering", "www.test20.com");
-            AddOrUpdateArticle(context, "Engineering", "www.test21.com");
-            AddOrUpdateArticle(context, "Engineering", "www.test22.com");
+            AddOrUpdateArticle(context, "Environment", "www.test20.com");
+            AddOrUpdateArticle(context, "Environment", "www.test21.com");
+            AddOrUpdateArticle(context, "Environment", "www.test22.com");
             AddOrUpdateArticle(context, "History", "www.test23.com");
             AddOrUpdateArticle(context, "History", "www.test24.com");
-            AddOrUpdateArticle(context, "CompSci", "www.test25.com");
-            AddOrUpdateArticle(context, "Math", "www.test26.com");
-            AddOrUpdateArticle(context, "Math", "www.test27.com");
-            AddOrUpdateArticle(context, "Math", "www.test28.com");
+            AddOrUpdateArticle(context, "Technology", "www.test25.com");
+            AddOrUpdateArticle(context, "Education", "www.test26.com");
+            AddOrUpdateArticle(context, "Education", "www.test27.com");
+            AddOrUpdateArticle(context, "Education", "www.test28.com");
             AddOrUpdateArticle(context, "English", "www.test29.com");
             AddOrUpdateArticle(context, "English", "www.test30.com");
             AddOrUpdateArticle(context, "English", "www.test31.com");
-            AddOrUpdateArticle(context, "Engineering", "www.test32.com");
-            AddOrUpdateArticle(context, "Engineering", "www.test33.com");
-            AddOrUpdateArticle(context, "Engineering", "www.test34.com");
+            AddOrUpdateArticle(context, "Environment", "www.test32.com");
+            AddOrUpdateArticle(context, "Environment", "www.test33.com");
+            AddOrUpdateArticle(context, "Environment", "www.test34.com");
             AddOrUpdateArticle(context, "Sociology", "www.test35.com");
-            AddOrUpdateArticle(context, "CompSci", "www.test36.com");
+            AddOrUpdateArticle(context, "Technology", "www.test36.com");
             AddOrUpdateArticle(context, "Sociology", "www.test37.com");
             AddOrUpdateArticle(context, "Biology", "www.test38.com");
             AddOrUpdateArticle(context, "Biology", "www.test39.com");
             AddOrUpdateArticle(context, "Biology", "www.test40.com");
-            AddOrUpdateArticle(context, "Chemistry", "www.test41.com");
-            AddOrUpdateArticle(context, "Art", "www.test42.com");
-            AddOrUpdateArticle(context, "Art", "www.test43.com");
-            AddOrUpdateArticle(context, "CompSci", "www.test44.com");
-            AddOrUpdateArticle(context, "Engineering", "www.test45.com");
+            AddOrUpdateArticle(context, "Medical", "www.test41.com");
+            AddOrUpdateArticle(context, "Art & Design", "www.test42.com");
+            AddOrUpdateArticle(context, "Art & Design", "www.test43.com");
+            AddOrUpdateArticle(context, "Technology", "www.test44.com");
+            AddOrUpdateArticle(context, "Environment", "www.test45.com");
             AddOrUpdateArticle(context, "History", "www.test46.com");
-            AddOrUpdateArticle(context, "Math", "www.test47.com");
-            AddOrUpdateArticle(context, "Math", "www.test48.com");
-            AddOrUpdateArticle(context, "Math", "www.test49.com");
+            AddOrUpdateArticle(context, "Education", "www.test47.com");
+            AddOrUpdateArticle(context, "Education", "www.test48.com");
+            AddOrUpdateArticle(context, "Education", "www.test49.com");
             context.SaveChanges();
             
             // Add entries to the SecurityQuestion table
