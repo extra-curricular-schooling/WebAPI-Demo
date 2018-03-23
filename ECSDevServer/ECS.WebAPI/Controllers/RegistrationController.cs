@@ -85,9 +85,9 @@ namespace ECS.WebAPI.Controllers
                 }
             };
 
-            var hashedAnswer1 = HashService.Instance.HashPasswordWithSalt(mySalt, registrationForm.SecurityQuestions[0].Answer);
-            var hashedAnswer2 = HashService.Instance.HashPasswordWithSalt(mySalt, registrationForm.SecurityQuestions[1].Answer);
-            var hashedAnswer3 = HashService.Instance.HashPasswordWithSalt(mySalt, registrationForm.SecurityQuestions[2].Answer);
+            var hashedAnswer1 = HashService.Instance.HashPasswordWithSalt(mySalt, registrationForm.SecurityQuestions[0].Answer, true);
+            var hashedAnswer2 = HashService.Instance.HashPasswordWithSalt(mySalt, registrationForm.SecurityQuestions[1].Answer, true);
+            var hashedAnswer3 = HashService.Instance.HashPasswordWithSalt(mySalt, registrationForm.SecurityQuestions[2].Answer, true);
 
             List<SecurityQuestionAccount> securityQuestionAccountListObj = new List<SecurityQuestionAccount>
             {
@@ -120,7 +120,7 @@ namespace ECS.WebAPI.Controllers
                 ZipLocations = zipLocationListObj
             };
 
-            var hashedPassword = HashService.Instance.HashPasswordWithSalt(mySalt, registrationForm.Password);
+            var hashedPassword = HashService.Instance.HashPasswordWithSalt(mySalt, registrationForm.Password, true);
 
             Account account = new Account()
             {
@@ -187,7 +187,7 @@ namespace ECS.WebAPI.Controllers
             try
             {
                 List<SecurityQuestion> allQuestions;
-                allQuestions = _securityQuestionRepository.GetAllQuestions();
+                allQuestions = (List<SecurityQuestion>) _securityQuestionRepository.GetAll();
 
                 if (allQuestions == null)
                 {
