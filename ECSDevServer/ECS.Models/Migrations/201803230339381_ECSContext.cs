@@ -3,7 +3,7 @@ namespace ECS.Models.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class Scott_Init : DbMigration
+    public partial class ECSContext : DbMigration
     {
         public override void Up()
         {
@@ -12,16 +12,14 @@ namespace ECS.Models.Migrations
                 c => new
                     {
                         UserName = c.String(nullable: false, maxLength: 20),
-                        Email = c.String(nullable: false, maxLength: 128),
+                        Email = c.String(nullable: false),
                         Password = c.String(nullable: false, maxLength: 50),
                         Points = c.Int(nullable: false),
                         AccountStatus = c.Boolean(nullable: false),
                         SuspensionTime = c.DateTime(nullable: false),
                         FirstTimeUser = c.Boolean(nullable: false),
                     })
-                .PrimaryKey(t => t.UserName)
-                .ForeignKey("dbo.User", t => t.Email, cascadeDelete: true)
-                .Index(t => t.Email);
+                .PrimaryKey(t => t.UserName);
             
             CreateTable(
                 "dbo.InterestTag",
@@ -45,6 +43,30 @@ namespace ECS.Models.Migrations
                 .Index(t => t.TagName);
             
             CreateTable(
+                "dbo.SaltSecurityAnswer",
+                c => new
+                    {
+                        SaltId = c.Int(nullable: false, identity: true),
+                        SaltValue = c.String(),
+                        UserName = c.String(nullable: false, maxLength: 20),
+                        SecurityQuestionID = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => t.SaltId)
+                .ForeignKey("dbo.SecurityQuestion", t => t.SecurityQuestionID, cascadeDelete: true)
+                .ForeignKey("dbo.Account", t => t.UserName, cascadeDelete: true)
+                .Index(t => t.UserName)
+                .Index(t => t.SecurityQuestionID);
+            
+            CreateTable(
+                "dbo.SecurityQuestion",
+                c => new
+                    {
+                        SecurityQuestionID = c.Int(nullable: false, identity: true),
+                        SecQuestion = c.String(nullable: false),
+                    })
+                .PrimaryKey(t => t.SecurityQuestionID);
+            
+            CreateTable(
                 "dbo.SecurityQuestionAccount",
                 c => new
                     {
@@ -57,39 +79,6 @@ namespace ECS.Models.Migrations
                 .ForeignKey("dbo.Account", t => t.Username, cascadeDelete: true)
                 .Index(t => t.SecurityQuestionID)
                 .Index(t => t.Username);
-            
-            CreateTable(
-                "dbo.SecurityQuestion",
-                c => new
-                    {
-                        SecurityQuestionID = c.Int(nullable: false, identity: true),
-                        SecQuestion = c.String(nullable: false),
-                    })
-                .PrimaryKey(t => t.SecurityQuestionID);
-            
-            CreateTable(
-                "dbo.User",
-                c => new
-                    {
-                        Email = c.String(nullable: false, maxLength: 128),
-                        FirstName = c.String(nullable: false, maxLength: 50),
-                        LastName = c.String(nullable: false, maxLength: 50),
-                    })
-                .PrimaryKey(t => t.Email);
-            
-            CreateTable(
-                "dbo.ZipLocation",
-                c => new
-                    {
-                        ZipCodeId = c.Int(nullable: false, identity: true),
-                        ZipCode = c.String(nullable: false, maxLength: 10),
-                        Address = c.String(nullable: false),
-                        City = c.String(nullable: false),
-                        State = c.String(nullable: false),
-                        Latitude = c.Int(nullable: false),
-                        Longitude = c.Int(nullable: false),
-                    })
-                .PrimaryKey(t => t.ZipCodeId);
             
             CreateTable(
                 "dbo.AccountType",
@@ -116,9 +105,11 @@ namespace ECS.Models.Migrations
                 "dbo.ExpiredAccessToken",
                 c => new
                     {
-                        Token = c.String(nullable: false, maxLength: 128),
+                        ExpiredTokenId = c.Int(nullable: false, identity: true),
+                        ExpiredTokenValue = c.String(nullable: false),
+                        CanReuse = c.Boolean(nullable: false),
                     })
-                .PrimaryKey(t => t.Token);
+                .PrimaryKey(t => t.ExpiredTokenId);
             
             CreateTable(
                 "dbo.JAccessToken",
@@ -127,9 +118,24 @@ namespace ECS.Models.Migrations
                         UserName = c.String(maxLength: 20),
                         TokenId = c.Int(nullable: false, identity: true),
                         Value = c.String(nullable: false),
+                        DateTimeIssued = c.DateTime(nullable: false),
                     })
                 .PrimaryKey(t => t.TokenId)
                 .ForeignKey("dbo.Account", t => t.UserName)
+                .Index(t => t.UserName);
+            
+            CreateTable(
+                "dbo.LinkedInAccessToken",
+                c => new
+                    {
+                        TokenId = c.Int(nullable: false, identity: true),
+                        UserName = c.String(nullable: false, maxLength: 20),
+                        Value = c.String(nullable: false, maxLength: 2000),
+                        TokenCreation = c.DateTime(nullable: false),
+                        Expired = c.Boolean(nullable: false),
+                    })
+                .PrimaryKey(t => t.TokenId)
+                .ForeignKey("dbo.Account", t => t.UserName, cascadeDelete: true)
                 .Index(t => t.UserName);
             
             CreateTable(
@@ -173,6 +179,33 @@ namespace ECS.Models.Migrations
                 .PrimaryKey(t => t.SweepStakesID);
             
             CreateTable(
+                "dbo.UserProfile",
+                c => new
+                    {
+                        Email = c.String(nullable: false, maxLength: 128),
+                        FirstName = c.String(nullable: false, maxLength: 50),
+                        LastName = c.String(nullable: false, maxLength: 50),
+                        Account_UserName = c.String(maxLength: 20),
+                    })
+                .PrimaryKey(t => t.Email)
+                .ForeignKey("dbo.Account", t => t.Account_UserName)
+                .Index(t => t.Account_UserName);
+            
+            CreateTable(
+                "dbo.ZipLocation",
+                c => new
+                    {
+                        ZipCodeId = c.Int(nullable: false, identity: true),
+                        ZipCode = c.String(nullable: false, maxLength: 10),
+                        Address = c.String(nullable: false),
+                        City = c.String(nullable: false),
+                        State = c.String(nullable: false),
+                        Latitude = c.Int(nullable: false),
+                        Longitude = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => t.ZipCodeId);
+            
+            CreateTable(
                 "dbo.AccountInterestTag",
                 c => new
                     {
@@ -193,7 +226,7 @@ namespace ECS.Models.Migrations
                         ZipCodeId = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => new { t.Email, t.ZipCodeId })
-                .ForeignKey("dbo.User", t => t.Email, cascadeDelete: true)
+                .ForeignKey("dbo.UserProfile", t => t.Email, cascadeDelete: true)
                 .ForeignKey("dbo.ZipLocation", t => t.ZipCodeId, cascadeDelete: true)
                 .Index(t => t.Email)
                 .Index(t => t.ZipCodeId);
@@ -203,7 +236,7 @@ namespace ECS.Models.Migrations
                 p => new
                     {
                         UserName = p.String(maxLength: 20),
-                        Email = p.String(maxLength: 128),
+                        Email = p.String(),
                         Password = p.String(maxLength: 50),
                         Points = p.Int(),
                         AccountStatus = p.Boolean(),
@@ -220,7 +253,7 @@ namespace ECS.Models.Migrations
                 p => new
                     {
                         UserName = p.String(maxLength: 20),
-                        Email = p.String(maxLength: 128),
+                        Email = p.String(),
                         Password = p.String(maxLength: 50),
                         Points = p.Int(),
                         AccountStatus = p.Boolean(),
@@ -317,45 +350,6 @@ namespace ECS.Models.Migrations
             );
             
             CreateStoredProcedure(
-                "dbo.SecurityQuestionAccount_Insert",
-                p => new
-                    {
-                        Username = p.String(maxLength: 20),
-                        SecurityQuestionID = p.Int(),
-                        Answer = p.String(maxLength: 100),
-                    },
-                body:
-                    @"INSERT [dbo].[SecurityQuestionAccount]([SecurityQuestionID], [Username], [Answer])
-                      VALUES (@SecurityQuestionID, @Username, @Answer)"
-            );
-            
-            CreateStoredProcedure(
-                "dbo.SecurityQuestionAccount_Update",
-                p => new
-                    {
-                        Username = p.String(maxLength: 20),
-                        SecurityQuestionID = p.Int(),
-                        Answer = p.String(maxLength: 100),
-                    },
-                body:
-                    @"UPDATE [dbo].[SecurityQuestionAccount]
-                      SET [Answer] = @Answer
-                      WHERE (([SecurityQuestionID] = @SecurityQuestionID) AND ([Username] = @Username))"
-            );
-            
-            CreateStoredProcedure(
-                "dbo.SecurityQuestionAccount_Delete",
-                p => new
-                    {
-                        Username = p.String(maxLength: 20),
-                        SecurityQuestionID = p.Int(),
-                    },
-                body:
-                    @"DELETE [dbo].[SecurityQuestionAccount]
-                      WHERE (([SecurityQuestionID] = @SecurityQuestionID) AND ([Username] = @Username))"
-            );
-            
-            CreateStoredProcedure(
                 "dbo.SecurityQuestion_Insert",
                 p => new
                     {
@@ -400,95 +394,42 @@ namespace ECS.Models.Migrations
             );
             
             CreateStoredProcedure(
-                "dbo.User_Insert",
+                "dbo.SecurityQuestionAccount_Insert",
                 p => new
                     {
-                        Email = p.String(maxLength: 128),
-                        FirstName = p.String(maxLength: 50),
-                        LastName = p.String(maxLength: 50),
+                        Username = p.String(maxLength: 20),
+                        SecurityQuestionID = p.Int(),
+                        Answer = p.String(maxLength: 100),
                     },
                 body:
-                    @"INSERT [dbo].[User]([Email], [FirstName], [LastName])
-                      VALUES (@Email, @FirstName, @LastName)"
+                    @"INSERT [dbo].[SecurityQuestionAccount]([SecurityQuestionID], [Username], [Answer])
+                      VALUES (@SecurityQuestionID, @Username, @Answer)"
             );
             
             CreateStoredProcedure(
-                "dbo.User_Update",
+                "dbo.SecurityQuestionAccount_Update",
                 p => new
                     {
-                        Email = p.String(maxLength: 128),
-                        FirstName = p.String(maxLength: 50),
-                        LastName = p.String(maxLength: 50),
+                        Username = p.String(maxLength: 20),
+                        SecurityQuestionID = p.Int(),
+                        Answer = p.String(maxLength: 100),
                     },
                 body:
-                    @"UPDATE [dbo].[User]
-                      SET [FirstName] = @FirstName, [LastName] = @LastName
-                      WHERE ([Email] = @Email)"
+                    @"UPDATE [dbo].[SecurityQuestionAccount]
+                      SET [Answer] = @Answer
+                      WHERE (([SecurityQuestionID] = @SecurityQuestionID) AND ([Username] = @Username))"
             );
             
             CreateStoredProcedure(
-                "dbo.User_Delete",
+                "dbo.SecurityQuestionAccount_Delete",
                 p => new
                     {
-                        Email = p.String(maxLength: 128),
+                        Username = p.String(maxLength: 20),
+                        SecurityQuestionID = p.Int(),
                     },
                 body:
-                    @"DELETE [dbo].[User]
-                      WHERE ([Email] = @Email)"
-            );
-            
-            CreateStoredProcedure(
-                "dbo.ZipLocation_Insert",
-                p => new
-                    {
-                        ZipCode = p.String(maxLength: 10),
-                        Address = p.String(),
-                        City = p.String(),
-                        State = p.String(),
-                        Latitude = p.Int(),
-                        Longitude = p.Int(),
-                    },
-                body:
-                    @"INSERT [dbo].[ZipLocation]([ZipCode], [Address], [City], [State], [Latitude], [Longitude])
-                      VALUES (@ZipCode, @Address, @City, @State, @Latitude, @Longitude)
-                      
-                      DECLARE @ZipCodeId int
-                      SELECT @ZipCodeId = [ZipCodeId]
-                      FROM [dbo].[ZipLocation]
-                      WHERE @@ROWCOUNT > 0 AND [ZipCodeId] = scope_identity()
-                      
-                      SELECT t0.[ZipCodeId]
-                      FROM [dbo].[ZipLocation] AS t0
-                      WHERE @@ROWCOUNT > 0 AND t0.[ZipCodeId] = @ZipCodeId"
-            );
-            
-            CreateStoredProcedure(
-                "dbo.ZipLocation_Update",
-                p => new
-                    {
-                        ZipCodeId = p.Int(),
-                        ZipCode = p.String(maxLength: 10),
-                        Address = p.String(),
-                        City = p.String(),
-                        State = p.String(),
-                        Latitude = p.Int(),
-                        Longitude = p.Int(),
-                    },
-                body:
-                    @"UPDATE [dbo].[ZipLocation]
-                      SET [ZipCode] = @ZipCode, [Address] = @Address, [City] = @City, [State] = @State, [Latitude] = @Latitude, [Longitude] = @Longitude
-                      WHERE ([ZipCodeId] = @ZipCodeId)"
-            );
-            
-            CreateStoredProcedure(
-                "dbo.ZipLocation_Delete",
-                p => new
-                    {
-                        ZipCodeId = p.Int(),
-                    },
-                body:
-                    @"DELETE [dbo].[ZipLocation]
-                      WHERE ([ZipCodeId] = @ZipCodeId)"
+                    @"DELETE [dbo].[SecurityQuestionAccount]
+                      WHERE (([SecurityQuestionID] = @SecurityQuestionID) AND ([Username] = @Username))"
             );
             
             CreateStoredProcedure(
@@ -562,32 +503,46 @@ namespace ECS.Models.Migrations
                 "dbo.ExpiredAccessToken_Insert",
                 p => new
                     {
-                        Token = p.String(maxLength: 128),
+                        ExpiredTokenValue = p.String(),
+                        CanReuse = p.Boolean(),
                     },
                 body:
-                    @"INSERT [dbo].[ExpiredAccessToken]([Token])
-                      VALUES (@Token)"
+                    @"INSERT [dbo].[ExpiredAccessToken]([ExpiredTokenValue], [CanReuse])
+                      VALUES (@ExpiredTokenValue, @CanReuse)
+                      
+                      DECLARE @ExpiredTokenId int
+                      SELECT @ExpiredTokenId = [ExpiredTokenId]
+                      FROM [dbo].[ExpiredAccessToken]
+                      WHERE @@ROWCOUNT > 0 AND [ExpiredTokenId] = scope_identity()
+                      
+                      SELECT t0.[ExpiredTokenId]
+                      FROM [dbo].[ExpiredAccessToken] AS t0
+                      WHERE @@ROWCOUNT > 0 AND t0.[ExpiredTokenId] = @ExpiredTokenId"
             );
             
             CreateStoredProcedure(
                 "dbo.ExpiredAccessToken_Update",
                 p => new
                     {
-                        Token = p.String(maxLength: 128),
+                        ExpiredTokenId = p.Int(),
+                        ExpiredTokenValue = p.String(),
+                        CanReuse = p.Boolean(),
                     },
                 body:
-                    @"RETURN"
+                    @"UPDATE [dbo].[ExpiredAccessToken]
+                      SET [ExpiredTokenValue] = @ExpiredTokenValue, [CanReuse] = @CanReuse
+                      WHERE ([ExpiredTokenId] = @ExpiredTokenId)"
             );
             
             CreateStoredProcedure(
                 "dbo.ExpiredAccessToken_Delete",
                 p => new
                     {
-                        Token = p.String(maxLength: 128),
+                        ExpiredTokenId = p.Int(),
                     },
                 body:
                     @"DELETE [dbo].[ExpiredAccessToken]
-                      WHERE ([Token] = @Token)"
+                      WHERE ([ExpiredTokenId] = @ExpiredTokenId)"
             );
             
             CreateStoredProcedure(
@@ -596,10 +551,11 @@ namespace ECS.Models.Migrations
                     {
                         Value = p.String(),
                         UserName = p.String(maxLength: 20),
+                        DateTimeIssued = p.DateTime(),
                     },
                 body:
-                    @"INSERT [dbo].[JAccessToken]([UserName], [Value])
-                      VALUES (@UserName, @Value)
+                    @"INSERT [dbo].[JAccessToken]([UserName], [Value], [DateTimeIssued])
+                      VALUES (@UserName, @Value, @DateTimeIssued)
                       
                       DECLARE @TokenId int
                       SELECT @TokenId = [TokenId]
@@ -618,10 +574,11 @@ namespace ECS.Models.Migrations
                         TokenId = p.Int(),
                         Value = p.String(),
                         UserName = p.String(maxLength: 20),
+                        DateTimeIssued = p.DateTime(),
                     },
                 body:
                     @"UPDATE [dbo].[JAccessToken]
-                      SET [UserName] = @UserName, [Value] = @Value
+                      SET [UserName] = @UserName, [Value] = @Value, [DateTimeIssued] = @DateTimeIssued
                       WHERE ([TokenId] = @TokenId)"
             );
             
@@ -776,6 +733,101 @@ namespace ECS.Models.Migrations
             );
             
             CreateStoredProcedure(
+                "dbo.UserProfile_Insert",
+                p => new
+                    {
+                        Email = p.String(maxLength: 128),
+                        FirstName = p.String(maxLength: 50),
+                        LastName = p.String(maxLength: 50),
+                        Account_UserName = p.String(maxLength: 20),
+                    },
+                body:
+                    @"INSERT [dbo].[UserProfile]([Email], [FirstName], [LastName], [Account_UserName])
+                      VALUES (@Email, @FirstName, @LastName, @Account_UserName)"
+            );
+            
+            CreateStoredProcedure(
+                "dbo.UserProfile_Update",
+                p => new
+                    {
+                        Email = p.String(maxLength: 128),
+                        FirstName = p.String(maxLength: 50),
+                        LastName = p.String(maxLength: 50),
+                        Account_UserName = p.String(maxLength: 20),
+                    },
+                body:
+                    @"UPDATE [dbo].[UserProfile]
+                      SET [FirstName] = @FirstName, [LastName] = @LastName, [Account_UserName] = @Account_UserName
+                      WHERE ([Email] = @Email)"
+            );
+            
+            CreateStoredProcedure(
+                "dbo.UserProfile_Delete",
+                p => new
+                    {
+                        Email = p.String(maxLength: 128),
+                        Account_UserName = p.String(maxLength: 20),
+                    },
+                body:
+                    @"DELETE [dbo].[UserProfile]
+                      WHERE (([Email] = @Email) AND (([Account_UserName] = @Account_UserName) OR ([Account_UserName] IS NULL AND @Account_UserName IS NULL)))"
+            );
+            
+            CreateStoredProcedure(
+                "dbo.ZipLocation_Insert",
+                p => new
+                    {
+                        ZipCode = p.String(maxLength: 10),
+                        Address = p.String(),
+                        City = p.String(),
+                        State = p.String(),
+                        Latitude = p.Int(),
+                        Longitude = p.Int(),
+                    },
+                body:
+                    @"INSERT [dbo].[ZipLocation]([ZipCode], [Address], [City], [State], [Latitude], [Longitude])
+                      VALUES (@ZipCode, @Address, @City, @State, @Latitude, @Longitude)
+                      
+                      DECLARE @ZipCodeId int
+                      SELECT @ZipCodeId = [ZipCodeId]
+                      FROM [dbo].[ZipLocation]
+                      WHERE @@ROWCOUNT > 0 AND [ZipCodeId] = scope_identity()
+                      
+                      SELECT t0.[ZipCodeId]
+                      FROM [dbo].[ZipLocation] AS t0
+                      WHERE @@ROWCOUNT > 0 AND t0.[ZipCodeId] = @ZipCodeId"
+            );
+            
+            CreateStoredProcedure(
+                "dbo.ZipLocation_Update",
+                p => new
+                    {
+                        ZipCodeId = p.Int(),
+                        ZipCode = p.String(maxLength: 10),
+                        Address = p.String(),
+                        City = p.String(),
+                        State = p.String(),
+                        Latitude = p.Int(),
+                        Longitude = p.Int(),
+                    },
+                body:
+                    @"UPDATE [dbo].[ZipLocation]
+                      SET [ZipCode] = @ZipCode, [Address] = @Address, [City] = @City, [State] = @State, [Latitude] = @Latitude, [Longitude] = @Longitude
+                      WHERE ([ZipCodeId] = @ZipCodeId)"
+            );
+            
+            CreateStoredProcedure(
+                "dbo.ZipLocation_Delete",
+                p => new
+                    {
+                        ZipCodeId = p.Int(),
+                    },
+                body:
+                    @"DELETE [dbo].[ZipLocation]
+                      WHERE ([ZipCodeId] = @ZipCodeId)"
+            );
+            
+            CreateStoredProcedure(
                 "dbo.AccountInterestTag_Insert",
                 p => new
                     {
@@ -805,6 +857,12 @@ namespace ECS.Models.Migrations
         {
             DropStoredProcedure("dbo.AccountInterestTag_Delete");
             DropStoredProcedure("dbo.AccountInterestTag_Insert");
+            DropStoredProcedure("dbo.ZipLocation_Delete");
+            DropStoredProcedure("dbo.ZipLocation_Update");
+            DropStoredProcedure("dbo.ZipLocation_Insert");
+            DropStoredProcedure("dbo.UserProfile_Delete");
+            DropStoredProcedure("dbo.UserProfile_Update");
+            DropStoredProcedure("dbo.UserProfile_Insert");
             DropStoredProcedure("dbo.SweepStake_Delete");
             DropStoredProcedure("dbo.SweepStake_Update");
             DropStoredProcedure("dbo.SweepStake_Insert");
@@ -826,18 +884,12 @@ namespace ECS.Models.Migrations
             DropStoredProcedure("dbo.AccountType_Delete");
             DropStoredProcedure("dbo.AccountType_Update");
             DropStoredProcedure("dbo.AccountType_Insert");
-            DropStoredProcedure("dbo.ZipLocation_Delete");
-            DropStoredProcedure("dbo.ZipLocation_Update");
-            DropStoredProcedure("dbo.ZipLocation_Insert");
-            DropStoredProcedure("dbo.User_Delete");
-            DropStoredProcedure("dbo.User_Update");
-            DropStoredProcedure("dbo.User_Insert");
-            DropStoredProcedure("dbo.SecurityQuestion_Delete");
-            DropStoredProcedure("dbo.SecurityQuestion_Update");
-            DropStoredProcedure("dbo.SecurityQuestion_Insert");
             DropStoredProcedure("dbo.SecurityQuestionAccount_Delete");
             DropStoredProcedure("dbo.SecurityQuestionAccount_Update");
             DropStoredProcedure("dbo.SecurityQuestionAccount_Insert");
+            DropStoredProcedure("dbo.SecurityQuestion_Delete");
+            DropStoredProcedure("dbo.SecurityQuestion_Update");
+            DropStoredProcedure("dbo.SecurityQuestion_Insert");
             DropStoredProcedure("dbo.Article_Delete");
             DropStoredProcedure("dbo.Article_Update");
             DropStoredProcedure("dbo.Article_Insert");
@@ -847,17 +899,20 @@ namespace ECS.Models.Migrations
             DropStoredProcedure("dbo.Account_Delete");
             DropStoredProcedure("dbo.Account_Update");
             DropStoredProcedure("dbo.Account_Insert");
+            DropForeignKey("dbo.Address", "ZipCodeId", "dbo.ZipLocation");
+            DropForeignKey("dbo.Address", "Email", "dbo.UserProfile");
+            DropForeignKey("dbo.UserProfile", "Account_UserName", "dbo.Account");
             DropForeignKey("dbo.SweepStakeEntry", "SweepstakesID", "dbo.SweepStake");
             DropForeignKey("dbo.SweepStakeEntry", "UserName", "dbo.Account");
             DropForeignKey("dbo.Salt", "UserName", "dbo.Account");
+            DropForeignKey("dbo.LinkedInAccessToken", "UserName", "dbo.Account");
             DropForeignKey("dbo.JAccessToken", "UserName", "dbo.Account");
             DropForeignKey("dbo.AccountType", "PermissionName", "dbo.Permission");
             DropForeignKey("dbo.AccountType", "Username", "dbo.Account");
-            DropForeignKey("dbo.Account", "Email", "dbo.User");
-            DropForeignKey("dbo.Address", "ZipCodeId", "dbo.ZipLocation");
-            DropForeignKey("dbo.Address", "Email", "dbo.User");
             DropForeignKey("dbo.SecurityQuestionAccount", "Username", "dbo.Account");
             DropForeignKey("dbo.SecurityQuestionAccount", "SecurityQuestionID", "dbo.SecurityQuestion");
+            DropForeignKey("dbo.SaltSecurityAnswer", "UserName", "dbo.Account");
+            DropForeignKey("dbo.SaltSecurityAnswer", "SecurityQuestionID", "dbo.SecurityQuestion");
             DropForeignKey("dbo.AccountInterestTag", "InterestTag_TagName", "dbo.InterestTag");
             DropForeignKey("dbo.AccountInterestTag", "Account_UserName", "dbo.Account");
             DropForeignKey("dbo.Article", "TagName", "dbo.InterestTag");
@@ -865,29 +920,34 @@ namespace ECS.Models.Migrations
             DropIndex("dbo.Address", new[] { "Email" });
             DropIndex("dbo.AccountInterestTag", new[] { "InterestTag_TagName" });
             DropIndex("dbo.AccountInterestTag", new[] { "Account_UserName" });
+            DropIndex("dbo.UserProfile", new[] { "Account_UserName" });
             DropIndex("dbo.SweepStakeEntry", new[] { "UserName" });
             DropIndex("dbo.SweepStakeEntry", new[] { "SweepstakesID" });
             DropIndex("dbo.Salt", new[] { "UserName" });
+            DropIndex("dbo.LinkedInAccessToken", new[] { "UserName" });
             DropIndex("dbo.JAccessToken", new[] { "UserName" });
             DropIndex("dbo.AccountType", new[] { "PermissionName" });
             DropIndex("dbo.AccountType", new[] { "Username" });
             DropIndex("dbo.SecurityQuestionAccount", new[] { "Username" });
             DropIndex("dbo.SecurityQuestionAccount", new[] { "SecurityQuestionID" });
+            DropIndex("dbo.SaltSecurityAnswer", new[] { "SecurityQuestionID" });
+            DropIndex("dbo.SaltSecurityAnswer", new[] { "UserName" });
             DropIndex("dbo.Article", new[] { "TagName" });
-            DropIndex("dbo.Account", new[] { "Email" });
             DropTable("dbo.Address");
             DropTable("dbo.AccountInterestTag");
+            DropTable("dbo.ZipLocation");
+            DropTable("dbo.UserProfile");
             DropTable("dbo.SweepStake");
             DropTable("dbo.SweepStakeEntry");
             DropTable("dbo.Salt");
+            DropTable("dbo.LinkedInAccessToken");
             DropTable("dbo.JAccessToken");
             DropTable("dbo.ExpiredAccessToken");
             DropTable("dbo.Permission");
             DropTable("dbo.AccountType");
-            DropTable("dbo.ZipLocation");
-            DropTable("dbo.User");
-            DropTable("dbo.SecurityQuestion");
             DropTable("dbo.SecurityQuestionAccount");
+            DropTable("dbo.SecurityQuestion");
+            DropTable("dbo.SaltSecurityAnswer");
             DropTable("dbo.Article");
             DropTable("dbo.InterestTag");
             DropTable("dbo.Account");

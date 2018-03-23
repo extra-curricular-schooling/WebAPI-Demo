@@ -51,11 +51,11 @@ namespace ECS.Models
         // TODO: @Kris so we don't need this?
         // Navigation property of Email
         // DO not need this 
-        public ICollection<User> Users { get; set; }
+        public ICollection<UserProfile> Users { get; set; }
 
         public ZipLocation()
         {
-            this.Users = new List<User>();
+            this.Users = new List<UserProfile>();
         }
     }
 }

@@ -7,7 +7,7 @@ namespace ECS.Models
     /// <summary>
     /// This model represents a given Account's personal information. 
     /// </summary>
-    public class User
+    public class UserProfile
     {
         //Change user to UserProfile
         // The email a user submitted during registration
@@ -33,8 +33,10 @@ namespace ECS.Models
         // residence to which we can send raffle prizes to.
         // MAke navigation a single ZipLocation
         public virtual ICollection<ZipLocation> ZipLocations { get; set; }
+
+        public Account Account { get; set; }
  
-        public User()
+        public UserProfile()
         {
             this.ZipLocations = new List<ZipLocation>();
         }

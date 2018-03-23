@@ -39,11 +39,13 @@ namespace ECS.Models
 
         public DbSet<Salt> Salts { get; set; }
 
-        public DbSet<User> Users { get; set; }
+        public DbSet<UserProfile> Users { get; set; }
 
         public DbSet<ZipLocation> ZipLocations { get; set; }
 
         public DbSet<Permission> Permissions { get; set; }
+
+        public DbSet<SaltSecurityAnswer> SaltSecurityAnswers { get; set; }
 
         // public DbSet<Role> Roles { get; set; }
 
@@ -70,7 +72,7 @@ namespace ECS.Models
                 .MapRightKey("TagName")
                 .ToTable("AccountTags"));
 
-            modelBuilder.Entity<User>()
+            modelBuilder.Entity<UserProfile>()
                 .HasMany(s => s.ZipLocations).WithMany(i => i.Users)
                 .Map(t => t.MapLeftKey("Email")
                 .MapRightKey("ZipCodeId")
@@ -84,6 +86,11 @@ namespace ECS.Models
                 .HasMany<SecurityQuestionAccount>(g => g.SecurityAnswers)
                 .WithRequired(s => s.Accounts)
                 .HasForeignKey<string>(s => s.Username);
+
+            modelBuilder.Entity<Account>()
+                .HasMany<SaltSecurityAnswer>(g => g.SaltSecurityAnswers)
+                .WithRequired(s => s.Accounts)
+                .HasForeignKey<string>(s => s.UserName);
 
             //modelBuilder.Entity<Role>()
             //    .HasMany<Permission>(g => g.Permissions)
@@ -102,7 +109,7 @@ namespace ECS.Models
             modelBuilder.Entity<Account>().HasMany(p => p.AccountTags)
                 .WithMany(s => s.AccountUsername).MapToStoredProcedures();
 
-            modelBuilder.Entity<User>().MapToStoredProcedures();
+            modelBuilder.Entity<UserProfile>().MapToStoredProcedures();
 
             modelBuilder.Entity<Article>().MapToStoredProcedures(s => s.Insert (
                 i => i.Parameter(p => p.TagName, "TagName")));

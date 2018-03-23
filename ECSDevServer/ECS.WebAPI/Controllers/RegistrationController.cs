@@ -112,7 +112,7 @@ namespace ECS.WebAPI.Controllers
             };
 
             // DTO to Model
-            User user = new User()
+            UserProfile user = new UserProfile()
             {
                 Email = registrationForm.Email,
                 FirstName = registrationForm.FirstName,
