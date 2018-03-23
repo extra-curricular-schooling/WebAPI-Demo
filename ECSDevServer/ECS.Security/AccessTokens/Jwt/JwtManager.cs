@@ -175,7 +175,7 @@ namespace ECS.Security.AccessTokens.Jwt
             string tempUsername = string.Copy(username);
 
             // More validation to check whether username exists in system
-            if (!_accountRepository.Exists(d => d.UserName == tempUsername, d => d.User))
+            if (!_accountRepository.Exists(d => d.UserName == tempUsername))
             {
                 return false;
             }
@@ -220,7 +220,7 @@ namespace ECS.Security.AccessTokens.Jwt
             string tempUsername = string.Copy(username);
 
             // More validation to check whether username exists in system
-            if(!_accountRepository.Exists(d => d.UserName == tempUsername, d => d.User))
+            if(!_accountRepository.Exists(d => d.UserName == tempUsername))
             {
                 return false;
             }

@@ -69,7 +69,7 @@ namespace ECS.WebAPI.Controllers
                 return BadRequest(ModelState);
 
             // Proccess any other information.
-            if (!_accountRepository.Exists(d => d.UserName == credentials.Username, d => d.User))
+            if (!_accountRepository.Exists(d => d.UserName == credentials.Username))
             {
                 return BadRequest("Invalid credentials.");
             }
@@ -93,7 +93,7 @@ namespace ECS.WebAPI.Controllers
             Account account;
             try
             {
-                account = _accountRepository.GetSingle(d => d.UserName == credentials.Username, d => d.User);
+                account = _accountRepository.GetSingle(d => d.UserName == credentials.Username);
             }
             catch (Exception)
             {
