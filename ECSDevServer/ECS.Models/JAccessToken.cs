@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ECS.Models
@@ -27,7 +28,15 @@ namespace ECS.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int TokenId { get; set; }
 
+        [Required]
+        public DateTime DateTimeIssued { get; set; }
+
         //Navigation Property of User
         public Account Account { get; set; }
+
+        public JAccessToken ()
+        {
+            DateTimeIssued = DateTime.UtcNow;
+        }
     }
 }

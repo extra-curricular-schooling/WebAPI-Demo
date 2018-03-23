@@ -161,11 +161,14 @@ export default {
     }
   },
   mounted () {
-    if (JSON.stringify(this.$route.params) !== JSON.stringify({})) {
-      this.$refs.alert.toggleNotification()
-    }
+    this.checkRedirectionFromRegistration()
   },
   methods: {
+    checkRedirectionFromRegistration () {
+      if (JSON.stringify(this.$route.params) === JSON.stringify({ isSuccess: true })) {
+        this.$refs.alert.toggleNotification()
+      }
+    }
     // this.$router will talk to the vue-router (which is linked to the vue instance) to navigate to different pages.
     // this.$store will talk to the vuex store (which is linked to the vue instance) to get global data
   }

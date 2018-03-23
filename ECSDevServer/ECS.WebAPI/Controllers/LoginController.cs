@@ -111,6 +111,7 @@ namespace ECS.WebAPI.Controllers
                 {
                     token = _jwtRepository.GetSingle(d => d.UserName == account.UserName, d => d.Account);
                     token.Value = JwtManager.Instance.GenerateToken(account.UserName);
+                    token.DateTimeIssued = DateTime.UtcNow;
                     _jwtRepository.Update(token);
                 }
                 // JWT does not exist for this user
@@ -118,8 +119,9 @@ namespace ECS.WebAPI.Controllers
                 {
                     token = new JAccessToken
                     {
-                        Value = JwtManager.Instance.GenerateToken("test1"),
-                        UserName = account.UserName
+                        Value = JwtManager.Instance.GenerateToken(account.UserName),
+                        UserName = account.UserName,
+                        DateTimeIssued = DateTime.UtcNow
                     };
                     _jwtRepository.Insert(token);
                 }

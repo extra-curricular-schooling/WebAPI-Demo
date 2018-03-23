@@ -7,6 +7,7 @@ using System.Web.Http;
 using System.Web.Http.Cors;
 using ECS.Repositories;
 using System;
+using ECS.Security.Hash;
 
 namespace ECS.WebAPI.Controllers
 {
@@ -15,19 +16,22 @@ namespace ECS.WebAPI.Controllers
         private readonly IAccountRepository _accountRepository;
         private readonly IUserRepository _userRepository;
         private readonly ISecurityQuestionRepository _securityQuestionRepository;
+        private readonly ISaltRepository _saltRepository;
 
         public RegistrationController()
         {
             _accountRepository = new AccountRepository();
             _userRepository = new UserRepository();
             _securityQuestionRepository = new SecurityQuestionRepository();
+            _saltRepository = new SaltRepository();
         }
 
-        public RegistrationController(IAccountRepository accountRepo, IUserRepository userRepo, ISecurityQuestionRepository securityQuestionRepo)
+        public RegistrationController(IAccountRepository accountRepo, IUserRepository userRepo, ISecurityQuestionRepository securityQuestionRepo, ISaltRepository saltRepo)
         {
             _accountRepository = accountRepo;
             _userRepository = userRepo;
             _securityQuestionRepository = securityQuestionRepo;
+            _saltRepository = saltRepo;
         }
 
         /// <summary>
@@ -54,6 +58,21 @@ namespace ECS.WebAPI.Controllers
                 registrationForm.SecurityQuestions[2].Answer == null)
                 return BadRequest("Improper Request");
 
+            // Check if user already exists
+            if (_accountRepository.Exists(d => d.UserName == registrationForm.Username, d => d.User))
+            {
+                string summary = "Username Exists";
+                var error = new
+                {
+                    summary
+                };
+
+                return Content(HttpStatusCode.BadRequest, new JavaScriptSerializer().Serialize(error));
+            }
+
+            // Create Salt
+            var mySalt = HashService.Instance.CreateSaltKey();
+
             // Temporary Objects
             List<ZipLocation> zipLocationListObj = new List<ZipLocation>
             {
@@ -66,22 +85,29 @@ namespace ECS.WebAPI.Controllers
                 }
             };
 
+            var hashedAnswer1 = HashService.Instance.HashPasswordWithSalt(mySalt, registrationForm.SecurityQuestions[0].Answer);
+            var hashedAnswer2 = HashService.Instance.HashPasswordWithSalt(mySalt, registrationForm.SecurityQuestions[1].Answer);
+            var hashedAnswer3 = HashService.Instance.HashPasswordWithSalt(mySalt, registrationForm.SecurityQuestions[2].Answer);
+
             List<SecurityQuestionAccount> securityQuestionAccountListObj = new List<SecurityQuestionAccount>
             {
                 new SecurityQuestionAccount
                 {
-                    Answer = registrationForm.SecurityQuestions[0].Answer,
-                    SecurityQuestionID = registrationForm.SecurityQuestions[0].Question
+                    Answer = hashedAnswer1,
+                    SecurityQuestionID = registrationForm.SecurityQuestions[0].Question,
+                    Username = registrationForm.Username
                 },
                 new SecurityQuestionAccount
                 {
-                    Answer = registrationForm.SecurityQuestions[1].Answer,
-                    SecurityQuestionID = registrationForm.SecurityQuestions[1].Question
+                    Answer = hashedAnswer2,
+                    SecurityQuestionID = registrationForm.SecurityQuestions[1].Question,
+                    Username = registrationForm.Username
                 },
                 new SecurityQuestionAccount
                 {
-                    Answer = registrationForm.SecurityQuestions[2].Answer,
-                    SecurityQuestionID = registrationForm.SecurityQuestions[2].Question
+                    Answer = hashedAnswer3,
+                    SecurityQuestionID = registrationForm.SecurityQuestions[2].Question,
+                    Username = registrationForm.Username
                 }
             };
 
@@ -93,20 +119,61 @@ namespace ECS.WebAPI.Controllers
                 LastName = registrationForm.LastName,
                 ZipLocations = zipLocationListObj
             };
-            _userRepository.Insert(user);
+
+            var hashedPassword = HashService.Instance.HashPasswordWithSalt(mySalt, registrationForm.Password);
 
             Account account = new Account()
             {
                 UserName = registrationForm.Username,
                 Email = registrationForm.Email,
-                Password = registrationForm.Password,
+                Password = hashedPassword,
+                Points = 0,
                 AccountStatus = true,
-                SuspensionTime = DateTime.UtcNow,
+                SuspensionTime = DateTime.UtcNow,  // TODO: @Trish
                 FirstTimeUser = true,
                 SecurityAnswers = securityQuestionAccountListObj
             };
-            _accountRepository.Insert(account);
 
+            Salt salt = new Salt()
+            {
+                PasswordSalt = mySalt,
+                UserName = registrationForm.Username,
+            };
+
+            try
+            {
+                _userRepository.Insert(user);
+                _accountRepository.Insert(account);
+                _saltRepository.Insert(salt);
+
+                return Ok();
+
+            } catch (Exception ex)
+            {
+                string summary = "Data Access Error";
+                string source = ex.Source;
+                string message = ex.Message;
+                string stackTrace = ex.StackTrace;
+
+                var error = new
+                {
+                    summary,
+                    source,
+                    message,
+                    stackTrace
+                };
+
+                return Content(HttpStatusCode.InternalServerError, error);
+            }
+        }
+
+        /// <summary>
+        /// Method accepts request to submit incomplete form using the POST method over HTTP
+        /// </summary>
+        [HttpPost]
+        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
+        public IHttpActionResult FinishRegistration(RegistrationDTO registrationForm)
+        {
             return Ok();
         }
 
@@ -117,11 +184,41 @@ namespace ECS.WebAPI.Controllers
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET")]
         public IHttpActionResult GetSecurityQuestions()
         {
-            List<SecurityQuestion> allQuestions;
-            allQuestions = (List<SecurityQuestion>) _securityQuestionRepository.GetAll();
+            try
+            {
+                List<SecurityQuestion> allQuestions;
+                allQuestions = _securityQuestionRepository.GetAllQuestions();
 
-            // TODO: @Trish change to Ok()
-            return Content(HttpStatusCode.OK, new JavaScriptSerializer().Serialize(allQuestions));
+                if (allQuestions == null)
+                {
+                    string summary = "No Content";
+
+                    var error = new
+                    {
+                        summary
+                    };
+
+                    return Content(HttpStatusCode.ServiceUnavailable, new JavaScriptSerializer().Serialize(error));
+                }
+                return Content(HttpStatusCode.OK, new JavaScriptSerializer().Serialize(allQuestions));
+            }
+            catch (Exception ex)
+            {
+                string summary = "Data Access Error";
+                string source = ex.Source;
+                string message = ex.Message;
+                string stackTrace = ex.StackTrace;
+
+                var error = new
+                {
+                    summary,
+                    source,
+                    message,
+                    stackTrace
+                };
+
+                return Content(HttpStatusCode.InternalServerError, new JavaScriptSerializer().Serialize(error));
+            }
         }
     }
 }

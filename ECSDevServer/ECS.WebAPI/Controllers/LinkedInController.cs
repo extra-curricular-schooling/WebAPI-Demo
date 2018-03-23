@@ -47,7 +47,9 @@ namespace ECS.WebAPI.Controllers
             string username = "";
             if (!JwtManager.Instance.ValidateToken(jwtToken, out username))
             {
-                return Unauthorized();
+                if (!JwtManager.Instance.ValidateExpiredToken(jwtToken, out username)) {
+                    return Unauthorized();
+                }
             }
 
             LinkedInAccessToken access;
@@ -64,7 +66,7 @@ namespace ECS.WebAPI.Controllers
                 }
                 else
                 {
-                    return Unauthorized();
+                    return BadRequest("ERR1");
                 }
             }
             catch (Exception)
@@ -89,7 +91,6 @@ namespace ECS.WebAPI.Controllers
             webRequest.Headers.Add(requestHeaders);
 
             //Build JSON request.
-            // "https://media-exp2.licdn.com/media/AAMABABqAAIAAQAAAAAAAA7yAAAAJGU1OTQ2NGFlLTNjNzEtNGZjOS04NjVkLWIxNjQ4NTY5ZjNlYw.png" 
             var jsonMsg = new
             {
                 comment = postData.Comment,
@@ -98,7 +99,7 @@ namespace ECS.WebAPI.Controllers
                     { "title", postData.Title },
                     { "description", postData.Description },
                     { "submitted-url", postData.SubmittedUrl },
-                    { "submitted-image-url", "" }
+                    { "submitted-image-url", "https://media-exp2.licdn.com/media/AAMABABqAAIAAQAAAAAAAA7yAAAAJGU1OTQ2NGFlLTNjNzEtNGZjOS04NjVkLWIxNjQ4NTY5ZjNlYw.png" }
                 },
                 visibility = new
                 {

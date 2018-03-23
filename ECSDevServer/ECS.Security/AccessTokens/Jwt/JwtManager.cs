@@ -70,6 +70,40 @@ namespace ECS.Security.AccessTokens.Jwt
             return token;
         }
 
+        public ClaimsPrincipal GetExpiredPrincipal(string token)
+        {
+            try
+            {
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var jwtToken = tokenHandler.ReadToken(token) as JwtSecurityToken;
+
+                if (jwtToken == null)
+                    return null;
+
+                var symmetricKey = Convert.FromBase64String(Secret);
+
+                var validationParameters = new TokenValidationParameters()
+                {
+                    RequireExpirationTime = true,
+                    ValidateLifetime = false,
+                    // Should be true?
+                    ValidateIssuer = true,
+                    ValidIssuer = "https://localhost:44311/",
+                    ValidateAudience = false,
+                    IssuerSigningKey = new SymmetricSecurityKey(symmetricKey)
+                };
+
+                var principal = tokenHandler.ValidateToken(token, validationParameters, out SecurityToken securityToken);
+
+                return principal;
+            }
+
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
         public ClaimsPrincipal GetPrincipal(string token)
         {
             try
@@ -86,7 +120,8 @@ namespace ECS.Security.AccessTokens.Jwt
                 {
                     RequireExpirationTime = true,
                     // Should be true?
-                    ValidateIssuer = false,
+                    ValidateIssuer = true,
+                    ValidIssuer = "https://localhost:44311/",
                     ValidateAudience = false,
                     IssuerSigningKey = new SymmetricSecurityKey(symmetricKey)
                 };
@@ -100,6 +135,52 @@ namespace ECS.Security.AccessTokens.Jwt
             {
                 return null;
             }
+        }
+
+        public bool ValidateExpiredToken(string token, out string username)
+        {
+            username = null;
+            var simplePrinciple = GetExpiredPrincipal(token);
+            ClaimsIdentity identity = null;
+
+            try
+            {
+                identity = simplePrinciple.Identity as ClaimsIdentity;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Source + "\n" + ex.Message + "\n" + ex.StackTrace);
+                return false;
+            }
+
+            if (identity == null)
+            {
+                return false;
+            }
+
+            if (!identity.IsAuthenticated)
+            {
+                return false;
+            }
+
+            var usernameClaim = identity.FindFirst(ClaimTypes.Name);
+            username = usernameClaim?.Value;
+
+            if (string.IsNullOrEmpty(username))
+            {
+                return false;
+            }
+
+            // Cannot use a ref or out string in a lambda expression, thus make a copy
+            string tempUsername = string.Copy(username);
+
+            // More validation to check whether username exists in system
+            if (!_accountRepository.Exists(d => d.UserName == tempUsername, d => d.User))
+            {
+                return false;
+            }
+
+            return true;
         }
 
         public bool ValidateToken(string token, out string username)

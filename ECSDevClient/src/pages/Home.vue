@@ -27,12 +27,16 @@
   </Slideout>
   <LinkedInPostModal/>
   <RedirectModal/>
+  <ErrorModal/>
 </div>
 </template>
 <script>
+import ErrorModal from '../components/Error-Modal/index'
 import LinkedInPostModal from '../components/LinkedIn-Modal/Index'
 import RedirectModal from '../components/Redirect-Modal/index'
+import EventBus from '../assets/js/EventBus.js'
 import Slideout from 'vue-slideout'
+// import Axios from 'axios'
 var groups = {
   'Arts & Design': {
     'name': 'Arts & Design',
@@ -137,11 +141,30 @@ var groups = {
 export default {
   name: 'home',
   components: {
+    ErrorModal,
     LinkedInPostModal,
     RedirectModal,
     Slideout
   },
   methods: {
+    // created: function (headers, username) {
+    //   Axios({
+    //     method: 'GET',
+    //     url: 'https://localhost:44311/Home/Articles',
+    //     header: headers,
+    //     data: {
+    //       username: username
+    //     }
+    //   })
+    //     .then(response => {
+    //       this.groups = response.data
+    //       console.log('ok!?')
+    //     })
+    //     .catch(e => {
+    //       console.log(e)
+    //       return e
+    //     })
+    // },
     checkFrame: function () {
       // if (document.getElementById('FrameResult') == null) {
       //   alert('Frame not created. Please reload')
@@ -173,12 +196,15 @@ export default {
       document.getElementById('FrameResult').src = link
       this.$store.dispatch('updateArticle', link)
       this.$store.dispatch('updateTitle', title)
-      this.$emit('articleChosen')
+      EventBus.$emit('articleChosen')
     }
   },
   data () {
     return {
-      groups: groups
+      groups: groups,
+      username: '',
+      headers: this.$store.getters.getRequestHeaders
+      // groups: []
     }
   }
 }

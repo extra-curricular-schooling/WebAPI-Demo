@@ -27,6 +27,7 @@ namespace ECS.Models
         [StringLength(20, MinimumLength = 5, ErrorMessage = "Username must be between 5-20 characters")]
         public string Username { get; set; }
 
+        // TODO: @Kris plural Accounts to just Account
         // Navigation property of accounts
         // Answers to security questions has one account
         public virtual Account Accounts { get; set; }

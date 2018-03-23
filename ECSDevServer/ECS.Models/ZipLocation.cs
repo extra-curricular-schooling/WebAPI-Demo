@@ -10,6 +10,7 @@ namespace ECS.Models
     /// </summary>
     public class ZipLocation
     {
+        // TODO: @Kris might need generated ID?
         [Key]
         [Required]
         public int ZipCodeId { get; set; }
@@ -47,6 +48,7 @@ namespace ECS.Models
         //[Key, Column(Order = 0)]
         //public string Email { get; set; }
 
+        // TODO: @Kris so we don't need this?
         // Navigation property of Email
         // DO not need this 
         public ICollection<User> Users { get; set; }
