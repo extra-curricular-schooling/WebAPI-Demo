@@ -8,7 +8,7 @@
         <div id ="groups"  v-for="group in groups" :key="group.name">
           <a id="groupName" v-text="group.name"  @click="group.open=!group.open" ></a>
           <ul v-show="group.open">
-            <ul class="button is-link" id="articles" v-for="article in group.articles" :key="article.title" v-text="article.title" v-on:click="target(article.title, article.url)">
+            <ul class="button is-link" id="articles" v-for="article in group.articles" :key="article.title" v-text="article.title" v-on:click="target(group.name, article.title, article.url)">
             </ul>
           </ul>
         </div>
@@ -191,9 +191,11 @@ export default {
     open: function () {
       console.log('slideoutOpen')
     },
-    target: function (title, link) {
+    target: function (tag, title, link) {
       console.log('target clicked')
+      console.log(tag)
       document.getElementById('FrameResult').src = link
+      this.$store.dispatch('updateInterestTag', tag)
       this.$store.dispatch('updateArticle', link)
       this.$store.dispatch('updateTitle', title)
       EventBus.$emit('articleChosen')
