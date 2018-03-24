@@ -80,6 +80,7 @@ namespace ECS.WebAPI.Controllers
             webRequest.Method = "POST";
             webRequest.ContentType = "application/json";
             webRequest.Host = "api.linkedin.com";
+            webRequest.Connection = "Keep-Alive";
 
             //Build Header.
             var requestHeaders = new NameValueCollection
