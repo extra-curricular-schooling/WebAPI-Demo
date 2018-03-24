@@ -57,25 +57,22 @@
     <Compile Include="InterestTag.cs" />
     <Compile Include="JAccessToken.cs" />
     <Compile Include="LinkedInAccessToken.cs" />
-    <Compile Include="Migrations\201803201801370_Scott_Init.cs" />
-    <Compile Include="Migrations\201803201801370_Scott_Init.Designer.cs">
-      <DependentUpon>201803201801370_Scott_Init.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201803220329444_Update_ExpiredAccessToken.cs" />
-    <Compile Include="Migrations\201803220329444_Update_ExpiredAccessToken.Designer.cs">
-      <DependentUpon>201803220329444_Update_ExpiredAccessToken.cs</DependentUpon>
+    <Compile Include="Migrations\201803230339381_ECSContext.cs" />
+    <Compile Include="Migrations\201803230339381_ECSContext.Designer.cs">
+      <DependentUpon>201803230339381_ECSContext.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Permission.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Role.cs" />
     <Compile Include="Salt.cs" />
+    <Compile Include="SaltSecurityAnswer.cs" />
     <Compile Include="SecurityQuestion.cs" />
     <Compile Include="SecurityQuestionAccount.cs" />
     <Compile Include="ExpiredAccessToken.cs" />
     <Compile Include="SweepStake.cs" />
     <Compile Include="SweepStakeEntry.cs" />
-    <Compile Include="User.cs" />
+    <Compile Include="UserProfile.cs" />
     <Compile Include="ZipLocation.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -83,11 +80,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201803201801370_Scott_Init.resx">
-      <DependentUpon>201803201801370_Scott_Init.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201803220329444_Update_ExpiredAccessToken.resx">
-      <DependentUpon>201803220329444_Update_ExpiredAccessToken.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201803230339381_ECSContext.resx">
+      <DependentUpon>201803230339381_ECSContext.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

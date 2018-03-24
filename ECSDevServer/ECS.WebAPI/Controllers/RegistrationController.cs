@@ -59,7 +59,7 @@ namespace ECS.WebAPI.Controllers
                 return BadRequest("Improper Request");
 
             // Check if user already exists
-            if (_accountRepository.Exists(d => d.UserName == registrationForm.Username, d => d.User))
+            if (_accountRepository.Exists(d => d.UserName == registrationForm.Username))
             {
                 string summary = "Username Exists";
                 var error = new
@@ -112,7 +112,7 @@ namespace ECS.WebAPI.Controllers
             };
 
             // DTO to Model
-            User user = new User()
+            UserProfile user = new UserProfile()
             {
                 Email = registrationForm.Email,
                 FirstName = registrationForm.FirstName,

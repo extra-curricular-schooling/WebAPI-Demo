@@ -46,7 +46,7 @@ namespace ECS.Models
         public bool FirstTimeUser { get; set; }
 
         // Navigation Property for foreign key
-        public virtual User User { get; set; }
+        // public virtual UserProfile User { get; set; }
 
         // Navigation Property of many to many relationship
         public virtual ICollection<SecurityQuestionAccount> SecurityAnswers { get; set; }
@@ -54,6 +54,8 @@ namespace ECS.Models
         // Navigation Property of many to many relationship
         // Create the join table manually
         public virtual ICollection<InterestTag> AccountTags { get; set; }
+
+        public virtual ICollection<SaltSecurityAnswer> SaltSecurityAnswers { get; set; }
 
         // Initializer for ICollection objects
         public Account()

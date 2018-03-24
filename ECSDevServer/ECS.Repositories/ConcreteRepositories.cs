@@ -92,7 +92,7 @@ namespace ECS.Repositories
     /// <summary>
     /// 
     /// </summary>
-    public interface IUserRepository : IRepositoryBase<User>
+    public interface IUserRepository : IRepositoryBase<UserProfile>
     {
     }
 
@@ -228,7 +228,7 @@ namespace ECS.Repositories
     /// <summary>
     /// 
     /// </summary>
-    public class UserRepository : RepositoryBase<User>, IUserRepository
+    public class UserRepository : RepositoryBase<UserProfile>, IUserRepository
     {
         public UserRepository() : base(new ECSContext())
         {

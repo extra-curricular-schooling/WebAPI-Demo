@@ -79,7 +79,7 @@ namespace ECS.WebAPI.Controllers
                     {
                         username = provideritem["username"];
                         // Check to make sure username exists in database.
-                        if(!_accountRepository.Exists(d => d.UserName == username, d => d.User))
+                        if(!_accountRepository.Exists(d => d.UserName == username))
                         {
                             return Unauthorized();
                         }

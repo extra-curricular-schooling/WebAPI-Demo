@@ -19,304 +19,304 @@ namespace ECS.Models.Migrations
         protected override void Seed(Models.ECSContext context)
         {
             // Add entries to the User table
-            var users = new List<User>
+            var users = new List<UserProfile>
             {
-                    new User
+                    new UserProfile
                     {
                     Email = "test1@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
                     
                     },
-                    new User
+                    new UserProfile
                     {
                     Email = "test2@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
                     },
-                    new User
+                    new UserProfile
                     {
                     Email = "test3@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
                     },
-                    new User
+                    new UserProfile
                     {
                     Email = "test4@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
                     },
-                    new User
+                    new UserProfile
                     {
                     Email = "test5@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
                     },
-                    new User
+                    new UserProfile
                     {
                     Email = "test6@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
                     },
-                    new User
+                    new UserProfile
                     {
                     Email = "test7@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
                     },
-                    new User
+                    new UserProfile
                     {
                     Email = "test8@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
                     },
-                    new User
+                    new UserProfile
                     {
                     Email = "test9@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
                     },
-                    new User
+                    new UserProfile
                     {
                     Email = "test10@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
                     },
-                    new User
+                    new UserProfile
                     {
                     Email = "test11@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
                     },
-                    new User
+                    new UserProfile
                     {
                     Email = "test12@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
                     },
-                    new User
+                    new UserProfile
                     {
                     Email = "test13@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
                     },
-                    new User
+                    new UserProfile
                     {
                     Email = "test14@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
                     },
-                    new User
+                    new UserProfile
                     {
                     Email = "test15@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
                     },
-                    new User
+                    new UserProfile
                     {
                     Email = "test16@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
                     },
-                    new User
+                    new UserProfile
                     {
                     Email = "test17@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
                     },
-                    new User
+                    new UserProfile
                     {
                     Email = "test18@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
                     },
-                    new User
+                    new UserProfile
                     {
                     Email = "test19@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
                     },
-                    new User
+                    new UserProfile
                     {
                     Email = "test20@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
                     },
-                    new User
+                    new UserProfile
                     {
                     Email = "test21@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
                     },
-                    new User
+                    new UserProfile
                     {
                     Email = "test22@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
                     },
-                    new User
+                    new UserProfile
                     {
                     Email = "test23@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
                     },
-                    new User
+                    new UserProfile
                     {
                     Email = "test24@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
                     },
-                    new User
+                    new UserProfile
                     {
                     Email = "test25@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
                     },
-                    new User
+                    new UserProfile
                     {
                     Email = "test26@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
                     },
-                    new User
+                    new UserProfile
                     {
                     Email = "test27@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
                     },
-                    new User
+                    new UserProfile
                     {
                     Email = "test28@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
                     },
-                    new User
+                    new UserProfile
                     {
                     Email = "test29@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
                     },
-                    new User
+                    new UserProfile
                     {
                     Email = "test30@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
                     },
-                    new User
+                    new UserProfile
                     {
                     Email = "test31@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
                     },
-                    new User
+                    new UserProfile
                     {
                     Email = "test32@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
                     },
-                    new User
+                    new UserProfile
                     {
                     Email = "test33@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
                     },
-                    new User
+                    new UserProfile
                     {
                     Email = "test34@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
                     },
-                    new User
+                    new UserProfile
                     {
                     Email = "test35@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
                     },
-                    new User
+                    new UserProfile
                     {
                     Email = "test36@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
                     },
-                    new User
+                    new UserProfile
                     {
                     Email = "test37@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
                     },
-                    new User
+                    new UserProfile
                     {
                     Email = "test38@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
                     },
-                    new User
+                    new UserProfile
                     {
                     Email = "test39@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
                     },
-                    new User
+                    new UserProfile
                     {
                     Email = "test40@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
                     },
-                    new User
+                    new UserProfile
                     {
                     Email = "test41@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
                     },
-                    new User
+                    new UserProfile
                     {
                     Email = "test42@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
                     },
-                    new User
+                    new UserProfile
                     {
                     Email = "test43@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
                     },
-                    new User
+                    new UserProfile
                     {
                     Email = "test44@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
                     },
-                    new User
+                    new UserProfile
                     {
                     Email = "test45@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
                     },
-                    new User
+                    new UserProfile
                     {
                     Email = "test46@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
                     },
-                    new User
+                    new UserProfile
                     {
                     Email = "test47@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
                     },
-                    new User
+                    new UserProfile
                     {
                     Email = "test48@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
                     },
-                    new User
+                    new UserProfile
                     {
                     Email = "test49@gmail.com",
                     FirstName = "test",
                     LastName = "tester",
                     },
-                    new User
+                    new UserProfile
                     {
                     Email = "test50@gmail.com",
                     FirstName = "test",
@@ -341,7 +341,7 @@ namespace ECS.Models.Migrations
                    ZipCode = "123456",
                    Latitude = 123,
                    Longitude = 123,
-                   Users = new List<User>
+                   Users = new List<UserProfile>
                    {
                        users.Single(s => s.Email == "test1@gmail.com"),
                        users.Single(s => s.Email == "test2@gmail.com")
@@ -355,7 +355,7 @@ namespace ECS.Models.Migrations
                    ZipCode = "98765",
                    Latitude = 123,
                    Longitude = 123,
-                   Users = new List<User>
+                   Users = new List<UserProfile>
                    {
                        users.Single(s => s.Email == "test1@gmail.com")
                    }
@@ -3818,6 +3818,29 @@ namespace ECS.Models.Migrations
                 }
             };
             salts.ForEach(s => context.Salts.AddOrUpdate(p => p.SaltId, s));
+            context.SaveChanges();
+
+            var saltAnswers = new List<SaltSecurityAnswer>
+            {
+                new SaltSecurityAnswer
+                {
+                    SaltValue = "abfuoeqwfuoifnuiwanefoincaekc",
+                    UserName = accounts.Single(s => s.UserName == "test2").UserName,
+                    SecurityQuestionID = securityQuestion.Single(s => s.SecurityQuestionID == 1).SecurityQuestionID
+                }
+            };
+            saltAnswers.ForEach(s => context.SaltSecurityAnswers.AddOrUpdate(p => p.SaltId, s));
+            context.SaveChanges();
+
+            var expiredAcessTokens = new List<ExpiredAccessToken>
+            {
+                new ExpiredAccessToken
+                {
+                    ExpiredTokenValue = "uifuafnnionwaengv920n3gnioawev",
+                    CanReuse = false
+                }
+            };
+            expiredAcessTokens.ForEach(s => context.ExpiredAccessTokens.AddOrUpdate(p => p.ExpiredTokenId, s));
             context.SaveChanges();
         }
         void AddOrUpdateInterestTag(Models.ECSContext context, string accountUsername, string tagName)
