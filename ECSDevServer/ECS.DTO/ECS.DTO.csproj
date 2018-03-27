@@ -46,7 +46,9 @@
     <Compile Include="RegistrationDTO.cs" />
     <Compile Include="LinkedInPostDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SsoRegistrationDTO.cs" />
+    <Compile Include="Sso\SsoLoginDTO.cs" />
+    <Compile Include="Sso\SsoRegistrationDTO.cs" />
+    <Compile Include="Sso\SsoResetPasswordDTO.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

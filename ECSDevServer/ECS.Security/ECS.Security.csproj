@@ -63,6 +63,10 @@
     <Compile Include="Hash\IHashService.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ECS.DTO\ECS.DTO.csproj">
+      <Project>{40BC80F4-7950-4A6F-B94F-C35F7081A48B}</Project>
+      <Name>ECS.DTO</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ECS.Models\ECS.Models.csproj">
       <Project>{f8f04460-d2eb-4907-8b96-c3b915749a82}</Project>
       <Name>ECS.Models</Name>

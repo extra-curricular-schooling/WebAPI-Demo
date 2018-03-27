@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using ECS.DTO;
 using System.Net.Http.Headers;
 using System.Net;
+using ECS.DTO.Sso;
 using ECS.WebAPI.Services.HttpClients;
 
 namespace HttpClientConsole
@@ -37,15 +38,7 @@ namespace HttpClientConsole
                     SsoRegistrationDTO account = new SsoRegistrationDTO
                     {
                         Username = "dkdkd",
-                        Password = "aaaaaa",
-                        SecurityQuestions = new List<SecurityQuestionDTO>
-                        {
-                            new SecurityQuestionDTO
-                            {
-                                Question = 4,
-                                Answer = "My mother"
-                            }
-                        }
+                        Password = "aaaaaa"
                     };
 
                     var message = await client.PostAsJsonAsync("https://localhost:44311/SSO/ResetPassword", account);

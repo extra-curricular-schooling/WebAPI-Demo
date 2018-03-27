@@ -6,6 +6,8 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Text;
+using ECS.DTO;
+using ECS.DTO.Sso;
 using ECS.Repositories;
 using Microsoft.IdentityModel.Tokens;
 
@@ -135,6 +137,7 @@ namespace ECS.Security.AccessTokens.Jwt
                 {
                     ValidateIssuer = false,
                     ValidateAudience = false,
+                    RequireExpirationTime = false,
                     IssuerSigningKey = new SymmetricSecurityKey(symmetricKey)
                 };
 

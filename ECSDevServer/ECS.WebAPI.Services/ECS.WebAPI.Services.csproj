@@ -71,12 +71,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Factories\Contracts\IFactory.cs" />
     <Compile Include="HttpClients\HttpClientService.cs" />
-    <Compile Include="HttpClients\IHttpClient.cs" />
-    <Compile Include="HttpClients\IHttpClientAsync.cs" />
-    <Compile Include="JsonSerialization\IJsonSerializationFacade.cs" />
-    <Compile Include="JsonSerialization\JsonSerializationFacade.cs" />
+    <Compile Include="HttpClients\Contracts\IHttpClient.cs" />
+    <Compile Include="HttpClients\Contracts\IHttpClientAsync.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Transformers\Interfaces\ISsoLoginTransformer.cs" />
+    <Compile Include="Transformers\Interfaces\ISsoRegistrationTransformer.cs" />
+    <Compile Include="Transformers\Interfaces\ISsoResetPasswordTransformer.cs" />
+    <Compile Include="Transformers\Interfaces\ITransformer.cs" />
+    <Compile Include="Transformers\SsoLoginTransformer.cs" />
+    <Compile Include="Transformers\SsoRegistrationTransformer.cs" />
+    <Compile Include="Transformers\SsoResetPasswordTransformer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -86,6 +92,10 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ECS.DTO\ECS.DTO.csproj">
+      <Project>{40BC80F4-7950-4A6F-B94F-C35F7081A48B}</Project>
+      <Name>ECS.DTO</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ECS.Models\ECS.Models.csproj">
       <Project>{F8F04460-D2EB-4907-8B96-C3B915749A82}</Project>
       <Name>ECS.Models</Name>
@@ -93,6 +103,10 @@
     <ProjectReference Include="..\ECS.Repositories\ECS.Repositories.csproj">
       <Project>{84B9525B-6D65-493C-8BC5-61CE7AB8C325}</Project>
       <Name>ECS.Repositories</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ECS.Security\ECS.Security.csproj">
+      <Project>{31F4E181-8B78-4FCF-A79C-4C50BE2AB1DD}</Project>
+      <Name>ECS.Security</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
