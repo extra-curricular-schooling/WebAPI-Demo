@@ -1,7 +1,7 @@
 <template>
 <div class="SweepstakeAdmin">
     <h1>Admin Page to Set Sweepstake Settings</h1>
-    <h2>Admin Can Set Sweepstake Open/Close Date, Sweepstake ID, & Prize.</h2>
+    <h2>Admin Can Set Sweepstake Open/Close Date, Sweepstake ID, Ticket Price, & Prize.</h2>
     <div class="dates">
       <v2-datepicker v-model="OpenDateTime" lang="en" format="MM/DD/YYYY" placeholder="Opening Date"></v2-datepicker>
       <p>Admin Selected Opening Date: {{OpenDateTime}}</p>
@@ -14,19 +14,20 @@
       <p v-if="OpenDateTime>ClosedDateTime">Wrong Close Date Entered</p>
     </div>
     <div class="settings">
+      <input type="number" v-model.lazy="ticketPrice" placeholder="Ticket Price">
+      <p>Admin Selected Ticket Price: {{ ticketPrice }}</p>
       <input type="text" v-model.lazy="Prize" placeholder="Prize Sweepstake">
       <p>Admin Selected Prize: {{ Prize }}</p>
       <input type="text" v-model.lazy="SweepStakesID" placeholder="Enter Sweepstake ID">
       <p>Admin Selected Sweepstakes ID: {{ SweepStakesID }}</p>
     </div>
     <!-- make a button to POST everything to the database -->
-    <button v-on:click="submitSweepstake(OpenDateTime,ClosedDateTime,Prize,UsernameWinner,SweepStakesID)">Submit Sweepstake</button>
+    <button v-on:click="submitSweepstake(OpenDateTime,ClosedDateTime,Prize,UsernameWinner,SweepStakesID,ticketPrice)">Submit Sweepstake</button>
     <!-- put in username winner -->
     <!-- v2-datepicker license MIT -->
     <button v-on:click="randomNumberGenerator(totalNumberTickets, winningTicket)">Select the Winner</button>
     <!-- fire the random number generator event at time expiration -->
     <!-- <p>The winning ticket is: {{winningTicket}}</p> -->
-    <!-- fire the random number event when the timer goes to zero or ends -->
     <!-- fire the random number event when the timer goes to zero or ends -->
 </div>
 </template>
@@ -45,14 +46,15 @@ export default {
       UsernameWinner: '',
       SweepStakesID: '',
       winningTicket: '',
+      ticketPrice: '',
       totalNumberTickets: 100
       // remove the total ticket number (100) when connect to database
     }
   },
   methods: {
-    submitSweepstake: function (OpenDateTime, ClosedDateTime, Prize, UsernameWinner, SweepStakesID) {
+    submitSweepstake: function (OpenDateTime, ClosedDateTime, Prize, UsernameWinner, SweepStakesID, ticketPrice) {
       alert('Sweepstake Set ' + OpenDateTime + ' ' + ClosedDateTime)
-      alert('Other Information Set' + Prize + ' ' + SweepStakesID + ' ' + UsernameWinner)
+      alert('Other Information Set ' + ticketPrice + ' ' + Prize + ' ' + SweepStakesID + ' ')
     },
     randomNumberGenerator: function (totalNumberTickets, winningTicket) {
       winningTicket = Math.floor(Math.random() * Math.floor(totalNumberTickets))
@@ -80,7 +82,7 @@ button:hover {
 }
 input {
     width: 200px;
-    height: 30px;
+    height: 40px;
 }
 v2-datepicker {
   size: 30cm;

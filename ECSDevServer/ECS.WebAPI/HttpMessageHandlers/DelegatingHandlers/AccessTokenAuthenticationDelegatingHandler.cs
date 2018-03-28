@@ -65,12 +65,13 @@ namespace ECS.WebAPI.HttpMessageHandlers.DelegatingHandlers
 
             if (expiredAccessToken == null)
             {
+                // TODO: @Scott Please uncomment the inserting expired token when ready to deploy. It is annoying to test with.
                 // 5. Insert One time token so no one else uses it.
-                _expiredAccessTokenRepository.Insert(new ExpiredAccessToken
-                {
-                    ExpiredTokenValue = token,
-                    CanReuse = true
-                });
+                //_expiredAccessTokenRepository.Insert(new ExpiredAccessToken
+                //{
+                //    ExpiredTokenValue = token,
+                //    CanReuse = true
+                //});
             }
             
             // 6. Finally check if the token is validated and returns a principal.

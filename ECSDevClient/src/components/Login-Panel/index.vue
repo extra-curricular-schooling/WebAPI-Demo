@@ -24,11 +24,11 @@
     <div class="forgot-credentials">
       <span class="forgot-username">
         <forgot-username ref="username"/>
-        <a @click.prevent="rememberUsername">Forgot Username?</a><br>
+        <a class="forget-links" @click.prevent="rememberUsername">Forgot Username?</a><br>
       </span>
       <span class="forgot-password">
         <forgot-password ref="password"/>
-        <a @click.prevent="changePassword">Forgot Password?</a>
+        <a class="forget-links" @click.prevent="changePassword">Forgot Password?</a>
       </span>
     </div>
     <div class="field is-grouped is-grouped-centered">
@@ -48,8 +48,8 @@
 
 <script>
 import Axios from 'axios'
-import forgotPassword from '@/components/Forgot-Password/index'
-import forgotUsername from '@/components/Forgot-Username/index'
+import forgotPassword from '@/components/Forgot-Password-Modal/index'
+import forgotUsername from '@/components/Forgot-Username-Modal/index'
 
 export default {
   name: 'LoginPanel',
@@ -116,3 +116,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.forget-links {
+  font-size: 11pt
+}
+</style>

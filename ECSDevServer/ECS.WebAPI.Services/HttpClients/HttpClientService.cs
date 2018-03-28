@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using ECS.WebAPI.Services.HttpClients.Interfaces;
 
 namespace ECS.WebAPI.Services.HttpClients
 {

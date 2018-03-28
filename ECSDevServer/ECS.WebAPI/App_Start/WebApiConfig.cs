@@ -40,22 +40,29 @@ namespace ECS.WebAPI
             // Important that this route exists before the default.
             // If the route is specific, put it before the more general routes.
 
-            config.Routes.MapHttpRoute(
-                name: "Sso",
-                routeTemplate: "Sso/{action}/{id}",
-                defaults: new { id = RouteParameter.Optional },
-                constraints: null,
-                handler: 
-                HttpClientFactory.CreatePipeline(
-                    new HttpControllerDispatcher(config), 
-                    new DelegatingHandler[]{new AccessTokenAuthenticationDelegatingHandler()})
-            );
+            //config.Routes.MapHttpRoute(
+            //    name: "Sso",
+            //    routeTemplate: "Sso/{action}/{id}",
+            //    defaults: new { id = RouteParameter.Optional },
+            //    constraints: null,
+            //    handler: 
+            //    HttpClientFactory.CreatePipeline(
+            //        new HttpControllerDispatcher(config), 
+            //        new DelegatingHandler[]{new AccessTokenAuthenticationDelegatingHandler()})
+            //);
+
+            // TODO @Scott Change the authentication handler before committing. It will mess up everyone's authentication.
 
             // Default Controller Route
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "{controller}/{action}/{id}",
-                defaults: new { id = RouteParameter.Optional, action = "Get" }
+                defaults: new { id = RouteParameter.Optional, action = "Get" },
+                constraints: null,
+                handler: 
+                HttpClientFactory.CreatePipeline(
+                    new HttpControllerDispatcher(config), 
+                    new DelegatingHandler[]{new AccessTokenAuthenticationDelegatingHandler()})
             );
 
             // Exception Filters

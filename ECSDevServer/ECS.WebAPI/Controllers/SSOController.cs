@@ -4,14 +4,14 @@ using ECS.Repositories;
 using ECS.Models;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Net;
-using System.Net.Http;
 using ECS.Security.AccessTokens.Jwt;
 using ECS.Security.Hash;
+using ECS.WebAPI.Services.Transformers;
 
 namespace ECS.WebAPI.Controllers
 {
+    [RoutePrefix("Sso")]
     [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET,POST")]
     //[AuthorizeSsoAccessToken]
     public class SsoController : ApiController
@@ -45,39 +45,35 @@ namespace ECS.WebAPI.Controllers
         [HttpPost]
         public IHttpActionResult Registration()
         {
-            var token = SsoJwtManager.Instance.GetAccessToken(Request);
-            User = SsoJwtManager.Instance.GetPrincipal(token);
+            // Transform request context into DTO.
+            var transformer = new SsoRegistrationTransformer();
+            var ssoDto = transformer.Fetch(RequestContext);
 
-            // Read the Request Principal (User), and grab the userName claim.
-            var username = SsoJwtManager.Instance.GetClaimValue(this.User, "username");
-            var password = SsoJwtManager.Instance.GetClaimValue(this.User, "password");
+            // Validate information with the registration DTO, if needed.
+            // TODO: @Scott Handle the error that would occur if they try to make a duplicate account.
+
 
             // Proccess any other information.
 
-            // Create User???
-            // TODO: @Scott There is a serious problem about entering Users with a registration that is incomplete.
-            // Maybe set them to an unregistered User?
-
-            // Set some sort of flag up for the User in DB.
-            var passwordSalt = HashService.Instance.CreateSaltKey();
-            var hashedPassword = HashService.Instance.HashPasswordWithSalt(passwordSalt, password, false);
+            // TODO: @Scott The account model is still not acceptable for SSO needs. It requires an email and a mandatory SuspensionTime.
+            // The suspension time doesn't make sense to have in there.
             var account = new Account()
             {
-                UserName = username,
+                UserName = ssoDto.Username,
                 // TODO: @Scott Get rid of the email somehow.
                 Email = "aaa@aaa.net",
-                Password = hashedPassword,
+                Password = ssoDto.HashedPassword,
                 // TODO: @Scott The suspension time is set because exception is thrown trying to convert DateTime2 to DateTime???
                 SuspensionTime = DateTime.UtcNow,
                 AccountStatus = true,
-                FirstTimeUser = true,
+                FirstTimeUser = true
             };
             _accountRepository.Insert(account);
 
             var salt = new Salt()
             {
-                PasswordSalt = passwordSalt,
-                UserName = username
+                PasswordSalt = ssoDto.PasswordSalt,
+                UserName = ssoDto.Username
             };
             _saltRepository.Insert(salt);
 
@@ -92,32 +88,34 @@ namespace ECS.WebAPI.Controllers
         [HttpPost]
         public IHttpActionResult Login()
         {
-            var requestAccessToken = SsoJwtManager.Instance.GetAccessToken(Request);
-            User = SsoJwtManager.Instance.GetPrincipal(requestAccessToken);
-
-            // Read the Request Principal (User), and grab the userName claim.
-            var username = SsoJwtManager.Instance.GetClaimValue(this.User, "username");
-            var password = SsoJwtManager.Instance.GetClaimValue(this.User, "password");
+            // Transform request context into DTO.
+            var transformer = new SsoRegistrationTransformer();
+            var ssoDto = transformer.Fetch(RequestContext);
 
             // Get the password salt by username.
-            var saltModel = _saltRepository.GetSingle(model => model.UserName == username);
+            var saltModel = _saltRepository.GetSingle(model => model.UserName == ssoDto.Username);
             var salt = saltModel.PasswordSalt;
-            var hashedPassword = HashService.Instance.HashPasswordWithSalt(salt, password, true);
+
+            // Make sure you append the salt, not prepend (group decision).
+            var hashedPassword = HashService.Instance.HashPasswordWithSalt(salt, ssoDto.Username, false);
 
             // Does the Password check out?
-            var account = _accountRepository.GetSingle(acc => acc.UserName == username);
+            var account = _accountRepository.GetSingle(acc => acc.UserName == ssoDto.Username);
             if (!account.Password.Equals(hashedPassword))
             {
                 return Unauthorized();
             }
 
-            // Set current account token to expired list.
-            var accountAccessToken = _jwtAccessTokenRepository.GetSingle(oldToken => oldToken.UserName == username);
-            var deadToken = new ExpiredAccessToken
+            // Are they a first time user?
+            if (account.FirstTimeUser)
             {
-                ExpiredTokenValue = accountAccessToken.Value
-            };
-            _expiredAccessTokenRepository.Insert(deadToken);
+                // Redirect them to finish their registration.
+                return Ok("Redirect for FirstTimeUsers");
+            }
+
+            // Generate our token for them.
+
+            var token = JwtManager.Instance.GenerateToken(ssoDto.Username);
 
             // Generate new token based on username and available claims.
             // TODO: @Scott Sso Login needs to generate a token with a username AND list of claims.
@@ -126,13 +124,24 @@ namespace ECS.WebAPI.Controllers
                 {"scott", "roberts"}
             };
 
-            //var tokenTest = SsoJwtManager.Instance.TestGenerateToken(claimList, username);
-            var token = JwtManager.Instance.GenerateToken(username);
-            accountAccessToken.Value = token;
+            // Grab the previous access token associated with the account.
+            var accountAccessToken = _jwtAccessTokenRepository.GetSingle(oldToken => oldToken.UserName == ssoDto.Username);
 
-            // Store updated account token in DB.
-            _jwtAccessTokenRepository.Update(accountAccessToken);
+            // If the token is not null, that means they did sign in through our system already, and we need to update their jwt.
+            if (accountAccessToken != null)
+            {
+                // Set current account token to expired list.
+                var deadToken = new ExpiredAccessToken
+                {
+                    ExpiredTokenValue = accountAccessToken.Value
+                };
+                _expiredAccessTokenRepository.Insert(deadToken);
 
+                accountAccessToken.Value = token;
+
+                // Store updated account token in DB.
+                _jwtAccessTokenRepository.Update(accountAccessToken);
+            }
 
             // Redirect them to our Home page with their credentials logged.
             return Content(HttpStatusCode.Redirect, new Uri("https://localhost:44311/Sso/Login?accesstoken=" + token));
@@ -151,27 +160,19 @@ namespace ECS.WebAPI.Controllers
         [HttpPost]
         public IHttpActionResult ResetPassword()
         {
-            var requestAccessToken = SsoJwtManager.Instance.GetAccessToken(Request);
-            User = SsoJwtManager.Instance.GetPrincipal(requestAccessToken);
-
-            // Retrieve username
-            var username = SsoJwtManager.Instance.GetClaimValue(User, "username");
+            var transformer = new SsoResetPasswordTransformer();
+            var ssoDto = transformer.Fetch(this.RequestContext);
             
             // Get related account from username
-            var account = _accountRepository.GetSingle(acc => acc.UserName == username);
-
-            // Retrieve password, create salt, create salted password
-            var password = SsoJwtManager.Instance.GetClaimValue(User, "password");
-            var passwordSalt = HashService.Instance.CreateSaltKey();
-            var hashedPassword = HashService.Instance.HashPasswordWithSalt(passwordSalt, password, true);
+            var account = _accountRepository.GetSingle(acc => acc.UserName == ssoDto.Username);
 
             // Update password for account
-            account.Password = hashedPassword;
+            account.Password = ssoDto.HashedNewPassword;
             _accountRepository.Update(account);
 
             // Update salt table related to account
-            var saltModel = _saltRepository.GetSingle(model => model.UserName == username);
-            saltModel.PasswordSalt = passwordSalt;
+            var saltModel = _saltRepository.GetSingle(model => model.UserName == ssoDto.Username);
+            saltModel.PasswordSalt = ssoDto.PasswordSalt;
             _saltRepository.Update(saltModel);
            
             return Ok();
