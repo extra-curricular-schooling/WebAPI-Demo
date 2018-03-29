@@ -52,16 +52,13 @@ namespace ECS.WebAPI.Controllers
             // Validate information with the registration DTO, if needed.
             // TODO: @Scott Handle the error that would occur if they try to make a duplicate account.
 
-
-            // Proccess any other information.
-
             // TODO: @Scott The account model is still not acceptable for SSO needs. It requires an email and a mandatory SuspensionTime.
             // The suspension time doesn't make sense to have in there.
             var account = new Account()
             {
                 UserName = ssoDto.Username,
                 // TODO: @Scott Get rid of the email somehow.
-                Email = "aaa@aaa.net",
+                Email = "_",
                 Password = ssoDto.HashedPassword,
                 // TODO: @Scott The suspension time is set because exception is thrown trying to convert DateTime2 to DateTime???
                 SuspensionTime = DateTime.UtcNow,
@@ -101,11 +98,8 @@ namespace ECS.WebAPI.Controllers
 
             // Does the Password check out?
             var account = _accountRepository.GetSingle(acc => acc.UserName == ssoDto.Username);
-            if (!account.Password.Equals(hashedPassword))
-            {
-                return Unauthorized();
-            }
 
+            // TODO @Trish Let Scott know what to do with the First Time Users when they login to our site.
             // Are they a first time user?
             if (account.FirstTimeUser)
             {
@@ -113,12 +107,17 @@ namespace ECS.WebAPI.Controllers
                 return Ok("Redirect for FirstTimeUsers");
             }
 
+            if (!account.Password.Equals(hashedPassword))
+            {
+                return Unauthorized();
+            }
+
             // Generate our token for them.
 
             var token = JwtManager.Instance.GenerateToken(ssoDto.Username);
 
             // Generate new token based on username and available claims.
-            // TODO: @Scott Sso Login needs to generate a token with a username AND list of claims.
+            // TODO: @Scott Sso Login needs to generate a token with a username AND list of claims. Get claims from account.
             var claimList = new SortedList
             {
                 {"scott", "roberts"}
@@ -144,17 +143,15 @@ namespace ECS.WebAPI.Controllers
             }
 
             // Redirect them to our Home page with their credentials logged.
-            return Content(HttpStatusCode.Redirect, new Uri("https://localhost:44311/Sso/Login?accesstoken=" + token));
+            return Content(HttpStatusCode.Redirect, new Uri("https://localhost:44311/Sso/Login?jwt=" + token));
         }
 
         // TODO: @Scott Start working on the Login Get Request
         [HttpGet]
-        public IHttpActionResult Login([FromUri] string accessToken)
+        public IHttpActionResult Login([FromUri] string jwt)
         {
-            User = SsoJwtManager.Instance.GetPrincipal(accessToken);
-
             // This will be the controller that returns the homepage with the user logged in to our app.
-            return Ok(accessToken);
+            return Ok(jwt);
         }
 
         [HttpPost]

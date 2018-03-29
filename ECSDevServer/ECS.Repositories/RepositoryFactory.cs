@@ -2,7 +2,6 @@
 using System.Linq;
 using ECS.Models;
 
-// TODO: @Scooter Split the repositories into different class files.
 namespace ECS.Repositories
 {
     /// <summary>

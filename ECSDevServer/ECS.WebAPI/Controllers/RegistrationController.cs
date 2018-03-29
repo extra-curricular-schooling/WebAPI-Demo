@@ -56,7 +56,7 @@ namespace ECS.WebAPI.Controllers
                 registrationForm.SecurityQuestions[0].Answer == null ||
                 registrationForm.SecurityQuestions[1].Answer == null ||
                 registrationForm.SecurityQuestions[2].Answer == null)
-                return BadRequest("Improper Request");
+                return BadRequest("Improper Request"); 
 
             // Check if user already exists
             if (_accountRepository.Exists(d => d.UserName == registrationForm.Username))
@@ -165,6 +165,12 @@ namespace ECS.WebAPI.Controllers
 
                 return Content(HttpStatusCode.InternalServerError, error);
             }
+        }
+
+
+        public IHttpActionResult SubmitPartialRegistration(RegistrationDTO registrationDto)
+        {
+            return Content(HttpStatusCode.NotImplemented, "Working on it...");
         }
 
         /// <summary>

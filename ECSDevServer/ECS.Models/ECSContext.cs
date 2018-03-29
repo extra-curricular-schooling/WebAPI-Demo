@@ -29,6 +29,8 @@ namespace ECS.Models
 
         public DbSet<Article> Articles { get; set; }
 
+        public DbSet<PartialAccount> PartialAccounts { get; set; }
+
         public DbSet<SecurityQuestionAccount> SecurityQuestionAccounts { get; set; }
 
         public DbSet<SecurityQuestion> SecurityQuestions { get; set; }
@@ -137,6 +139,8 @@ namespace ECS.Models
             modelBuilder.Entity<Permission>().MapToStoredProcedures();
 
             modelBuilder.Entity<ExpiredAccessToken>().MapToStoredProcedures();
+
+            modelBuilder.Entity<PartialAccount>().MapToStoredProcedures();
 
             // modelBuilder.Entity<Role>().MapToStoredProcedures();
 
