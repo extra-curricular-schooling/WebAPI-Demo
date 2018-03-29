@@ -70,6 +70,12 @@ namespace ECS.Repositories
         IList<T> GetAll(params Expression<Func<T, object>>[] navigationProperties);
 
         /// <summary>
+        /// Load everything from the table. Eager loading is not enabled.
+        /// </summary>
+        /// <returns></returns>
+        IList<T> GetAll();
+
+        /// <summary>
         /// This method will find the related record of a given repository.
         /// </summary>
         /// <param name="where">
@@ -83,8 +89,6 @@ namespace ECS.Repositories
         /// </returns>
         T GetSingle(Func<T, bool> where, params Expression<Func<T, object>>[] navigationProperties);
 
-        bool Exists(Func<T, bool> where, params Expression<Func<T, object>>[] navigationProperties);
-
-        
+        bool Exists(Func<T, bool> where, params Expression<Func<T, object>>[] navigationProperties);   
     }
 }

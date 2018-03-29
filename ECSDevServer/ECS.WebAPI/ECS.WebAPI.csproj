@@ -153,6 +153,7 @@
     <Compile Include="Controllers\SweepstakeController.cs" />
     <Compile Include="ExceptionHandlers\TraceExceptionLogger.cs" />
     <Compile Include="Filters\AuthenticationFilters\AuthenticationRequiredAttribute.cs" />
+    <Compile Include="Filters\AuthenticationFilters\IssueNewTokenAttribute.cs" />
     <Compile Include="Filters\AuthorizationFilters\AuthorizationRequiredAttribute.cs" />
     <Compile Include="Filters\AuthorizationFilters\AuthorizeSsoAccessTokenAttribute.cs" />
     <Compile Include="Filters\AuthorizationFilters\RequireHttpsAttribute.cs" />
