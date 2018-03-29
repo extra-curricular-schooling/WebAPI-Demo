@@ -59,12 +59,12 @@ namespace ECS.WebAPI
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "{controller}/{action}/{id}",
-                defaults: new { id = RouteParameter.Optional, action = "Get" },
-                constraints: null
-                //handler: 
+                defaults: new { id = RouteParameter.Optional, action = "Get" }
+                //constraints: null,
+                //handler:
                 //HttpClientFactory.CreatePipeline(
-                //    new HttpControllerDispatcher(config), 
-                //    new DelegatingHandler[]{new AccessTokenAuthenticationDelegatingHandler()})
+                //    new HttpControllerDispatcher(config),
+                //    new DelegatingHandler[] { new AccessTokenAuthenticationDelegatingHandler() })
             );
 
             // Exception Filters

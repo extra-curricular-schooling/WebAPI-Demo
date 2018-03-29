@@ -66,7 +66,14 @@ namespace ECS.Repositories
         {
             return DbSet.Where(predicate);
         }
-        
+
+        public IList<T> GetAll()
+        {
+            IQueryable<T> query = DbSet;
+            IList<T> items = query.AsNoTracking().ToList<T>();
+            return items;
+        }
+
         public IList<T> GetAll(params Expression<Func<T, object>>[] navigationProperties)
         {
             IQueryable<T> query = DbSet;

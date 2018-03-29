@@ -19,7 +19,7 @@
             </div>
             <div class="field comment">
               <label class="label field-element is-required">Privacy Settings</label>
-              <input type="radio" id="public" value="public" v-model="postData.code">
+              <input type="radio" id="public" value="anyone" v-model="postData.code">
               <label for="public">Public</label>
               <br>
               <input type="radio" id="connections-only" value="connections-only" v-model="postData.code">
@@ -146,6 +146,7 @@ export default {
     updateArticleInfo: function () {
       this.postData.title = this.$store.getters.getArticleTitle
       this.postData.submittedurl = this.$store.getters.getCurrentArticle
+      this.postData.description = this.$store.getters.getInterestTag
       this.currentDateTime = new Date()
     },
     toggleLinkedInModal: function() {
@@ -194,6 +195,7 @@ export default {
           toggleConfirmModal();
         })
         .catch( (error) => {
+          console.log(error)
           if(error.response.data.message === 'ERR7') {
             this.toggleLinkedInModal()
             this.toggleRedirectModal(this.getLinkedInTokenUri(), 'Your LinkedIn session has expired, do you wish to renew it?')

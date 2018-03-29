@@ -8,7 +8,7 @@
         <div id ="groups"  v-for="group in groups" :key="group.name">
           <a id="groupName" v-text="group.name"  @click="group.open=!group.open" ></a>
           <ul v-show="group.open">
-            <ul class="button is-link" id="articles" v-for="article in group.articles" :key="article.title" v-text="article.title" v-on:click="target(article.title, article.url)">
+            <ul class="button is-link" id="articles" v-for="article in group.articles" :key="article.title" v-text="article.title" v-on:click="target(group.name, article.title, article.url)">
             </ul>
           </ul>
         </div>
@@ -36,7 +36,7 @@ import LinkedInPostModal from '../components/LinkedIn-Modal/Index'
 import RedirectModal from '../components/Redirect-Modal/index'
 import EventBus from '../assets/js/EventBus.js'
 import Slideout from 'vue-slideout'
-// import Axios from 'axios'
+import Axios from 'axios'
 var groups = {
   'Arts & Design': {
     'name': 'Arts & Design',
@@ -147,24 +147,21 @@ export default {
     Slideout
   },
   methods: {
-    // created: function (headers, username) {
-    //   Axios({
-    //     method: 'GET',
-    //     url: 'https://localhost:44311/Home/Articles',
-    //     header: headers,
-    //     data: {
-    //       username: username
-    //     }
-    //   })
-    //     .then(response => {
-    //       this.groups = response.data
-    //       console.log('ok!?')
-    //     })
-    //     .catch(e => {
-    //       console.log(e)
-    //       return e
-    //     })
-    // },
+    retieveArticles: function (username) {
+      Axios({
+        method: 'GET',
+        url: 'https://localhost:44311/Home/' + username
+      })
+        .then(response => {
+          console.log('ok!?')
+          this.groups = response.data.$values.$0
+          console.log(response.data.$values)
+        })
+        .catch(e => {
+          console.log(e)
+          return e
+        })
+    },
     checkFrame: function () {
       // if (document.getElementById('FrameResult') == null) {
       //   alert('Frame not created. Please reload')
@@ -190,10 +187,13 @@ export default {
     },
     open: function () {
       console.log('slideoutOpen')
+      this.retieveArticles(this.username)
     },
-    target: function (title, link) {
+    target: function (tag, title, link) {
       console.log('target clicked')
+      console.log(tag)
       document.getElementById('FrameResult').src = link
+      this.$store.dispatch('updateInterestTag', tag)
       this.$store.dispatch('updateArticle', link)
       this.$store.dispatch('updateTitle', title)
       EventBus.$emit('articleChosen')
@@ -202,7 +202,7 @@ export default {
   data () {
     return {
       groups: groups,
-      username: '',
+      username: 'test2',
       headers: this.$store.getters.getRequestHeaders
       // groups: []
     }

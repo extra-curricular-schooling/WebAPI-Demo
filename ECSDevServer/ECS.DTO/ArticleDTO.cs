@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ECS.DTO
 {
-    class ArticleDTO
+    public class ArticleDTO
     {
         public string InterestTag { get; set; }
         public string ArticleTitle { get; set; }
