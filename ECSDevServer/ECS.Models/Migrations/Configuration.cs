@@ -1030,7 +1030,7 @@ namespace ECS.Models.Migrations
                     },
                     new InterestTag
                     {
-                        TagName = "Biology",
+                        TagName = "Business",
                         ArticleTags = new List<Article>()
                     },
                     new InterestTag
@@ -1060,8 +1060,8 @@ namespace ECS.Models.Migrations
             AddOrUpdateInterestTag(context, "test2", "Education");
             AddOrUpdateInterestTag(context, "test3", "English");
             AddOrUpdateInterestTag(context, "test4", "Technology");
-            AddOrUpdateInterestTag(context, "test5", "Biology");
-            AddOrUpdateInterestTag(context, "test6", "Biology");
+            AddOrUpdateInterestTag(context, "test5", "Business");
+            AddOrUpdateInterestTag(context, "test6", "Business");
             AddOrUpdateInterestTag(context, "test6", "Environment");
             AddOrUpdateInterestTag(context, "test7", "Environment");
             AddOrUpdateInterestTag(context, "test7", "Art & Design");
@@ -1088,7 +1088,7 @@ namespace ECS.Models.Migrations
             AddOrUpdateInterestTag(context, "test19", "English");
             AddOrUpdateInterestTag(context, "test20", "Technology");
             AddOrUpdateInterestTag(context, "test21", "Education");
-            AddOrUpdateInterestTag(context, "test22", "Biology");
+            AddOrUpdateInterestTag(context, "test22", "Business");
             AddOrUpdateInterestTag(context, "test22", "Environment");
             AddOrUpdateInterestTag(context, "test23", "Education");
             AddOrUpdateInterestTag(context, "test23", "Art & Design");
@@ -1105,8 +1105,8 @@ namespace ECS.Models.Migrations
             AddOrUpdateInterestTag(context, "test32", "Education");
             AddOrUpdateInterestTag(context, "test33", "English");
             AddOrUpdateInterestTag(context, "test34", "Technology");
-            AddOrUpdateInterestTag(context, "test35", "Biology");
-            AddOrUpdateInterestTag(context, "test36", "Biology");
+            AddOrUpdateInterestTag(context, "test35", "Business");
+            AddOrUpdateInterestTag(context, "test36", "Business");
             AddOrUpdateInterestTag(context, "test36", "Environment");
             AddOrUpdateInterestTag(context, "test37", "Environment");
             AddOrUpdateInterestTag(context, "test37", "Art & Design");
@@ -1501,9 +1501,9 @@ namespace ECS.Models.Migrations
             AddOrUpdateArticle(context, "Education", "www.test11.com");
             AddOrUpdateArticle(context, "Education", "www.test12.com");
             AddOrUpdateArticle(context, "Education", "www.test13.com");
-            AddOrUpdateArticle(context, "Biology", "www.test14.com");
-            AddOrUpdateArticle(context, "Biology", "www.test15.com");
-            AddOrUpdateArticle(context, "Biology", "www.test16.com");
+            AddOrUpdateArticle(context, "Business", "www.test14.com");
+            AddOrUpdateArticle(context, "Business", "www.test15.com");
+            AddOrUpdateArticle(context, "Business", "www.test16.com");
             AddOrUpdateArticle(context, "Sociology", "www.test17.com");
             AddOrUpdateArticle(context, "Sociology", "www.test18.com");
             AddOrUpdateArticle(context, "Sociology", "www.test19.com");
@@ -1525,9 +1525,9 @@ namespace ECS.Models.Migrations
             AddOrUpdateArticle(context, "Sociology", "www.test35.com");
             AddOrUpdateArticle(context, "Technology", "www.test36.com");
             AddOrUpdateArticle(context, "Sociology", "www.test37.com");
-            AddOrUpdateArticle(context, "Biology", "www.test38.com");
-            AddOrUpdateArticle(context, "Biology", "www.test39.com");
-            AddOrUpdateArticle(context, "Biology", "www.test40.com");
+            AddOrUpdateArticle(context, "Business", "www.test38.com");
+            AddOrUpdateArticle(context, "Business", "www.test39.com");
+            AddOrUpdateArticle(context, "Business", "www.test40.com");
             AddOrUpdateArticle(context, "Medical", "www.test41.com");
             AddOrUpdateArticle(context, "Art & Design", "www.test42.com");
             AddOrUpdateArticle(context, "Art & Design", "www.test43.com");
