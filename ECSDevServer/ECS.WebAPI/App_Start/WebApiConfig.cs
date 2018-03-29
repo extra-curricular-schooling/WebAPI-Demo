@@ -59,8 +59,8 @@ namespace ECS.WebAPI
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "{controller}/{action}/{id}",
-                defaults: new { id = RouteParameter.Optional, action = "Get" }
-                //constraints: null,
+                defaults: new { id = RouteParameter.Optional, action = "Get" },
+                constraints: null
                 //handler:
                 //HttpClientFactory.CreatePipeline(
                 //    new HttpControllerDispatcher(config),
@@ -69,9 +69,6 @@ namespace ECS.WebAPI
 
             // Exception Filters
             // config.Filters.Add(new AnyExceptionFilterAttribute());
-            var json = config.Formatters.JsonFormatter;
-            json.SerializerSettings.PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.Objects;
-            config.Formatters.Remove(config.Formatters.XmlFormatter);
         }
     }
 }

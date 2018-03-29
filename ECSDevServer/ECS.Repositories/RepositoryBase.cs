@@ -132,17 +132,5 @@ namespace ECS.Repositories
         {
             _context?.Dispose();
         }
-        /// <summary>
-        /// Only works if no navigation properties are present.
-        /// </summary>
-        /// <returns>
-        /// List of all items in the given table.
-        /// </returns>
-        public IList<T> GetAll()
-        {
-            IQueryable<T> query = DbSet;
-            IList<T> items = query.AsNoTracking().ToList<T>();
-            return items;
-        }
     }
 }
