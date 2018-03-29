@@ -56,7 +56,7 @@ namespace ECS.WebAPI.Controllers
                 registrationForm.SecurityQuestions[0].Answer == null ||
                 registrationForm.SecurityQuestions[1].Answer == null ||
                 registrationForm.SecurityQuestions[2].Answer == null)
-                return BadRequest("Improper Request");
+                return BadRequest("Improper Request"); 
 
             // Check if user already exists
             if (_accountRepository.Exists(d => d.UserName == registrationForm.Username))
@@ -167,6 +167,12 @@ namespace ECS.WebAPI.Controllers
             }
         }
 
+
+        public IHttpActionResult SubmitPartialRegistration(RegistrationDTO registrationDto)
+        {
+            return Content(HttpStatusCode.NotImplemented, "Working on it...");
+        }
+
         /// <summary>
         /// Method accepts request to submit incomplete form using the POST method over HTTP
         /// </summary>
@@ -189,7 +195,7 @@ namespace ECS.WebAPI.Controllers
                 List<SecurityQuestion> allQuestions;
                 allQuestions = (List<SecurityQuestion>) _securityQuestionRepository.GetAll();
 
-                if (allQuestions == null)
+                if (allQuestions.Count == 0)
                 {
                     string summary = "No Content";
 

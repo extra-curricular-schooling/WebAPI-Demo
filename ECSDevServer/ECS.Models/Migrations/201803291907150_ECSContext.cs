@@ -139,6 +139,16 @@ namespace ECS.Models.Migrations
                 .Index(t => t.UserName);
             
             CreateTable(
+                "dbo.PartialAccount",
+                c => new
+                    {
+                        UserName = c.String(nullable: false, maxLength: 20),
+                        Password = c.String(nullable: false, maxLength: 50),
+                        AccountType = c.String(nullable: false),
+                    })
+                .PrimaryKey(t => t.UserName);
+            
+            CreateTable(
                 "dbo.Salt",
                 c => new
                     {
@@ -594,6 +604,44 @@ namespace ECS.Models.Migrations
             );
             
             CreateStoredProcedure(
+                "dbo.PartialAccount_Insert",
+                p => new
+                    {
+                        UserName = p.String(maxLength: 20),
+                        Password = p.String(maxLength: 50),
+                        AccountType = p.String(),
+                    },
+                body:
+                    @"INSERT [dbo].[PartialAccount]([UserName], [Password], [AccountType])
+                      VALUES (@UserName, @Password, @AccountType)"
+            );
+            
+            CreateStoredProcedure(
+                "dbo.PartialAccount_Update",
+                p => new
+                    {
+                        UserName = p.String(maxLength: 20),
+                        Password = p.String(maxLength: 50),
+                        AccountType = p.String(),
+                    },
+                body:
+                    @"UPDATE [dbo].[PartialAccount]
+                      SET [Password] = @Password, [AccountType] = @AccountType
+                      WHERE ([UserName] = @UserName)"
+            );
+            
+            CreateStoredProcedure(
+                "dbo.PartialAccount_Delete",
+                p => new
+                    {
+                        UserName = p.String(maxLength: 20),
+                    },
+                body:
+                    @"DELETE [dbo].[PartialAccount]
+                      WHERE ([UserName] = @UserName)"
+            );
+            
+            CreateStoredProcedure(
                 "dbo.Salt_Insert",
                 p => new
                     {
@@ -872,6 +920,9 @@ namespace ECS.Models.Migrations
             DropStoredProcedure("dbo.Salt_Delete");
             DropStoredProcedure("dbo.Salt_Update");
             DropStoredProcedure("dbo.Salt_Insert");
+            DropStoredProcedure("dbo.PartialAccount_Delete");
+            DropStoredProcedure("dbo.PartialAccount_Update");
+            DropStoredProcedure("dbo.PartialAccount_Insert");
             DropStoredProcedure("dbo.JAccessToken_Delete");
             DropStoredProcedure("dbo.JAccessToken_Update");
             DropStoredProcedure("dbo.JAccessToken_Insert");
@@ -940,6 +991,7 @@ namespace ECS.Models.Migrations
             DropTable("dbo.SweepStake");
             DropTable("dbo.SweepStakeEntry");
             DropTable("dbo.Salt");
+            DropTable("dbo.PartialAccount");
             DropTable("dbo.LinkedInAccessToken");
             DropTable("dbo.JAccessToken");
             DropTable("dbo.ExpiredAccessToken");

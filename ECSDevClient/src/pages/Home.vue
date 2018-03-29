@@ -36,7 +36,7 @@ import LinkedInPostModal from '../components/LinkedIn-Modal/Index'
 import RedirectModal from '../components/Redirect-Modal/index'
 import EventBus from '../assets/js/EventBus.js'
 import Slideout from 'vue-slideout'
-// import Axios from 'axios'
+import Axios from 'axios'
 var groups = {
   'Arts & Design': {
     'name': 'Arts & Design',
@@ -147,24 +147,21 @@ export default {
     Slideout
   },
   methods: {
-    // created: function (headers, username) {
-    //   Axios({
-    //     method: 'GET',
-    //     url: 'https://localhost:44311/Home/Articles',
-    //     header: headers,
-    //     data: {
-    //       username: username
-    //     }
-    //   })
-    //     .then(response => {
-    //       this.groups = response.data
-    //       console.log('ok!?')
-    //     })
-    //     .catch(e => {
-    //       console.log(e)
-    //       return e
-    //     })
-    // },
+    retieveArticles: function (username) {
+      Axios({
+        method: 'GET',
+        url: 'https://localhost:44311/Home/' + username
+      })
+        .then(response => {
+          console.log('ok!?')
+          this.groups = response.data.$values.$0
+          console.log(response.data.$values)
+        })
+        .catch(e => {
+          console.log(e)
+          return e
+        })
+    },
     checkFrame: function () {
       // if (document.getElementById('FrameResult') == null) {
       //   alert('Frame not created. Please reload')
@@ -190,6 +187,7 @@ export default {
     },
     open: function () {
       console.log('slideoutOpen')
+      this.retieveArticles(this.username)
     },
     target: function (tag, title, link) {
       console.log('target clicked')
@@ -204,7 +202,7 @@ export default {
   data () {
     return {
       groups: groups,
-      username: '',
+      username: 'test2',
       headers: this.$store.getters.getRequestHeaders
       // groups: []
     }

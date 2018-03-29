@@ -32,11 +32,7 @@ namespace ECS.Models
         public virtual InterestTag InterestTag { get; set; }
 
 
-        /**Hugo says we don't need
-        [Required, Display(Name = "Article Tag")]
-        public string ArticleTag { get; set; }
-        Link Article with Interest Tag
-
+        /**
         Navigation Property of Account
         Implementation of Account History
         public virtual ICollection<Account> Account { get; set; }
