@@ -189,7 +189,7 @@ namespace ECS.WebAPI.Controllers
                 List<SecurityQuestion> allQuestions;
                 allQuestions = (List<SecurityQuestion>) _securityQuestionRepository.GetAll();
 
-                if (allQuestions == null)
+                if (allQuestions.Count == 0)
                 {
                     string summary = "No Content";
 

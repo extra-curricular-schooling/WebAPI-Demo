@@ -59,6 +59,14 @@ namespace ECS.Repositories
         IQueryable<T> SearchFor(Expression<Func<T, bool>> predicate);
 
         /// <summary>
+        /// Returns a list of objects that represent all records of a repository
+        /// </summary>
+        /// <returns>
+        /// List of objects
+        /// </returns>
+        IList<T> GetAll();
+
+        /// <summary>
         /// LINQ to SQL query for all Generic Type Objects (T).
         /// </summary>
         /// <param name="navigationProperties">
