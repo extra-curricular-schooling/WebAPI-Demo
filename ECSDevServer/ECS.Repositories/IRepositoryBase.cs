@@ -91,8 +91,6 @@ namespace ECS.Repositories
         /// </returns>
         T GetSingle(Func<T, bool> where, params Expression<Func<T, object>>[] navigationProperties);
 
-        bool Exists(Func<T, bool> where, params Expression<Func<T, object>>[] navigationProperties);
-
-        
+        bool Exists(Func<T, bool> where, params Expression<Func<T, object>>[] navigationProperties);   
     }
 }

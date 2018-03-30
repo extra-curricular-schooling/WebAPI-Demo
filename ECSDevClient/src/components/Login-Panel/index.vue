@@ -86,6 +86,7 @@ export default {
             }
           })
             .then((response) => {
+              this.$store.dispatch('updateUsername', this.username)
               this.$store.dispatch('signIn', response.data.AuthToken)
               this.$store.dispatch('updateToken', response.data.AuthToken)
               this.$router.push('/Home')

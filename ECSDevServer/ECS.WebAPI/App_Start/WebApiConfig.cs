@@ -59,8 +59,8 @@ namespace ECS.WebAPI
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "{controller}/{action}/{id}",
-                defaults: new { id = RouteParameter.Optional, action = "Get" }
-                //constraints: null,
+                defaults: new { id = RouteParameter.Optional, action = "Get" },
+                constraints: null
                 //handler:
                 //HttpClientFactory.CreatePipeline(
                 //    new HttpControllerDispatcher(config),

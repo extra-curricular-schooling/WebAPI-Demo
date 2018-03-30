@@ -56,6 +56,9 @@ export default new Vuex.Store({
   },
   // The exposed methods that the system uses to work with the store.
   actions: {
+    updateUsername: function ({commit}, payload) {
+      commit('setUsername', payload)
+    }
   },
 
   // If strict should be enabled during development.

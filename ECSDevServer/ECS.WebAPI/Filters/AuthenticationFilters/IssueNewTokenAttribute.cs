@@ -1,29 +1,27 @@
 ﻿using ECS.Models;
 using ECS.Repositories;
-using System;
-using System.Diagnostics;
-using System.Net.Http.Headers;
-using System.Web.Http;
-using System.Web.Http.Controllers;
 using ECS.Security.AccessTokens.Jwt;
+using System;
+using System.Net.Http.Headers;
+using System.Web.Http.Filters;
 
 namespace ECS.WebAPI.Filters.AuthenticationFilters
 {
-    public class AuthenticationRequiredAttribute : AuthorizeAttribute, IDisposable
+    public class IssueNewTokenAttribute : ActionFilterAttribute
     {
         private readonly IJAccessTokenRepository _jwtRepository;
 
-        public AuthenticationRequiredAttribute()
+        public IssueNewTokenAttribute()
         {
             _jwtRepository = new JAccessTokenRepository();
         }
 
-        protected override bool IsAuthorized(HttpActionContext actionContext)
+        public override void OnActionExecuted(HttpActionExecutedContext filterContext)
         {
             string accessTokenFromRequest = "";
-            if (actionContext.Request.Headers.Authorization.ToString() != null)
+            if (filterContext.Request.Headers.Authorization.ToString() != null)
             {
-                var authHeader = actionContext.Request.Headers.Authorization;
+                var authHeader = filterContext.Request.Headers.Authorization;
                 if (authHeader != null)
                 {
                     var authHeaderVal = AuthenticationHeaderValue.Parse(authHeader.ToString());
@@ -36,6 +34,7 @@ namespace ECS.WebAPI.Filters.AuthenticationFilters
                         accessTokenFromRequest = authHeaderVal.Parameter;
                     }
                 }
+
                 // get the access token
                 // accessTokenFromRequest = actionContext.Request.Headers.Authorization.ToString();
 
@@ -49,22 +48,26 @@ namespace ECS.WebAPI.Filters.AuthenticationFilters
                         string accessTokenStored = accessToken.Value;
                         if (accessTokenFromRequest == accessTokenStored)
                         {
-                            return true;
+                            accessToken.DateTimeIssued = DateTime.UtcNow;
+                            accessToken.Value = JwtManager.Instance.GenerateToken(username);
+                            _jwtRepository.Update(accessToken);
+                            filterContext.Response.Headers.Add("Authorization", accessToken.Value);
                         }
                         else
                         {
-                            return false;
+                            filterContext.Response.StatusCode = System.Net.HttpStatusCode.Unauthorized;
+                            filterContext.Response.ReasonPhrase = "Invalid token.";
                         }
                     }
                     else
                     {
-                        return false;
+                        filterContext.Response.StatusCode = System.Net.HttpStatusCode.Unauthorized;
+                        filterContext.Response.ReasonPhrase = "User does not have a current token.";
                     }
                 }
-                // Token is either not valid or expired
                 else
                 {
-                    if(JwtManager.Instance.ValidateExpiredToken(accessTokenFromRequest, out username))
+                    if (JwtManager.Instance.ValidateExpiredToken(accessTokenFromRequest, out username))
                     {
                         if (_jwtRepository.Exists(d => d.UserName == username, d => d.Account))
                         {
@@ -74,43 +77,41 @@ namespace ECS.WebAPI.Filters.AuthenticationFilters
                                 string accessTokenStored = accessToken.Value;
                                 if (accessTokenFromRequest == accessTokenStored && accessToken.DateTimeIssued.AddDays(1).CompareTo(DateTime.Now.ToUniversalTime()) > 0)
                                 {
-                                    return true;
+                                    accessToken.DateTimeIssued = DateTime.UtcNow;
+                                    accessToken.Value = JwtManager.Instance.GenerateToken(username);
+                                    _jwtRepository.Update(accessToken);
+                                    filterContext.Response.Headers.Add("Authorization", accessToken.Value);
                                 }
                                 else
                                 {
-                                    return false;
+                                    filterContext.Response.StatusCode = System.Net.HttpStatusCode.Unauthorized;
+                                    filterContext.Response.ReasonPhrase = "Invalid token.";
                                 }
                             }
                             else
                             {
-                                return false;
+                                filterContext.Response.StatusCode = System.Net.HttpStatusCode.Unauthorized;
+                                filterContext.Response.ReasonPhrase = "User does not have a current token.";
                             }
                         }
                         else
                         {
-                            return false;
+                            filterContext.Response.StatusCode = System.Net.HttpStatusCode.Unauthorized;
+                            filterContext.Response.ReasonPhrase = "User does not have a current token.";
                         }
                     }
                     else
                     {
-                        return false;  
+                        filterContext.Response.StatusCode = System.Net.HttpStatusCode.Unauthorized;
+                        filterContext.Response.ReasonPhrase = "Invalid token.";
                     }
                 }
             }
             else
             {
-                return false;
-            }            
-        }
-
-        protected override void HandleUnauthorizedRequest(HttpActionContext actionContext)
-        {
-            Debug.WriteLine("Running HandleUnauthorizedRequest in CustomAuthorizationFilterAttribute as principal is not authorized.");
-            base.HandleUnauthorizedRequest(actionContext);
-        }
-
-        public void Dispose()
-        {
+                filterContext.Response.StatusCode = System.Net.HttpStatusCode.BadRequest;
+                filterContext.Response.ReasonPhrase = "Authorization header must contain valid token.";
+            }
         }
     }
 }
