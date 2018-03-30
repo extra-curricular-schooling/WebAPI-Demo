@@ -57,6 +57,15 @@ namespace ECS.Repositories
     /// <summary>
     /// 
     /// </summary>
+    public interface IPartialAccountSaltRepository : IRepositoryBase<PartialAccountSalt>
+    {
+
+    }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
     public interface ISaltRepository: IRepositoryBase<Salt>
     {
     }
@@ -178,6 +187,17 @@ namespace ECS.Repositories
     public class PartialAccountRepository : RepositoryBase<PartialAccount>, IPartialAccountRepository
     {
         public PartialAccountRepository() : base(new ECSContext())
+        {
+
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public class PartialAccountSaltRepository : RepositoryBase<PartialAccountSalt>, IPartialAccountSaltRepository
+    {
+        public PartialAccountSaltRepository() : base(new ECSContext())
         {
 
         }

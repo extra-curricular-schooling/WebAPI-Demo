@@ -23,6 +23,7 @@ namespace ECS.WebAPI.Controllers
         private readonly IJAccessTokenRepository _jwtAccessTokenRepository;
         private readonly IExpiredAccessTokenRepository _expiredAccessTokenRepository;
         private readonly ISaltRepository _saltRepository;
+        private readonly IPartialAccountSaltRepository _partialAccountSaltRepository;
 
         public SsoController()
         {
@@ -31,15 +32,18 @@ namespace ECS.WebAPI.Controllers
             _jwtAccessTokenRepository = new JAccessTokenRepository();
             _saltRepository = new SaltRepository();
             _expiredAccessTokenRepository = new ExpiredAccessTokenRepository();
+            _partialAccountSaltRepository = new PartialAccountSaltRepository();
         }
         public SsoController(IAccountRepository accountRepo, IPartialAccountRepository partialAccountRepo,
-            IJAccessTokenRepository jwtRepo, ISaltRepository saltRepo, IExpiredAccessTokenRepository ssoAccessTokenRepo)
+            IJAccessTokenRepository jwtRepo, ISaltRepository saltRepo, IExpiredAccessTokenRepository ssoAccessTokenRepo,
+            IPartialAccountSaltRepository partialAccountSaltRepo)
         {
             _accountRepository = accountRepo;
             _partialAccountRepository = partialAccountRepo;
             _jwtAccessTokenRepository = jwtRepo;
             _saltRepository = saltRepo;
             _expiredAccessTokenRepository = ssoAccessTokenRepo;
+            _partialAccountSaltRepository = partialAccountSaltRepo;
         }
 
         /*
@@ -68,12 +72,12 @@ namespace ECS.WebAPI.Controllers
             };
             _partialAccountRepository.Insert(partialAccount);
 
-            var salt = new Salt()
+            var salt = new PartialAccountSalt()
             {
                 PasswordSalt = ssoDto.PasswordSalt,
                 UserName = ssoDto.Username
             };
-            _saltRepository.Insert(salt);
+            _partialAccountSaltRepository.Insert(salt);
 
             return Ok();
         }
@@ -114,7 +118,7 @@ namespace ECS.WebAPI.Controllers
             // If the partial account exists, then the Account needs a full registration. Redirect them.
             if (partialAccount != null)
             {
-                return Redirect(new Uri("http://localhost:8080/#/partial-registration"));
+                return Content(HttpStatusCode.Redirect, new Uri("https://www.ecschooling.org/#/partial-registration"));
             }
 
             // If the account exists, go through the login checks.
@@ -175,17 +179,40 @@ namespace ECS.WebAPI.Controllers
             
             // Get related account from username
             var account = _accountRepository.GetSingle(acc => acc.UserName == ssoDto.Username);
+            var partialAccount = _partialAccountRepository.GetSingle(acc => acc.UserName == ssoDto.Username);
 
-            // Update password for account
-            account.Password = ssoDto.HashedNewPassword;
-            _accountRepository.Update(account);
+            // If accounts exist in both tables, there is a database problem.
+            if (partialAccount != null && account != null)
+            {
+                return Content(HttpStatusCode.InternalServerError, "Database Inconsistent");
+            }
 
-            // Update salt table related to account
-            var saltModel = _saltRepository.GetSingle(model => model.UserName == ssoDto.Username);
-            saltModel.PasswordSalt = ssoDto.PasswordSalt;
-            _saltRepository.Update(saltModel);
-           
-            return Ok();
+            // If the full account has been made, produce the change there.
+            if (account != null)
+            {
+                // Update password for account
+                account.Password = ssoDto.HashedNewPassword;
+                _accountRepository.Update(account);
+
+                // Update salt table related to account
+                var salt = _saltRepository.GetSingle(model => model.UserName == ssoDto.Username);
+                salt.PasswordSalt = ssoDto.PasswordSalt;
+                _saltRepository.Update(salt);
+            }
+
+            if (partialAccount != null)
+            {
+                // Update password for account
+                partialAccount.Password = ssoDto.HashedNewPassword;
+                _partialAccountRepository.Update(partialAccount);
+
+                // Update salt table related to account
+                var partialAccountSalt = _partialAccountSaltRepository.GetSingle(model => model.UserName == ssoDto.Username);
+                partialAccountSalt.PasswordSalt = ssoDto.PasswordSalt;
+                _partialAccountSaltRepository.Update(partialAccountSalt);
+            }
+
+            return Ok("Account password successfully updated.");
         }
     }
 }

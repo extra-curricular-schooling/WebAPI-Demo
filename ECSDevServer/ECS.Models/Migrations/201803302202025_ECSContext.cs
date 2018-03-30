@@ -149,6 +149,18 @@ namespace ECS.Models.Migrations
                 .PrimaryKey(t => t.UserName);
             
             CreateTable(
+                "dbo.PartialAccountSalt",
+                c => new
+                    {
+                        SaltId = c.Int(nullable: false, identity: true),
+                        PasswordSalt = c.String(nullable: false),
+                        UserName = c.String(nullable: false, maxLength: 20),
+                    })
+                .PrimaryKey(t => t.SaltId)
+                .ForeignKey("dbo.PartialAccount", t => t.UserName, cascadeDelete: true)
+                .Index(t => t.UserName);
+            
+            CreateTable(
                 "dbo.Salt",
                 c => new
                     {
@@ -642,6 +654,52 @@ namespace ECS.Models.Migrations
             );
             
             CreateStoredProcedure(
+                "dbo.PartialAccountSalt_Insert",
+                p => new
+                    {
+                        PasswordSalt = p.String(),
+                        UserName = p.String(maxLength: 20),
+                    },
+                body:
+                    @"INSERT [dbo].[PartialAccountSalt]([PasswordSalt], [UserName])
+                      VALUES (@PasswordSalt, @UserName)
+                      
+                      DECLARE @SaltId int
+                      SELECT @SaltId = [SaltId]
+                      FROM [dbo].[PartialAccountSalt]
+                      WHERE @@ROWCOUNT > 0 AND [SaltId] = scope_identity()
+                      
+                      SELECT t0.[SaltId]
+                      FROM [dbo].[PartialAccountSalt] AS t0
+                      WHERE @@ROWCOUNT > 0 AND t0.[SaltId] = @SaltId"
+            );
+            
+            CreateStoredProcedure(
+                "dbo.PartialAccountSalt_Update",
+                p => new
+                    {
+                        SaltId = p.Int(),
+                        PasswordSalt = p.String(),
+                        UserName = p.String(maxLength: 20),
+                    },
+                body:
+                    @"UPDATE [dbo].[PartialAccountSalt]
+                      SET [PasswordSalt] = @PasswordSalt, [UserName] = @UserName
+                      WHERE ([SaltId] = @SaltId)"
+            );
+            
+            CreateStoredProcedure(
+                "dbo.PartialAccountSalt_Delete",
+                p => new
+                    {
+                        SaltId = p.Int(),
+                    },
+                body:
+                    @"DELETE [dbo].[PartialAccountSalt]
+                      WHERE ([SaltId] = @SaltId)"
+            );
+            
+            CreateStoredProcedure(
                 "dbo.Salt_Insert",
                 p => new
                     {
@@ -920,6 +978,9 @@ namespace ECS.Models.Migrations
             DropStoredProcedure("dbo.Salt_Delete");
             DropStoredProcedure("dbo.Salt_Update");
             DropStoredProcedure("dbo.Salt_Insert");
+            DropStoredProcedure("dbo.PartialAccountSalt_Delete");
+            DropStoredProcedure("dbo.PartialAccountSalt_Update");
+            DropStoredProcedure("dbo.PartialAccountSalt_Insert");
             DropStoredProcedure("dbo.PartialAccount_Delete");
             DropStoredProcedure("dbo.PartialAccount_Update");
             DropStoredProcedure("dbo.PartialAccount_Insert");
@@ -956,6 +1017,7 @@ namespace ECS.Models.Migrations
             DropForeignKey("dbo.SweepStakeEntry", "SweepstakesID", "dbo.SweepStake");
             DropForeignKey("dbo.SweepStakeEntry", "UserName", "dbo.Account");
             DropForeignKey("dbo.Salt", "UserName", "dbo.Account");
+            DropForeignKey("dbo.PartialAccountSalt", "UserName", "dbo.PartialAccount");
             DropForeignKey("dbo.LinkedInAccessToken", "UserName", "dbo.Account");
             DropForeignKey("dbo.JAccessToken", "UserName", "dbo.Account");
             DropForeignKey("dbo.AccountType", "PermissionName", "dbo.Permission");
@@ -975,6 +1037,7 @@ namespace ECS.Models.Migrations
             DropIndex("dbo.SweepStakeEntry", new[] { "UserName" });
             DropIndex("dbo.SweepStakeEntry", new[] { "SweepstakesID" });
             DropIndex("dbo.Salt", new[] { "UserName" });
+            DropIndex("dbo.PartialAccountSalt", new[] { "UserName" });
             DropIndex("dbo.LinkedInAccessToken", new[] { "UserName" });
             DropIndex("dbo.JAccessToken", new[] { "UserName" });
             DropIndex("dbo.AccountType", new[] { "PermissionName" });
@@ -991,6 +1054,7 @@ namespace ECS.Models.Migrations
             DropTable("dbo.SweepStake");
             DropTable("dbo.SweepStakeEntry");
             DropTable("dbo.Salt");
+            DropTable("dbo.PartialAccountSalt");
             DropTable("dbo.PartialAccount");
             DropTable("dbo.LinkedInAccessToken");
             DropTable("dbo.JAccessToken");

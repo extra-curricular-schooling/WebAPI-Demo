@@ -63,8 +63,10 @@ namespace ECS.WebAPI.Tests.Controllers
             var partialAccountRepository = new Mock<IPartialAccountRepository>();
             var jwtRepository = new Mock<IJAccessTokenRepository>();
             var saltRepository = new Mock<ISaltRepository>();
+            var partialAccountSaltRepository = new Mock<IPartialAccountSaltRepository>();
             var expiredAccessTokenRepository = new Mock<IExpiredAccessTokenRepository>();
-            var controller = new SsoController(accountRepository.Object, partialAccountRepository.Object, jwtRepository.Object, saltRepository.Object, expiredAccessTokenRepository.Object);
+            var controller = new SsoController(accountRepository.Object, partialAccountRepository.Object, jwtRepository.Object, 
+                saltRepository.Object, expiredAccessTokenRepository.Object, partialAccountSaltRepository.Object);
             return controller;
         }
 
@@ -114,13 +116,7 @@ namespace ECS.WebAPI.Tests.Controllers
             public void RouteIsRecognized()
             {
                 // Arrange
-                var accountRepository = new Mock<IAccountRepository>();
-                var partialAccountRepository = new Mock<IPartialAccountRepository>();
-                var jwtRepository = new Mock<IJAccessTokenRepository>();
-                var saltRepository = new Mock<ISaltRepository>();
-                var expiredAccessTokenRepository = new Mock<IExpiredAccessTokenRepository>();
-                var controller = new SsoController(accountRepository.Object, partialAccountRepository.Object,
-                    jwtRepository.Object, saltRepository.Object, expiredAccessTokenRepository.Object);
+                var controller = SetupControllerWithEmptyRepoMocks();
 
                 //SetupControllerWithoutIdIntegration(HttpMethod.Post, controller, controllerName, actionName);
 
@@ -139,14 +135,7 @@ namespace ECS.WebAPI.Tests.Controllers
             public void RouteIsNotRecognized(string controllerName, string actionName)
             {
                 // Arrange
-                var accountRepository = new Mock<IAccountRepository>();
-                var partialAccountRepository = new Mock<IPartialAccountRepository>();
-                var jwtRepository = new Mock<IJAccessTokenRepository>();
-                var saltRepository = new Mock<ISaltRepository>();
-                var expiredAccessTokenRepository = new Mock<IExpiredAccessTokenRepository>();
-                var controller = new SsoController(accountRepository.Object, partialAccountRepository.Object,
-                    jwtRepository.Object, saltRepository.Object, expiredAccessTokenRepository.Object);
-                SetupControllerWithoutIdIntegration(HttpMethod.Post, controller, controllerName, actionName);
+                var controller = SetupControllerWithEmptyRepoMocks();
 
                 // Act
 
@@ -159,17 +148,8 @@ namespace ECS.WebAPI.Tests.Controllers
             public void PostReturnsRedirectStatusCode()
             {
                 // Arrange
-                
-                var ssoJwtManager = new Mock<SsoJwtManager>();
-                var accountRepository = new Mock<IAccountRepository>();
-                var partialAccountRepository = new Mock<IPartialAccountRepository>();
-                var jwtRepository = new Mock<IJAccessTokenRepository>();
-                var saltRepository = new Mock<ISaltRepository>();
-                var expiredAccessTokenRepository = new Mock<IExpiredAccessTokenRepository>();
-                // Setup rules for Mocks
-                //ssoJwtManager.Setup(manager => manager.GenerateToken(Username, 15)).Returns()
-                var controller = new SsoController(accountRepository.Object, partialAccountRepository.Object,
-                    jwtRepository.Object, saltRepository.Object, expiredAccessTokenRepository.Object);
+
+                var controller = SetupControllerWithEmptyRepoMocks();
 
                 // Act
                 var result = controller.Login();
@@ -189,19 +169,11 @@ namespace ECS.WebAPI.Tests.Controllers
             [Fact]
             public void PostSetsLocationHeader()
             {
-                // This version uses a mock UrlHelper.
-                Mock<IAccountRepository> accountRepository = new Mock<IAccountRepository>();
-                var partialAccountRepository = new Mock<IPartialAccountRepository>();
-                Mock<IJAccessTokenRepository> jwtRepository = new Mock<IJAccessTokenRepository>();
-                Mock<ISaltRepository> saltRepository = new Mock<ISaltRepository>();
-                var expiredAccessTokenRepository = new Mock<IExpiredAccessTokenRepository>();
                 // Arrange
-                SsoController controller = new SsoController(accountRepository.Object, partialAccountRepository.Object,
-                    jwtRepository.Object, saltRepository.Object, expiredAccessTokenRepository.Object)
-                {
-                    Request = new HttpRequestMessage(),
-                    Configuration = new HttpConfiguration()
-                };
+
+                var controller = SetupControllerWithEmptyRepoMocks();
+                controller.Request = new HttpRequestMessage();
+                controller.Configuration = new HttpConfiguration();
 
                 string locationUrl = "https://localhost:44311/Sso/Login";
 
@@ -229,17 +201,7 @@ namespace ECS.WebAPI.Tests.Controllers
                     Username = "user",
                     Password = "pass"
                 };
-                var accountRepository = new Mock<IAccountRepository>();
-                var partialAccountRepository = new Mock<IPartialAccountRepository>();
-                var jwtRepository = new Mock<IJAccessTokenRepository>();
-                var saltRepository = new Mock<ISaltRepository>();
-                var expiredAccessTokenRepository = new Mock<IExpiredAccessTokenRepository>();
-                // This is incorrect right now.
-                accountRepository.Setup(x => x.GetById(33)).Returns(new Account
-                {
-                });
-                var controller = new SsoController(accountRepository.Object, partialAccountRepository.Object,
-                    jwtRepository.Object, saltRepository.Object, expiredAccessTokenRepository.Object);
+                var controller = SetupControllerWithEmptyRepoMocks();
 
                 // Act
 
