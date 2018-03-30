@@ -49,6 +49,14 @@ namespace ECS.Repositories
     /// <summary>
     /// 
     /// </summary>
+    public interface IPartialAccountRepository : IRepositoryBase<PartialAccount>
+    {
+
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
     public interface ISaltRepository: IRepositoryBase<Salt>
     {
     }
@@ -159,6 +167,17 @@ namespace ECS.Repositories
     public class LinkedInAccessTokenRepository: RepositoryBase<LinkedInAccessToken>, ILinkedInAccessTokenRepository
     {
         public LinkedInAccessTokenRepository () : base (new ECSContext())
+        {
+
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public class PartialAccountRepository : RepositoryBase<PartialAccount>, IPartialAccountRepository
+    {
+        public PartialAccountRepository() : base(new ECSContext())
         {
 
         }

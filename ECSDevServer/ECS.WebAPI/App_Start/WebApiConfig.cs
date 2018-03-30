@@ -42,18 +42,18 @@ namespace ECS.WebAPI
 
             // TODO @Scott Change the authentication handler before committing. It will mess up everyone's authentication.
 
-            //config.Routes.MapHttpRoute(
-            //    name: "Sso",
-            //    routeTemplate: "Sso/{action}/{id}",
-            //    defaults: new { id = RouteParameter.Optional },
-            //    constraints: null,
-            //    handler: 
-            //    HttpClientFactory.CreatePipeline(
-            //        new HttpControllerDispatcher(config), 
-            //        new DelegatingHandler[]{new AccessTokenAuthenticationDelegatingHandler()})
-            //);
+            config.Routes.MapHttpRoute(
+                name: "Sso",
+                routeTemplate: "{controller}/{action}/{id}",
+                defaults: new { id = RouteParameter.Optional },
+                constraints: new { controller = "Sso" },
+                handler:
+                HttpClientFactory.CreatePipeline(
+                    new HttpControllerDispatcher(config),
+                    new DelegatingHandler[] { new SsoAccessTokenAuthenticationDelegatingHandler() })
+            );
 
-            
+
 
             // Default Controller Route
             config.Routes.MapHttpRoute(

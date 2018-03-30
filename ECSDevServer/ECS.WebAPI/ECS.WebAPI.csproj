@@ -161,7 +161,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="HttpMessageHandlers\DelegatingHandlers\AccessTokenAuthenticationDelegatingHandler.cs" />
+    <Compile Include="HttpMessageHandlers\DelegatingHandlers\SsoAccessTokenAuthenticationDelegatingHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

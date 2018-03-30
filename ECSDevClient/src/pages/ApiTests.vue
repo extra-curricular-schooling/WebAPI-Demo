@@ -3,7 +3,7 @@
     <h2>SSO Registration API Calls</h2>
     <button v-on:click="submitRegistration">Send Post to Sso/Registration</button>
     <h2>SSO Login API Calls</h2>
-    <button v-on:click="submitLogin">Send Post to Sso/Login</button>
+    <button v-on:click="submitLogin">Send Get to Sso/Login</button>
     <h2>Reset Password API Calls</h2>
     <button v-on:click="requestQuestions">Send Get to ResetPassword/SecurityQuestions</button>
     <button v-on:click="submitAnswers">Send Post to ResetPassword/SecurityQuestions</button>
@@ -45,13 +45,9 @@ export default {
     },
     submitLogin () {
       axios({
-        method: 'POST',
-        url: 'https://localhost:44311/Sso/Login',
-        headers: store.getters.getRequestHeaders,
-        data: {
-          'username': 'Scott',
-          'newPassword': 'Blob'
-        }
+        method: 'GET',
+        url: 'https://localhost:44311/Sso/LoginRedirect',
+        headers: store.getters.getRequestHeaders
       })
         .then(response => console.log(response))
         .catch(response => console.log(response))

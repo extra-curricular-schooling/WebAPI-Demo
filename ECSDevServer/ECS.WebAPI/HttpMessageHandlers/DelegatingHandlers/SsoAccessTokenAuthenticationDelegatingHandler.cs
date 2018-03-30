@@ -10,11 +10,11 @@ using ECS.Security.AccessTokens.Jwt;
 
 namespace ECS.WebAPI.HttpMessageHandlers.DelegatingHandlers
 {
-    public class AccessTokenAuthenticationDelegatingHandler: DelegatingHandler
+    public class SsoAccessTokenAuthenticationDelegatingHandler: DelegatingHandler
     {
         private readonly IExpiredAccessTokenRepository _expiredAccessTokenRepository;
 
-        public AccessTokenAuthenticationDelegatingHandler()
+        public SsoAccessTokenAuthenticationDelegatingHandler()
         {
             _expiredAccessTokenRepository = new ExpiredAccessTokenRepository();
         }

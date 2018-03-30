@@ -60,10 +60,11 @@ namespace ECS.WebAPI.Tests.Controllers
         private static SsoController SetupControllerWithEmptyRepoMocks()
         {
             var accountRepository = new Mock<IAccountRepository>();
+            var partialAccountRepository = new Mock<IPartialAccountRepository>();
             var jwtRepository = new Mock<IJAccessTokenRepository>();
             var saltRepository = new Mock<ISaltRepository>();
             var expiredAccessTokenRepository = new Mock<IExpiredAccessTokenRepository>();
-            var controller = new SsoController(accountRepository.Object, jwtRepository.Object, saltRepository.Object, expiredAccessTokenRepository.Object);
+            var controller = new SsoController(accountRepository.Object, partialAccountRepository.Object, jwtRepository.Object, saltRepository.Object, expiredAccessTokenRepository.Object);
             return controller;
         }
 
@@ -82,8 +83,6 @@ namespace ECS.WebAPI.Tests.Controllers
             {
                 _output = output;
             }
-
-            
 
             // Creates a new mocked Controller
             private static void SetupDummyController()
@@ -116,10 +115,11 @@ namespace ECS.WebAPI.Tests.Controllers
             {
                 // Arrange
                 var accountRepository = new Mock<IAccountRepository>();
+                var partialAccountRepository = new Mock<IPartialAccountRepository>();
                 var jwtRepository = new Mock<IJAccessTokenRepository>();
                 var saltRepository = new Mock<ISaltRepository>();
                 var expiredAccessTokenRepository = new Mock<IExpiredAccessTokenRepository>();
-                var controller = new SsoController(accountRepository.Object,
+                var controller = new SsoController(accountRepository.Object, partialAccountRepository.Object,
                     jwtRepository.Object, saltRepository.Object, expiredAccessTokenRepository.Object);
 
                 //SetupControllerWithoutIdIntegration(HttpMethod.Post, controller, controllerName, actionName);
@@ -140,10 +140,11 @@ namespace ECS.WebAPI.Tests.Controllers
             {
                 // Arrange
                 var accountRepository = new Mock<IAccountRepository>();
+                var partialAccountRepository = new Mock<IPartialAccountRepository>();
                 var jwtRepository = new Mock<IJAccessTokenRepository>();
                 var saltRepository = new Mock<ISaltRepository>();
                 var expiredAccessTokenRepository = new Mock<IExpiredAccessTokenRepository>();
-                var controller = new SsoController(accountRepository.Object,
+                var controller = new SsoController(accountRepository.Object, partialAccountRepository.Object,
                     jwtRepository.Object, saltRepository.Object, expiredAccessTokenRepository.Object);
                 SetupControllerWithoutIdIntegration(HttpMethod.Post, controller, controllerName, actionName);
 
@@ -161,12 +162,13 @@ namespace ECS.WebAPI.Tests.Controllers
                 
                 var ssoJwtManager = new Mock<SsoJwtManager>();
                 var accountRepository = new Mock<IAccountRepository>();
+                var partialAccountRepository = new Mock<IPartialAccountRepository>();
                 var jwtRepository = new Mock<IJAccessTokenRepository>();
                 var saltRepository = new Mock<ISaltRepository>();
                 var expiredAccessTokenRepository = new Mock<IExpiredAccessTokenRepository>();
                 // Setup rules for Mocks
                 //ssoJwtManager.Setup(manager => manager.GenerateToken(Username, 15)).Returns()
-                var controller = new SsoController(accountRepository.Object,
+                var controller = new SsoController(accountRepository.Object, partialAccountRepository.Object,
                     jwtRepository.Object, saltRepository.Object, expiredAccessTokenRepository.Object);
 
                 // Act
@@ -189,11 +191,12 @@ namespace ECS.WebAPI.Tests.Controllers
             {
                 // This version uses a mock UrlHelper.
                 Mock<IAccountRepository> accountRepository = new Mock<IAccountRepository>();
+                var partialAccountRepository = new Mock<IPartialAccountRepository>();
                 Mock<IJAccessTokenRepository> jwtRepository = new Mock<IJAccessTokenRepository>();
                 Mock<ISaltRepository> saltRepository = new Mock<ISaltRepository>();
                 var expiredAccessTokenRepository = new Mock<IExpiredAccessTokenRepository>();
                 // Arrange
-                SsoController controller = new SsoController(accountRepository.Object,
+                SsoController controller = new SsoController(accountRepository.Object, partialAccountRepository.Object,
                     jwtRepository.Object, saltRepository.Object, expiredAccessTokenRepository.Object)
                 {
                     Request = new HttpRequestMessage(),
@@ -227,6 +230,7 @@ namespace ECS.WebAPI.Tests.Controllers
                     Password = "pass"
                 };
                 var accountRepository = new Mock<IAccountRepository>();
+                var partialAccountRepository = new Mock<IPartialAccountRepository>();
                 var jwtRepository = new Mock<IJAccessTokenRepository>();
                 var saltRepository = new Mock<ISaltRepository>();
                 var expiredAccessTokenRepository = new Mock<IExpiredAccessTokenRepository>();
@@ -234,7 +238,7 @@ namespace ECS.WebAPI.Tests.Controllers
                 accountRepository.Setup(x => x.GetById(33)).Returns(new Account
                 {
                 });
-                var controller = new SsoController(accountRepository.Object,
+                var controller = new SsoController(accountRepository.Object, partialAccountRepository.Object,
                     jwtRepository.Object, saltRepository.Object, expiredAccessTokenRepository.Object);
 
                 // Act
