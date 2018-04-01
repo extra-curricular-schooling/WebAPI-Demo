@@ -40,8 +40,6 @@ namespace ECS.WebAPI
             // Important that this route exists before the default.
             // If the route is specific, put it before the more general routes.
 
-            // TODO @Scott Change the authentication handler before committing. It will mess up everyone's authentication.
-
             config.Routes.MapHttpRoute(
                 name: "Sso",
                 routeTemplate: "{controller}/{action}/{id}",

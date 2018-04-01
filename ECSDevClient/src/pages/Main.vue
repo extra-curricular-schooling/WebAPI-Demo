@@ -111,7 +111,9 @@
               <div class="tile is-child box">
                 <p>Share your favorite articles on</p>
                 <figure class="image">
-                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/LinkedIn_Logo.svg/2000px-LinkedIn_Logo.svg.png" alt=""/>
+                  <a href="https://www.linkedin.com/" target="_blank">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/LinkedIn_Logo.svg/2000px-LinkedIn_Logo.svg.png" alt=""/>
+                  </a>
                 </figure>
               </div>
             </div>

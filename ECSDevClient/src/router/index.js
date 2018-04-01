@@ -21,7 +21,7 @@ export default new Router({
       component: () => import('@/pages/Registration')
     },
     {
-      path: '/partialregistration',
+      path: '/partial-registration',
       name: 'PartialRegistration',
       component: () => import('@/pages/PartialRegistration')
     },
@@ -45,7 +45,7 @@ export default new Router({
       name: 'Sweepstake',
       component: () => import('@/pages/Sweepstake')
     },
-    // Does not know how to handle 404 errors. Might want to build in a catch all page right here.
+    // Catch all error page.
     {
       path: '*',
       name: 'Error',

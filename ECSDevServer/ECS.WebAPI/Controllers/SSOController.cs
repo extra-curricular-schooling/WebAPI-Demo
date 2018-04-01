@@ -62,7 +62,6 @@ namespace ECS.WebAPI.Controllers
             // Validate information with the registration DTO, if needed.
             // TODO: @Scott Handle the error that would occur if they try to make a duplicate account.
 
-            // TODO: @Scott The account model is still not acceptable for SSO needs. It requires an email and a mandatory SuspensionTime.
             // The suspension time doesn't make sense to have in there.
             var partialAccount = new PartialAccount()
             {
