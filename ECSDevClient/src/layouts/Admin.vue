@@ -16,20 +16,17 @@
         <a class="navbar-item is-active" href="https://bulma.io/documentation/components/breadcrumb/">Components</a>
       </div>
     </div>
-    <h1 class="level-item has-text-centered">Extra Curricular Schooling</h1>
     <p class="level-item has-text-centered">
-      <router-link to="About" class="link is-info">About Us</router-link>
+      <router-link to="/sweepstake-admin" class="link is-info">Manage Sweepstakes</router-link>
     </p>
     <p class="level-item has-text-centered">
-      <router-link to="Registration" tag="button" class="registration-button">Get Started</router-link>
+      <router-link to="/account-admin" class="link is-info">Manage Accounts</router-link>
     </p>
   </nav>
 </template>
 
 <script>
-export default {
-  name: 'navbar'
-}
+
 </script>
 
 <style>

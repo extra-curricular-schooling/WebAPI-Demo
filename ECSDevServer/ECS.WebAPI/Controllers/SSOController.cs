@@ -86,7 +86,7 @@ namespace ECS.WebAPI.Controllers
         {
             var response = Request.CreateResponse(HttpStatusCode.Redirect);
             response.Headers.Location = new Uri("https://localhost:44311/#/Main");
-            
+            response.Headers.Add("Access-Control-Allow-Origin", Request.Headers.GetValues("Origin"));
             response.Headers.Add("Access-Control-Allow-Credentials", "true");
             response.Headers.Add("Access-Control-Allow-Methods", "POST,GET,OPTIONS");
             return response;
@@ -117,7 +117,7 @@ namespace ECS.WebAPI.Controllers
             // If the partial account exists, then the Account needs a full registration. Redirect them.
             if (partialAccount != null)
             {
-                return Content(HttpStatusCode.Redirect, new Uri("https://www.ecschooling.org/#/partial-registration"));
+                return Content(HttpStatusCode.Redirect, new Uri("https://localhost:44311/#/partial-registration"));
             }
 
             // If the account exists, go through the login checks.
