@@ -22,11 +22,21 @@
     <p class="level-item has-text-centered">
       <router-link to="/account-admin" class="link is-info">Manage Accounts</router-link>
     </p>
+    <p class="level-item has-text-centered">
+      <logout-button/>
+    </p>
   </nav>
 </template>
 
 <script>
+import LogoutButton from '../components/Logout-Button/index'
 
+export default {
+  name: 'Admin-Navbar',
+  components: {
+    LogoutButton
+  }
+}
 </script>
 
 <style>

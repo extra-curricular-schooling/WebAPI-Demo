@@ -56,10 +56,10 @@ namespace ECS.Security.AccessTokens.Jwt
             {
                 Issuer = "https://localhost:44311/",
                 Subject = new ClaimsIdentity(new[]
-                {
-                    // TODO: @Kris The token needs to get the Account Permissions and create them as claims.
-                    new Claim(ClaimTypes.Name, username)
-                }),
+                        {
+                            new Claim(ClaimTypes.Name, username),
+                            new Claim(ClaimTypes.Role, "Scholar")
+                        }),
                 IssuedAt = now,
                 Expires = now.AddMinutes(Convert.ToInt32(expireMinutes)),
                 NotBefore = now,
