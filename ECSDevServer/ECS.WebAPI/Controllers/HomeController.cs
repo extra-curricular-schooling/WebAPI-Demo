@@ -17,6 +17,7 @@ using System.Web.Http.Description;
 using System.Threading.Tasks;
 using ECS.WebAPI.Filters.AuthenticationFilters;
 using System.Collections.Generic;
+using ECS.Repositories.Implementations;
 
 namespace ECS.WebAPI.Controllers
 {

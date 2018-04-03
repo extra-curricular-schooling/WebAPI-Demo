@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using ECS.Models;
 using ECS.Repositories;
+using ECS.Repositories.Implementations;
 
 namespace ECS.WebCrawler
 {

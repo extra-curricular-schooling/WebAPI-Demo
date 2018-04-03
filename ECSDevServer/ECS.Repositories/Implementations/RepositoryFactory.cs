@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using ECS.Models;
+﻿using ECS.Models;
+using ECS.Repositories.Contracts;
 
-namespace ECS.Repositories
+namespace ECS.Repositories.Implementations
 {
     /// <summary>
     /// Account Repository Interface for Account Models

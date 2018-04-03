@@ -7,7 +7,7 @@ export default {
     store.dispatch('updateToken', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJuYW1lMDEiLCJwYXNzd29yZCI6InBhc3N3b3JkMDEiLCJhcHBsaWNhdGlvbiI6IkdldFVzR3J1YiIsInJvbGVUeXBlIjoicHVibGljIiwiaWF0IjoxNTE2MjM5MDIyfQ.kNOwv3BKRkVXoJz4NSuOo_qxsPC9ltQw1oX_RBPrqgU')
     axios({
       method: 'POST',
-      url: 'https://localhost:44311/Sso/Registration',
+      url: store.getters.getBaseAppUrl + 'Sso/Registration',
       headers: store.getters.getRequestHeaders,
       data: {
         'username': username,
@@ -28,8 +28,8 @@ export default {
     // Test SSO Token
     store.dispatch('updateToken', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJuYW1lMDEiLCJwYXNzd29yZCI6InBhc3N3b3JkMDEiLCJhcHBsaWNhdGlvbiI6IkdldFVzR3J1YiIsInJvbGVUeXBlIjoicHVibGljIiwiaWF0IjoxNTE2MjM5MDIyfQ.kNOwv3BKRkVXoJz4NSuOo_qxsPC9ltQw1oX_RBPrqgU')
     axios({
-      method: 'GET',
-      url: 'https://localhost:44311/Sso/LoginRedirect',
+      method: 'POST',
+      url: store.getters.getBaseAppUrl + 'Sso/Login',
       headers: store.getters.getRequestHeaders
     })
       .then(function (response) {

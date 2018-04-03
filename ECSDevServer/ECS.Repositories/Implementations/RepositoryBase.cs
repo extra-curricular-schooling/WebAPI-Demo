@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
+using ECS.Repositories.Contracts;
 
-namespace ECS.Repositories
+namespace ECS.Repositories.Implementations
 {
     public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class
     {
@@ -50,13 +51,11 @@ namespace ECS.Repositories
             _context.SaveChanges();
         }
 
-        // TODO: @Team NOT TESTED YET!
         public T GetById(int id)
         {
             return DbSet.Find(id);
         }
 
-        // TODO: @Team NOT TESTED YET!
         public T GetById(string id)
         {
             return DbSet.Find(id);

@@ -12,6 +12,7 @@ using System;
 using ECS.DTO;
 using Moq;
 using ECS.Models;
+using ECS.Repositories.Implementations;
 using ECS.Security.AccessTokens.Jwt;
 
 namespace ECS.WebAPI.Tests.Controllers

@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
 using ECS.Repositories;
+using ECS.Repositories.Implementations;
 using Microsoft.IdentityModel.Tokens;
 
 namespace ECS.Security.AccessTokens.Jwt
@@ -55,9 +56,10 @@ namespace ECS.Security.AccessTokens.Jwt
             {
                 Issuer = "https://localhost:44311/",
                 Subject = new ClaimsIdentity(new[]
-                        {
-                            new Claim(ClaimTypes.Name, username)
-                        }),
+                {
+                    // TODO: @Kris The token needs to get the Account Permissions and create them as claims.
+                    new Claim(ClaimTypes.Name, username)
+                }),
                 IssuedAt = now,
                 Expires = now.AddMinutes(Convert.ToInt32(expireMinutes)),
                 NotBefore = now,

@@ -14,6 +14,7 @@ using System.Web.Http.Results;
 using System.Web.Script.Serialization;
 using ECS.WebAPI.Filters.AuthorizationFilters;
 using ECS.DTO;
+using ECS.Repositories.Implementations;
 using ECS.Security.AccessTokens.Jwt;
 
 namespace ECS.WebAPI.Controllers

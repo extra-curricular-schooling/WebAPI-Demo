@@ -1,12 +1,10 @@
 ﻿using System.Web.Http;
 using System.Web.Http.Cors;
-using ECS.Repositories;
 using ECS.Models;
 using System;
-using System.Collections;
 using System.Net;
 using System.Net.Http;
-using System.Web.ClientServices.Providers;
+using ECS.Repositories.Implementations;
 using ECS.Security.AccessTokens.Jwt;
 using ECS.Security.Hash;
 using ECS.WebAPI.Services.Transformers;
@@ -85,7 +83,7 @@ namespace ECS.WebAPI.Controllers
         public HttpResponseMessage LoginRedirect()
         {
             var response = Request.CreateResponse(HttpStatusCode.Redirect);
-            response.Headers.Location = new Uri("https://localhost:44311/#/Main");
+            response.Headers.Location = new Uri("http://localhost:8080/#/Main");
             response.Headers.Add("Access-Control-Allow-Origin", Request.Headers.GetValues("Origin"));
             response.Headers.Add("Access-Control-Allow-Credentials", "true");
             response.Headers.Add("Access-Control-Allow-Methods", "POST,GET,OPTIONS");
@@ -108,6 +106,10 @@ namespace ECS.WebAPI.Controllers
             var account = _accountRepository.GetSingle(acc => acc.UserName == ssoDto.Username);
             var partialAccount = _partialAccountRepository.GetSingle(partial => partial.UserName == ssoDto.Username);
 
+            // TODO: @Scott Sso Login needs to generate a token with a username AND list of claims. Get claims from account.
+            // Generate our token for them.
+            var token = JwtManager.Instance.GenerateToken(ssoDto.Username);
+
             // If accounts exist in both tables, there is a database problem.
             if (partialAccount != null && account != null)
             {
@@ -117,57 +119,54 @@ namespace ECS.WebAPI.Controllers
             // If the partial account exists, then the Account needs a full registration. Redirect them.
             if (partialAccount != null)
             {
-                return Content(HttpStatusCode.Redirect, new Uri("https://localhost:44311/#/partial-registration"));
+                return Content(HttpStatusCode.Redirect, new Uri("http://localhost:8080/#/partial-registration?jwt=" + token));
             }
 
-            // If the account exists, go through the login checks.
-            if (account != null)
+            // If the account does not exist, kick them out.
+            if (account == null)
             {
-                // Get the password salt by username.
-                var saltModel = _saltRepository.GetSingle(model => model.UserName == ssoDto.Username);
-                if (saltModel == null)
-                {
-                    return Content(HttpStatusCode.Conflict, "You have not created a salt yet");
-                }
-                var salt = saltModel.PasswordSalt;
+                return BadRequest("Invalid Credentials");
+            }
 
-                // Make sure you append the salt, not prepend (group decision).
-                var hashedPassword = HashService.Instance.HashPasswordWithSalt(salt, ssoDto.Username, false);
-                if (!account.Password.Equals(hashedPassword))
-                {
-                    return Unauthorized();
-                }
+            // Get the password salt by username.
+            var saltModel = _saltRepository.GetSingle(model => model.UserName == ssoDto.Username);
+            if (saltModel == null)
+            {
+                return Content(HttpStatusCode.Conflict, "You have not created a salt yet");
+            }
+            var salt = saltModel.PasswordSalt;
 
-                // Generate our token for them.
-                var token = JwtManager.Instance.GenerateToken(ssoDto.Username);
+            // Make sure you append the salt, not prepend (group decision).
+            var hashedPassword = HashService.Instance.HashPasswordWithSalt(salt, ssoDto.Username, false);
+            if (!account.Password.Equals(hashedPassword))
+            {
+                return Unauthorized();
+            }
 
-                // Generate new token based on username and available claims.
-                // TODO: @Scott Sso Login needs to generate a token with a username AND list of claims. Get claims from account.
+            // Grab the previous access token associated with the account.
+            var accountAccessToken = _jwtAccessTokenRepository.GetSingle(oldToken => oldToken.UserName == ssoDto.Username);
 
-                // Grab the previous access token associated with the account.
-                var accountAccessToken = _jwtAccessTokenRepository.GetSingle(oldToken => oldToken.UserName == ssoDto.Username);
-
-                // If the token is not null, that means they did sign in through our system already, and we need to update their jwt.
-                if (accountAccessToken != null)
-                {
-                    // Set current account token to expired list.
-                    var deadToken = new ExpiredAccessToken
-                    {
-                        ExpiredTokenValue = accountAccessToken.Value
-                    };
-                    _expiredAccessTokenRepository.Insert(deadToken);
-
-                    accountAccessToken.Value = token;
-
-                    // Store updated account token in DB.
-                    _jwtAccessTokenRepository.Update(accountAccessToken);
-                }
-
-                // Redirect them to our Home page with their credentials logged.
+            // If the token is not null, that means they did sign in through our system already, and we need to update their jwt.
+            if (accountAccessToken == null)
+            {
                 return Content(HttpStatusCode.Redirect, new Uri("https://localhost:44311/Sso/Login?jwt=" + token));
             }
+                
+            // Set current account token to expired list.
+            var deadToken = new ExpiredAccessToken
+            {
+                ExpiredTokenValue = accountAccessToken.Value
+            };
+            _expiredAccessTokenRepository.Insert(deadToken);
+            
 
-            return BadRequest("Invalid Credentials");
+            // Store updated account token in DB.
+            accountAccessToken.Value = token;
+            _jwtAccessTokenRepository.Update(accountAccessToken);
+
+            // Redirect them to our Home page with their credentials logged.
+            return Content(HttpStatusCode.Redirect, new Uri("https://localhost:44311/Sso/Login?jwt=" + token));
+
         }
 
         [HttpPost]

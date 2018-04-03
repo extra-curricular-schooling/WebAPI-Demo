@@ -7,6 +7,7 @@ using System.Web.Http;
 using System.Web.Http.Cors;
 using ECS.Repositories;
 using System;
+using ECS.Repositories.Implementations;
 using ECS.Security.Hash;
 
 namespace ECS.WebAPI.Controllers

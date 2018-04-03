@@ -37,9 +37,7 @@ namespace ECS.WebAPI
                 routeTemplate: "{id}.html",
                 defaults: new { id = "index" });
 
-            // Important that this route exists before the default.
-            // If the route is specific, put it before the more general routes.
-
+            // Non-default Controller Routes
             config.Routes.MapHttpRoute(
                 name: "Sso",
                 routeTemplate: "{controller}/{action}/{id}",
@@ -50,8 +48,6 @@ namespace ECS.WebAPI
                     new HttpControllerDispatcher(config),
                     new DelegatingHandler[] { new SsoAccessTokenAuthenticationDelegatingHandler() })
             );
-
-
 
             // Default Controller Route
             config.Routes.MapHttpRoute(
@@ -65,8 +61,14 @@ namespace ECS.WebAPI
                 //    new DelegatingHandler[] { new AccessTokenAuthenticationDelegatingHandler() })
             );
 
+            // Authorization Filters
+
+            // Action Filters
+
             // Exception Filters
-            // config.Filters.Add(new AnyExceptionFilterAttribute());
+            config.Filters.Add(new NotImplExceptionFilterAttribute());
+
+            config.Filters.Add(new AnyExceptionFilterAttribute()); // This should be last.
         }
     }
 }

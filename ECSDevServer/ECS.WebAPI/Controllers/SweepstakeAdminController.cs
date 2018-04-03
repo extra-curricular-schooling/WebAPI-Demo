@@ -3,6 +3,7 @@ using ECS.DTO;
 using ECS.Repositories;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using ECS.Repositories.Implementations;
 
 namespace ECS.WebAPI.Controllers
 {

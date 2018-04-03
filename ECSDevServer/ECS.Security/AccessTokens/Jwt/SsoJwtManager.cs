@@ -9,6 +9,7 @@ using System.Text;
 using ECS.DTO;
 using ECS.DTO.Sso;
 using ECS.Repositories;
+using ECS.Repositories.Implementations;
 using Microsoft.IdentityModel.Tokens;
 
 namespace ECS.Security.AccessTokens.Jwt
@@ -57,39 +58,7 @@ namespace ECS.Security.AccessTokens.Jwt
             }
 
             return claimsIdentityTest;
-        }
-
-        public string GenerateTokenTest(string username, int expireMinutes = 15)
-        {
-            //CreateClaimsIdentity((List<Claim>) claimList);
-
-            //var account = _accountRepository.GetSingle(acc => acc.UserName == username);
-            var claimsIdentity = new ClaimsIdentity(new List<Claim>()
-            {
-                new Claim("username", "test5"),
-                new Claim("password", "aaaaaaaaa"),
-                new Claim("application", "ecs"),
-                new Claim("roleType", "public")
-            }, "Custom");
-
-            var now = DateTime.UtcNow;
-
-            var symmetricKey = Convert.FromBase64String(Secret);
-            
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = claimsIdentity,
-                IssuedAt = now,
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(symmetricKey), SecurityAlgorithms.HmacSha256Signature),
-            };
-
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var stoken = tokenHandler.CreateToken(tokenDescriptor);
-            var token = tokenHandler.WriteToken(stoken);
-
-            return token;
-        }
-        
+        }      
 
         public string GenerateToken(string username, int expireMinutes = 15)
         {
@@ -123,35 +92,27 @@ namespace ECS.Security.AccessTokens.Jwt
 
         public ClaimsPrincipal GetPrincipal(string token)
         {
-            try
-            {
-                var tokenHandler = new JwtSecurityTokenHandler();
+            var tokenHandler = new JwtSecurityTokenHandler();
 
-                if (!(tokenHandler.ReadToken(token) is JwtSecurityToken))
-                    return null;
-
-                var symmetricKey = Encoding.UTF8.GetBytes(Secret);   
-
-                // The checks that occur during validation of the JWT.
-                var validationParameters = new TokenValidationParameters()
-                {
-                    ValidateIssuer = false,
-                    ValidateAudience = false,
-                    RequireExpirationTime = false,
-                    IssuerSigningKey = new SymmetricSecurityKey(symmetricKey)
-                };
-
-                // The JwtSecurityTokenHandler will check all of the validation parameters to ensure
-                // the Jwt is acceptable to use.
-                var principal = tokenHandler.ValidateToken(token, validationParameters, out var _);
-
-                return principal;
-            }
-
-            catch (Exception)
-            {
+            if (!(tokenHandler.ReadToken(token) is JwtSecurityToken))
                 return null;
-            }
+
+            var symmetricKey = Encoding.UTF8.GetBytes(Secret);   
+
+            // The checks that occur during validation of the JWT.
+            var validationParameters = new TokenValidationParameters()
+            {
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                RequireExpirationTime = false,
+                IssuerSigningKey = new SymmetricSecurityKey(symmetricKey)
+            };
+
+            // The JwtSecurityTokenHandler will check all of the validation parameters to ensure
+            // the Jwt is acceptable to use.
+            var principal = tokenHandler.ValidateToken(token, validationParameters, out var _);
+
+            return principal;
         }
 
         public bool ValidateToken(string token, out string username)

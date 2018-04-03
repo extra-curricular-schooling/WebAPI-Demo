@@ -10,6 +10,7 @@ using System.Net.Http;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using ECS.Repositories.Implementations;
 using ECS.Security.AccessTokens.Jwt;
 using ECS.WebAPI.Filters.AuthorizationFilters;
 

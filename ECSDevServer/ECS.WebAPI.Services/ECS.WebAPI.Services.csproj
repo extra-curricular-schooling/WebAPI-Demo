@@ -71,7 +71,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Factories\Contracts\IFactory.cs" />
     <Compile Include="HttpClients\HttpClientService.cs" />
     <Compile Include="HttpClients\Contracts\IHttpClient.cs" />
     <Compile Include="HttpClients\Contracts\IHttpClientAsync.cs" />
