@@ -1,5 +1,8 @@
 <template>
   <div id="app">
+    <admin-layout v-if="currentRole === 'Admin'"/>
+    <scholar-layout v-else-if="currentRole === 'Scholar'"/>
+    <default-layout v-else/>
     <router-view/>
   </div>
 </template>
@@ -8,15 +11,22 @@
 import Bulma from 'bulma'
 // eslint-disable-next-line
 import Vue from 'vue'
+import DefaultLayout from './layouts/Default'
+import AdminLayout from './layouts/Admin'
+import ScholarLayout from './layouts/Scholar'
 
 export default {
   name: 'App',
   components: {
-    Bulma
+    Bulma,
+    DefaultLayout,
+    AdminLayout,
+    ScholarLayout
   },
   data () {
     return {
-      authorizationRequired: ['/Home']
+      authorizationRequired: ['/Home'],
+      currentRole: ''
     }
   },
   methods: {
@@ -26,13 +36,18 @@ export default {
           this.$router.push('/?redirect=' + this.$route.path)
         }
       }
+    },
+    checkCurrentRole () {
+      this.currentRole = this.$store.getters.getRole
     }
   },
   created () {
     this.checkCurrentLogin()
+    this.checkCurrentRole()
   },
   updated () {
     this.checkCurrentLogin()
+    this.checkCurrentRole()
   }
 }
 </script>
