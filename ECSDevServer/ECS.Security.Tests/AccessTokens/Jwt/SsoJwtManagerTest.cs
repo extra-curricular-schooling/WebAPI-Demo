@@ -124,14 +124,7 @@ namespace ECS.Security.Tests.AccessTokens.Jwt
 
         public class GetClaim
         {
-            // TODO: @Scott Uncomment this test case.
-
-            //[Theory]
-            //[InlineData("username")]
-            //public void ReturnsCorrectClaim(string claimType)
-            //{
-            //    Assert.True(true);
-            //}
+            
         }
 
         public class GetClaimValue

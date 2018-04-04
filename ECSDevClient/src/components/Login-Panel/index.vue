@@ -1,5 +1,7 @@
 <template>
-  <div>
+  <div v-if="currentRole === ''">
+    <error-modal/>
+    <loading-modal/>
     <div class="field">
       <label class="label field-element is-required">Username</label>
       <div class="control has-icons-left has-icons-right">
@@ -48,14 +50,20 @@
 
 <script>
 import Axios from 'axios'
+import ErrorModal from '../Error-Modal/index'
+import EventBus from '../../assets/js/EventBus.js'
 import forgotPassword from '@/components/Forgot-Password-Modal/index'
 import forgotUsername from '@/components/Forgot-Username-Modal/index'
+import LoadingModal from '../Loading-Modal/index'
+var jwt = require('jsonwebtoken')
 
 export default {
   name: 'LoginPanel',
   components: {
+    'error-modal': ErrorModal,
     'forgot-password': forgotPassword,
-    'forgot-username': forgotUsername
+    'forgot-username': forgotUsername,
+    'loading-modal': LoadingModal
   },
   data () {
     return {
@@ -63,19 +71,37 @@ export default {
       password: '',
       isDisabled: true,
       headers: this.$store.getters.getRequestHeaders,
-      loginURI: this.$store.getters.getLoginPortal
+      loginURI: this.$store.getters.getLoginPortal,
+      currentRole: ''
     }
   },
+  mounted () {
+    this.checkCurrentRole()
+  },
+  updated () {
+    this.checkCurrentRole()
+  },
   methods: {
+    checkCurrentRole () {
+      this.currentRole = this.$store.getters.getRole
+    },
     changePassword () {
       this.$refs.password.toggle()
     },
     rememberUsername () {
       this.$refs.username.toggle()
     },
+    toggleErrorModal: function (message) {
+      this.$store.dispatch('updateErrorMessage', message)
+      EventBus.$emit('error')
+    },
+    toggleLoadingModal: function () {
+      EventBus.$emit('loading')
+    },
     postCredentials: function () {
       if (this.username != null) {
         if (this.password != null) {
+          this.toggleLoadingModal()
           Axios({
             method: 'POST',
             url: this.$store.getters.getLoginPortal,
@@ -86,13 +112,35 @@ export default {
             }
           })
             .then((response) => {
-              this.$store.dispatch('signIn', response.data.AuthToken)
-              this.$store.dispatch('updateToken', response.data.AuthToken)
-              this.$router.push('/Home')
+              var decoded = jwt.decode(response.data.AuthToken, {complete: true})
+              if (decoded.payload.iss !== '') {
+                var validIssuers = this.$store.getters.getValidIssuers
+                var trustworthy = false
+                for (var x in validIssuers) {
+                  if (validIssuers[x] === decoded.payload.iss) {
+                    trustworthy = true
+                  }
+                }
+                if (!trustworthy) {
+                  this.toggleLoadingModal()
+                  this.toggleErrorModal('An error has occurred, please try again later!')
+                } else {
+                  this.$store.dispatch('updateRole', decoded.payload.role)
+                  this.$store.dispatch('updateUsername', this.username)
+                  this.$store.dispatch('signIn', response.data.AuthToken)
+                  this.$store.dispatch('updateToken', response.data.AuthToken)
+                  this.toggleLoadingModal()
+                  this.$router.push('/Home')
+                }
+              } else {
+                this.toggleLoadingModal()
+                this.toggleErrorModal('An error has occurred, please try again later!')
+              }
             })
-            .catch(function (error) {
+            .catch((error) => {
               console.log(error)
-              return error
+              this.toggleLoadingModal()
+              this.toggleErrorModal('An error has occurred, please try again later!')
             })
         }
       }

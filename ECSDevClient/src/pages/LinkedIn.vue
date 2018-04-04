@@ -1,5 +1,7 @@
 <template>
   <div>
+    <loading-modal/>
+    <toggle-loading/>>
     <connect-to-linkedin/>
     <LinkedInPostModal/>
   </div>
@@ -7,6 +9,8 @@
 
 <script>
 import Vue from 'vue'
+import EventBus from '../assets/js/EventBus.js'
+import LoadingModal from '../components/Loading-Modal/index'
 import LinkedInPostModal from '@/components/LinkedIn-Modal/Index'
 
 // We need this global button in order to link a user to their LinkedIn account
@@ -23,10 +27,21 @@ Vue.component('connect-to-linkedin', {
   }
 })
 
+Vue.component('toggle-loading', {
+  template:
+    '<button v-on:click="toggleLoading" class="button is-primary">Toggle Loading!</button>',
+  methods: {
+    toggleLoading: function () {
+      EventBus.$emit('loading')
+    }
+  }
+})
+
 export default {
   name: 'LinkedIn',
   components: {
-    LinkedInPostModal
+    LinkedInPostModal,
+    LoadingModal
   }
 }
 </script>

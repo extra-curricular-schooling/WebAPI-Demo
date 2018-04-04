@@ -26,8 +26,8 @@ export const request = {
     }
   },
   actions: {
-    updateToken: function (context, payload) {
-      context.commit('setAuthorizationHeader', payload)
+    updateToken: function (context, token) {
+      context.commit('setAuthorizationHeader', token)
     }
   }
 }

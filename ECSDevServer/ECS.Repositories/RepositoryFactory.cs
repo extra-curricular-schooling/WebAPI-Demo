@@ -2,7 +2,6 @@
 using System.Linq;
 using ECS.Models;
 
-// TODO: @Scooter Split the repositories into different class files.
 namespace ECS.Repositories
 {
     /// <summary>
@@ -46,6 +45,23 @@ namespace ECS.Repositories
     public interface ILinkedInAccessTokenRepository: IRepositoryBase<LinkedInAccessToken>
     {
     }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public interface IPartialAccountRepository : IRepositoryBase<PartialAccount>
+    {
+
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public interface IPartialAccountSaltRepository : IRepositoryBase<PartialAccountSalt>
+    {
+
+    }
+
 
     /// <summary>
     /// 
@@ -160,6 +176,28 @@ namespace ECS.Repositories
     public class LinkedInAccessTokenRepository: RepositoryBase<LinkedInAccessToken>, ILinkedInAccessTokenRepository
     {
         public LinkedInAccessTokenRepository () : base (new ECSContext())
+        {
+
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public class PartialAccountRepository : RepositoryBase<PartialAccount>, IPartialAccountRepository
+    {
+        public PartialAccountRepository() : base(new ECSContext())
+        {
+
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public class PartialAccountSaltRepository : RepositoryBase<PartialAccountSalt>, IPartialAccountSaltRepository
+    {
+        public PartialAccountSaltRepository() : base(new ECSContext())
         {
 
         }

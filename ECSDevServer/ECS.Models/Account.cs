@@ -42,6 +42,7 @@ namespace ECS.Models
         [Display(Name = "Suspension Time")]
         public DateTime SuspensionTime { get; set; }
 
+        // TODO: @Scott FirstTimeUser can now be deleted because we have PartialAccount
         // Has this user registered 
         public bool FirstTimeUser { get; set; }
 
