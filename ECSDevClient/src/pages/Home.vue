@@ -5,8 +5,8 @@
     <div>Interests</div>
     <div class="container vue" id="Interests">
       <div class="column">
-        <div id ="groups"  v-for="group in groups" :key="group.name">
-          <a id="groupName" v-text="group.name"  @click="group.open=!group.open" ></a>
+        <div id ="groups"  v-for="group in groups" :key="group.interestTag">
+          <a id="groupName" v-text="group.interestTag"  @click="group.open=!group.open" ></a>
           <ul v-show="group.open">
             <ul class="button is-link" id="articles" v-for="article in group.articles" :key="article.title" v-text="article.title" v-on:click="target(group.name, article.title, article.url)">
             </ul>
@@ -153,9 +153,8 @@ export default {
         url: 'https://localhost:44311/Home/' + username
       })
         .then(response => {
-          console.log('ok!?')
-          this.groups = response.data.$values.$0
-          console.log(response.data.$values)
+          this.groups = response.data.$values[0].$values
+          console.log(response.data.$values[0].$values)
         })
         .catch(e => {
           console.log(e)
