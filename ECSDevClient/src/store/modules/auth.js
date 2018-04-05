@@ -3,6 +3,7 @@ export const auth = {
     authToken: '',
     isAuthenticated: false,
     role: '',
+    username: '',
     validIssuers: ['https://localhost:44311/', 'https://sso.com/']
   },
   getters: {
@@ -14,6 +15,9 @@ export const auth = {
     },
     getRole: function (state) {
       return state.role
+    },
+    getUsername: function (state) {
+      return state.username
     },
     getValidIssuers: (state) => {
       return state.validIssuers
@@ -31,6 +35,9 @@ export const auth = {
     },
     setRole: function (state, payload) {
       state.role = payload
+    },
+    setUsername: function (state, username) {
+      state.username = username
     }
   },
   actions: {
@@ -44,6 +51,9 @@ export const auth = {
     },
     updateRole: function ({commit}, payload) {
       commit('setRole', payload)
+    },
+    updateUsername: function ({commit}, payload) {
+      commit('setUsername', payload)
     }
   }
 }
