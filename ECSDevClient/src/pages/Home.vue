@@ -5,9 +5,9 @@
     <div>Interests</div>
     <div class="container vue" id="Interests">
       <div class="column">
-        <div id ="groups"  v-for="group in groups" :key="group.interestTag">
-          <a id="groupName" v-text="group.interestTag"  @click="group.open=!group.open" ></a>
-          <ul v-show="group.open">
+        <div id ="groups"  v-for="group in groups" :key="group.articles[0].interestTag">
+          <a id="groupName" v-text="group.name"  @click="group.open = !group.open" ></a>
+          <ul v-show="true">
             <ul class="button is-link" id="articles" v-for="article in group.articles" :key="article.title" v-text="article.title" v-on:click="target(group.name, article.title, article.url)">
             </ul>
           </ul>
@@ -30,6 +30,7 @@
   <ErrorModal/>
 </div>
 </template>
+
 <script>
 import ErrorModal from '../components/Error-Modal/index'
 import LinkedInPostModal from '../components/LinkedIn-Modal/Index'
@@ -37,106 +38,7 @@ import RedirectModal from '../components/Redirect-Modal/index'
 import EventBus from '../assets/js/EventBus.js'
 import Slideout from 'vue-slideout'
 import Axios from 'axios'
-var groups = {
-  'Arts & Design': {
-    'name': 'Arts & Design',
-    'open': false,
-    'articles': [
-      {
-        'title': 'article 1',
-        'url': 'http://www.ivc.edu/Pages/default.aspx'
-      },
-      {
-        'title': 'article 2',
-        'url': 'https://www.hookah-shisha.com/'
-      }
-    ]
-  },
-  'Technology': {
-    'name': 'Technology',
-    'open': false,
-    'articles': [
-      {
-        'title': 'article 1',
-        'url': 'http://www.ivc.edu/Pages/default.aspx'
-      },
-      {
-        'title': 'article 2',
-        'url': 'https://www.hookah-shisha.com/'
-      }
-    ]
-  },
-  'Education': {
-    'name': 'Education',
-    'open': false,
-    'articles': [
-      {
-        'title': 'article 1',
-        'url': 'http://www.ivc.edu/Pages/default.aspx'
-      },
-      {
-        'title': 'article 2',
-        'url': 'https://www.hookah-shisha.com/'
-      }
-    ]
-  },
-  'Environmental': {
-    'name': 'Environmental',
-    'open': false,
-    'articles': [
-      {
-        'title': 'article 1',
-        'url': 'http://www.ivc.edu/Pages/default.aspx'
-      },
-      {
-        'title': 'article 2',
-        'url': 'https://www.hookah-shisha.com/'
-      }
-    ]
-  },
-  'History': {
-    'name': 'History',
-    'open': false,
-    'articles': [
-      {
-        'title': 'article 1',
-        'url': 'http://www.ivc.edu/Pages/default.aspx'
-      },
-      {
-        'title': 'article 2',
-        'url': 'https://www.hookah-shisha.com/'
-      }
-    ]
-  },
-  'Medicine': {
-    'name': 'Medicine',
-    'open': false,
-    'articles': [
-      {
-        'title': 'article 1',
-        'url': 'http://www.ivc.edu/Pages/default.aspx'
-      },
-      {
-        'title': 'article 2',
-        'url': 'https://www.hookah-shisha.com/'
-      }
-    ]
-  },
-  'Business': {
-    'name': 'Business',
-    'open': false,
-    'articles': [
-      {
-        'title': 'article 1',
-        'url': 'http://www.ivc.edu/Pages/default.aspx'
-      },
-      {
-        'title': 'article 2',
-        'url': 'https://www.hookah-shisha.com/'
-      }
-    ]
-  }
-}
+var groups = {}
 
 export default {
   name: 'home',
@@ -152,9 +54,24 @@ export default {
         method: 'GET',
         url: 'https://localhost:44311/Home/' + username
       })
-        .then(response => {
-          this.groups = response.data.$values[0].$values
-          console.log(response.data.$values[0].$values)
+        .then((response) => {
+          this.groups = {}
+          response.data.$values.forEach(group => {
+            this.groups[group.$values[0].interestTag] = {
+              'name': group.$values[0].interestTag,
+              'open': false,
+              'articles': []
+            }
+            group.$values.forEach(article => {
+              this.groups[article.interestTag].articles.push(
+                {
+                  'title': article.articleTitle,
+                  'description': article.articleDescription,
+                  'url': article.articleLink
+                }
+              )
+            })
+          })
         })
         .catch(e => {
           console.log(e)
@@ -198,10 +115,13 @@ export default {
       EventBus.$emit('articleChosen')
     }
   },
+  created () {
+    this.retieveArticles(this.username)
+  },
   data () {
     return {
       groups: groups,
-      username: 'test2',
+      username: this.$store.getters.getUsername,
       headers: this.$store.getters.getRequestHeaders
       // groups: []
     }
@@ -218,10 +138,8 @@ export default {
     position: fixed;
     top: 0;
     bottom: 0;
-    width: 256px;
+    width: 276px;
     height: 100vh;
-    overflow-y: scroll;
-    -webkit-overflow-scrolling: touch;
     z-index: 0;
     display: none;
     background-color: #1D1F20;
@@ -239,13 +157,9 @@ export default {
     will-change: transform;
     min-height: 100vh;
   }
-  .slideout-open,
-  .slideout-open body,
-  .slideout-open .slideout-panel {
-    overflow: hidden;
-  }
   .slideout-open .slideout-menu {
     display: block;
+    overflow: scroll;
   }
   .toggle-button {
     position: absolute;
@@ -255,12 +169,13 @@ export default {
   }
   #Interests{
     position: fixed;
-    width: 250px;
+    width: 270px;
   }
 
   #articles{
     display: block;
     border: .3px solid;
+    font-size:8pt
   }
   #articles:active{
     color:white;
