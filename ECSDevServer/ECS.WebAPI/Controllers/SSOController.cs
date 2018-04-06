@@ -2,6 +2,8 @@
 using System.Web.Http.Cors;
 using ECS.Models;
 using System;
+using System.Data;
+using System.Data.SqlClient;
 using System.Net;
 using System.Net.Http;
 using ECS.Repositories.Implementations;
@@ -12,10 +14,12 @@ using ECS.WebAPI.Services.Transformers;
 namespace ECS.WebAPI.Controllers
 {
     [RoutePrefix("Sso")]
-    [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET,POST")]
+    [EnableCors(origins: "*", headers: "*", methods: "GET,POST")]
     //[AuthorizeSsoAccessToken]
     public class SsoController : ApiController
     {
+        private const string BaseClientUrl = "http://localhost:8080/";
+
         private readonly IAccountRepository _accountRepository;
         private readonly IPartialAccountRepository _partialAccountRepository;
         private readonly IJAccessTokenRepository _jwtAccessTokenRepository;
@@ -57,10 +61,14 @@ namespace ECS.WebAPI.Controllers
             var transformer = new SsoRegistrationTransformer();
             var ssoDto = transformer.Fetch(RequestContext);
 
-            // Validate information with the registration DTO, if needed.
-            // TODO: @Scott Handle the error that would occur if they try to make a duplicate account.
+            // Account exists already.
+            if (_partialAccountRepository.Exists(acc => acc.UserName == ssoDto.Username) ||
+                _accountRepository.Exists(acc => acc.UserName == ssoDto.Username))
+            {
+                return BadRequest("Duplicate Entry");
+            }
 
-            // The suspension time doesn't make sense to have in there.
+            // Add new PartialAccount to the database
             var partialAccount = new PartialAccount()
             {
                 UserName = ssoDto.Username,
@@ -69,6 +77,7 @@ namespace ECS.WebAPI.Controllers
             };
             _partialAccountRepository.Insert(partialAccount);
 
+            // Add new attached Salt to the database connected with PartialAccount.
             var salt = new PartialAccountSalt()
             {
                 PasswordSalt = ssoDto.PasswordSalt,
@@ -79,18 +88,43 @@ namespace ECS.WebAPI.Controllers
             return Ok();
         }
 
-        [HttpGet]
+        /// <summary>
+        /// TEST ACTION!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
         public HttpResponseMessage LoginRedirect()
         {
-            var response = Request.CreateResponse(HttpStatusCode.Redirect);
-            response.Headers.Location = new Uri("http://localhost:8080/#/Main");
-            response.Headers.Add("Access-Control-Allow-Origin", Request.Headers.GetValues("Origin"));
-            response.Headers.Add("Access-Control-Allow-Credentials", "true");
-            response.Headers.Add("Access-Control-Allow-Methods", "POST,GET,OPTIONS");
+            var response = Request.CreateResponse();
+
+            // Transform request context into DTO.
+            var transformer = new SsoLoginTransformer();
+            var ssoDto = transformer.Fetch(RequestContext);
+
+            // Grab the accounts to check for username and password
+            var account = _accountRepository.GetSingle(acc => acc.UserName == ssoDto.Username);
+            var partialAccount = _partialAccountRepository.GetSingle(partial => partial.UserName == ssoDto.Username);
+
+
+            // TODO: @Scott Sso Login needs to generate a token with a username AND list of claims. Get claims from account.
+            // Generate our token for them.
+            var token = JwtManager.Instance.GenerateToken(ssoDto.Username);
+
+            // If the partial account exists, then the Account needs a full registration. Redirect them.
+            if (partialAccount != null)
+            {
+                
+                response.StatusCode = HttpStatusCode.MovedPermanently;
+                response.Headers.Location = new Uri("http://localhost:8080/partial-registration");
+                response.Headers.Add("Access-Control-Allow-Origin", Request.Headers.GetValues("Origin"));
+                response.Headers.Add("Access-Control-Allow-Credentials", "true");
+                response.Headers.Add("Access-Control-Allow-Methods", "POST,GET,OPTIONS");
+                
+            }
+
             return response;
         }
 
-        // TODO: @Scott Make sure that you finish up your login
         /// <summary>
         /// 
         /// </summary>
@@ -102,27 +136,22 @@ namespace ECS.WebAPI.Controllers
             var transformer = new SsoLoginTransformer();
             var ssoDto = transformer.Fetch(RequestContext);
 
-            // Grab the accounts to check for username and password
-            var account = _accountRepository.GetSingle(acc => acc.UserName == ssoDto.Username);
-            var partialAccount = _partialAccountRepository.GetSingle(partial => partial.UserName == ssoDto.Username);
-
-            // TODO: @Scott Sso Login needs to generate a token with a username AND list of claims. Get claims from account.
-            // Generate our token for them.
-            var token = JwtManager.Instance.GenerateToken(ssoDto.Username);
-
-            // If accounts exist in both tables, there is a database problem.
-            if (partialAccount != null && account != null)
-            {
-                return Content(HttpStatusCode.InternalServerError, "Database Inconsistent");
-            }
+            // PARTIAL ACCOUNTS
 
             // If the partial account exists, then the Account needs a full registration. Redirect them.
+            var partialAccount = _partialAccountRepository.GetSingle(partial => partial.UserName == ssoDto.Username);
             if (partialAccount != null)
             {
-                return Content(HttpStatusCode.Redirect, new Uri("http://localhost:8080/#/partial-registration?jwt=" + token));
+                // Generate our token for them.
+                var partialAccountToken = SsoJwtManager.Instance.GenerateToken(ssoDto.Username);
+                // TODO @Scott The Ok response should be a 301 response to redirect the SSO to our client.
+                return Ok(new Uri(BaseClientUrl + "partial-registration?jwt=") + partialAccountToken);
             }
 
-            // If the account does not exist, kick them out.
+            // COMPLETE ACCOUNTS
+
+            // Grab the accounts to check for username and password
+            var account = _accountRepository.GetSingle(acc => acc.UserName == ssoDto.Username);
             if (account == null)
             {
                 return BadRequest("Invalid Credentials");
@@ -132,7 +161,7 @@ namespace ECS.WebAPI.Controllers
             var saltModel = _saltRepository.GetSingle(model => model.UserName == ssoDto.Username);
             if (saltModel == null)
             {
-                return Content(HttpStatusCode.Conflict, "You have not created a salt yet");
+                return InternalServerError(new DataException("You have not created a salt yet"));
             }
             var salt = saltModel.PasswordSalt;
 
@@ -143,29 +172,38 @@ namespace ECS.WebAPI.Controllers
                 return Unauthorized();
             }
 
+            // Generate a new access token
+            var token = JwtManager.Instance.GenerateToken(ssoDto.Username);
+
             // Grab the previous access token associated with the account.
             var accountAccessToken = _jwtAccessTokenRepository.GetSingle(oldToken => oldToken.UserName == ssoDto.Username);
-
-            // If the token is not null, that means they did sign in through our system already, and we need to update their jwt.
-            if (accountAccessToken == null)
+            if (accountAccessToken != null)
             {
-                return Content(HttpStatusCode.Redirect, new Uri("https://localhost:44311/Sso/Login?jwt=" + token));
+                // Set current account token to expired list.
+                var deadToken = new ExpiredAccessToken
+                {
+                    ExpiredTokenValue = accountAccessToken.Value
+                };
+                _expiredAccessTokenRepository.Insert(deadToken);
+                accountAccessToken.Value = token;
+                _jwtAccessTokenRepository.Update(accountAccessToken);
             }
-                
-            // Set current account token to expired list.
-            var deadToken = new ExpiredAccessToken
+            else
             {
-                ExpiredTokenValue = accountAccessToken.Value
-            };
-            _expiredAccessTokenRepository.Insert(deadToken);
-            
-
-            // Store updated account token in DB.
-            accountAccessToken.Value = token;
-            _jwtAccessTokenRepository.Update(accountAccessToken);
+                // Add the new access token and link it the the appropriate account.
+                var newToken = new JAccessToken
+                {
+                    Value = token,
+                    UserName = ssoDto.Username,
+                    DateTimeIssued = DateTime.UtcNow,
+                    Account = account
+                };
+                _jwtAccessTokenRepository.Insert(newToken);
+            }
 
             // Redirect them to our Home page with their credentials logged.
-            return Content(HttpStatusCode.Redirect, new Uri("https://localhost:44311/Sso/Login?jwt=" + token));
+            // TODO @Scott The Ok response should be a 301 response to redirect the SSO to our client.
+            return Ok(new Uri(BaseClientUrl + "home?jwt=" + token));
 
         }
 
@@ -175,17 +213,24 @@ namespace ECS.WebAPI.Controllers
             var transformer = new SsoResetPasswordTransformer();
             var ssoDto = transformer.Fetch(this.RequestContext);
             
-            // Get related account from username
-            var account = _accountRepository.GetSingle(acc => acc.UserName == ssoDto.Username);
-            var partialAccount = _partialAccountRepository.GetSingle(acc => acc.UserName == ssoDto.Username);
+            // PARTIAL ACCOUNTS
 
-            // If accounts exist in both tables, there is a database problem.
-            if (partialAccount != null && account != null)
+            var partialAccount = _partialAccountRepository.GetSingle(acc => acc.UserName == ssoDto.Username);
+            if (partialAccount != null)
             {
-                return Content(HttpStatusCode.InternalServerError, "Database Inconsistent");
+                // Update password for account
+                partialAccount.Password = ssoDto.HashedNewPassword;
+                _partialAccountRepository.Update(partialAccount);
+
+                // Update salt table related to account
+                var partialAccountSalt = _partialAccountSaltRepository.GetSingle(model => model.UserName == ssoDto.Username);
+                partialAccountSalt.PasswordSalt = ssoDto.PasswordSalt;
+                _partialAccountSaltRepository.Update(partialAccountSalt);
             }
 
-            // If the full account has been made, produce the change there.
+            // COMPLETE ACCOUNTS
+
+            var account = _accountRepository.GetSingle(acc => acc.UserName == ssoDto.Username);
             if (account != null)
             {
                 // Update password for account
@@ -198,17 +243,7 @@ namespace ECS.WebAPI.Controllers
                 _saltRepository.Update(salt);
             }
 
-            if (partialAccount != null)
-            {
-                // Update password for account
-                partialAccount.Password = ssoDto.HashedNewPassword;
-                _partialAccountRepository.Update(partialAccount);
-
-                // Update salt table related to account
-                var partialAccountSalt = _partialAccountSaltRepository.GetSingle(model => model.UserName == ssoDto.Username);
-                partialAccountSalt.PasswordSalt = ssoDto.PasswordSalt;
-                _partialAccountSaltRepository.Update(partialAccountSalt);
-            }
+            
 
             return Ok("Account password successfully updated.");
         }

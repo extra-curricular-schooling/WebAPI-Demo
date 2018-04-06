@@ -19,20 +19,27 @@ export default {
   },
   methods: {
     submitRegistration () {
-      ssoMockRequest.submitRegistration(
+      this.$store.dispatch('updateToken', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ijc3N0xhemVyNzc3IiwicGFzc3dvcmQiOiI3NzdMYXplcjc3NyIsImFwcGxpY2F0aW9uIjoiY2FyZWF3YXkiLCJyb2xlVHlwZSI6InB1YmxpYyIsImlhdCI6MTUyMjgwMTA3OH0.RyYeO1ekdzfLnntWfs_NHV-4Dl0Qa6T-m_HkBAWwsUY')
+      let response = ssoMockRequest.submitRegistration(
         this.$store.getters.getUsername,
         this.$data.password,
         this.$data.application)
+      console.log(response)
     },
     submitLogin () {
-      ssoMockRequest.submitLogin(
+      this.$store.dispatch('updateToken', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ijc3N0xhemVyNzc3IiwicGFzc3dvcmQiOiI3NzdMYXplcjc3NyIsImFwcGxpY2F0aW9uIjoiY2FyZWF3YXkiLCJyb2xlVHlwZSI6InB1YmxpYyIsImlhdCI6MTUyMjgwMTA3OH0.RyYeO1ekdzfLnntWfs_NHV-4Dl0Qa6T-m_HkBAWwsUY')
+      let response = ssoMockRequest.submitLogin(
         this.$store.getters.getUsername,
         this.$data.password)
+      console.log(response)
+      console.log('This should not be working...')
     },
     submitResetPassword () {
-      ssoMockRequest.submitResetPassword(
+      this.$store.dispatch('updateToken', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ijc3N0xhemVyNzc3IiwicGFzc3dvcmQiOiI3NzdMYXplcjc3NyIsImFwcGxpY2F0aW9uIjoiY2FyZWF3YXkiLCJyb2xlVHlwZSI6InB1YmxpYyIsImlhdCI6MTUyMjgwMTA3OH0.RyYeO1ekdzfLnntWfs_NHV-4Dl0Qa6T-m_HkBAWwsUY')
+      let response = ssoMockRequest.submitResetPassword(
         this.$store.getters.getUsername,
         this.$data.password)
+      console.log(response)
     }
   }
 }

@@ -27,6 +27,14 @@ namespace ECS.Repositories.Implementations
     /// <summary>
     /// 
     /// </summary>
+    public interface IBadAccessTokenRepository : IRepositoryBase<BadAccessToken>
+    {
+
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
     public interface IInterestTagRepository : IRepositoryBase<InterestTag>
     {
     }
@@ -145,6 +153,17 @@ namespace ECS.Repositories.Implementations
     {
         public ArticleRepository() : base(new ECSContext())
         {
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public class BadAccessTokenRepository : RepositoryBase<BadAccessToken>, IBadAccessTokenRepository
+    {
+        public BadAccessTokenRepository() : base(new ECSContext())
+        {
+
         }
     }
 

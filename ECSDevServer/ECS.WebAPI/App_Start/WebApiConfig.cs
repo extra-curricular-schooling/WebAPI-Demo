@@ -5,7 +5,6 @@ using System.Net.Http.Formatting;
 using System.Web.Http;
 using System.Web.Http.Dispatcher;
 using ECS.WebAPI.Filters.ExceptionFilters;
-using ECS.WebAPI.HttpMessageHandlers;
 using ECS.WebAPI.HttpMessageHandlers.DelegatingHandlers;
 
 namespace ECS.WebAPI
@@ -67,6 +66,7 @@ namespace ECS.WebAPI
 
             // Exception Filters
             config.Filters.Add(new NotImplExceptionFilterAttribute());
+            config.Filters.Add(new SqlExceptionFilterAttribute());
 
             config.Filters.Add(new AnyExceptionFilterAttribute()); // This should be last.
         }

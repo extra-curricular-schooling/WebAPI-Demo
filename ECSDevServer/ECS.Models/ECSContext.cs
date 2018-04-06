@@ -19,6 +19,8 @@ namespace ECS.Models
 
         public DbSet<AccountType> AccountTypes { get; set; }
 
+        public DbSet<BadAccessToken> BadAccessTokens { get; set; }
+
         public DbSet<ExpiredAccessToken> ExpiredAccessTokens { get; set; }
 
         public DbSet<InterestTag> InterestTags { get; set; }
@@ -117,6 +119,8 @@ namespace ECS.Models
 
             modelBuilder.Entity<Article>().MapToStoredProcedures(s => s.Insert (
                 i => i.Parameter(p => p.TagName, "TagName")));
+
+            modelBuilder.Entity<BadAccessToken>().MapToStoredProcedures();
 
             modelBuilder.Entity<InterestTag>().MapToStoredProcedures();
 

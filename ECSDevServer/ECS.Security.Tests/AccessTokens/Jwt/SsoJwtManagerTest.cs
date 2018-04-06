@@ -47,7 +47,7 @@ namespace ECS.Security.Tests.AccessTokens.Jwt
             [Fact]
             public void PrintSsoToken()
             {
-                _output.WriteLine(SsoJwtManager.Instance.GenerateToken("test5", 100));
+                _output.WriteLine(SsoJwtManager.Instance.GenerateToken("ssotest5", 100));
             }
         }
 

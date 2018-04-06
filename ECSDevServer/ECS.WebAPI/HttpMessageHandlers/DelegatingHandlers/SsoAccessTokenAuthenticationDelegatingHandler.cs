@@ -16,10 +16,12 @@ namespace ECS.WebAPI.HttpMessageHandlers.DelegatingHandlers
     public class SsoAccessTokenAuthenticationDelegatingHandler: DelegatingHandler
     {
         private readonly IExpiredAccessTokenRepository _expiredAccessTokenRepository;
+        private readonly IBadAccessTokenRepository _badAccessTokenRepository;
 
         public SsoAccessTokenAuthenticationDelegatingHandler()
         {
             _expiredAccessTokenRepository = new ExpiredAccessTokenRepository();
+            _badAccessTokenRepository = new BadAccessTokenRepository();
         }
 
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
@@ -36,34 +38,44 @@ namespace ECS.WebAPI.HttpMessageHandlers.DelegatingHandlers
                 return tsc.Task;
             }
 
-            try
+            var token = authHeader.Parameter;
+            if (token == null)
             {
-                var token = authHeader.Parameter;
-                // 4. Check the database for a reuse of expired tokens.
-                var expiredAccessToken = _expiredAccessTokenRepository.GetSingle(expiredToken => expiredToken.ExpiredTokenValue == token);
+                return SendError(tsc, "Empty Token");
+            }
 
-                // TODO: @Scott Will they always have just a one-time token here? Could be a good place to start adding some hook ins.
-                if (expiredAccessToken != null && expiredAccessToken.CanReuse)
+            // Check the Bad Tokens to ensure this hasn't been seen before.
+            if (_badAccessTokenRepository.Exists(badToken => badToken.BadTokenValue == token))
+            {
+                return SendError(tsc, "Malformed Token");
+            }
+
+            // 4. Check the database for a reuse of expired tokens.
+            var expiredAccessToken = _expiredAccessTokenRepository.GetSingle(expiredToken => expiredToken.ExpiredTokenValue == token);
+                
+
+            // TODO: @Scott Will they always have just a one-time token here? Could be a good place to start adding some hook ins.
+            if (expiredAccessToken != null)
+            {
+                if (expiredAccessToken.CanReuse)
                 {
                     expiredAccessToken.CanReuse = false;
                     _expiredAccessTokenRepository.Update(expiredAccessToken);
                 }
-
-                if (expiredAccessToken == null)
+                else
                 {
-                    // TODO: @Scott Please uncomment the inserting expired token when ready to deploy. It is annoying to test with.
-                    // 5. Insert One time token so no one else uses it.
-                    //_expiredAccessTokenRepository.Insert(new ExpiredAccessToken
-                    //{
-                    //    ExpiredTokenValue = token,
-                    //    CanReuse = true
-                    //});
+                    return SendError(tsc, "Expired Token");
                 }
+            }
 
+            try
+            {
                 // 6. Finally check if the token is validated and returns a principal.
                 IPrincipal principal = SsoJwtManager.Instance.GetPrincipal(token);
-
-                // TODO: @Scott Add the additional authentication step for correct application.
+                if (!HasAcceptedClaims(principal))
+                {
+                    throw new Exception("Required Claims not Present");
+                }
 
                 // 7. Authentication was successful, set the principal to notify other filters that
                 // the request is authenticated.
@@ -73,13 +85,37 @@ namespace ECS.WebAPI.HttpMessageHandlers.DelegatingHandlers
             }
             catch (Exception e)
             {
-                return SendError(tsc, e);
+                _badAccessTokenRepository.Insert(new BadAccessToken
+                {
+                    BadTokenValue = token
+                });
+                return SendError(tsc, e.Message);
             }
+
+            // TODO: @Scott Please uncomment the inserting expired token when ready to deploy. It is annoying to test with.
+            // Insert One time token so no one else uses it.
+            //_expiredAccessTokenRepository.Insert(new ExpiredAccessToken
+            //{
+            //    ExpiredTokenValue = token,
+            //    CanReuse = true
+            //});
 
             return base.SendAsync(request, cancellationToken);
         }
 
-        private Task<HttpResponseMessage> SendError(TaskCompletionSource<HttpResponseMessage> tsc, Exception e)
+        private bool HasAcceptedClaims(IPrincipal principal)
+        {
+            // Read the Request Principal (User), and grab the necessary jwt claims.
+            var usernameClaim = SsoJwtManager.Instance.GetClaim(principal, "username");
+            var passwordClaim = SsoJwtManager.Instance.GetClaim(principal, "password");
+            var issuedAtClaim = SsoJwtManager.Instance.GetClaim(principal, "iat");
+            var applicationClaim = SsoJwtManager.Instance.GetClaim(principal, "application");
+
+            return usernameClaim != null && passwordClaim != null &&
+                   issuedAtClaim != null && applicationClaim != null;
+        }
+
+        private Task<HttpResponseMessage> SendError(TaskCompletionSource<HttpResponseMessage> tsc, string errorMessage)
         {
             var unauthorizedResponse = new HttpResponseMessage
             {
