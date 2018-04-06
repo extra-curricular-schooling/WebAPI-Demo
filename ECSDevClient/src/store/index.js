@@ -37,30 +37,6 @@ export default new Vuex.Store({
     linkedin,
     login
   },
-
-  // State is passed into any of your getters.
-  state: {
-    username: ''
-  },
-  // Any function that retrieves data.
-  getters: {
-    getUsername: function (state) {
-      return state.username
-    }
-  },
-  // Any function that changes data.
-  mutations: {
-    setUsername: function (state, username) {
-      state.username = username
-    }
-  },
-  // The exposed methods that the system uses to work with the store.
-  actions: {
-    updateUsername: function ({commit}, payload) {
-      commit('setUsername', payload)
-    }
-  },
-
   // If strict should be enabled during development.
   strict: debug,
   plugins: [vuexLocalStorage.plugin]

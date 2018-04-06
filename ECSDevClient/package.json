@@ -24,6 +24,7 @@
     "jsonwebtoken": "^8.2.0",
     "jwt-decode": "^2.2.0",
     "moment": "^2.21.0",
+    "npm": "^5.8.0",
     "save": "^2.3.2",
     "typescript": "^2.7.2",
     "url-search-params": "^0.10.0",
