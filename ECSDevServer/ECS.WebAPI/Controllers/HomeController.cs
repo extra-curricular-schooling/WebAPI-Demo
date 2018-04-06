@@ -53,8 +53,6 @@ namespace ECS.WebAPI.Controllers
             account = accountRepository.GetSingle(x => x.UserName == username, x => x.AccountTags);
 
 
-            // TODO: @Hugo Add repository function to perform the 'Include' function below 
-            //ECSContext db = new ECSContext();
             foreach (var Tag in account.AccountTags)
                 foreach (var tagname in Tag.ArticleTags)
                 {

@@ -6,18 +6,16 @@ using System.Threading.Tasks;
 
 namespace ECS.DTO
 {
-    class SweepstakeAdminDTO
+    public class SweepstakeAdminDTO
     {
-        public string OpenDateTime { get; set; }
+        public DateTime OpenDateTime { get; set; }
 
-        public string ClosedDateTime { get; set; }
+        public DateTime ClosedDateTime { get; set; }
 
         public string Prize { get; set; }
 
-        public string SweepStakesID { get; set; }
-
         public string UsernameWinner { get; set; }
 
-        //public string Price { get; set; }
+        public int SweepStakesID { get; set; }
     }
 }
