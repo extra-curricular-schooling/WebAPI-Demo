@@ -54,7 +54,7 @@ export default new Router({
       component: () => import('@/pages/AccountAdmin')
     },
     {
-      path: '/sweepstakeadmin',
+      path: '/sweepstake-admin',
       name: 'SweepstakeAdmin',
       component: () => import('@/pages/SweepstakeAdmin')
     },

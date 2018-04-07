@@ -49,7 +49,6 @@ export default {
           let headersString = JSON.stringify(headers)
           console.log(headersString)
         }
-        return response.data
       })
       .catch(response => {
         console.log(response)
