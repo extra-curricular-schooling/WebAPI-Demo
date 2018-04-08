@@ -1,25 +1,16 @@
-﻿using ECS.WebAPI.Filters;
-using System.Web.Http;
-using ECS.WebAPI.Filters.AuthorizationFilters;
-using System.Web.Http.Cors;
-using ECS.Repositories;
-using ECS.Models;
-using ECS.DTO;
-using System.Net.Http;
-using System.Net;
-using System.Text;
-using System.Net.Http.Headers;
-using System;
-using System.Linq.Expressions;
-using System.Linq;
-using System.Data.Entity;
-using System.Web.Http.Description;
-using System.Threading.Tasks;
-using ECS.WebAPI.Filters.AuthenticationFilters;
+﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Web.Http;
+using System.Web.Http.Cors;
+using ECS.DTO;
+using ECS.Models;
 using ECS.Repositories.Implementations;
+using ECS.WebAPI.Filters.AuthorizationFilters;
 
-namespace ECS.WebAPI.Controllers
+namespace ECS.WebAPI.Controllers.v1
 {
 
     [RoutePrefix("Home")]

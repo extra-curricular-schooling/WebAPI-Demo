@@ -24,21 +24,19 @@ export default {
         this.$store.getters.getUsername,
         this.$data.password,
         this.$data.application)
-      console.log('This should not be working...')
     },
     submitLogin () {
       this.$store.dispatch('updateToken', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ijc3N0xhemVyNzc3IiwicGFzc3dvcmQiOiI3NzdMYXplcjc3NyIsImFwcGxpY2F0aW9uIjoiY2FyZWF3YXkiLCJyb2xlVHlwZSI6InB1YmxpYyIsImlhdCI6MTUyMjgwMTA3OH0.RyYeO1ekdzfLnntWfs_NHV-4Dl0Qa6T-m_HkBAWwsUY')
       ssoMockRequest.submitLogin(
         this.$store.getters.getUsername,
         this.$data.password)
-      console.log('This should not be working...')
+      // Nothing after this because of redirect in api call.
     },
     submitResetPassword () {
       this.$store.dispatch('updateToken', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ijc3N0xhemVyNzc3IiwicGFzc3dvcmQiOiI3NzdMYXplcjc3NyIsImFwcGxpY2F0aW9uIjoiY2FyZWF3YXkiLCJyb2xlVHlwZSI6InB1YmxpYyIsImlhdCI6MTUyMjgwMTA3OH0.RyYeO1ekdzfLnntWfs_NHV-4Dl0Qa6T-m_HkBAWwsUY')
       ssoMockRequest.submitResetPassword(
         this.$store.getters.getUsername,
         this.$data.password)
-      console.log('This should not be working...')
     }
   }
 }

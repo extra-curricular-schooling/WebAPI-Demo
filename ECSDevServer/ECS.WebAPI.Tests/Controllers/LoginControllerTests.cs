@@ -3,6 +3,7 @@ using ECS.WebAPI.Controllers;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Results;
+using ECS.WebAPI.Controllers.v1;
 using Xunit;
 
 namespace ECS.WebAPI.Tests.Controllers

@@ -4,7 +4,8 @@
 
 export const request = {
   state: {
-    appBaseUrl: 'https://localhost:44311/',
+    // Since we are a web application, we will target the latest version in our api calls.
+    appBaseUrl: 'https://localhost:44311/v1/',
     ssoBaseUrl: 'https://sso.com/',
     headers: {
       'Access-Control-Allow-Origin': 'http://localhost:8080',
@@ -23,6 +24,12 @@ export const request = {
   mutations: {
     setAuthorizationHeader: function (state, token) {
       state.headers.Authorization = 'Bearer ' + token
+    },
+    setAppBaseUrl: function (state, baseUrl) {
+      state.appBaseUrl = baseUrl
+    },
+    setSsoBaseUrl: function (state, baseUrl) {
+      state.ssoBaseUrl = baseUrl
     }
   },
   actions: {

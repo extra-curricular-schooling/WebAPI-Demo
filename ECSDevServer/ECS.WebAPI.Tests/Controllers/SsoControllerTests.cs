@@ -14,6 +14,7 @@ using Moq;
 using ECS.Models;
 using ECS.Repositories.Implementations;
 using ECS.Security.AccessTokens.Jwt;
+using ECS.WebAPI.Controllers.v1;
 
 namespace ECS.WebAPI.Tests.Controllers
 {

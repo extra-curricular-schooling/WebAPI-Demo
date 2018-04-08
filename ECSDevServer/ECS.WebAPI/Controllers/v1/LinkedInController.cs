@@ -1,8 +1,4 @@
-﻿using ECS.Models;
-using ECS.Repositories;
-using ECS.WebAPI.Filters.AuthenticationFilters;
-using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
@@ -12,12 +8,15 @@ using System.Web.Http;
 using System.Web.Http.Cors;
 using System.Web.Http.Results;
 using System.Web.Script.Serialization;
-using ECS.WebAPI.Filters.AuthorizationFilters;
 using ECS.DTO;
+using ECS.Models;
 using ECS.Repositories.Implementations;
 using ECS.Security.AccessTokens.Jwt;
+using ECS.WebAPI.Filters.AuthenticationFilters;
+using ECS.WebAPI.Filters.AuthorizationFilters;
+using Newtonsoft.Json.Linq;
 
-namespace ECS.WebAPI.Controllers
+namespace ECS.WebAPI.Controllers.v1
 {
     // Had to make a custom filter for RequireHttpsAttribute
     [RequireHttps]

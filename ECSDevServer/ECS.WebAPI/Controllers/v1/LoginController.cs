@@ -1,17 +1,15 @@
-﻿using ECS.DTO;
-using ECS.Models;
-using ECS.Repositories;
-using System;
-using System.Net;
+﻿using System;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using ECS.DTO;
+using ECS.Models;
 using ECS.Repositories.Implementations;
 using ECS.Security.AccessTokens.Jwt;
 using ECS.Security.Hash;
 using ECS.WebAPI.Filters.AuthorizationFilters;
 
-namespace ECS.WebAPI.Controllers
+namespace ECS.WebAPI.Controllers.v1
 {
     [RequireHttps]
     [RoutePrefix("Login")]

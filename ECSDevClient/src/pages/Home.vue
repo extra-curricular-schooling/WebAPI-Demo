@@ -22,7 +22,7 @@
       </div>
     </header>
     <h1>Welcome to Article Page</h1>
-    <iframe src="https://www.yahoo.com" id = "FrameResult" name="FrameResult" @load="mounted" @error="alert('Frame not loaded')" height="700" width=100% style="border:8px solid black;" ></iframe>
+    <iframe src="https://www.ecschooling.org" id = "FrameResult" name="FrameResult" @load="mounted" @error="alert('Frame not loaded')" height="700" width=100% style="border:8px solid black;" ></iframe>
   </main>
   </Slideout>
   <LinkedInPostModal/>

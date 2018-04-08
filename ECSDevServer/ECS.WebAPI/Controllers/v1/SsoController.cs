@@ -1,17 +1,16 @@
-﻿using System.Web.Http;
-using System.Web.Http.Cors;
-using ECS.Models;
-using System;
+﻿using System;
 using System.Data;
-using System.Data.SqlClient;
 using System.Net;
 using System.Net.Http;
+using System.Web.Http;
+using System.Web.Http.Cors;
+using ECS.Models;
 using ECS.Repositories.Implementations;
 using ECS.Security.AccessTokens.Jwt;
 using ECS.Security.Hash;
 using ECS.WebAPI.Services.Transformers;
 
-namespace ECS.WebAPI.Controllers
+namespace ECS.WebAPI.Controllers.v1
 {
     [RoutePrefix("Sso")]
     [EnableCors(origins: "*", headers: "*", methods: "GET,POST")]

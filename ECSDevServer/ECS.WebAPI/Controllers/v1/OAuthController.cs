@@ -1,8 +1,4 @@
-﻿using DotNetOpenAuth.LinkedInOAuth2;
-using ECS.Models;
-using ECS.Repositories;
-using Microsoft.AspNet.Membership.OpenAuth;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
@@ -10,11 +6,14 @@ using System.Net.Http;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using DotNetOpenAuth.LinkedInOAuth2;
+using ECS.Models;
 using ECS.Repositories.Implementations;
 using ECS.Security.AccessTokens.Jwt;
 using ECS.WebAPI.Filters.AuthorizationFilters;
+using Microsoft.AspNet.Membership.OpenAuth;
 
-namespace ECS.WebAPI.Controllers
+namespace ECS.WebAPI.Controllers.v1
 {
     // Had to make a custom filter for RequireHttpsAttribute
     [RequireHttps]

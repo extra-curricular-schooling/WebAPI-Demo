@@ -1,8 +1,8 @@
-﻿using ECS.Models;
-using System.Web.Http;
+﻿using System.Web.Http;
 using System.Web.Http.Cors;
+using ECS.Models;
 
-namespace ECS.WebAPI.Controllers
+namespace ECS.WebAPI.Controllers.v1
 {
     [RoutePrefix("AccountAdmin")]
     [EnableCors("http://localhost:8080", "*", "GET, POST, PUT")]

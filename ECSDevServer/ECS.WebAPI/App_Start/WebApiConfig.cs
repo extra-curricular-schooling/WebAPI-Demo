@@ -39,7 +39,7 @@ namespace ECS.WebAPI
             // Non-default Controller Routes
             config.Routes.MapHttpRoute(
                 name: "Sso",
-                routeTemplate: "{controller}/{action}/{id}",
+                routeTemplate: "v1/{controller}/{action}/{id}",
                 defaults: new { id = RouteParameter.Optional },
                 constraints: new { controller = "Sso" },
                 handler:
@@ -51,7 +51,7 @@ namespace ECS.WebAPI
             // Default Controller Route
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
-                routeTemplate: "{controller}/{action}/{id}",
+                routeTemplate: "v1/{controller}/{action}/{id}",
                 defaults: new { id = RouteParameter.Optional, action = "Get" },
                 constraints: null
                 //handler:
@@ -68,7 +68,7 @@ namespace ECS.WebAPI
             config.Filters.Add(new NotImplExceptionFilterAttribute());
             config.Filters.Add(new SqlExceptionFilterAttribute());
 
-            config.Filters.Add(new AnyExceptionFilterAttribute()); // This should be last.
+            config.Filters.Add(new AnyExceptionFilterAttribute());
         }
     }
 }
