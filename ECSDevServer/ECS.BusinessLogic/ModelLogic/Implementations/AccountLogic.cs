@@ -7,6 +7,11 @@ namespace ECS.BusinessLogic.ModelLogic.Implementations
     {
         private readonly IAccountRepository _accountRepository;
 
+        public AccountLogic()
+        {
+            _accountRepository = new AccountRepository();
+        }
+
         public AccountLogic(IAccountRepository accountRepository)
         {
             _accountRepository = accountRepository;

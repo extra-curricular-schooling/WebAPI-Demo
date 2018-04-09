@@ -61,6 +61,10 @@ namespace ECS.WebAPI.Controllers.v1
             var ssoDto = transformer.Fetch(RequestContext);
 
             // Account exists already.
+
+            // var SsoControllerLogic = new SsoControllerLogic();
+            // var response = SsoControllerLogic.InsertPartialAccount();
+
             if (_partialAccountRepository.Exists(acc => acc.UserName == ssoDto.Username) ||
                 _accountRepository.Exists(acc => acc.UserName == ssoDto.Username))
             {
@@ -241,8 +245,6 @@ namespace ECS.WebAPI.Controllers.v1
                 salt.PasswordSalt = ssoDto.PasswordSalt;
                 _saltRepository.Update(salt);
             }
-
-            
 
             return Ok("Account password successfully updated.");
         }
