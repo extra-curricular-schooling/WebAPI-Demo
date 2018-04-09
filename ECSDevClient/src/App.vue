@@ -25,8 +25,10 @@ export default {
   },
   data () {
     return {
-      authorizationRequired: ['/Home'],
-      currentRole: ''
+      authorizationRequired: ['/Home', '/LinkedIn', '/account', '/sweepstakeadmin', '/account-admin', '/sweepstake'],
+      currentRole: '',
+      adminAuthorizationRequired: ['/account-admin', '/sweepstakeadmin', '/LinkedIn'],
+      scholarAuthorizationRequired: ['/sweepstake']
     }
   },
   methods: {
@@ -37,21 +39,51 @@ export default {
         }
       }
     },
+    // Check users that are admins against routes that are only allowed for scholars
+    checkAdminLogin () {
+      for (var path in this.scholarAuthorizationRequired) {
+        if (!this.$store.getters.isAuth && this.$store.getters.getRole === 'Admin' && this.$route.path === this.scholarAuthorizationRequired[path]) {
+          this.$router.push('/?redirect=' + this.$route.path)
+        }
+      }
+    },
+    // Check users that are scholars against routes that are only allowed for admins
+    checkScholarLogin () {
+      for (var path in this.adminAuthorizationRequired) {
+        if (this.$store.getters.getRole === 'Scholar' && this.$route.path === this.adminAuthorizationRequired[path]) {
+          this.$router.push('/?redirect=' + this.$route.path)
+        }
+      }
+    },
     checkCurrentRole () {
       this.currentRole = this.$store.getters.getRole
     }
   },
+  // end of methods
   created () {
-    this.checkCurrentLogin()
-    this.checkCurrentRole()
+    if (this.currentRole === 'Scholar') {
+      this.checkScholarLogin()
+    } else if (this.currentRole === 'Admin') {
+      this.checkAdminLogin()
+    } else {
+      this.checkCurrentLogin()
+      this.checkCurrentRole()
+    }
   },
   updated () {
-    this.checkCurrentLogin()
-    this.checkCurrentRole()
+    if (this.$store.getters.getRole === 'Scholar') {
+      this.checkScholarLogin()
+      this.checkCurrentRole()
+    } else if (this.$store.getters.getRole === 'Admin') {
+      this.checkAdminLogin()
+      this.checkCurrentRole()
+    } else {
+      this.checkCurrentLogin()
+      this.checkCurrentRole()
+    }
   }
 }
 </script>
-
 <style>
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
