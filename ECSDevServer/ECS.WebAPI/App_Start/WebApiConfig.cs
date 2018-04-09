@@ -5,7 +5,6 @@ using System.Net.Http.Formatting;
 using System.Web.Http;
 using System.Web.Http.Dispatcher;
 using ECS.WebAPI.Filters.ExceptionFilters;
-using ECS.WebAPI.HttpMessageHandlers;
 using ECS.WebAPI.HttpMessageHandlers.DelegatingHandlers;
 
 namespace ECS.WebAPI
@@ -37,12 +36,10 @@ namespace ECS.WebAPI
                 routeTemplate: "{id}.html",
                 defaults: new { id = "index" });
 
-            // Important that this route exists before the default.
-            // If the route is specific, put it before the more general routes.
-
+            // Non-default Controller Routes
             config.Routes.MapHttpRoute(
                 name: "Sso",
-                routeTemplate: "{controller}/{action}/{id}",
+                routeTemplate: "v1/{controller}/{action}/{id}",
                 defaults: new { id = RouteParameter.Optional },
                 constraints: new { controller = "Sso" },
                 handler:
@@ -51,12 +48,10 @@ namespace ECS.WebAPI
                     new DelegatingHandler[] { new SsoAccessTokenAuthenticationDelegatingHandler() })
             );
 
-
-
             // Default Controller Route
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
-                routeTemplate: "{controller}/{action}/{id}",
+                routeTemplate: "v1/{controller}/{action}/{id}",
                 defaults: new { id = RouteParameter.Optional, action = "Get" },
                 constraints: null
                 //handler:
@@ -65,8 +60,15 @@ namespace ECS.WebAPI
                 //    new DelegatingHandler[] { new AccessTokenAuthenticationDelegatingHandler() })
             );
 
+            // Authorization Filters
+
+            // Action Filters
+
             // Exception Filters
-            // config.Filters.Add(new AnyExceptionFilterAttribute());
+            config.Filters.Add(new NotImplExceptionFilterAttribute());
+            config.Filters.Add(new SqlExceptionFilterAttribute());
+
+            config.Filters.Add(new AnyExceptionFilterAttribute());
         }
     }
 }

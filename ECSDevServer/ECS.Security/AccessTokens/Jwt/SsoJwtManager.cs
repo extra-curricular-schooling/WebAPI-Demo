@@ -9,6 +9,7 @@ using System.Text;
 using ECS.DTO;
 using ECS.DTO.Sso;
 using ECS.Repositories;
+using ECS.Repositories.Implementations;
 using Microsoft.IdentityModel.Tokens;
 
 namespace ECS.Security.AccessTokens.Jwt
@@ -24,7 +25,7 @@ namespace ECS.Security.AccessTokens.Jwt
         private const string Secret = "db3OIsj+BXE9NZDy0t8W3TcNekrF+2d/1sFnWG4HnV8TZY30iTOdtVWJG8abWvB1GlOgJuQZdcF2Luqm/hccMw==";
 
         // Single repository to query users associated with tokens.
-        private readonly IAccountRepository _accountRepository;
+        private readonly IPartialAccountRepository _partialAccountRepository;
 
         // Instance for Singleton Pattern
         private static SsoJwtManager _instance;
@@ -32,7 +33,7 @@ namespace ECS.Security.AccessTokens.Jwt
 
         private SsoJwtManager()
         {
-            _accountRepository = new AccountRepository();
+            _partialAccountRepository = new PartialAccountRepository();
         }
 
         public static SsoJwtManager Instance
@@ -57,55 +58,21 @@ namespace ECS.Security.AccessTokens.Jwt
             }
 
             return claimsIdentityTest;
-        }
-
-        public string GenerateTokenTest(string username, int expireMinutes = 15)
-        {
-            //CreateClaimsIdentity((List<Claim>) claimList);
-
-            //var account = _accountRepository.GetSingle(acc => acc.UserName == username);
-            var claimsIdentity = new ClaimsIdentity(new List<Claim>()
-            {
-                new Claim("username", "test5"),
-                new Claim("password", "aaaaaaaaa"),
-                new Claim("application", "ecs"),
-                new Claim("roleType", "public")
-            }, "Custom");
-
-            var now = DateTime.UtcNow;
-
-            var symmetricKey = Convert.FromBase64String(Secret);
-            
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = claimsIdentity,
-                IssuedAt = now,
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(symmetricKey), SecurityAlgorithms.HmacSha256Signature),
-            };
-
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var stoken = tokenHandler.CreateToken(tokenDescriptor);
-            var token = tokenHandler.WriteToken(stoken);
-
-            return token;
-        }
-        
+        }      
 
         public string GenerateToken(string username, int expireMinutes = 15)
         {
-            
-            //var account = _accountRepository.GetSingle(acc => acc.UserName == username);
+            var partialAccount = _partialAccountRepository.GetSingle(acc => acc.UserName == username);
             var claimsIdentity = new ClaimsIdentity(new List<Claim>()
             {
-                new Claim("username", username),
-                new Claim("password", "aaaaaaaaa"),
-                new Claim("application", "ecs"),
-                new Claim("roleType", "public")
-            }, "Custom");
+                new Claim(ClaimTypes.Name, username), 
+                // TODO @Scott This should not be hardcoded to scholar in case we want to make admins from SSO.
+                new Claim(ClaimTypes.Role, "Scholar")
+            });
 
             var now = DateTime.UtcNow;
 
-            var symmetricKey = Convert.FromBase64String(Secret);
+            var symmetricKey = Encoding.UTF8.GetBytes(Secret);
             
             var tokenDescriptor = new SecurityTokenDescriptor
             {
@@ -123,35 +90,27 @@ namespace ECS.Security.AccessTokens.Jwt
 
         public ClaimsPrincipal GetPrincipal(string token)
         {
-            try
+            var tokenHandler = new JwtSecurityTokenHandler();
+
+            if (!(tokenHandler.ReadToken(token) is JwtSecurityToken))
+                throw new Exception("Token is not a compatible JwtSecurityToken type");
+
+            var symmetricKey = Encoding.UTF8.GetBytes(Secret);   
+
+            // The checks that occur during validation of the JWT.
+            var validationParameters = new TokenValidationParameters()
             {
-                var tokenHandler = new JwtSecurityTokenHandler();
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                RequireExpirationTime = false,
+                IssuerSigningKey = new SymmetricSecurityKey(symmetricKey)
+            };
 
-                if (!(tokenHandler.ReadToken(token) is JwtSecurityToken))
-                    return null;
+            // The JwtSecurityTokenHandler will check all of the validation parameters to ensure
+            // the Jwt is acceptable to use.
+            var principal = tokenHandler.ValidateToken(token, validationParameters, out var _);
 
-                var symmetricKey = Encoding.UTF8.GetBytes(Secret);   
-
-                // The checks that occur during validation of the JWT.
-                var validationParameters = new TokenValidationParameters()
-                {
-                    ValidateIssuer = false,
-                    ValidateAudience = false,
-                    RequireExpirationTime = false,
-                    IssuerSigningKey = new SymmetricSecurityKey(symmetricKey)
-                };
-
-                // The JwtSecurityTokenHandler will check all of the validation parameters to ensure
-                // the Jwt is acceptable to use.
-                var principal = tokenHandler.ValidateToken(token, validationParameters, out var _);
-
-                return principal;
-            }
-
-            catch (Exception)
-            {
-                return null;
-            }
+            return principal;
         }
 
         public bool ValidateToken(string token, out string username)

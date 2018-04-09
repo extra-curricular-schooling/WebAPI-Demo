@@ -7,6 +7,7 @@ using System.Web.Http;
 using System.Web.Http.Results;
 using System.Net.Http;
 using System.Collections.Generic;
+using ECS.WebAPI.Controllers.v1;
 
 namespace ECS.WebAPI.Tests
 {

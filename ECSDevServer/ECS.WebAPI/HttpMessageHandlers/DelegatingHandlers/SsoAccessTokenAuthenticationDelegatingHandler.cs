@@ -1,11 +1,14 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Net.Http;
 using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.UI.WebControls;
 using ECS.Models;
 using ECS.Repositories;
+using ECS.Repositories.Implementations;
 using ECS.Security.AccessTokens.Jwt;
 
 namespace ECS.WebAPI.HttpMessageHandlers.DelegatingHandlers
@@ -13,10 +16,12 @@ namespace ECS.WebAPI.HttpMessageHandlers.DelegatingHandlers
     public class SsoAccessTokenAuthenticationDelegatingHandler: DelegatingHandler
     {
         private readonly IExpiredAccessTokenRepository _expiredAccessTokenRepository;
+        private readonly IBadAccessTokenRepository _badAccessTokenRepository;
 
         public SsoAccessTokenAuthenticationDelegatingHandler()
         {
             _expiredAccessTokenRepository = new ExpiredAccessTokenRepository();
+            _badAccessTokenRepository = new BadAccessTokenRepository();
         }
 
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
@@ -25,70 +30,101 @@ namespace ECS.WebAPI.HttpMessageHandlers.DelegatingHandlers
 
             // 1. Look for credentials in the request.
             var authHeader = request.Headers.Authorization;
-            var unauthorizedResponse = new HttpResponseMessage
-            {
-                StatusCode = HttpStatusCode.Unauthorized
-            };
+            
 
             // 2. The request has have a "Bearer" request to process
             if (authHeader == null || authHeader.Scheme != "Bearer")
             {
                 return tsc.Task;
             }
-                
-            // 3. If the credentials are malformed, set the error result.
-            var token = authHeader.Parameter;
 
-            if (string.IsNullOrEmpty(token))
+            var token = authHeader.Parameter;
+            if (token == null)
             {
-                unauthorizedResponse.ReasonPhrase = "Empty Token";
-                tsc.SetResult(unauthorizedResponse);
-                return tsc.Task;
+                return SendError(tsc, "Empty Token");
             }
 
-            // TODO: @Scott Will they always have just a one-time token here? Could be a good place to start adding some hook ins.
+            // Check the Bad Tokens to ensure this hasn't been seen before.
+            if (_badAccessTokenRepository.Exists(badToken => badToken.BadTokenValue == token))
+            {
+                return SendError(tsc, "Malformed Token");
+            }
 
             // 4. Check the database for a reuse of expired tokens.
-            var expiredAccessToken = _expiredAccessTokenRepository.GetSingle(expiredToken => expiredToken.ExpiredTokenValue == token );
-            if (expiredAccessToken != null && !expiredAccessToken.CanReuse)
+            var expiredAccessToken = _expiredAccessTokenRepository.GetSingle(expiredToken => expiredToken.ExpiredTokenValue == token);
+                
+
+            // TODO: @Scott Will they always have just a one-time token here? Could be a good place to start adding some hook ins.
+            if (expiredAccessToken != null)
             {
-                unauthorizedResponse.ReasonPhrase = "Replay token";
-                tsc.SetResult(unauthorizedResponse);
-                return tsc.Task;
-            }
-            // The token can only be reused once for the login
-            if (expiredAccessToken != null && expiredAccessToken.CanReuse)
-            {
-                expiredAccessToken.CanReuse = false;
-                _expiredAccessTokenRepository.Update(expiredAccessToken);
+                if (expiredAccessToken.CanReuse)
+                {
+                    expiredAccessToken.CanReuse = false;
+                    _expiredAccessTokenRepository.Update(expiredAccessToken);
+                }
+                else
+                {
+                    return SendError(tsc, "Expired Token");
+                }
             }
 
-            if (expiredAccessToken == null)
+            try
             {
-                // TODO: @Scott Please uncomment the inserting expired token when ready to deploy. It is annoying to test with.
-                // 5. Insert One time token so no one else uses it.
-                //_expiredAccessTokenRepository.Insert(new ExpiredAccessToken
-                //{
-                //    ExpiredTokenValue = token,
-                //    CanReuse = true
-                //});
+                // 6. Finally check if the token is validated and returns a principal.
+                IPrincipal principal = SsoJwtManager.Instance.GetPrincipal(token);
+                if (!HasAcceptedClaims(principal))
+                {
+                    throw new Exception("Required Claims not Present");
+                }
+
+                // 7. Authentication was successful, set the principal to notify other filters that
+                // the request is authenticated.
+                Thread.CurrentPrincipal = principal;
+                HttpContext.Current.User = principal;
+
             }
-            
-            // 6. Finally check if the token is validated and returns a principal.
-            IPrincipal principal = SsoJwtManager.Instance.GetPrincipal(token);
-            if (principal == null)
+            catch (Exception e)
             {
-                unauthorizedResponse.ReasonPhrase = "Invalid Principal";
-                tsc.SetResult(unauthorizedResponse);
-                return tsc.Task;
+                _badAccessTokenRepository.Insert(new BadAccessToken
+                {
+                    BadTokenValue = token
+                });
+                return SendError(tsc, e.Message);
             }
 
-            // 7. Authentication was successful, set the principal to notify other filters that
-            // the request is authenticated.
-            Thread.CurrentPrincipal = principal;
-            HttpContext.Current.User = principal;
+            // TODO: @Scott Please uncomment the inserting expired token when ready to deploy. It is annoying to test with.
+            // Insert One time token so no one else uses it.
+            //_expiredAccessTokenRepository.Insert(new ExpiredAccessToken
+            //{
+            //    ExpiredTokenValue = token,
+            //    CanReuse = true
+            //});
 
             return base.SendAsync(request, cancellationToken);
+        }
+
+        private bool HasAcceptedClaims(IPrincipal principal)
+        {
+            // Read the Request Principal (User), and grab the necessary jwt claims.
+            var usernameClaim = SsoJwtManager.Instance.GetClaim(principal, "username");
+            var passwordClaim = SsoJwtManager.Instance.GetClaim(principal, "password");
+            var issuedAtClaim = SsoJwtManager.Instance.GetClaim(principal, "iat");
+            var applicationClaim = SsoJwtManager.Instance.GetClaim(principal, "application");
+
+            return usernameClaim != null && passwordClaim != null &&
+                   issuedAtClaim != null && applicationClaim != null;
+        }
+
+        private Task<HttpResponseMessage> SendError(TaskCompletionSource<HttpResponseMessage> tsc, string errorMessage)
+        {
+            var unauthorizedResponse = new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.Unauthorized
+            };
+
+            tsc.SetResult(unauthorizedResponse);
+
+            return tsc.Task;
         }
     }
 }

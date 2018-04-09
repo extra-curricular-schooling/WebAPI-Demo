@@ -4,6 +4,7 @@ using ECS.Security.AccessTokens.Jwt;
 using System;
 using System.Net.Http.Headers;
 using System.Web.Http.Filters;
+using ECS.Repositories.Implementations;
 
 namespace ECS.WebAPI.Filters.AuthenticationFilters
 {

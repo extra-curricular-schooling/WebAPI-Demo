@@ -47,53 +47,7 @@ namespace ECS.Security.Tests.AccessTokens.Jwt
             [Fact]
             public void PrintSsoToken()
             {
-                _output.WriteLine(SsoJwtManager.Instance.GenerateToken("test5", 100));
-            }
-        }
-
-        public class GenerateTokenTest
-        {
-            private readonly ITestOutputHelper _output;
-
-            public GenerateTokenTest(ITestOutputHelper output)
-            {
-                _output = output;
-            }
-
-            [Fact]
-            public void ShouldBeSameToken()
-            {
-                SortedList claims = new SortedList
-                {
-                    {"scott", "roberts"},
-                    {"bob", "sagget"}
-                };
-
-                string token1 = SsoJwtManager.Instance.GenerateTokenTest("scott");
-                _output.WriteLine(token1);
-                string token2 = SsoJwtManager.Instance.GenerateTokenTest("scott");
-                _output.WriteLine(token2);
-                Assert.Equal(token1, token2);
-            }
-
-            // Tokens need a certain amount of time to be refreshed by the generator
-            // 100 milliseconds is too little to have different tokens, hence the failed test.
-            [Theory]
-            [InlineData(100)]
-            [InlineData(500)]
-            [InlineData(1000)]
-            public void ShouldNotBeTheSameToken(int ms)
-            {
-                string token1 = SsoJwtManager.Instance.GenerateTokenTest("scott");
-                Thread.Sleep(ms);
-                string token2 = SsoJwtManager.Instance.GenerateTokenTest("scott");
-                Assert.NotEqual(token1, token2);
-            }
-
-            [Fact]
-            public void PrintSsoToken()
-            {
-                _output.WriteLine(SsoJwtManager.Instance.GenerateTokenTest("test5", 100));
+                _output.WriteLine(SsoJwtManager.Instance.GenerateToken("ssotest5", 100));
             }
         }
 
