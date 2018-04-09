@@ -5,7 +5,7 @@ using ECS.Repositories.Implementations;
 
 namespace ECS.WebAPI.Controllers.v1
 {
-    [RoutePrefix("SweepstakeAdmin")]
+    [RoutePrefix("v1/SweepstakeAdmin")]
     public class SweepstakeAdminController : ApiController
     {
         private AccountRepository account;
@@ -20,6 +20,7 @@ namespace ECS.WebAPI.Controllers.v1
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet]
+        [Route("ScholarPoints/{username}")]
         [EnableCors("http://localhost:8080", "*", "GET")]
         public IHttpActionResult ScholarPoints(string username)
         {
@@ -36,6 +37,7 @@ namespace ECS.WebAPI.Controllers.v1
 
         // We need to prevent the admin for blasting this with updates.
         [HttpPost]
+        [Route("ScholarPoints")]
         [EnableCors("http://localhost:8080", "*", "POST")]
         public IHttpActionResult ScholarPoints(Account account)
         {

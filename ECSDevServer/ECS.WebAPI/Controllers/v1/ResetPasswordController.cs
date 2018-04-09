@@ -5,10 +5,11 @@ using ECS.WebAPI.Services.HttpClients;
 
 namespace ECS.WebAPI.Controllers.v1
 {
-    [RoutePrefix("ResetPassword")]
+    [RoutePrefix("v1/ResetPassword")]
     public class ResetPasswordController : ApiController
     {
         [HttpGet]
+        [Route("SecurityQuestions")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET")]
         public IHttpActionResult SecurityQuestions()
         {
@@ -19,6 +20,7 @@ namespace ECS.WebAPI.Controllers.v1
         }
 
         [HttpPost]
+        [Route("SecurityQuestions")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
         public IHttpActionResult SecurityQuestions(AccountCredentialDTO credentials)
         {
@@ -38,6 +40,7 @@ namespace ECS.WebAPI.Controllers.v1
         }
 
         [HttpPost]
+        [Route("NewPassword")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
         public IHttpActionResult NewPassword(AccountCredentialDTO credentials)
         {
@@ -56,6 +59,7 @@ namespace ECS.WebAPI.Controllers.v1
             return BadRequest(ModelState);
         }
 
+        [Route("SsoResetPasswordRequest")]
         public void SsoResetPasswordRequest()
         {
             // send the password to sso
@@ -70,6 +74,7 @@ namespace ECS.WebAPI.Controllers.v1
         /// </summary>
         /// <remarks>Author: Scott Roberts</remarks>
         [HttpPost]
+        [Route("Password")]
         // The DTO we are using worries me because it will have an empty password field for this action
         // Should I make a AccountUsernameDTO???
         public IHttpActionResult Username(AccountCredentialDTO credentials)
@@ -99,6 +104,7 @@ namespace ECS.WebAPI.Controllers.v1
         /// </summary>
         /// <remarks>Author: Scott Roberts</remarks>
         [HttpPost]
+        [Route("SecurityAnswers")]
         public IHttpActionResult SecurityAnswers(SecurityQuestionDTO securityQuestions)
         {
             // Credentials is already read and deserialized into a DTO. Validate it.
@@ -122,6 +128,7 @@ namespace ECS.WebAPI.Controllers.v1
         /// </summary>
         /// <remarks>Author: Scott Roberts</remarks>
         [HttpPost]
+        [Route("AccountPassword")]
         public IHttpActionResult AccountPassword(AccountCredentialDTO credentials)
         {
             // Credentials is already read and deserialized into a DTO. Validate it.
@@ -148,6 +155,8 @@ namespace ECS.WebAPI.Controllers.v1
         /// </summary>
         /// <param name="credentials"></param>
         /// <remarks>Author: Scott Roberts</remarks>
+        /// 
+        [Route("PostNewPasswordToSSO")]
         private void PostNewPasswordToSSO(AccountCredentialDTO credentials)
         {
             // Call request service to make a request to the SSO.

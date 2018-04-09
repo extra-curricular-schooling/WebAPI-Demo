@@ -11,6 +11,7 @@ using ECS.Security.Hash;
 
 namespace ECS.WebAPI.Controllers.v1
 {
+    [RoutePrefix("v1/Registration")]
     public class RegistrationController : ApiController
     {
         private readonly IAccountRepository _accountRepository;
@@ -38,6 +39,7 @@ namespace ECS.WebAPI.Controllers.v1
         /// Method accepts request to submit form using the POST method over HTTP
         /// </summary>
         [HttpPost]
+        [Route("SubmitRegistration")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
         public IHttpActionResult SubmitRegistration(RegistrationDTO registrationForm)
         {
@@ -167,7 +169,7 @@ namespace ECS.WebAPI.Controllers.v1
             }
         }
 
-
+        [Route("SubmitPartialRegistration")]
         public IHttpActionResult SubmitPartialRegistration(RegistrationDTO registrationDto)
         {
             return Content(HttpStatusCode.NotImplemented, "Working on it...");
@@ -177,6 +179,7 @@ namespace ECS.WebAPI.Controllers.v1
         /// Method accepts request to submit incomplete form using the POST method over HTTP
         /// </summary>
         [HttpPost]
+        [Route("FinishRegistration")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
         public IHttpActionResult FinishRegistration(RegistrationDTO registrationForm)
         {
@@ -187,6 +190,7 @@ namespace ECS.WebAPI.Controllers.v1
         /// Method accepts request to fetch security questions using the GET method over HTTP
         /// </summary>
         [HttpGet]
+        [Route("GetSecurityQuestions")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET")]
         public IHttpActionResult GetSecurityQuestions()
         {

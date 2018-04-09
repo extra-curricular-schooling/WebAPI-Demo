@@ -12,7 +12,7 @@ using ECS.WebAPI.Filters.AuthorizationFilters;
 namespace ECS.WebAPI.Controllers.v1
 {
     [RequireHttps]
-    [RoutePrefix("Login")]
+    [RoutePrefix("v1/Login")]
     public class LoginController : ApiController
     {
         #region Constants and Fields
@@ -21,37 +21,6 @@ namespace ECS.WebAPI.Controllers.v1
         private readonly IJAccessTokenRepository _jwtRepository = new JAccessTokenRepository();
         private readonly ISaltRepository _saltRepository = new SaltRepository();
         #endregion
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <remarks>Author: Scott Roberts</remarks>
-        [HttpPost]
-        [AllowAnonymous]
-        [Route("SubmitLogin")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
-        public IHttpActionResult SubmitLogin(AccountCredentialDTO credentials)
-        {
-            // Credentials is already read and deserialized into a DTO. Validate it.
-            Validate(credentials);
-
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            // Proccess any other information.
-
-            // Check app DB for user.
-
-            // Issue login information
-
-            return Ok();
-
-            // Return successful response with a "redirect" to where the token will be given
-            // Post methods should not return data, but should return responses and location headers of 
-            // what was created in the post.
-
-            //return CreatedAtRoute("DefaultApi", new { id = product.Id }, product);
-        }
 
         /// <summary>
         /// 

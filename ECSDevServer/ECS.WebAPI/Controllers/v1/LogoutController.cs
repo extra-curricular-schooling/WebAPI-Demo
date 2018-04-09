@@ -2,7 +2,7 @@
 
 namespace ECS.WebAPI.Controllers.v1
 {
-    [RoutePrefix("Logout")]
+    [RoutePrefix("v1/Logout")]
     public class LogoutController : ApiController
     {
         
