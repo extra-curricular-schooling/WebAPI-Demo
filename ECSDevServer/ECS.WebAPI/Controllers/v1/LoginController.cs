@@ -1,21 +1,22 @@
-﻿using ECS.DTO;
-using ECS.Models;
-using ECS.Repositories;
-using System;
+﻿using System;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using ECS.DTO;
+using ECS.Models;
+using ECS.Repositories.Implementations;
 using ECS.Security.AccessTokens.Jwt;
 using ECS.Security.Hash;
 using ECS.WebAPI.Filters.AuthorizationFilters;
 
-namespace ECS.WebAPI.Controllers
+namespace ECS.WebAPI.Controllers.v1
 {
     [RequireHttps]
     [RoutePrefix("Login")]
     public class LoginController : ApiController
     {
         #region Constants and Fields
+        private readonly IPartialAccountRepository _partialAccountRepository = new PartialAccountRepository();
         private readonly IAccountRepository _accountRepository = new AccountRepository();
         private readonly IJAccessTokenRepository _jwtRepository = new JAccessTokenRepository();
         private readonly ISaltRepository _saltRepository = new SaltRepository();
@@ -67,6 +68,12 @@ namespace ECS.WebAPI.Controllers
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
+
+            // Scott's Sso check for Partial Accounts
+            //if (_partialAccountRepository.Exists(acc => acc.UserName == credentials.Username))
+            //{
+            //    return Content(HttpStatusCode.Redirect, "http://localhost:8080/#/partial-registration");
+            //}
 
             // Proccess any other information.
             if (!_accountRepository.Exists(d => d.UserName == credentials.Username))

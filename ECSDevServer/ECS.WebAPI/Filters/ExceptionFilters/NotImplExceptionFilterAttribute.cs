@@ -6,7 +6,7 @@ using System.Web.Http.Filters;
 namespace ECS.WebAPI.Filters.ExceptionFilters
 {
     // This is an example of a Exception filter we can put at the global, controller, or action levels.
-    public class NotImplExceptionFilterAttribute : AnyExceptionFilterAttribute
+    public class NotImplExceptionFilterAttribute : ExceptionFilterAttribute
     {
         public override void OnException(HttpActionExecutedContext actionExecutedContextcontext)
         {

@@ -1,12 +1,9 @@
-﻿using System.Net;
-using System.Web.Http;
+﻿using System.Web.Http;
 using System.Web.Http.Cors;
 using ECS.DTO;
-using ECS.Models;
-using ECS.WebAPI.Services;
 using ECS.WebAPI.Services.HttpClients;
 
-namespace ECS.WebAPI.Controllers
+namespace ECS.WebAPI.Controllers.v1
 {
     [RoutePrefix("ResetPassword")]
     public class ResetPasswordController : ApiController

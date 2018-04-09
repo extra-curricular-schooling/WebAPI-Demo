@@ -1,10 +1,9 @@
-﻿using ECS.Models;
-using ECS.DTO;
-using ECS.Repositories;
-using System.Web.Http;
+﻿using System.Web.Http;
 using System.Web.Http.Cors;
+using ECS.Models;
+using ECS.Repositories.Implementations;
 
-namespace ECS.WebAPI.Controllers
+namespace ECS.WebAPI.Controllers.v1
 {
     [RoutePrefix("SweepstakeAdmin")]
     public class SweepstakeAdminController : ApiController

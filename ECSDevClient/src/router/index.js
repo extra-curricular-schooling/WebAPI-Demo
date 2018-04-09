@@ -4,6 +4,7 @@ import Router from 'vue-router'
 Vue.use(Router)
 
 export default new Router({
+  mode: 'history',
   routes: [
     {
       path: '/',
@@ -21,9 +22,21 @@ export default new Router({
       component: () => import('@/pages/Registration')
     },
     {
-      path: '/partial-registration',
+      // Put in :jwt
+      path: '/partial-registration/:jwt',
       name: 'PartialRegistration',
-      component: () => import('@/pages/PartialRegistration')
+      component: () => import('@/pages/PartialRegistration'),
+      beforeEnter: function (to, from, next) {
+        console.log('You made it!')
+        if (to.params.jwt) {
+          // Decode the jwt
+          // Set the username
+          // Set the role
+          // Other claims do not need to be set. We don't want claims on the client-side.
+          console.log(to.params.jwt)
+          next()
+        }
+      }
     },
     {
       path: '/home',
@@ -41,7 +54,7 @@ export default new Router({
       component: () => import('@/pages/AccountAdmin')
     },
     {
-      path: '/sweepstakeadmin',
+      path: '/sweepstake-admin',
       name: 'SweepstakeAdmin',
       component: () => import('@/pages/SweepstakeAdmin')
     },

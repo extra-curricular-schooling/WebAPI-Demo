@@ -47,10 +47,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IRepositoryBase.cs" />
+    <Compile Include="Contracts\IFactory.cs" />
+    <Compile Include="Contracts\IRepositoryBase.cs" />
+    <Compile Include="Implementations\RepositoryBase.cs" />
+    <Compile Include="Implementations\RepositoryFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RepositoryFactory.cs" />
-    <Compile Include="RepositoryBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ECS.Models\ECS.Models.csproj">
@@ -59,7 +60,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

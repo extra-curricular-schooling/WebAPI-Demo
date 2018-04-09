@@ -53,13 +53,14 @@
     <Compile Include="Account.cs" />
     <Compile Include="AccountType.cs" />
     <Compile Include="Article.cs" />
+    <Compile Include="BadAccessToken.cs" />
     <Compile Include="ECSContext.cs" />
     <Compile Include="InterestTag.cs" />
     <Compile Include="JAccessToken.cs" />
     <Compile Include="LinkedInAccessToken.cs" />
-    <Compile Include="Migrations\201803302202025_ECSContext.cs" />
-    <Compile Include="Migrations\201803302202025_ECSContext.Designer.cs">
-      <DependentUpon>201803302202025_ECSContext.cs</DependentUpon>
+    <Compile Include="Migrations\201804040607497_ECSContext.cs" />
+    <Compile Include="Migrations\201804040607497_ECSContext.Designer.cs">
+      <DependentUpon>201804040607497_ECSContext.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PartialAccount.cs" />
@@ -84,8 +85,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201803302202025_ECSContext.resx">
-      <DependentUpon>201803302202025_ECSContext.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201804040607497_ECSContext.resx">
+      <DependentUpon>201804040607497_ECSContext.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

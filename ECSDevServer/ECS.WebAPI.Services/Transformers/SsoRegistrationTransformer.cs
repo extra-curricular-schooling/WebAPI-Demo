@@ -1,6 +1,4 @@
-﻿using System.Net.Http;
-using System.Web.Http.Controllers;
-using ECS.DTO;
+﻿using System.Web.Http.Controllers;
 using ECS.DTO.Sso;
 using ECS.Security.AccessTokens.Jwt;
 using ECS.Security.Hash;

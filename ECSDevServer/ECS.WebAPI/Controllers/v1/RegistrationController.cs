@@ -1,15 +1,15 @@
-﻿using System.Collections.Generic;
-using System.Web.Script.Serialization;
-using ECS.DTO;
-using ECS.Models;
+﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Web.Http;
 using System.Web.Http.Cors;
-using ECS.Repositories;
-using System;
+using System.Web.Script.Serialization;
+using ECS.DTO;
+using ECS.Models;
+using ECS.Repositories.Implementations;
 using ECS.Security.Hash;
 
-namespace ECS.WebAPI.Controllers
+namespace ECS.WebAPI.Controllers.v1
 {
     public class RegistrationController : ApiController
     {

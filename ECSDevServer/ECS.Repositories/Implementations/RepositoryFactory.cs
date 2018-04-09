@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using ECS.Models;
+﻿using ECS.Models;
+using ECS.Repositories.Contracts;
 
-namespace ECS.Repositories
+namespace ECS.Repositories.Implementations
 {
     /// <summary>
     /// Account Repository Interface for Account Models
@@ -23,6 +22,14 @@ namespace ECS.Repositories
     /// </summary>
     public interface IArticleRepository : IRepositoryBase<Article>
     {
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public interface IBadAccessTokenRepository : IRepositoryBase<BadAccessToken>
+    {
+
     }
 
     /// <summary>
@@ -146,6 +153,17 @@ namespace ECS.Repositories
     {
         public ArticleRepository() : base(new ECSContext())
         {
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public class BadAccessTokenRepository : RepositoryBase<BadAccessToken>, IBadAccessTokenRepository
+    {
+        public BadAccessTokenRepository() : base(new ECSContext())
+        {
+
         }
     }
 

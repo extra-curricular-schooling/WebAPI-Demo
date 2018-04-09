@@ -188,11 +188,11 @@ export default {
           code: this.postData.code
         }
       })
-        .then(function(response) {
-          toggleLinkedInModal();
+        .then( (response) => {
+          this.toggleLinkedInModal();
           var myNode = document.getElementById("post-url");
           myNode.href = response.data.UpdateUrl;
-          toggleConfirmModal();
+          this.toggleConfirmModal();
         })
         .catch( (error) => {
           console.log(error)
