@@ -485,7 +485,7 @@ export default {
       } else {
         axios({
           method: 'POST',
-          url: this.$store.getters.getBaseAppUrl + 'Registration/SubmitRegistration',
+          url: this.$store.getters.getBaseAppUrl + 'v1/Registration/SubmitRegistration',
           headers: this.$store.getters.getRequestHeaders,
           data: {
             'firstName': this.$data.firstName,
@@ -539,7 +539,7 @@ export default {
     fetchSecurityQuestions () {
       axios({
         method: 'GET',
-        url: this.$store.getters.getBaseAppUrl + 'Registration/GetSecurityQuestions',
+        url: this.$store.getters.getBaseAppUrl + 'v1/Registration/GetSecurityQuestions',
         headers: this.$store.getters.getRequestHeaders
       })
         .then(response => {

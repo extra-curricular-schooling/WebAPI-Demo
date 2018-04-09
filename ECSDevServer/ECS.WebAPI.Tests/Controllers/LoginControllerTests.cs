@@ -35,7 +35,7 @@ namespace ECS.WebAPI.Tests.Controllers
                 };
 
                 // Act
-                IHttpActionResult actionResult = controller.SubmitLogin(credentialsDTO);
+                IHttpActionResult actionResult = controller.Submit(credentialsDTO);
 
                 // Assert
                 Assert.IsType<OkResult>(actionResult);
