@@ -58,6 +58,10 @@
     <Compile Include="InterestTag.cs" />
     <Compile Include="JAccessToken.cs" />
     <Compile Include="LinkedInAccessToken.cs" />
+    <Compile Include="Migrations\201804091807073_ECSContext.cs" />
+    <Compile Include="Migrations\201804091807073_ECSContext.Designer.cs">
+      <DependentUpon>201804091807073_ECSContext.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PartialAccount.cs" />
     <Compile Include="PartialAccountSalt.cs" />
@@ -79,6 +83,11 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201804091807073_ECSContext.resx">
+      <DependentUpon>201804091807073_ECSContext.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -2,7 +2,7 @@
 
 namespace ECS.WebAPI.Controllers.v1
 {
-    [RoutePrefix("Sweepstake")]
+    [RoutePrefix("v1/Sweepstake")]
     public class SweepstakeController : ApiController
     {
         

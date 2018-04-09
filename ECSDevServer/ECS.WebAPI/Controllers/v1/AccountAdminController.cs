@@ -4,7 +4,7 @@ using ECS.Models;
 
 namespace ECS.WebAPI.Controllers.v1
 {
-    [RoutePrefix("AccountAdmin")]
+    [RoutePrefix("v1/AccountAdmin")]
     [EnableCors("http://localhost:8080", "*", "GET, POST, PUT")]
     public class AccountAdminController : ApiController
     {
@@ -12,6 +12,7 @@ namespace ECS.WebAPI.Controllers.v1
         // ... look at scope document
 
         [HttpGet]
+        [Route("AllScholarAccountInformation")]
         public IHttpActionResult AllScholarAccountInformation()
         {
             return Ok("Get Account Information");
@@ -20,6 +21,7 @@ namespace ECS.WebAPI.Controllers.v1
         // Filter by username??
 
         [HttpPut]
+        [Route("ScholarAccountInformation")]
         public IHttpActionResult ScholarAccountInformation(Account account)
         {
             // Check model binding
@@ -31,6 +33,7 @@ namespace ECS.WebAPI.Controllers.v1
         }
 
         [HttpPut]
+        [Route("AccountStatus")]
         public IHttpActionResult AccountStatus()
         {
             return Ok("Get Account Status");
