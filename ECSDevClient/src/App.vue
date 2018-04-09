@@ -28,7 +28,7 @@ export default {
       authorizationRequired: ['/Home', '/LinkedIn', '/account', '/sweepstakeadmin', '/account-admin', '/sweepstake'],
       currentRole: '',
       adminAuthorizationRequired: ['/account-admin', '/sweepstakeadmin', '/LinkedIn'],
-      scholarAuthorizedRequired: ['/sweepstake']
+      scholarAuthorizationRequired: ['/sweepstake']
     }
   },
   methods: {
@@ -39,13 +39,15 @@ export default {
         }
       }
     },
+    // Check users that are admins against routes that are only allowed for scholars
     checkAdminLogin () {
-      for (var path in this.adminAuthorizationRequired) {
-        if (!this.$store.getters.isAuth && this.$store.getters.getRole === 'Admin' && this.$route.path === this.adminAuthorizationRequired[path]) {
+      for (var path in this.scholarAuthorizationRequired) {
+        if (!this.$store.getters.isAuth && this.$store.getters.getRole === 'Admin' && this.$route.path === this.scholarAuthorizationRequired[path]) {
           this.$router.push('/?redirect=' + this.$route.path)
         }
       }
     },
+    // Check users that are scholars against routes that are only allowed for admins
     checkScholarLogin () {
       for (var path in this.adminAuthorizationRequired) {
         if (this.$store.getters.getRole === 'Scholar' && this.$route.path === this.adminAuthorizationRequired[path]) {
@@ -79,8 +81,6 @@ export default {
       this.checkCurrentLogin()
       this.checkCurrentRole()
     }
-    // this.checkCurrentLogin()
-    // this.checkCurrentRole()
   }
 }
 </script>
