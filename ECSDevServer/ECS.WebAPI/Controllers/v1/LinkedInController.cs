@@ -20,7 +20,7 @@ namespace ECS.WebAPI.Controllers.v1
 {
     // Had to make a custom filter for RequireHttpsAttribute
     [RequireHttps]
-    [RoutePrefix("LinkedIn")]
+    [RoutePrefix("v1/LinkedIn")]
     public class LinkedInController : ApiController
     {
 

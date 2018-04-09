@@ -17,7 +17,7 @@ namespace ECS.WebAPI.Controllers.v1
 {
     // Had to make a custom filter for RequireHttpsAttribute
     [RequireHttps]
-    [RoutePrefix("OAuth")]
+    [RoutePrefix("v1/OAuth")]
     public class OAuthController : ApiController
     {
         #region Constants and fields

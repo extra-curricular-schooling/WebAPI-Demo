@@ -12,7 +12,7 @@ using ECS.WebAPI.Services.Transformers;
 
 namespace ECS.WebAPI.Controllers.v1
 {
-    [RoutePrefix("Sso")]
+    [RoutePrefix("v1/Sso")]
     [EnableCors(origins: "*", headers: "*", methods: "GET,POST")]
     //[AuthorizeSsoAccessToken]
     public class SsoController : ApiController
@@ -54,6 +54,7 @@ namespace ECS.WebAPI.Controllers.v1
          * respond to the client
          */
         [HttpPost]
+        [Route("Registration")]
         public IHttpActionResult Registration()
         {
             // Transform request context into DTO.
@@ -92,6 +93,7 @@ namespace ECS.WebAPI.Controllers.v1
         /// </summary>
         /// <returns></returns>
         [HttpPost]
+        [Route("LoginRedirect")]
         public HttpResponseMessage LoginRedirect()
         {
             var response = Request.CreateResponse();
@@ -129,6 +131,7 @@ namespace ECS.WebAPI.Controllers.v1
         /// </summary>
         /// <remarks>Author: Scott Roberts</remarks>
         [HttpPost]
+        [Route("Login")]
         public IHttpActionResult Login()
         {
             // Transform request context into DTO.
@@ -207,6 +210,7 @@ namespace ECS.WebAPI.Controllers.v1
         }
 
         [HttpPost]
+        [Route("ResetPassword")]
         public IHttpActionResult ResetPassword()
         {
             var transformer = new SsoResetPasswordTransformer();
