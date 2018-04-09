@@ -1,7 +1,7 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace ECS.WebAPI.Services.HttpClients.Interfaces
+namespace ECS.WebAPI.HttpClients.Contracts
 {
     interface IHttpClientAsync
     {

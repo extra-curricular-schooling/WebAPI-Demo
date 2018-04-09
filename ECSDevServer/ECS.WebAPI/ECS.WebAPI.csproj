@@ -162,8 +162,18 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="HttpClients\Contracts\IHttpClient.cs" />
+    <Compile Include="HttpClients\Contracts\IHttpClientAsync.cs" />
+    <Compile Include="HttpClients\HttpClientService.cs" />
     <Compile Include="HttpMessageHandlers\DelegatingHandlers\SsoAccessTokenAuthenticationDelegatingHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Transformers\Interfaces\ISsoLoginTransformer.cs" />
+    <Compile Include="Transformers\Interfaces\ISsoRegistrationTransformer.cs" />
+    <Compile Include="Transformers\Interfaces\ISsoResetPasswordTransformer.cs" />
+    <Compile Include="Transformers\Interfaces\ITransformer.cs" />
+    <Compile Include="Transformers\SsoLoginTransformer.cs" />
+    <Compile Include="Transformers\SsoRegistrationTransformer.cs" />
+    <Compile Include="Transformers\SsoResetPasswordTransformer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -201,10 +211,6 @@
     <ProjectReference Include="..\ECS.Security\ECS.Security.csproj">
       <Project>{31f4e181-8b78-4fcf-a79c-4c50be2ab1dd}</Project>
       <Name>ECS.Security</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ECS.WebAPI.Services\ECS.WebAPI.Services.csproj">
-      <Project>{e8ff7a08-685c-4b1f-a669-3628ae5a8e01}</Project>
-      <Name>ECS.WebAPI.Services</Name>
     </ProjectReference>
     <ProjectReference Include="..\ECS.WebCrawler\ECS.WebCrawler.csproj">
       <Project>{81ae908e-f95d-42bb-ba63-3314cb7efc42}</Project>

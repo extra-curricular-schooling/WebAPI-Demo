@@ -1,7 +1,7 @@
 ﻿using System.Web.Http;
 using System.Web.Http.Cors;
 using ECS.DTO;
-using ECS.WebAPI.Services.HttpClients;
+using ECS.WebAPI.HttpClients;
 
 namespace ECS.WebAPI.Controllers.v1
 {

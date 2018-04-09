@@ -1,6 +1,6 @@
 ﻿using ECS.Repositories.Implementations;
 
-namespace ECS.BusinessLogic.ModelLogic.Implementations
+namespace ECS.BusinessLogic.EntityLogic.Implementations
 {
     public class PartialAccountLogic
     {

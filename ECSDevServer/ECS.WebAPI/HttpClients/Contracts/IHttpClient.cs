@@ -1,6 +1,6 @@
 ﻿using System.Net.Http;
 
-namespace ECS.WebAPI.Services.HttpClients.Interfaces
+namespace ECS.WebAPI.HttpClients.Contracts
 {
     interface IHttpClient
     {

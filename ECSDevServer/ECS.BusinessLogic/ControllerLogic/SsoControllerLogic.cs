@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using ECS.BusinessLogic.ModelLogic.Contracts;
-using ECS.BusinessLogic.ModelLogic.Implementations;
+using ECS.BusinessLogic.EntityLogic.Implementations;
 
 namespace ECS.BusinessLogic.ControllerLogic
 {

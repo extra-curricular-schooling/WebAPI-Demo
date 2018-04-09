@@ -4,9 +4,9 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
-using ECS.WebAPI.Services.HttpClients.Interfaces;
+using ECS.WebAPI.HttpClients.Contracts;
 
-namespace ECS.WebAPI.Services.HttpClients
+namespace ECS.WebAPI.HttpClients
 {
     // This needs some sort of locking mechanism to ensure thread safety!!!
 
