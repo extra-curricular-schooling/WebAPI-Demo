@@ -52,7 +52,7 @@ export default {
     retieveArticles: function (username) {
       Axios({
         method: 'GET',
-        url: 'https://localhost:44311/Home/' + username
+        url: 'https://localhost:44311/v1/Home/' + username
       })
         .then((response) => {
           this.groups = {}
