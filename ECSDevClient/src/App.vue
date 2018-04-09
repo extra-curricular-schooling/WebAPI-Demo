@@ -25,9 +25,9 @@ export default {
   },
   data () {
     return {
-      authorizationRequired: ['/Home', '/LinkedIn', '/account', '/sweepstakeadmin', '/accountadmin', '/sweepstake'],
+      authorizationRequired: ['/Home', '/LinkedIn', '/account', '/sweepstakeadmin', '/account-admin', '/sweepstake'],
       currentRole: '',
-      adminAuthorizationRequired: ['/sweepstakeadmin', '/accountadmin'],
+      adminAuthorizationRequired: ['/account-admin', '/sweepstakeadmin', '/LinkedIn'],
       scholarAuthorizedRequired: ['/sweepstake']
     }
   },
@@ -47,7 +47,7 @@ export default {
       }
     },
     checkScholarLogin () {
-      for (var path in this.scholarAuthorizedRequired) {
+      for (var path in this.adminAuthorizationRequired) {
         if (this.$store.getters.getRole === 'Scholar' && this.$route.path === this.adminAuthorizationRequired[path]) {
           this.$router.push('/?redirect=' + this.$route.path)
         }
@@ -64,16 +64,23 @@ export default {
     } else if (this.currentRole === 'Admin') {
       this.checkAdminLogin()
     } else {
+      this.checkCurrentLogin()
+      this.checkCurrentRole()
     }
   },
   updated () {
     if (this.$store.getters.getRole === 'Scholar') {
       this.checkScholarLogin()
+      this.checkCurrentRole()
     } else if (this.$store.getters.getRole === 'Admin') {
       this.checkAdminLogin()
+      this.checkCurrentRole()
     } else {
       this.checkCurrentLogin()
+      this.checkCurrentRole()
     }
+    // this.checkCurrentLogin()
+    // this.checkCurrentRole()
   }
 }
 </script>
