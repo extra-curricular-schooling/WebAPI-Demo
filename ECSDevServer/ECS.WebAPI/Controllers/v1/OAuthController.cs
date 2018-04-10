@@ -21,6 +21,7 @@ namespace ECS.WebAPI.Controllers.v1
     public class OAuthController : ApiController
     {
         #region Constants and fields
+        private string _externalCallBack = "~/v1/OAuth/ExternalLoginCallback";
         private readonly IAccountRepository _accountRepository = new AccountRepository();
         private readonly ILinkedInAccessTokenRepository _linkedInAccessTokenRepository = new LinkedInAccessTokenRepository();
         #endregion
@@ -102,9 +103,8 @@ namespace ECS.WebAPI.Controllers.v1
             }
 
             LinkedInOAuth2Client.RewriteRequest();
-
-            var returnUrl = "~/OAuth/ExternalLoginCallback";
-            var authResult = OpenAuth.VerifyAuthentication(returnUrl);
+            
+            var authResult = OpenAuth.VerifyAuthentication(_externalCallBack);
 
             string providerDisplayName = OpenAuth.GetProviderDisplayName(ProviderName);
 
@@ -201,7 +201,7 @@ namespace ECS.WebAPI.Controllers.v1
             if (JwtManager.Instance.ValidateToken(authtoken, out username))
             {
                 string provider = "linkedin";
-                var redirectUrl = "~/OAuth/ExternalLoginCallback?username=" + username + "&returnURI=" + HttpUtility.UrlEncode(returnURI);
+                var redirectUrl = _externalCallBack + "?username=" + username + "&returnURI=" + HttpUtility.UrlEncode(returnURI);
                 OpenAuth.RequestAuthentication(provider, redirectUrl);
                 return Ok();
             }

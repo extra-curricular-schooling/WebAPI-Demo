@@ -153,8 +153,11 @@ namespace DotNetOpenAuth.LinkedInOAuth2
 
             using (var s = webRequest.GetRequestStream())
             using (var sw = new StreamWriter(s))
+            {
                 sw.Write(postData.ToString());
-
+                sw.Flush();
+                sw.Close();
+            }
             using (var webResponse = webRequest.GetResponse())
             {
                 var responseStream = webResponse.GetResponseStream();

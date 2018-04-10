@@ -38,12 +38,6 @@ namespace ECS.WebAPI.Controllers.v1
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            // Scott's Sso check for Partial Accounts
-            //if (_partialAccountRepository.Exists(acc => acc.UserName == credentials.Username))
-            //{
-            //    return Content(HttpStatusCode.Redirect, "http://localhost:8080/#/partial-registration");
-            //}
-
             // Proccess any other information.
             if (!_accountRepository.Exists(d => d.UserName == credentials.Username))
             {

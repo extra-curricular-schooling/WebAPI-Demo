@@ -140,7 +140,7 @@ export default {
   },
   methods: {
     getLinkedInTokenUri: function () {
-      return 'https://localhost:44311/OAuth/RedirectToLinkedIn?authtoken=' +
+      return 'https://localhost:44311/v1/OAuth/RedirectToLinkedIn?authtoken=' +
           this.$store.getters.getAuthToken + '&returnuri=' + encodeURIComponent(window.location.href)
     },
     updateArticleInfo: function () {

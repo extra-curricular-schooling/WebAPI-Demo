@@ -192,6 +192,10 @@
       <Project>{565b5eea-a5a3-4a98-8b66-531fe6780ae7}</Project>
       <Name>DotNetOpenAuth.LinkedInOAuth2</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ECS.BusinessLogic\ECS.BusinessLogic.csproj">
+      <Project>{b25549a6-0263-4126-ada9-13edfddedc0f}</Project>
+      <Name>ECS.BusinessLogic</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ECS.DTO\ECS.DTO.csproj">
       <Project>{40bc80f4-7950-4a6f-b94f-c35f7081a48b}</Project>
       <Name>ECS.DTO</Name>
