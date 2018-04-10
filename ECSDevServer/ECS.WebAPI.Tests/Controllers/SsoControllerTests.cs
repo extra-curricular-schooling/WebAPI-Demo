@@ -139,6 +139,9 @@ namespace ECS.WebAPI.Tests.Controllers
                 // Arrange
                 var controller = SetupControllerWithEmptyRepoMocks();
 
+                // Garbage... Delete this later
+                var route = controllerName + "/" + actionName;
+
                 // Act
 
                 // Assert

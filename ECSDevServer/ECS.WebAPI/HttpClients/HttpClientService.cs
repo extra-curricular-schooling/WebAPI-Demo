@@ -11,11 +11,9 @@ namespace ECS.WebAPI.HttpClients
     // This needs some sort of locking mechanism to ensure thread safety!!!
 
     // Use System.net.http.httpclient to receive and request
-    public class HttpClientService: IHttpClient, IHttpClientAsync, IDisposable
+    public class HttpClientService: IHttpClient, IHttpClientAsync
     {
-        public void Dispose() { }
-
-        private readonly HttpClient _httpClient = new HttpClient();
+        private HttpClient _httpClient = new HttpClient();
 
         // Using Singleton Pattern improves the performance because only one connection is needed
         // but we can still implement interfaces.
@@ -134,5 +132,6 @@ namespace ECS.WebAPI.HttpClients
                 return default(T);
             }
         }
+
     }
 }
