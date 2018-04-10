@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccountCredentialDTO.cs" />
+    <Compile Include="AccountPasswordChangeDTO.cs" />
     <Compile Include="ArticleDTO.cs" />
     <Compile Include="SecurityQuestionDTO.cs" />
     <Compile Include="RegistrationDTO.cs" />
