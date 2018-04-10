@@ -39,9 +39,9 @@ namespace ECS.WebAPI
             // Non-default Controller Routes
             config.Routes.MapHttpRoute(
                 name: "Sso",
-                routeTemplate: "v1/{controller}/{action}/{id}",
+                routeTemplate: "{version}/{controller}/{action}/{id}",
                 defaults: new { id = RouteParameter.Optional },
-                constraints: new { controller = "Sso" },
+                constraints: new {version = "v1", controller = "Sso" },
                 handler:
                 HttpClientFactory.CreatePipeline(
                     new HttpControllerDispatcher(config),

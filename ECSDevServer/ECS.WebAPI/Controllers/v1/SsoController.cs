@@ -54,7 +54,7 @@ namespace ECS.WebAPI.Controllers.v1
          * respond to the client
          */
         [HttpPost]
-        [Route("Registration")]
+        //[Route("Registration")]
         public IHttpActionResult Registration()
         {
             // Transform request context into DTO.
@@ -135,7 +135,7 @@ namespace ECS.WebAPI.Controllers.v1
         /// </summary>
         /// <remarks>Author: Scott Roberts</remarks>
         [HttpPost]
-        [Route("Login")]
+        //[Route("Login")]
         public IHttpActionResult Login()
         {
             // Transform request context into DTO.
