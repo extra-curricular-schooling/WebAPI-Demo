@@ -205,6 +205,7 @@ namespace ECS.Models.Migrations
                         OpenDateTime = c.DateTime(nullable: false),
                         ClosedDateTime = c.DateTime(nullable: false),
                         Prize = c.String(nullable: false),
+                        Price = c.Int(nullable: false),
                         UsernameWinner = c.String(maxLength: 20),
                     })
                 .PrimaryKey(t => t.SweepStakesID);
@@ -848,11 +849,12 @@ namespace ECS.Models.Migrations
                         OpenDateTime = p.DateTime(),
                         ClosedDateTime = p.DateTime(),
                         Prize = p.String(),
+                        Price = p.Int(),
                         UsernameWinner = p.String(maxLength: 20),
                     },
                 body:
-                    @"INSERT [dbo].[SweepStake]([OpenDateTime], [ClosedDateTime], [Prize], [UsernameWinner])
-                      VALUES (@OpenDateTime, @ClosedDateTime, @Prize, @UsernameWinner)
+                    @"INSERT [dbo].[SweepStake]([OpenDateTime], [ClosedDateTime], [Prize], [Price], [UsernameWinner])
+                      VALUES (@OpenDateTime, @ClosedDateTime, @Prize, @Price, @UsernameWinner)
                       
                       DECLARE @SweepStakesID int
                       SELECT @SweepStakesID = [SweepStakesID]
@@ -872,11 +874,12 @@ namespace ECS.Models.Migrations
                         OpenDateTime = p.DateTime(),
                         ClosedDateTime = p.DateTime(),
                         Prize = p.String(),
+                        Price = p.Int(),
                         UsernameWinner = p.String(maxLength: 20),
                     },
                 body:
                     @"UPDATE [dbo].[SweepStake]
-                      SET [OpenDateTime] = @OpenDateTime, [ClosedDateTime] = @ClosedDateTime, [Prize] = @Prize, [UsernameWinner] = @UsernameWinner
+                      SET [OpenDateTime] = @OpenDateTime, [ClosedDateTime] = @ClosedDateTime, [Prize] = @Prize, [Price] = @Price, [UsernameWinner] = @UsernameWinner
                       WHERE ([SweepStakesID] = @SweepStakesID)"
             );
             

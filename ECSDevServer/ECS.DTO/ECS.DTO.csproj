@@ -51,6 +51,7 @@
     <Compile Include="Sso\SsoRegistrationDTO.cs" />
     <Compile Include="Sso\SsoResetPasswordDTO.cs" />
     <Compile Include="SweepstakeAdminDTO.cs" />
+    <Compile Include="SweepStakeEntryDTO.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
