@@ -114,7 +114,6 @@ namespace ECS.RunCrawler
             catch (TaskCanceledException e)
             {
                 Console.WriteLine(DateTime.Now + e.Task.ToString()+": "+ e.Message);
-
             }
             
             Console.WriteLine(DateTime.Now + ": Crawler Ended");

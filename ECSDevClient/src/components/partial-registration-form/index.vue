@@ -384,62 +384,62 @@ export default {
       this.agreementIsChecked = !this.agreementIsChecked
     },
     // APIs
-    // submit () {
-    //   if (!this.isValidForm()) { 
-    //     alert('It seems either your form is incomplete or some of your inputs are invalid...') 
-    //   } else if (!this.$data.agreementIsChecked) {
-    //     alert('You must agree to our Terms and Conditions to continue...')
-    //   } else {
-    //     axios({
-    //       method: 'POST',
-    //       url: this.$store.getters.getBaseAppUrl + 'Registration/FinishRegistration',
-    //       headers: this.$store.getters.getRequestHeaders,
-    //       data: {
-    //         'firstName': this.$data.firstName,
-    //         'lastName': this.$data.lastName,
-    //         'email': this.$data.email,
-    //         'address': this.$data.address,
-    //         'city': this.$data.city,
-    //         'state': this.$data.state,
-    //         'zipCode': Number(this.$data.zipCode),
-    //         'securityQuestions': [
-    //           {
-    //             'question': Number(this.$data.questionIDs[0]),
-    //             'answer': this.getSecurityAnswer(1)
-    //           },
-    //           {
-    //             'question': Number(this.$data.questionIDs[1]),
-    //             'answer': this.getSecurityAnswer(2)
-    //           },
-    //           {
-    //             'question': Number(this.$data.questionIDs[2]),
-    //             'answer': this.getSecurityAnswer(3)
-    //           }
-    //         ]
-    //       }
-    //     })
-    //       .then(response => {
-    //         console.log(response)
-    //         this.$router.push({
-    //           name: 'Home',
-    //         })
-    //       })
-    //       .catch(error => {
-    //         console.log(error.response)
-    //         this.$data.error = JSON.parse(error.response.data)
+    submit () {
+      if (!this.isValidForm()) { 
+        alert('It seems either your form is incomplete or some of your inputs are invalid...') 
+      } else if (!this.$data.agreementIsChecked) {
+        alert('You must agree to our Terms and Conditions to continue...')
+      } else {
+        axios({
+          method: 'POST',
+          url: this.$store.getters.getBaseAppUrl + 'Registration/SubmitRegistration',
+          headers: this.$store.getters.getRequestHeaders,
+          data: {
+            'firstName': this.$data.firstName,
+            'lastName': this.$data.lastName,
+            'email': this.$data.email,
+            'address': this.$data.address,
+            'city': this.$data.city,
+            'state': this.$data.state,
+            'zipCode': Number(this.$data.zipCode),
+            'securityQuestions': [
+              {
+                'question': Number(this.$data.questionIDs[0]),
+                'answer': this.getSecurityAnswer(1)
+              },
+              {
+                'question': Number(this.$data.questionIDs[1]),
+                'answer': this.getSecurityAnswer(2)
+              },
+              {
+                'question': Number(this.$data.questionIDs[2]),
+                'answer': this.getSecurityAnswer(3)
+              }
+            ]
+          }
+        })
+          .then(response => {
+            console.log(response)
+            this.$router.push({
+              name: 'Home',
+            })
+          })
+          .catch(error => {
+            console.log(error.response)
+            this.$data.error = JSON.parse(error.response.data)
 
-    //         // HTTP Status 400 - Username in request exists
-    //         if (this.$data.error.summary == 'Username Exists') {
-    //           alert('Good news!  According to our records, you already have an account with us!')
-    //         }
+            // HTTP Status 400 - Username in request exists
+            if (this.$data.error.summary == 'Username Exists') {
+              alert('Good news!  According to our records, you already have an account with us!')
+            }
 
-    //         // HTTP Status 500
-    //         if (error.response.status === 500) {
-    //           alert('We apologize.  We are unable to process your request at this time.')
-    //         }
-    //       })
-    //   }
-    // },
+            // HTTP Status 500
+            if (error.response.status === 500) {
+              alert('We apologize.  We are unable to process your request at this time.')
+            }
+          })
+      }
+    },
     fetchSecurityQuestions () {
       axios({
         method: 'GET',

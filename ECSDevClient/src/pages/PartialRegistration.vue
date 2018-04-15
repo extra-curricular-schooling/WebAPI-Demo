@@ -7,8 +7,8 @@
 </template>
 
 <script>
-import welcomeMessage from '@/components/Finish-Registration/elements/WelcomeMessage'
-import registrationForm from '@/components/Finish-Registration/index'
+import welcomeMessage from '@/components/partial-registration-form/elements/WelcomeMessage'
+import registrationForm from '@/components/partial-registration-form/index'
 
 export default {
   name: 'PartialRegistration',

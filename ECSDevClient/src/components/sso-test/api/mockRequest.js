@@ -1,6 +1,7 @@
 import axios from 'axios'
 import store from '@/store/index'
 import router from '@/router/index'
+import urlHelper from '@/assets/js/urlHelper.js'
 
 export default {
   submitRegistration: function (username, password, application) {
@@ -31,11 +32,9 @@ export default {
         console.log(response.status)
         // Testing with a 200 response to make sure the Partial Registration is working.
         if (response.status === 200) {
-          let url = JSON.stringify(response.data)
-          let urlParse = url.split('?')
-          let jwtVar = urlParse[1]
-          let jwtString = jwtVar.split('=')[1]
-          console.log(jwtString)
+          let parsedQuery = urlHelper.parseQuery(response.data)
+          console.log(parsedQuery)
+          let jwtString = parsedQuery['jwt']
           router.push({
             name: 'PartialRegistration',
             params: {

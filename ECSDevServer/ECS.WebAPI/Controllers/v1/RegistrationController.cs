@@ -169,12 +169,6 @@ namespace ECS.WebAPI.Controllers.v1
             }
         }
 
-        [Route("SubmitPartialRegistration")]
-        public IHttpActionResult SubmitPartialRegistration(RegistrationDTO registrationDto)
-        {
-            return Content(HttpStatusCode.NotImplemented, "Working on it...");
-        }
-
         /// <summary>
         /// Method accepts request to submit incomplete form using the POST method over HTTP
         /// </summary>

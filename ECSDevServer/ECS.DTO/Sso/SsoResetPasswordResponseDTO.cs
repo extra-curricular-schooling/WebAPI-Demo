@@ -6,10 +6,7 @@ using System.Threading.Tasks;
 
 namespace ECS.DTO.Sso
 {
-    public class SsoLoginDTO
+    public class SsoResetPasswordResponseDTO
     {
-        public string Username { get; set; }
-        
-        public string Password { get; set; }
     }
 }

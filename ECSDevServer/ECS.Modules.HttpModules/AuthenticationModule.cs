@@ -75,6 +75,7 @@ namespace ECS.Modules.HttpModules
                         "content-type," +
                         "referer," +
                         "X-Requested-With");
+                    app.Response.AddHeader("Access-Control-Expose-Headers", "location");
                     app.Response.AddHeader("Access-Control-Allow-Origin", request.Headers["Origin"]);
                     app.Response.AddHeader("Access-Control-Allow-Credentials", "true");
                     app.Response.AddHeader("Access-Control-Allow-Methods", "POST,GET,OPTIONS");

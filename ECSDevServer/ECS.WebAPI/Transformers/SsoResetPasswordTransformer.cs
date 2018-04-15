@@ -8,13 +8,13 @@ namespace ECS.WebAPI.Services.Transformers
 {
     public class SsoResetPasswordTransformer : ISsoResetPasswordTransformer
     {
-        public SsoResetPasswordDTO Fetch(HttpRequestContext context)
+        public SsoResetPasswordRequestDTO Fetch(HttpRequestContext context)
         {
             var username = SsoJwtManager.Instance.GetClaimValue(context.Principal, "username");
             var newPassword = SsoJwtManager.Instance.GetClaimValue(context.Principal, "password");
             var passwordSalt = HashService.Instance.CreateSaltKey();
             var hashedNewPassword = HashService.Instance.HashPasswordWithSalt(passwordSalt, newPassword, true);
-            return new SsoResetPasswordDTO
+            return new SsoResetPasswordRequestDTO
             {
                 Username = username,
                 NewPassword = newPassword,

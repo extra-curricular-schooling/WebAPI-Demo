@@ -79,6 +79,7 @@ namespace ECS.WebAPI.HttpMessageHandlers.DelegatingHandlers
                 // the request is authenticated.
                 Thread.CurrentPrincipal = principal;
                 HttpContext.Current.User = principal;
+           
 
             }
             catch (Exception e)
@@ -97,6 +98,8 @@ namespace ECS.WebAPI.HttpMessageHandlers.DelegatingHandlers
             //    ExpiredTokenValue = token,
             //    CanReuse = true
             //});
+
+
 
             return base.SendAsync(request, cancellationToken);
         }

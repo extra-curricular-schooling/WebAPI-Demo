@@ -30,8 +30,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ControllerLogic\Implementations\AccountControllerLogic.cs" />
+    <Compile Include="ControllerLogic\Implementations\SsoControllerLogic.cs" />
+    <Compile Include="ModelLogic\Contracts\IAccountLogic.cs" />
     <Compile Include="ModelLogic\Contracts\ILinkedinLogic.cs" />
+    <Compile Include="ModelLogic\Contracts\IModelLogic.cs" />
+    <Compile Include="ModelLogic\Implementations\AccountLogic.cs" />
+    <Compile Include="ModelLogic\Implementations\ExpiredAccessTokenLogic.cs" />
+    <Compile Include="ModelLogic\Implementations\JAccessTokenLogic.cs" />
     <Compile Include="ModelLogic\Implementations\LinkedinLogic.cs" />
+    <Compile Include="ModelLogic\Implementations\PartialAccountLogic.cs" />
+    <Compile Include="ModelLogic\Implementations\PartialAccountSaltLogic.cs" />
+    <Compile Include="ModelLogic\Implementations\SaltLogic.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ECS.DTO\ECS.DTO.csproj">
@@ -46,12 +56,17 @@
       <Project>{84b9525b-6d65-493c-8bc5-61ce7ab8c325}</Project>
       <Name>ECS.Repositories</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ECS.Security\ECS.Security.csproj">
+      <Project>{31F4E181-8B78-4FCF-A79C-4C50BE2AB1DD}</Project>
+      <Name>ECS.Security</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Http">
@@ -62,6 +77,9 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ControllerLogic\Contracts\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

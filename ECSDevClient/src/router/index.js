@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import jwtHelper from 'jsonwebtoken'
+import moment from 'moment'
 
 Vue.use(Router)
 
@@ -29,11 +31,16 @@ export default new Router({
       beforeEnter: function (to, from, next) {
         console.log('You made it!')
         if (to.params.jwt) {
+          let jwt = to.params.jwt
           // Decode the jwt
+          let decoded = jwtHelper.decode(jwt)
+          if (decoded['exp'] >= moment.moment()) {
+            console.log(decoded)
+          }
+          console.log(decoded)
           // Set the username
           // Set the role
           // Other claims do not need to be set. We don't want claims on the client-side.
-          console.log(to.params.jwt)
           next()
         }
       }

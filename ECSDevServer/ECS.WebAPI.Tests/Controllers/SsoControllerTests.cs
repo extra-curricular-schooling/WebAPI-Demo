@@ -67,8 +67,8 @@ namespace ECS.WebAPI.Tests.Controllers
             var saltRepository = new Mock<ISaltRepository>();
             var partialAccountSaltRepository = new Mock<IPartialAccountSaltRepository>();
             var expiredAccessTokenRepository = new Mock<IExpiredAccessTokenRepository>();
-            var controller = new SsoController(accountRepository.Object, partialAccountRepository.Object, jwtRepository.Object, 
-                saltRepository.Object, expiredAccessTokenRepository.Object, partialAccountSaltRepository.Object);
+            // TODO: @Scott Add business logic dependency to the controller setup test cases.
+            var controller = new SsoController();
             return controller;
         }
 

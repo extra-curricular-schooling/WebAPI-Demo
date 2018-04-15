@@ -1,13 +1,10 @@
-﻿using System.Net.Http;
-using System.Web.Http;
-using System.Web.Http.Controllers;
-using ECS.DTO;
+﻿using System.Web.Http.Controllers;
 using ECS.DTO.Sso;
 
-namespace ECS.WebAPI.Services.Transformers.Interfaces
+namespace ECS.WebAPI.Transformers.Interfaces
 {
     interface ISsoRegistrationTransformer
     {
-        SsoRegistrationDTO Fetch(HttpRequestContext context);
+        SsoRegistrationRequestDTO Fetch(HttpRequestContext context);
     }
 }

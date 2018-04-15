@@ -6,6 +6,6 @@ namespace ECS.WebAPI.Services.Transformers.Interfaces
 {
     interface ISsoResetPasswordTransformer
     {
-        SsoResetPasswordDTO Fetch(HttpRequestContext context);
+        SsoResetPasswordRequestDTO Fetch(HttpRequestContext context);
     }
 }

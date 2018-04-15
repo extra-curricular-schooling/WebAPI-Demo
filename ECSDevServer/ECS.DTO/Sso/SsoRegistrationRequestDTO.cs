@@ -1,6 +1,6 @@
 ﻿namespace ECS.DTO.Sso
 {
-    public class SsoRegistrationDTO
+    public class SsoRegistrationRequestDTO
     {
         public string Username { get; set; }
 
