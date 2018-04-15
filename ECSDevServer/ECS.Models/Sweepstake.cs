@@ -31,6 +31,9 @@ namespace ECS.Models
         [Required]
         public string Prize { get; set; }
 
+        [Required]
+        public int Price { get; set; }
+
         // The winner chosen for a sweepstakes.  Randomizer logic does not take place here.
         [Display(Name = "Username Winner")]
         [StringLength(20, MinimumLength = 5, ErrorMessage = "Username must be between 5-20 characters"), DisplayFormat(NullDisplayText = "No winner")]

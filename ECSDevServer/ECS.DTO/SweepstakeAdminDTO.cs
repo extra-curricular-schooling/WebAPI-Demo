@@ -17,5 +17,7 @@ namespace ECS.DTO
         public string UsernameWinner { get; set; }
 
         public int SweepStakesID { get; set; }
+
+        public int Price { get; set; }
     }
 }

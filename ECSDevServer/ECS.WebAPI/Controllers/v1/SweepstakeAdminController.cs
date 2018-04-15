@@ -2,6 +2,7 @@
 using System.Web.Http.Cors;
 using ECS.Models;
 using ECS.Repositories.Implementations;
+using ECS.DTO;
 
 namespace ECS.WebAPI.Controllers.v1
 {
@@ -9,9 +10,11 @@ namespace ECS.WebAPI.Controllers.v1
     public class SweepstakeAdminController : ApiController
     {
         private AccountRepository account;
+        private readonly ISweepStakeRepository sweepStakeRepository;
         public SweepstakeAdminController()
         {
             account = new AccountRepository();
+            sweepStakeRepository = new SweepStakeRepository();
         }
 
         /// <summary>
@@ -47,6 +50,24 @@ namespace ECS.WebAPI.Controllers.v1
 
             // Return successful response if update correctly.
             return Ok("Post Scholar Points");
+        }
+        [HttpPost]
+        [Route("submitSweepstake")]
+        //[EnableCors("http://localhost:8080", "*", "POST")]
+        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
+        public IHttpActionResult submitSweepstake(SweepstakeAdminDTO sweepstakeSet)
+        {
+            SweepStake sweep = new SweepStake()
+            {
+                SweepStakesID = sweepstakeSet.SweepStakesID,
+                OpenDateTime = sweepstakeSet.OpenDateTime,
+                ClosedDateTime = sweepstakeSet.ClosedDateTime,
+                Prize = sweepstakeSet.Prize,
+                UsernameWinner = sweepstakeSet.UsernameWinner,
+                Price = sweepstakeSet.Price,
+            };
+            sweepStakeRepository.Insert(sweep);
+            return Ok("Post Sweepstake by Admin");
         }
     }
 }
