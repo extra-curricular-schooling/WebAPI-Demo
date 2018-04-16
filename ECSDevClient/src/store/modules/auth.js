@@ -4,7 +4,17 @@ export const auth = {
     isAuthenticated: false,
     role: '',
     username: '',
-    validIssuers: ['https://localhost:44311/', 'https://sso.com/']
+    validClaimNames: [
+      'iat',
+      'nbf',
+      'exp',
+      'role',
+      'unique_name'
+    ],
+    validIssuers: [
+      'https://localhost:44311/',
+      'https://sso.com/'
+    ]
   },
   getters: {
     getAuthToken: function (state) {
@@ -21,6 +31,9 @@ export const auth = {
     },
     getValidIssuers: (state) => {
       return state.validIssuers
+    },
+    getValidClaimNames: (state) => {
+      return state.validClaimNames
     }
   },
   mutations: {
@@ -54,6 +67,11 @@ export const auth = {
     },
     updateUsername: function ({commit}, payload) {
       commit('setUsername', payload)
+    },
+    // Not clean yet.
+    updateClaims: function ({commit}, claims) {
+      commit('setRole', claims['role'])
+      commit('setUsername', claims['username'])
     }
   }
 }

@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ECS.Validation
+namespace ECS.Validation.Validators.Contracts
 {
-    public class Class1
+    public interface IValidator
     {
+        bool Validate();
     }
 }

@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import jwtHelper from 'jsonwebtoken'
-import moment from 'moment'
+// import jwtService from '@/assets/js/jwtService.js'
+// import moment from 'moment'
 
 Vue.use(Router)
 
@@ -24,7 +24,6 @@ export default new Router({
       component: () => import('@/pages/Registration')
     },
     {
-      // Put in :jwt
       path: '/partial-registration/:jwt',
       name: 'PartialRegistration',
       component: () => import('@/pages/PartialRegistration'),
@@ -32,15 +31,10 @@ export default new Router({
         console.log('You made it!')
         if (to.params.jwt) {
           let jwt = to.params.jwt
+          console.log(jwt)
           // Decode the jwt
-          let decoded = jwtHelper.decode(jwt)
-          if (decoded['exp'] >= moment.moment()) {
-            console.log(decoded)
-          }
-          console.log(decoded)
           // Set the username
           // Set the role
-          // Other claims do not need to be set. We don't want claims on the client-side.
           next()
         }
       }

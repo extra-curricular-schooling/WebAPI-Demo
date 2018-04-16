@@ -392,11 +392,12 @@ export default {
       } else {
         axios({
           method: 'POST',
-          url: this.$store.getters.getBaseAppUrl + 'Registration/SubmitRegistration',
+          url: this.$store.getters.getBaseAppUrl + 'Registration/SubmitPartialRegistration',
           headers: this.$store.getters.getRequestHeaders,
           data: {
             'firstName': this.$data.firstName,
             'lastName': this.$data.lastName,
+            'username': this.$store.getters.getUsername,
             'email': this.$data.email,
             'address': this.$data.address,
             'city': this.$data.city,

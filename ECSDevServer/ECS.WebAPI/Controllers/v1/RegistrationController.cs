@@ -169,15 +169,160 @@ namespace ECS.WebAPI.Controllers.v1
             }
         }
 
+        
+
         /// <summary>
         /// Method accepts request to submit incomplete form using the POST method over HTTP
         /// </summary>
         [HttpPost]
-        [Route("FinishRegistration")]
+        [Route("SubmitPartialRegistration")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
-        public IHttpActionResult FinishRegistration(RegistrationDTO registrationForm)
+        public IHttpActionResult SubmitPartialRegistration(RegistrationDTO registrationForm)
         {
-            return Ok();
+            var partialAccountRepository = new PartialAccountRepository();
+            var partialAccountSaltRepository = new PartialAccountSaltRepository();
+
+            Validate(registrationForm);
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            
+
+            // Make custom error validator to make sure all values are not null... This is only the start.
+
+            // The only difference is the password.
+            if (registrationForm.FirstName == null || 
+                registrationForm.LastName == null ||
+                registrationForm.Username == null ||
+                registrationForm.Password != null ||
+                registrationForm.Email == null ||
+                registrationForm.SecurityQuestions[0].Answer == null ||
+                registrationForm.SecurityQuestions[1].Answer == null ||
+                registrationForm.SecurityQuestions[2].Answer == null)
+                return BadRequest("Improper Request"); 
+
+            // Check if user already exists
+            var partialAccountModel = partialAccountRepository.GetSingle(d => d.UserName == registrationForm.Username);
+            if (partialAccountModel == null)
+            {
+                return BadRequest("Account does not exist.");
+            }
+
+            // Retrieve Salt
+            var partialAccountSaltModel =
+                partialAccountSaltRepository.GetSingle(dataSalt => dataSalt.UserName == registrationForm.Username);
+            if (partialAccountSaltModel == null)
+            {
+                return InternalServerError(new NullReferenceException("PartialAccount salt does not exist"));
+            }
+
+            // Temporary Objects
+            List<ZipLocation> zipLocations = new List<ZipLocation>
+            {
+                new ZipLocation
+                {
+                    ZipCode = registrationForm.ZipCode.ToString(),
+                    Address = registrationForm.Address,
+                    City = registrationForm.City,
+                    State = registrationForm.State
+                }
+            };
+
+            // TODO: @Scott Change the salts for each of the hashed answers. They should all be different.
+            var hashedAnswer1 = HashService.Instance.HashPasswordWithSalt(partialAccountSaltModel.PasswordSalt, registrationForm.SecurityQuestions[0].Answer, true);
+            var hashedAnswer2 = HashService.Instance.HashPasswordWithSalt(partialAccountSaltModel.PasswordSalt, registrationForm.SecurityQuestions[1].Answer, true);
+            var hashedAnswer3 = HashService.Instance.HashPasswordWithSalt(partialAccountSaltModel.PasswordSalt, registrationForm.SecurityQuestions[2].Answer, true);
+
+            List<SecurityQuestionAccount> securityQuestionAccountListObj = new List<SecurityQuestionAccount>
+            {
+                new SecurityQuestionAccount
+                {
+                    Answer = hashedAnswer1,
+                    SecurityQuestionID = registrationForm.SecurityQuestions[0].Question,
+                    Username = registrationForm.Username
+                },
+                new SecurityQuestionAccount
+                {
+                    Answer = hashedAnswer2,
+                    SecurityQuestionID = registrationForm.SecurityQuestions[1].Question,
+                    Username = registrationForm.Username
+                },
+                new SecurityQuestionAccount
+                {
+                    Answer = hashedAnswer3,
+                    SecurityQuestionID = registrationForm.SecurityQuestions[2].Question,
+                    Username = registrationForm.Username
+                }
+            };
+
+            // DTO to Model
+            UserProfile user = new UserProfile()
+            {
+                Email = registrationForm.Email,
+                FirstName = registrationForm.FirstName,
+                LastName = registrationForm.LastName,
+                ZipLocations = zipLocations
+            };
+
+            // Rehash not needed.
+            // var hashedPassword = HashService.Instance.HashPasswordWithSalt(mySalt, registrationForm.Password, true);
+
+            Account account = new Account()
+            {
+                UserName = partialAccountModel.UserName,
+                Email = registrationForm.Email,
+                Password = partialAccountSaltModel.PasswordSalt,
+                Points = 0,
+                AccountStatus = true,
+                SuspensionTime = DateTime.UtcNow,  // TODO: @Trish
+                FirstTimeUser = true,
+                // SecurityAnswers = securityQuestionAccountListObj
+            };
+
+            // user.Account = account;
+
+            Salt salt = new Salt()
+            {
+                PasswordSalt = partialAccountSaltModel.PasswordSalt,
+                UserName = registrationForm.Username,
+                // Account = account
+            };
+
+            Validate(registrationForm);
+
+            try
+            {
+                // Enter new User and Account
+
+                //_userRepository.Insert(user);
+                _accountRepository.Insert(account);
+                _saltRepository.Insert(salt);
+
+                // Delete old Partial Account 
+
+                partialAccountSaltRepository.Delete(partialAccountSaltModel);
+                partialAccountRepository.Delete(partialAccountModel);
+
+                return Ok();
+
+            } catch (Exception ex)
+            {
+                string summary = "Data Access Error";
+                string source = ex.Source;
+                string message = ex.Message;
+                string stackTrace = ex.StackTrace;
+
+                var error = new
+                {
+                    summary,
+                    source,
+                    message,
+                    stackTrace
+                };
+
+                return Content(HttpStatusCode.InternalServerError, error);
+            }
         }
 
         /// <summary>
