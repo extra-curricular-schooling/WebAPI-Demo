@@ -539,7 +539,7 @@ export default {
     fetchSecurityQuestions () {
       axios({
         method: 'GET',
-        url: this.$store.getters.getBaseAppUrl + 'v1/Registration/GetSecurityQuestions',
+        url: this.$store.getters.getBaseAppUrl + 'Registration/GetSecurityQuestions',
         headers: this.$store.getters.getRequestHeaders
       })
         .then(response => {
