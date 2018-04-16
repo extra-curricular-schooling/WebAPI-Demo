@@ -1,5 +1,7 @@
 <template>
 <div class="SweepstakeAdminPage">
+  <!-- make logic where the admin can only post one sweepstake at a t time untill or unless one sweepstake
+  is closed. give an error if the admin tries to post again -->
     <h1>Admin Page to Set Sweepstake Settings</h1>
     <h2>Admin Can Set Sweepstake Open/Close Date, Sweepstake ID, Ticket Price, & Prize.</h2>
     <div class="dates">
@@ -12,7 +14,7 @@
       <!-- <template v-if="OpenDateTime>ClosedDateTime">
         <p>Wrong Close Date Entered: {{ClosedDateTime}}</p>
       </template> -->
-      <!-- make Something more pretty here -->
+      <!-- use business logic to check this -->
       <p v-if="OpenDateTime>ClosedDateTime">Wrong Close Date Entered</p>
     </div>
     <div class="settings">
@@ -68,14 +70,13 @@ export default {
           'ClosedDateTime': this.$data.ClosedDateTime,
           'Prize': this.$data.Prize,
           'Price': this.$data.Price,
-          'UsernameWinner': this.$data.UsernameWinner // can be cut out
+          'UsernameWinner': this.$data.UsernameWinner
         }
       })
         .then(response => {
           console.log(response)
           this.$router.push({
             name: 'SweepstakeAdmin'
-            // params: { isSuccess: true }
           })
         })
         .catch(error => {
@@ -91,9 +92,7 @@ export default {
       alert(winningTicket)
       return winningTicket
       // generate the random number which is total number of tickets = sweepstakes id.
-      // look at the corresponding username and notify that user
-      //   in this need to create randomizer by calling all the tickets in the sweepstake
-      //   use the total number of tickets and find one number than match the number with the userID
+      // look at the corresponding username and notify that user and post it to the sweepstake table
     }
   }
 }
