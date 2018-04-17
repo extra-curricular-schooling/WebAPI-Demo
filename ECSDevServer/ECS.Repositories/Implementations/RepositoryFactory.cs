@@ -115,7 +115,7 @@ namespace ECS.Repositories.Implementations
     /// <summary>
     /// 
     /// </summary>
-    public interface IUserRepository : IRepositoryBase<UserProfile>
+    public interface IUserProfileRepository : IRepositoryBase<UserProfile>
     {
     }
 
@@ -284,9 +284,9 @@ namespace ECS.Repositories.Implementations
     /// <summary>
     /// 
     /// </summary>
-    public class UserRepository : RepositoryBase<UserProfile>, IUserRepository
+    public class UserProfileRepository : RepositoryBase<UserProfile>, IUserProfileRepository
     {
-        public UserRepository() : base(new ECSContext())
+        public UserProfileRepository() : base(new ECSContext())
         {
         }
     }

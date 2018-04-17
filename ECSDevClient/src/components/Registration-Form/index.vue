@@ -515,10 +515,10 @@ export default {
         })
           .then(response => {
             console.log(response)
-            this.$router.push({
-              name: 'Main',
-              params: { isSuccess: true } 
-            })
+            // this.$router.push({
+            //   name: 'Main',
+            //   params: { isSuccess: true } 
+            // })
           })
           .catch(error => {
             console.log(error.response)
