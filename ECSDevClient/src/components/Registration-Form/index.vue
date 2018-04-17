@@ -515,17 +515,19 @@ export default {
         })
           .then(response => {
             console.log(response)
-            // this.$router.push({
-            //   name: 'Main',
-            //   params: { isSuccess: true } 
-            // })
+            if (response.status === 200) {
+              this.$router.push({
+                name: 'Main',
+                params: { isSuccess: true } 
+              })
+            }
           })
           .catch(error => {
             console.log(error.response)
-            this.$data.error = JSON.parse(error.response.data)
+            //this.$data.error = JSON.parse(error.response.data)
 
-            // HTTP Status 400 - Username in request exists
-            if (this.$data.error.summary == 'Username Exists') {
+            // HTTP Status 409
+            if (error.response.status === 409) {
               alert('Good news!  According to our records, you already have an account with us!')
             }
 

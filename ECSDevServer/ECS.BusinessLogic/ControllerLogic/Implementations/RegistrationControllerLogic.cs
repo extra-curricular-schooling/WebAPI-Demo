@@ -45,6 +45,166 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
             _userProfileLogic = userProfileLogic;
         }
 
+        public HttpResponseMessage Registration(RegistrationDTO registrationForm)
+        {
+
+            // Check if user already exists
+            if (_accountLogic.Exists(registrationForm.Username))
+            {
+                return new HttpResponseMessage
+                {
+                    ReasonPhrase = "Username Exists",
+                    StatusCode = HttpStatusCode.Conflict
+                };
+
+                //string summary = "Username Exists";
+                //var error = new
+                //{
+                //    summary
+                //};
+
+                //return Content(HttpStatusCode.BadRequest, new JavaScriptSerializer().Serialize(error));
+            }
+
+            // Create Salts
+            var pSalt = HashService.Instance.CreateSaltKey();
+            var aSalt1 = HashService.Instance.CreateSaltKey();
+            var aSalt2 = HashService.Instance.CreateSaltKey();
+            var aSalt3 = HashService.Instance.CreateSaltKey();
+
+            var hashedPassword = HashService.Instance.HashPasswordWithSalt(pSalt, registrationForm.Password, true);
+
+            var hashedAnswer1 = HashService.Instance.HashPasswordWithSalt(aSalt1, registrationForm.SecurityQuestions[0].Answer, true);
+            var hashedAnswer2 = HashService.Instance.HashPasswordWithSalt(aSalt2, registrationForm.SecurityQuestions[1].Answer, true);
+            var hashedAnswer3 = HashService.Instance.HashPasswordWithSalt(aSalt3, registrationForm.SecurityQuestions[2].Answer, true);
+
+
+            // Temporary Collections
+            List<SaltSecurityAnswer> saltSecurityAnswers = new List<SaltSecurityAnswer>
+            {
+                new SaltSecurityAnswer
+                {
+                    SaltValue = aSalt1,
+                    UserName = registrationForm.Username,
+                    SecurityQuestionID = registrationForm.SecurityQuestions[0].Question
+                },
+                new SaltSecurityAnswer
+                {
+                    SaltValue = aSalt2,
+                    UserName = registrationForm.Username,
+                    SecurityQuestionID = registrationForm.SecurityQuestions[1].Question
+                },
+                new SaltSecurityAnswer
+                {
+                    SaltValue = aSalt3,
+                    UserName = registrationForm.Username,
+                    SecurityQuestionID = registrationForm.SecurityQuestions[2].Question
+                },
+            };
+
+            List<SecurityQuestionAccount> securityAnswers = new List<SecurityQuestionAccount>
+            {
+                new SecurityQuestionAccount
+                {
+                    Answer = hashedAnswer1,
+                    SecurityQuestionID = registrationForm.SecurityQuestions[0].Question,
+                    Username = registrationForm.Username
+                },
+                new SecurityQuestionAccount
+                {
+                    Answer = hashedAnswer2,
+                    SecurityQuestionID = registrationForm.SecurityQuestions[1].Question,
+                    Username = registrationForm.Username
+                },
+                new SecurityQuestionAccount
+                {
+                    Answer = hashedAnswer3,
+                    SecurityQuestionID = registrationForm.SecurityQuestions[2].Question,
+                    Username = registrationForm.Username
+                }
+            };
+
+            // ACCOUNTTYPE
+            //List<AccountType> accountTypes = new List<AccountType>
+            //{
+            //    new AccountType()
+            //    {
+            //        PermissionName = "canEditInformation",
+            //        Username = registrationForm.Username
+            //    },
+            //    new AccountType()
+            //    {
+            //        PermissionName = "canViewArticle",
+            //        Username = registrationForm.Username
+            //    },
+            //    new AccountType()
+            //    {
+            //        PermissionName = "canEnterRaffle",
+            //        Username = registrationForm.Username
+            //    }
+            //};
+
+            List<ZipLocation> zipLocations = new List<ZipLocation>
+            {
+                new ZipLocation
+                {
+                    ZipCode = registrationForm.ZipCode.ToString(),
+                    Address = registrationForm.Address,
+                    City = registrationForm.City,
+                    State = registrationForm.State
+                }
+            };
+
+            // DTO to Models
+            Account account = new Account
+            {
+                UserName = registrationForm.Username,
+                Email = registrationForm.Email,
+                Password = hashedPassword,
+                Points = 0,
+                AccountStatus = true,
+                SuspensionTime = DateTime.UtcNow,  // TODO: @Trish
+                FirstTimeUser = true,
+                SecurityAnswers = securityAnswers,
+                AccountTags = new List<InterestTag>(),
+                SaltSecurityAnswers = saltSecurityAnswers
+            };
+
+            UserProfile user = new UserProfile()
+            {
+                Email = registrationForm.Email,
+                FirstName = registrationForm.FirstName,
+                LastName = registrationForm.LastName,
+                ZipLocations = zipLocations,
+                Account = account
+            };
+
+            Salt salt = new Salt()
+            {
+                PasswordSalt = pSalt,
+                UserName = registrationForm.Username
+            };
+
+
+
+            try
+            {
+                _userProfileLogic.Create(user);
+                _saltLogic.Create(salt);
+
+                return new HttpResponseMessage(HttpStatusCode.OK);
+
+            }
+            catch (Exception ex)
+            {   
+                return new HttpResponseMessage
+                {
+                    ReasonPhrase = ex.Message,
+                    StatusCode = HttpStatusCode.InternalServerError
+                };
+            }
+        }
+
         public HttpResponseMessage FinishRegistration(RegistrationDTO registrationForm)
         {
             // Fetch: Check if user already exists
@@ -154,22 +314,22 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
             }
             catch (Exception ex)
             {
-                string summary = "Data Access Error";
-                string source = ex.Source;
-                string message = ex.Message;
-                string stackTrace = ex.StackTrace;
+                //string summary = "Data Access Error";
+                //string source = ex.Source;
+                //string message = ex.Message;
+                //string stackTrace = ex.StackTrace;
 
-                var error = new
-                {
-                    summary,
-                    source,
-                    message,
-                    stackTrace
-                };
+                //var error = new
+                //{
+                //    summary,
+                //    source,
+                //    message,
+                //    stackTrace
+                //};
 
                 return new HttpResponseMessage
                 {
-                    ReasonPhrase = message,
+                    ReasonPhrase = ex.Message,
                     StatusCode = HttpStatusCode.InternalServerError
                 };
             }
