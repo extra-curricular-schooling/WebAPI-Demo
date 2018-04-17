@@ -4,6 +4,7 @@ using System.Net;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using System.Web.Script.Serialization;
+using ECS.BusinessLogic.ControllerLogic.Implementations;
 using ECS.DTO;
 using ECS.Models;
 using ECS.Repositories.Implementations;
@@ -14,25 +15,31 @@ namespace ECS.WebAPI.Controllers.v1
     [RoutePrefix("v1/Registration")]
     public class RegistrationController : ApiController
     {
+        // TODO: @Scott Try to make the controller logic follow interfaces (like a transformer: fetch and send)
+        private readonly RegistrationControllerLogic _controllerLogic;
+        
         private readonly IAccountRepository _accountRepository;
-        private readonly IUserRepository _userRepository;
+        private readonly IUserProfileRepository _userProfileRepository;
         private readonly ISecurityQuestionRepository _securityQuestionRepository;
         private readonly ISaltRepository _saltRepository;
 
         public RegistrationController()
         {
+            _controllerLogic = new RegistrationControllerLogic();
             _accountRepository = new AccountRepository();
-            _userRepository = new UserRepository();
+            _userProfileRepository = new UserProfileRepository();
             _securityQuestionRepository = new SecurityQuestionRepository();
             _saltRepository = new SaltRepository();
         }
 
-        public RegistrationController(IAccountRepository accountRepo, IUserRepository userRepo, ISecurityQuestionRepository securityQuestionRepo, ISaltRepository saltRepo)
+        public RegistrationController(IAccountRepository accountRepo, IUserProfileRepository userRepo, 
+            ISecurityQuestionRepository securityQuestionRepo, ISaltRepository saltRepo, RegistrationControllerLogic controllerLogic)
         {
             _accountRepository = accountRepo;
-            _userRepository = userRepo;
+            _userProfileRepository = userRepo;
             _securityQuestionRepository = securityQuestionRepo;
             _saltRepository = saltRepo;
+            _controllerLogic = controllerLogic;
         }
 
         /// <summary>
@@ -58,116 +65,14 @@ namespace ECS.WebAPI.Controllers.v1
                 registrationForm.SecurityQuestions[0].Answer == null ||
                 registrationForm.SecurityQuestions[1].Answer == null ||
                 registrationForm.SecurityQuestions[2].Answer == null)
-                return BadRequest("Improper Request"); 
+                return BadRequest("Improper Request");
 
-            // Check if user already exists
-            if (_accountRepository.Exists(d => d.UserName == registrationForm.Username))
-            {
-                string summary = "Username Exists";
-                var error = new
-                {
-                    summary
-                };
+            var response = _controllerLogic.Registration(registrationForm);
+            IHttpActionResult actionResultResponse = ResponseMessage(response);
 
-                return Content(HttpStatusCode.BadRequest, new JavaScriptSerializer().Serialize(error));
-            }
-
-            // Create Salt
-            var mySalt = HashService.Instance.CreateSaltKey();
-
-            // Temporary Objects
-            List<ZipLocation> zipLocationListObj = new List<ZipLocation>
-            {
-                new ZipLocation
-                {
-                    ZipCode = registrationForm.ZipCode.ToString(),
-                    Address = registrationForm.Address,
-                    City = registrationForm.City,
-                    State = registrationForm.State
-                }
-            };
-
-            var hashedAnswer1 = HashService.Instance.HashPasswordWithSalt(mySalt, registrationForm.SecurityQuestions[0].Answer, true);
-            var hashedAnswer2 = HashService.Instance.HashPasswordWithSalt(mySalt, registrationForm.SecurityQuestions[1].Answer, true);
-            var hashedAnswer3 = HashService.Instance.HashPasswordWithSalt(mySalt, registrationForm.SecurityQuestions[2].Answer, true);
-
-            List<SecurityQuestionAccount> securityQuestionAccountListObj = new List<SecurityQuestionAccount>
-            {
-                new SecurityQuestionAccount
-                {
-                    Answer = hashedAnswer1,
-                    SecurityQuestionID = registrationForm.SecurityQuestions[0].Question,
-                    Username = registrationForm.Username
-                },
-                new SecurityQuestionAccount
-                {
-                    Answer = hashedAnswer2,
-                    SecurityQuestionID = registrationForm.SecurityQuestions[1].Question,
-                    Username = registrationForm.Username
-                },
-                new SecurityQuestionAccount
-                {
-                    Answer = hashedAnswer3,
-                    SecurityQuestionID = registrationForm.SecurityQuestions[2].Question,
-                    Username = registrationForm.Username
-                }
-            };
-
-            // DTO to Model
-            UserProfile user = new UserProfile()
-            {
-                Email = registrationForm.Email,
-                FirstName = registrationForm.FirstName,
-                LastName = registrationForm.LastName,
-                ZipLocations = zipLocationListObj
-            };
-
-            var hashedPassword = HashService.Instance.HashPasswordWithSalt(mySalt, registrationForm.Password, true);
-
-            Account account = new Account()
-            {
-                UserName = registrationForm.Username,
-                Email = registrationForm.Email,
-                Password = hashedPassword,
-                Points = 0,
-                AccountStatus = true,
-                SuspensionTime = DateTime.UtcNow,  // TODO: @Trish
-                FirstTimeUser = true,
-                SecurityAnswers = securityQuestionAccountListObj
-            };
-
-            Salt salt = new Salt()
-            {
-                PasswordSalt = mySalt,
-                UserName = registrationForm.Username,
-            };
-
-            try
-            {
-                _userRepository.Insert(user);
-                _accountRepository.Insert(account);
-                _saltRepository.Insert(salt);
-
-                return Ok();
-
-            } catch (Exception ex)
-            {
-                string summary = "Data Access Error";
-                string source = ex.Source;
-                string message = ex.Message;
-                string stackTrace = ex.StackTrace;
-
-                var error = new
-                {
-                    summary,
-                    source,
-                    message,
-                    stackTrace
-                };
-
-                return Content(HttpStatusCode.InternalServerError, error);
-            }
+            return actionResultResponse;
         }
+
 
         
 
@@ -179,15 +84,10 @@ namespace ECS.WebAPI.Controllers.v1
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
         public IHttpActionResult SubmitPartialRegistration(RegistrationDTO registrationForm)
         {
-            var partialAccountRepository = new PartialAccountRepository();
-            var partialAccountSaltRepository = new PartialAccountSaltRepository();
-
             Validate(registrationForm);
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-
-            
 
             // Make custom error validator to make sure all values are not null... This is only the start.
 
@@ -200,130 +100,14 @@ namespace ECS.WebAPI.Controllers.v1
                 registrationForm.SecurityQuestions[0].Answer == null ||
                 registrationForm.SecurityQuestions[1].Answer == null ||
                 registrationForm.SecurityQuestions[2].Answer == null)
-                return BadRequest("Improper Request"); 
+                return BadRequest("Improper Request");
 
-            // Check if user already exists
-            var partialAccountModel = partialAccountRepository.GetSingle(d => d.UserName == registrationForm.Username);
-            if (partialAccountModel == null)
-            {
-                return BadRequest("Account does not exist.");
-            }
+            var response = _controllerLogic.FinishRegistration(registrationForm);
+            IHttpActionResult actionResultResponse = ResponseMessage(response);
 
-            // Retrieve Salt
-            var partialAccountSaltModel =
-                partialAccountSaltRepository.GetSingle(dataSalt => dataSalt.UserName == registrationForm.Username);
-            if (partialAccountSaltModel == null)
-            {
-                return InternalServerError(new NullReferenceException("PartialAccount salt does not exist"));
-            }
-
-            // Temporary Objects
-            List<ZipLocation> zipLocations = new List<ZipLocation>
-            {
-                new ZipLocation
-                {
-                    ZipCode = registrationForm.ZipCode.ToString(),
-                    Address = registrationForm.Address,
-                    City = registrationForm.City,
-                    State = registrationForm.State
-                }
-            };
-
-            // TODO: @Scott Change the salts for each of the hashed answers. They should all be different.
-            var hashedAnswer1 = HashService.Instance.HashPasswordWithSalt(partialAccountSaltModel.PasswordSalt, registrationForm.SecurityQuestions[0].Answer, true);
-            var hashedAnswer2 = HashService.Instance.HashPasswordWithSalt(partialAccountSaltModel.PasswordSalt, registrationForm.SecurityQuestions[1].Answer, true);
-            var hashedAnswer3 = HashService.Instance.HashPasswordWithSalt(partialAccountSaltModel.PasswordSalt, registrationForm.SecurityQuestions[2].Answer, true);
-
-            List<SecurityQuestionAccount> securityQuestionAccountListObj = new List<SecurityQuestionAccount>
-            {
-                new SecurityQuestionAccount
-                {
-                    Answer = hashedAnswer1,
-                    SecurityQuestionID = registrationForm.SecurityQuestions[0].Question,
-                    Username = registrationForm.Username
-                },
-                new SecurityQuestionAccount
-                {
-                    Answer = hashedAnswer2,
-                    SecurityQuestionID = registrationForm.SecurityQuestions[1].Question,
-                    Username = registrationForm.Username
-                },
-                new SecurityQuestionAccount
-                {
-                    Answer = hashedAnswer3,
-                    SecurityQuestionID = registrationForm.SecurityQuestions[2].Question,
-                    Username = registrationForm.Username
-                }
-            };
-
-            // DTO to Model
-            UserProfile user = new UserProfile()
-            {
-                Email = registrationForm.Email,
-                FirstName = registrationForm.FirstName,
-                LastName = registrationForm.LastName,
-                ZipLocations = zipLocations
-            };
-
-            // Rehash not needed.
-            // var hashedPassword = HashService.Instance.HashPasswordWithSalt(mySalt, registrationForm.Password, true);
-
-            Account account = new Account()
-            {
-                UserName = partialAccountModel.UserName,
-                Email = registrationForm.Email,
-                Password = partialAccountSaltModel.PasswordSalt,
-                Points = 0,
-                AccountStatus = true,
-                SuspensionTime = DateTime.UtcNow,  // TODO: @Trish
-                FirstTimeUser = true,
-                // SecurityAnswers = securityQuestionAccountListObj
-            };
-
-            // user.Account = account;
-
-            Salt salt = new Salt()
-            {
-                PasswordSalt = partialAccountSaltModel.PasswordSalt,
-                UserName = registrationForm.Username,
-                // Account = account
-            };
-
-            Validate(registrationForm);
-
-            try
-            {
-                // Enter new User and Account
-
-                //_userRepository.Insert(user);
-                _accountRepository.Insert(account);
-                _saltRepository.Insert(salt);
-
-                // Delete old Partial Account 
-
-                partialAccountSaltRepository.Delete(partialAccountSaltModel);
-                partialAccountRepository.Delete(partialAccountModel);
-
-                return Ok();
-
-            } catch (Exception ex)
-            {
-                string summary = "Data Access Error";
-                string source = ex.Source;
-                string message = ex.Message;
-                string stackTrace = ex.StackTrace;
-
-                var error = new
-                {
-                    summary,
-                    source,
-                    message,
-                    stackTrace
-                };
-
-                return Content(HttpStatusCode.InternalServerError, error);
-            }
+            return actionResultResponse;
         }
+
 
         /// <summary>
         /// Method accepts request to fetch security questions using the GET method over HTTP

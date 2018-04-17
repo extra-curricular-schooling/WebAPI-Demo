@@ -31,6 +31,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="ControllerLogic\Implementations\AccountControllerLogic.cs" />
+    <Compile Include="ControllerLogic\Implementations\ForgetCredentialsControllerLogic.cs" />
+    <Compile Include="ControllerLogic\Implementations\RegistrationControllerLogic.cs" />
     <Compile Include="ControllerLogic\Implementations\SsoControllerLogic.cs" />
     <Compile Include="ModelLogic\Contracts\IAccountLogic.cs" />
     <Compile Include="ModelLogic\Contracts\ILinkedinLogic.cs" />
@@ -42,6 +44,7 @@
     <Compile Include="ModelLogic\Implementations\PartialAccountLogic.cs" />
     <Compile Include="ModelLogic\Implementations\PartialAccountSaltLogic.cs" />
     <Compile Include="ModelLogic\Implementations\SaltLogic.cs" />
+    <Compile Include="ModelLogic\Implementations\UserProfileLogic.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ECS.DTO\ECS.DTO.csproj">

@@ -1,13 +1,37 @@
-﻿using System.Web.Http;
+﻿using System.Net;
+using System.Web.Http;
 using System.Web.Http.Cors;
+using ECS.BusinessLogic.ControllerLogic.Implementations;
 using ECS.DTO;
 using ECS.WebAPI.HttpClients;
 
 namespace ECS.WebAPI.Controllers.v1
 {
-    [RoutePrefix("v1/ResetPassword")]
-    public class ResetPasswordController : ApiController
+    [RoutePrefix("v1/ForgetCredentials")]
+    public class ForgetCredentialsController : ApiController
     {
+        private readonly ForgetCredentialsControllerLogic _controllerLogic;
+
+        public ForgetCredentialsController()
+        {
+            _controllerLogic = new ForgetCredentialsControllerLogic();
+        }
+
+        [HttpGet]
+        [Route("GetUsername")]
+        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET")]
+        public IHttpActionResult GetUsername(string email)
+        {
+            if (email == null)
+                return BadRequest("Bad Request");
+
+            var response = _controllerLogic.EmailSubmission(email);
+            IHttpActionResult actionResultResponse = ResponseMessage(response);
+
+            return actionResultResponse;
+        }
+        
+
         [HttpGet]
         [Route("SecurityQuestions")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET")]

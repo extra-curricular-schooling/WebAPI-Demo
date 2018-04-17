@@ -420,10 +420,11 @@ export default {
           }
         })
           .then(response => {
+            
             console.log(response)
-            this.$router.push({
-              name: 'Home',
-            })
+            // this.$router.push({
+            //   name: 'Home',
+            // })
           })
           .catch(error => {
             console.log(error.response)

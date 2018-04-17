@@ -3,14 +3,14 @@ import store from '@/store/index.js'
 // import moment from 'moment'
 
 export default {
-  setClaims: (claims) => {
+  setClaims: function (claims) {
     store.dispatch('updateRole', claims['role'])
     store.dispatch('updateUsername', claims['unique_name'])
   },
-  myDecode: (token) => {
+  myDecode: function (token) {
     return jsonwebtoken.decode(token)
   },
-  myVerify: (claims) => {
+  myVerify: function (claims) {
     try {
       this.verifyAudience(claims['aud'])
       this.verifyExpiration(claims['exp'])
@@ -19,16 +19,16 @@ export default {
     }
     return jsonwebtoken.verify(claims)
   },
-  verifyAudience: (audClaimValue) => {
+  verifyAudience: function (audClaimValue) {
     return true
   },
-  verifyExpiration: (expClaimValue) => {
+  verifyExpiration: function (expClaimValue) {
     return true
   },
   // BUG: Currently not working. Says that "myDecode" is not a function.
-  transform: (token) => {
+  transform: function (token) {
     let claims = this.myDecode(token)
-    let verifiedClaims = this.myVerify(claims)
-    return verifiedClaims
+    this.myVerify(claims)
+    return claims
   }
 }

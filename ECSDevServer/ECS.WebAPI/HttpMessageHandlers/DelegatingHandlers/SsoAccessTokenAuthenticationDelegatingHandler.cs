@@ -33,7 +33,7 @@ namespace ECS.WebAPI.HttpMessageHandlers.DelegatingHandlers
             // 2. The request has have a "Bearer" request to process
             if (authHeader == null || authHeader.Scheme != "Bearer")
             {
-                return tsc.Task;
+                return base.SendAsync(request, cancellationToken);
             }
 
             var token = authHeader.Parameter;
