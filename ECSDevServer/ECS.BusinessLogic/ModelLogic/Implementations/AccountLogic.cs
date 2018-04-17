@@ -34,6 +34,11 @@ namespace ECS.BusinessLogic.ModelLogic.Implementations
             return _accountRepository.GetSingle(partial => partial.UserName == username);
         }
 
+        public Account GetByEmail(string email)
+        {
+            return _accountRepository.GetSingle(partial => partial.Email == email);
+        }
+
         public void Update(Account account)
         {
             _accountRepository.Update(account);
@@ -42,6 +47,11 @@ namespace ECS.BusinessLogic.ModelLogic.Implementations
         public bool Exists(string username)
         {
             return _accountRepository.Exists(acc => acc.UserName == username);
+        }
+
+        public bool EmailExists(string email)
+        {
+            return _accountRepository.Exists(acc => acc.Email == email);
         }
     }
 }

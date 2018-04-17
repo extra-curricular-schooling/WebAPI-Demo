@@ -15,7 +15,7 @@
             <label class="label field-element is-required">Email</label>
             <div class="control has-icons-left has-icons-right">
               <!-- <input v-model="username" id="username" class="input" type="text" @keyup="validateUsername" autocomplete="username" placeholder="Username" required> -->
-              <input class="input" type="text" placeholder="Email Address">
+              <input v-model="email" class="input" type="text" placeholder="Email Address">
               <span class="icon is-small is-left">
                 <i class="fas fa-user"></i>
               </span>
@@ -26,8 +26,12 @@
         <div class="body" v-if="body==='success'">
           <p>Good news.  We found your username!</p><br>
           <div class="control">
-            <input class="input" type="text" value="Username1" readonly>
+            <input class="input" type="text" v-model="username" readonly>
           </div>
+        </div>
+
+        <div class="body" v-if="body==='noEmail'">
+          <p>Uh-Oh.  It seems the email you entered does not exist.  Perhaps you may need to create an account.</p><br>
         </div>
 
         <br>
@@ -49,6 +53,12 @@
             Awesome!
             </button>
           </p>
+
+          <p class="control" v-if="body==='noEmail'">
+            <router-link to="/Registration" tag="button" class="button is-primary register-button">
+            Create An Account
+            </router-link>
+          </p>
         </div>
       </div>
     </div>
@@ -56,10 +66,19 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   name: 'ForgotUsername',
   data () {
     return {
+      // Request Data
+      email: '',
+
+      // Response Data
+      username: 'test',
+
+      // Event Handling
       isActive: false,
       body: 'firstStep'
     }
@@ -73,11 +92,33 @@ export default {
       this.body = 'firstStep'
     },
     submit () {
-      this.body = 'success'
+      this.submitEmail()
     },
     close () {
       this.toggle()
       this.body = 'firstStep'
+    },
+    submitEmail () {
+      axios({
+        method: 'GET',
+        url: this.$store.getters.getBaseAppUrl + 'ForgetCredentials/GetUsername?email=' + this.email,
+        headers: this.$store.getters.getRequestHeaders
+      })
+        .then(response => {
+          console.log(response)
+          if (response.status === 200) {
+            this.$data.username = response.data
+            this.$data.body = 'success'
+          }
+        })
+        .catch(error => {
+          console.log(error.response)
+
+          // HTTP Status 409
+          if (error.response.status === 409) {
+            this.$data.body = 'noEmail'
+          }
+        })
     }
   }
 }
