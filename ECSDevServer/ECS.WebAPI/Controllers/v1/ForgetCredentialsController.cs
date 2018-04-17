@@ -22,6 +22,9 @@ namespace ECS.WebAPI.Controllers.v1
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET")]
         public IHttpActionResult GetUsername(string email)
         {
+            if (email == null)
+                return BadRequest("Bad Request");
+
             var response = _controllerLogic.EmailSubmission(email);
             IHttpActionResult actionResultResponse = ResponseMessage(response);
 
