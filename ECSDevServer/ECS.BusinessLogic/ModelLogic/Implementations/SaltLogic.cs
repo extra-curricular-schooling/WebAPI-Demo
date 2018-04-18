@@ -27,6 +27,13 @@ namespace ECS.BusinessLogic.ModelLogic.Implementations
             _saltRepository.Insert(salt);
         }
 
+        public List<Salt> GetAllByUsername(string username)
+        {
+            List<Salt> salts = _saltRepository.SearchFor(s => s.UserName == username).ToList();
+
+            return salts;
+        }
+
         public Salt GetSalt(string username)
         {
             return _saltRepository.GetSingle(partial => partial.UserName == username);

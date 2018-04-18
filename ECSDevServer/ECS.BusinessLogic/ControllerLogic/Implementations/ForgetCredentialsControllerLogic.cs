@@ -1,6 +1,7 @@
 ﻿using ECS.BusinessLogic.ModelLogic.Implementations;
 using ECS.DTO;
 using ECS.Models;
+using ECS.Security.Hash;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -17,17 +18,20 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
     {
         private readonly AccountLogic _accountLogic;
         private readonly SecurityQuestionsAccountLogic _securityQuestionsAccountLogic;
+        private readonly SaltSecurityAnswerLogic _saltSecurityAnswerLogic;
 
         public ForgetCredentialsControllerLogic()
         {
             _accountLogic = new AccountLogic();
             _securityQuestionsAccountLogic = new SecurityQuestionsAccountLogic();
+            _saltSecurityAnswerLogic = new SaltSecurityAnswerLogic();
         }
 
-        public ForgetCredentialsControllerLogic(AccountLogic accountLogic, SecurityQuestionsAccountLogic securityQuestionsAccountLogic)
+        public ForgetCredentialsControllerLogic(AccountLogic accountLogic, SecurityQuestionsAccountLogic securityQuestionsAccountLogic, SaltSecurityAnswerLogic saltSecurityAnswerLogic)
         {
             _accountLogic = accountLogic;
             _securityQuestionsAccountLogic = securityQuestionsAccountLogic;
+            _saltSecurityAnswerLogic = saltSecurityAnswerLogic;
         }
 
         public HttpResponseMessage EmailSubmission(string email)
@@ -78,11 +82,13 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
                 };
                 objects.Add(temp);
             }
+
             var jsonContent = JsonConvert.SerializeObject(objects, Formatting.Indented,
                             new JsonSerializerSettings
                             {
                                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore
                             });
+
             var stringContent = new StringContent(jsonContent);
 
             return new HttpResponseMessage
@@ -94,6 +100,44 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
 
         public HttpResponseMessage AnswersSubmission(AccountPostAnswersDTO answers)
         {
+            
+            var saltSecurityAnswers = _saltSecurityAnswerLogic.GetAllByUsername(answers.Username);
+            var securityQuestionsAccounts = _securityQuestionsAccountLogic.GetAllByUsername(answers.Username);
+
+
+            bool isAllMatched = true;
+
+            // Expensive...
+            foreach (var securityQuestionsAccount in securityQuestionsAccounts)
+            {
+                foreach (var saltSecurityAnswer in saltSecurityAnswers)
+                {
+                    foreach (var securityQuestion in answers.SecurityQuestions)
+                    {
+                        if (securityQuestionsAccount.SecurityQuestionID == saltSecurityAnswer.SecurityQuestionID && saltSecurityAnswer.SecurityQuestionID == securityQuestion.Question)
+                        {
+                            // Use saltSecurityAnswer.SaltValue to hash securityQuestion.Answer
+                            var hashedNewAnswer = HashService.Instance.HashPasswordWithSalt(saltSecurityAnswer.SaltValue, securityQuestion.Answer, true);
+
+                            // Check if hashed answer == securityQuestionsAccount.Answer
+                            if (hashedNewAnswer != securityQuestionsAccount.Answer)
+                            {
+                                isAllMatched = false;
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (!isAllMatched)
+            {
+                return new HttpResponseMessage
+                {
+                    ReasonPhrase = "Incorrect Answers",
+                    StatusCode = HttpStatusCode.Forbidden
+                };
+            }
+
             return new HttpResponseMessage
             {
                 StatusCode = HttpStatusCode.OK

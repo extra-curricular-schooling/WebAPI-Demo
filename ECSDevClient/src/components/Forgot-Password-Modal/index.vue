@@ -249,7 +249,8 @@ export default {
             //this.$data.error = JSON.parse(error.response.data)
 
             // HTTP Status 409
-            if (error.response.status === 409) {
+            if (error.response.status === 403) {
+              alert('Incorrect answers...')
             }
 
             // HTTP Status 500

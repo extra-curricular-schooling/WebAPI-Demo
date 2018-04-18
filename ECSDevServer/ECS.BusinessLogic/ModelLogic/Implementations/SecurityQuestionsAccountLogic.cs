@@ -28,5 +28,10 @@ namespace ECS.BusinessLogic.ModelLogic.Implementations
 
             return securityQuestionAccounts;
         }
+
+        public SecurityQuestionAccount GetAccount(string username)
+        {
+            return _securityQuestionAccountRepository.GetSingle(partial => partial.Username == username);
+        }
     }
 }

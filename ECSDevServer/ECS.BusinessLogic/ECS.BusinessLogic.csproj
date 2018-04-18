@@ -44,6 +44,7 @@
     <Compile Include="ModelLogic\Implementations\PartialAccountLogic.cs" />
     <Compile Include="ModelLogic\Implementations\PartialAccountSaltLogic.cs" />
     <Compile Include="ModelLogic\Implementations\SaltLogic.cs" />
+    <Compile Include="ModelLogic\Implementations\SaltSecurityAnswerLogic.cs" />
     <Compile Include="ModelLogic\Implementations\SecurityQuestionsAccountLogic.cs" />
     <Compile Include="ModelLogic\Implementations\UserProfileLogic.cs" />
   </ItemGroup>

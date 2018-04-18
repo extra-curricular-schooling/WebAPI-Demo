@@ -167,7 +167,8 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
                 FirstTimeUser = true,
                 SecurityAnswers = securityAnswers,
                 AccountTags = new List<InterestTag>(),
-                SaltSecurityAnswers = saltSecurityAnswers
+                SaltSecurityAnswers = saltSecurityAnswers,
+                AccountTypes = accountTypes
             };
 
             UserProfile user = new UserProfile()
