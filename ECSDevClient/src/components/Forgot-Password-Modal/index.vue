@@ -78,24 +78,24 @@
             <label class="label field-element is-required">New Password</label>
             <div class="control has-icons-left">
               <!-- <input id="password" class="input" type="password"  @keyup="validatePassword" autocomplete="new-password" placeholder="************" required> -->
-              <input id="password" class="input" type="password" placeholder="************" required>
+              <input id="password" class="input" type="password" @keyup="validatePassword" placeholder="************" required>
               <span class="icon is-small is-left">
                 <i class="fas fa-lock"></i>
               </span>
             </div>
-            <!-- <p id="passwordControl" class="help">{{ passwordMessage }}</p> -->
+            <p id="passwordControl" class="help">{{ passwordMessage }}</p>
           </div>
 
           <div class="field confirm-password">
             <label class="label field-element is-required">Confirm New Password</label>
             <div class="control has-icons-left">
               <!-- <input id="confirmPassword" class="input" type="password" @keyup="validateConfirmPassword" autocomplete="new-password" placeholder="************" required> -->
-              <input id="confirmPassword" class="input" type="password" placeholder="************" required>
+              <input id="confirmPassword" class="input" type="password" @keyup="validateConfirmPassword" placeholder="************" required>
               <span class="icon is-small is-left">
                 <i class="fas fa-lock"></i>
               </span>
             </div>
-            <!-- <p id="confirmPasswordControl" class="help">{{ confirmPasswordMessage }}</p> -->
+            <p id="confirmPasswordControl" class="help">{{ confirmPasswordMessage }}</p>
           </div>
         </div>
 
@@ -146,9 +146,6 @@ import axios from 'axios'
 
 export default {
   name: 'ForgotPassword',
-  // components: {
-  //   'forgot-username': forgotUsername
-  // },
   data () {
     return {
       // Request Data
@@ -157,12 +154,20 @@ export default {
       // Reponse Data
       questions: [],
 
+      // Validation Messages
+      passwordMessage: '',
+      confirmPasswordMessage: '',
+
+      // Regular Expressions
+      PASSWORD_REGEX: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_])[a-zA-Z0-9!@#$%^&*()_]{8,64}$/,
+
       // Event Handling
       isActive: false,
       body: 'firstStep'
     }
   },
   methods: {
+    // Getters
     getSecurityAnswer (i) {
       var answer
       if (i == 1) {
@@ -174,6 +179,49 @@ export default {
       }
       return document.getElementById(answer).value;
     },
+    getPassword () {
+      return document.getElementById('password').value;
+    },
+    // Validators
+    validatePassword () {
+      if (!this.$data.PASSWORD_REGEX.test(document.getElementById('password').value) && document.getElementById('password').value != '') {
+        document.getElementById('password').className = 'input';
+        document.getElementById('passwordControl').className = 'help is-info';
+        this.$data.passwordMessage = 'Password must be 8-64 characters long, must not contain any spaces, and must contain at least 1 lowercase letter, 1 uppercase letter, 1 number, and 1 special character.';
+      } else if (document.getElementById('password').value == '') {
+        document.getElementById('password').className = 'input';
+        document.getElementById('passwordControl').className = 'help';
+        this.$data.passwordMessage = '';
+      } else {
+        document.getElementById('password').className = 'input is-success';
+        document.getElementById('passwordControl').className = 'help';
+        this.$data.passwordMessage = '';
+      }
+    },
+    validateConfirmPassword () {
+      if (document.getElementById('password').value != document.getElementById('confirmPassword').value && document.getElementById('confirmPassword').value != '') {
+        document.getElementById('confirmPassword').className = 'input';
+        document.getElementById('confirmPasswordControl').className = 'help is-info';
+        this.$data.confirmPasswordMessage = 'Retype Password';
+      } else if (document.getElementById('confirmPassword').value == '') {
+        document.getElementById('confirmPassword').className = 'input';
+        document.getElementById('confirmPasswordControl').className = 'help';
+        this.$data.confirmPasswordMessage = '';
+      } else if (document.getElementById('password').value == document.getElementById('confirmPassword').value) {
+        document.getElementById('confirmPassword').className = 'input is-success';
+        document.getElementById('confirmPasswordControl').className = 'help';
+        this.$data.confirmPasswordMessage = '';
+      }
+    },
+    isValidCredentials () {
+      if (document.getElementById('password').className == 'input is-success' &&
+        document.getElementById('confirmPassword').className == 'input is-success') {
+        return true
+      } else {
+        return false
+      }
+    },
+    // Togglers
     toggle () {
       this.isActive = !this.isActive
     },
@@ -188,12 +236,13 @@ export default {
       this.submitAnswers()
     },
     complete () {
-      this.body = 'success'
+      this.submitNewPassword()
     },
     close () {
       this.toggle()
       this.body = 'firstStep'
     },
+    // APIs
     getSecurityQuestions () {
       axios({
           method: 'GET',
@@ -258,7 +307,35 @@ export default {
               alert('We apologize.  We are unable to process your request at this time.')
             }
           })
-    }
+    },
+    submitNewPassword () {
+      if (this.isValidCredentials()){
+        axios({
+            method: 'POST',
+            url: this.$store.getters.getBaseAppUrl + 'ForgetCredentials/SubmitNewPassword',
+            headers: this.$store.getters.getRequestHeaders,
+            data: {
+              'username': this.username,
+              'password': this.getPassword()
+            }
+          })
+            .then(response => {
+              console.log(response)
+              if (response.status === 200) {
+                this.questions = response.data
+                this.body = 'success'
+              }
+            })
+            .catch(error => {
+              console.log(error.response)
+
+              // HTTP Status 500
+              if (error.response.status === 500) {
+                alert('We apologize.  We are unable to process your request at this time.')
+              }
+            })
+      }
+    },
   }
 }
 </script>

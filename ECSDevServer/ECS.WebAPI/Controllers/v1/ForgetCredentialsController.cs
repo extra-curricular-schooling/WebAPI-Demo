@@ -64,25 +64,20 @@ namespace ECS.WebAPI.Controllers.v1
         }
 
 
-
         [HttpPost]
-        [Route("NewPassword")]
+        [Route("SubmitNewPassword")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
-        public IHttpActionResult NewPassword(AccountCredentialDTO credentials)
+        public IHttpActionResult SubmitNewPassword(AccountCredentialDTO credentials)
         {
-            // Credentials is already read and deserialized into a DTO. Validate it.
             Validate(credentials);
 
-            if (ModelState.IsValid)
-            {
-                // We need to take this information and update the user's password in the db.
-                
-                // Return 200
-                return Ok("Post Reset Password");
-            }
+            if (credentials.Username == null || credentials.Password == null)
+                return BadRequest("Bad Request");
 
-            // Fail state
-            return BadRequest(ModelState);
+            var response = _controllerLogic.PasswordSubmission(credentials);
+            IHttpActionResult actionResultResponse = ResponseMessage(response);
+
+            return actionResultResponse;
         }
 
         /// <summary>

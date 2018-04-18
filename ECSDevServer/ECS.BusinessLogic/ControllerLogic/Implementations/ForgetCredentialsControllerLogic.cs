@@ -19,19 +19,22 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
         private readonly AccountLogic _accountLogic;
         private readonly SecurityQuestionsAccountLogic _securityQuestionsAccountLogic;
         private readonly SaltSecurityAnswerLogic _saltSecurityAnswerLogic;
+        private readonly SaltLogic _saltLogic;
 
         public ForgetCredentialsControllerLogic()
         {
             _accountLogic = new AccountLogic();
             _securityQuestionsAccountLogic = new SecurityQuestionsAccountLogic();
             _saltSecurityAnswerLogic = new SaltSecurityAnswerLogic();
+            _saltLogic = new SaltLogic();
         }
 
-        public ForgetCredentialsControllerLogic(AccountLogic accountLogic, SecurityQuestionsAccountLogic securityQuestionsAccountLogic, SaltSecurityAnswerLogic saltSecurityAnswerLogic)
+        public ForgetCredentialsControllerLogic(AccountLogic accountLogic, SecurityQuestionsAccountLogic securityQuestionsAccountLogic, SaltSecurityAnswerLogic saltSecurityAnswerLogic, SaltLogic saltLogic)
         {
             _accountLogic = accountLogic;
             _securityQuestionsAccountLogic = securityQuestionsAccountLogic;
             _saltSecurityAnswerLogic = saltSecurityAnswerLogic;
+            _saltLogic = saltLogic;
         }
 
         public HttpResponseMessage EmailSubmission(string email)
@@ -100,7 +103,7 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
 
         public HttpResponseMessage AnswersSubmission(AccountPostAnswersDTO answers)
         {
-            
+
             var saltSecurityAnswers = _saltSecurityAnswerLogic.GetAllByUsername(answers.Username);
             var securityQuestionsAccounts = _securityQuestionsAccountLogic.GetAllByUsername(answers.Username);
 
@@ -142,6 +145,38 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
             {
                 StatusCode = HttpStatusCode.OK
             };
+        }
+
+        public HttpResponseMessage PasswordSubmission(AccountCredentialDTO credentials)
+        {
+            // Create new pw salt and hashedPw
+            var pSalt = HashService.Instance.CreateSaltKey();
+            var hashedPassword = HashService.Instance.HashPasswordWithSalt(pSalt, credentials.Password, true);
+
+            // Update Salt and Account
+            var saltModel = _saltLogic.GetSalt(credentials.Username);
+            saltModel.PasswordSalt = pSalt;
+
+            var accountModel = _accountLogic.GetSingle(credentials.Username);
+            accountModel.Password = hashedPassword;
+
+            try
+            {
+                _accountLogic.Update(accountModel);
+                _saltLogic.Update(saltModel);
+
+                return new HttpResponseMessage
+                {
+                    StatusCode = HttpStatusCode.OK
+                };
+            } catch (Exception ex)
+            {
+                return new HttpResponseMessage
+                {
+                    ReasonPhrase = ex.Message,
+                    StatusCode = HttpStatusCode.InternalServerError
+                };
+            }
         }
     }
 }
