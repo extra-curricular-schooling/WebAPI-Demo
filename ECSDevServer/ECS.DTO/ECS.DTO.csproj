@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="AccountCredentialDTO.cs" />
     <Compile Include="AccountPasswordChangeDTO.cs" />
+    <Compile Include="AccountPostAnswersDTO.cs" />
     <Compile Include="ArticleDTO.cs" />
     <Compile Include="InterestTagsDTO.cs" />
     <Compile Include="SecurityQuestionDTO.cs" />

@@ -91,5 +91,13 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
                 StatusCode = HttpStatusCode.OK
             };
         }
+
+        public HttpResponseMessage AnswersSubmission(AccountPostAnswersDTO answers)
+        {
+            return new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.OK
+            };
+        }
     }
 }

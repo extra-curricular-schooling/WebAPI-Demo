@@ -48,24 +48,22 @@ namespace ECS.WebAPI.Controllers.v1
         }
 
         [HttpPost]
-        [Route("SecurityQuestions")]
+        [Route("SubmitAnswers")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
-        public IHttpActionResult SecurityQuestions(AccountCredentialDTO credentials)
+        public IHttpActionResult SubmitAnswers(AccountPostAnswersDTO answers)
         {
-            // Credentials is already read and deserialized into a DTO. Validate it.
-            Validate(credentials);
+            Validate(answers);
 
-            if (ModelState.IsValid)
-            {
-                // Proccess any other information.
+            if (answers.Username == null || answers.SecurityQuestions == null)
+                return BadRequest("Bad Request");
 
-                // Check the db If their answers are correct.
+            var response = _controllerLogic.AnswersSubmission(answers);
+            IHttpActionResult actionResultResponse = ResponseMessage(response);
 
-                // Return succesful response
-                return Ok("Post Security Questions");
-            }
-            return BadRequest(ModelState);
+            return actionResultResponse;
         }
+
+
 
         [HttpPost]
         [Route("NewPassword")]

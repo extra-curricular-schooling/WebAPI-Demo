@@ -51,7 +51,7 @@
             <div class="field security-questions-answers">
               <div class="control">
                 <!-- <input id="answer2" class="input" type="text" @keyup="validateAnswers" placeholder="Answer 2" required> -->
-                <input id="answer1" class="input" type="text" placeholder="Answer 2" required>
+                <input id="answer2" class="input" type="text" placeholder="Answer 2" required>
               </div>
             </div>
 
@@ -64,7 +64,7 @@
             <div class="field security-questions-answers">
               <div class="control">
                 <!-- <input id="answer3" class="input" type="text" @keyup="validateAnswers" placeholder="Answer 3" required> -->
-                <input id="answer1" class="input" type="text" placeholder="Answer 3" required>
+                <input id="answer3" class="input" type="text" placeholder="Answer 3" required>
               </div>
             </div>
             <!-- <p id="answersControl" class="help">{{ answersMessage }}</p> -->
@@ -163,6 +163,17 @@ export default {
     }
   },
   methods: {
+    getSecurityAnswer (i) {
+      var answer
+      if (i == 1) {
+        answer = 'answer1';
+      } else if (i == 2) {
+        answer = 'answer2';
+      } else if (i == 3) {
+        answer = 'answer3'
+      }
+      return document.getElementById(answer).value;
+    },
     toggle () {
       this.isActive = !this.isActive
     },
@@ -174,7 +185,7 @@ export default {
       this.body = 'firstStep'
     },
     submit () {
-      this.body = 'thirdStep'
+      this.submitAnswers()
     },
     complete () {
       this.body = 'success'
@@ -201,6 +212,49 @@ export default {
 
             // HTTP Status 409
             if (error.response.status === 409) {
+            }
+          })
+    },
+    submitAnswers () {
+      axios({
+          method: 'POST',
+          url: this.$store.getters.getBaseAppUrl + 'ForgetCredentials/SubmitAnswers',
+          headers: this.$store.getters.getRequestHeaders,
+          data: {
+            'username': this.$data.username,
+            'securityQuestions': [
+              {
+                'question': Number(this.$data.questions[0].SecurityQuestionID),
+                'answer': this.getSecurityAnswer(1)
+              },
+              {
+                'question': Number(this.$data.questions[1].SecurityQuestionID),
+                'answer': this.getSecurityAnswer(2)
+              },
+              {
+                'question': Number(this.$data.questions[2].SecurityQuestionID),
+                'answer': this.getSecurityAnswer(3)
+              }
+            ]
+          }
+        })
+          .then(response => {
+            console.log(response)
+            if (response.status === 200) {
+              this.body = 'thirdStep'
+            }
+          })
+          .catch(error => {
+            console.log(error.response)
+            //this.$data.error = JSON.parse(error.response.data)
+
+            // HTTP Status 409
+            if (error.response.status === 409) {
+            }
+
+            // HTTP Status 500
+            if (error.response.status === 500) {
+              alert('We apologize.  We are unable to process your request at this time.')
             }
           })
     }
