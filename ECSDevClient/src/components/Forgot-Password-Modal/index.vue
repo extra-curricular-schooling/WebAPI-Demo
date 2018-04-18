@@ -15,7 +15,7 @@
             <label class="label field-element is-required">Username</label>
             <div class="control has-icons-left has-icons-right">
               <!-- <input v-model="username" id="username" class="input" type="text" @keyup="validateUsername" autocomplete="username" placeholder="Username" required> -->
-              <input class="input" type="text" placeholder="Username">
+              <input v-model="username" class="input" type="text" placeholder="Username">
               <span class="icon is-small is-left">
                 <i class="fas fa-user"></i>
               </span>
@@ -32,15 +32,7 @@
               <label class="label field-element is-required">Security Questions</label>
               <div class="control">
                 <!-- <input v-model="question1" class="input" type="number" placeholder="Question 1" required> -->
-                <span class="select">
-                  <select v-model="question1">
-                    <option disabled value="">--select--</option>
-                  </select>
-                  <!-- <select @change="getSelectionID(0, question1)" v-model="question1">
-                    <option disabled value="">--select--</option>
-                    <option v-for="question in questions" v-bind:key="question.SecurityQuestionID"> {{ question.SecQuestion }} </option>
-                  </select> -->
-                </span>
+                <p>{{ questions[0].SecQuestion }}</p>
               </div>
             </div>
             <div class="field security-questions-answers">
@@ -53,15 +45,7 @@
             <div class="field security-questions">
               <div class="control">
                 <!-- <input v-model="question2" class="input" type="number" placeholder="Question 2" required> -->
-                <span class="select">
-                  <select v-model="question1">
-                    <option disabled value="">--select--</option>
-                  </select>
-                  <!-- <select @change="getSelectionID(1, question2)" v-model="question2">
-                    <option disabled value="">--select--</option>
-                    <option v-for="question in questions" v-bind:key="question.SecurityQuestionID"> {{ question.SecQuestion }} </option>
-                  </select> -->
-                </span>
+                <p>{{ questions[1].SecQuestion }}</p>
               </div>
             </div>
             <div class="field security-questions-answers">
@@ -74,15 +58,7 @@
             <div class="field security-questions">
               <div class="control">
                 <!-- <input v-model="question3" class="input" type="number" placeholder="Question 1" required> -->
-                <span class="select">
-                  <select v-model="question1">
-                    <option disabled value="">--select--</option>
-                  </select>
-                  <!-- <select @change="getSelectionID(2, question3)" v-model="question3">
-                    <option disabled value="">--select--</option>
-                    <option v-for="question in questions" v-bind:key="question.SecurityQuestionID"> {{ question.SecQuestion }} </option>
-                  </select> -->
-                </span>
+                <p>{{ questions[2].SecQuestion }}</p>
               </div>
             </div>
             <div class="field security-questions-answers">
@@ -165,7 +141,9 @@
 </template>
 
 <script>
-// import forgotUsername from '@/components/Forgot-Username-Modal/index'
+/* eslint-disable */
+import axios from 'axios'
+
 export default {
   name: 'ForgotPassword',
   // components: {
@@ -173,11 +151,15 @@ export default {
   // },
   data () {
     return {
+      // Request Data
+      username: '',
+
+      // Reponse Data
+      questions: [],
+
+      // Event Handling
       isActive: false,
-      body: 'firstStep',
-      question1: '',
-      question2: '',
-      question3: ''
+      body: 'firstStep'
     }
   },
   methods: {
@@ -185,7 +167,7 @@ export default {
       this.isActive = !this.isActive
     },
     next () {
-      this.body = 'secondStep'
+      this.getSecurityQuestions()
     },
     cancel () {
       this.toggle()
@@ -200,11 +182,28 @@ export default {
     close () {
       this.toggle()
       this.body = 'firstStep'
+    },
+    getSecurityQuestions () {
+      axios({
+          method: 'GET',
+          url: this.$store.getters.getBaseAppUrl + 'ForgetCredentials/GetSecurityQuestions?username=' + this.username,
+          headers: this.$store.getters.getRequestHeaders
+        })
+          .then(response => {
+            console.log(response)
+            if (response.status === 200) {
+              this.questions = response.data
+              this.body = 'secondStep'
+            }
+          })
+          .catch(error => {
+            console.log(error.response)
+
+            // HTTP Status 409
+            if (error.response.status === 409) {
+            }
+          })
     }
-    // getUsername () {
-    //   this.close()
-    //   this.$refs.username.toggle()
-    // }
   }
 }
 </script>

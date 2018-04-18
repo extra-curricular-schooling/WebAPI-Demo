@@ -33,14 +33,18 @@ namespace ECS.WebAPI.Controllers.v1
         
 
         [HttpGet]
-        [Route("SecurityQuestions")]
+        [Route("GetSecurityQuestions")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET")]
-        public IHttpActionResult SecurityQuestions()
+        public IHttpActionResult GetSecurityQuestions(string username)
         {
-            // Grab the repository information for User's security questions
+            if (username == null)
+                return BadRequest("Bad Request");
 
-            // Return List<SecurityQuestionDTO> to the Client
-            return Ok("Get Security Questions");
+            var response = _controllerLogic.UsernameSubmission(username);
+            IHttpActionResult actionResultResponse = ResponseMessage(response);
+
+            return actionResultResponse;
+            
         }
 
         [HttpPost]
