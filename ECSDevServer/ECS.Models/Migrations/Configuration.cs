@@ -1557,6 +1557,36 @@ namespace ECS.Models.Migrations
                     SecQuestion = "What is your mother's maiden name?",
                     SecurityQuestionID = 3
                 },
+                new SecurityQuestion
+                {
+                    SecQuestion = "What city did you meet your first significant other in?",
+                    SecurityQuestionID = 4
+                },
+                new SecurityQuestion
+                {
+                    SecQuestion = "What was your childhood nickname?",
+                    SecurityQuestionID = 5
+                },
+                new SecurityQuestion
+                {
+                    SecQuestion = "What is your oldest cousin's first name?",
+                    SecurityQuestionID = 6
+                },
+                new SecurityQuestion
+                {
+                    SecQuestion = "What is your favorite vacation spot?",
+                    SecurityQuestionID = 7
+                },
+                new SecurityQuestion
+                {
+                    SecQuestion = "What is the name of your elementary school?",
+                    SecurityQuestionID = 8
+                },
+                new SecurityQuestion
+                {
+                    SecQuestion = "What is your quest?",
+                    SecurityQuestionID = 9
+                }
             };
             // For each item in the list securityQuestion, addorupdate a SecurityQuestion with an ID
             securityQuestion.ForEach(s => context.SecurityQuestions.AddOrUpdate(p => p.SecurityQuestionID, s));
@@ -2492,6 +2522,16 @@ namespace ECS.Models.Migrations
                 },
                 new Permission
                 {
+                    // RoleId = roles.Single(i => i.// RoleId == 1).// RoleId,
+                    PermissionName = "CanEnableUser"
+                },
+                new Permission
+                {
+                    // RoleId = roles.Single(i => i.// RoleId == 1).// RoleId,
+                    PermissionName = "CanDisableUser"
+                },
+                new Permission
+                {
                     // RoleId = roles.Single(i => i.// RoleId == 2).// RoleId,
                     PermissionName = "CanEnterRaffle"
                 },
@@ -2499,7 +2539,7 @@ namespace ECS.Models.Migrations
                 {
                     // RoleId = roles.Single(i => i.// RoleId == 2).// RoleId,
                     PermissionName = "CanViewArticle"
-                },
+                }
             };
             permissions.ForEach(s => context.Permissions.AddOrUpdate(p => p.PermissionName, s));
             context.SaveChanges();

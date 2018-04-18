@@ -124,25 +124,25 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
                 }
             };
 
-            // ACCOUNTTYPE
-            //List<AccountType> accountTypes = new List<AccountType>
-            //{
-            //    new AccountType()
-            //    {
-            //        PermissionName = "canEditInformation",
-            //        Username = registrationForm.Username
-            //    },
-            //    new AccountType()
-            //    {
-            //        PermissionName = "canViewArticle",
-            //        Username = registrationForm.Username
-            //    },
-            //    new AccountType()
-            //    {
-            //        PermissionName = "canEnterRaffle",
-            //        Username = registrationForm.Username
-            //    }
-            //};
+            
+            List<AccountType> accountTypes = new List<AccountType>
+            {
+                new AccountType()
+                {
+                    PermissionName = "canEditInformation",
+                    Username = registrationForm.Username
+                },
+                new AccountType()
+                {
+                    PermissionName = "canViewArticle",
+                    Username = registrationForm.Username
+                },
+                new AccountType()
+                {
+                    PermissionName = "canEnterRaffle",
+                    Username = registrationForm.Username
+                }
+            };
 
             List<ZipLocation> zipLocations = new List<ZipLocation>
             {
