@@ -1,16 +1,11 @@
 ﻿using ECS.BusinessLogic.ModelLogic.Implementations;
 using ECS.DTO;
-using ECS.Models;
 using ECS.Security.Hash;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Script.Serialization;
 
 namespace ECS.BusinessLogic.ControllerLogic.Implementations
 {
@@ -37,6 +32,13 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
             _saltLogic = saltLogic;
         }
 
+
+        /// <summary>
+        /// Logic takes email from controller and returns username associated with 
+        /// that user email
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
         public HttpResponseMessage EmailSubmission(string email)
         {
             // Check if email doesn't exist
@@ -49,9 +51,11 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
                 };
             }
 
+            // Retrieve username from the user's account by email
             var accountModel = _accountLogic.GetByEmail(email);
             var username = new StringContent(accountModel.UserName);
 
+            // Return successful message
             return new HttpResponseMessage
             {
                 Content = username,
@@ -59,6 +63,14 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
             };
         }
 
+
+        /// <summary>
+        /// Logic takes username from controller and returns the set of security questions
+        /// that were set during registration
+        /// Security questions are assoicated with username parameter
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
         public HttpResponseMessage UsernameSubmission(string username)
         {
             // Check if username doesn't exist
@@ -71,8 +83,10 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
                 };
             }
 
+            // Retrieve security questions from user's account by username
             var securityQuestionsAccounts = _securityQuestionsAccountLogic.GetAllByUsername(username);
-            //var jsonContent = new JavaScriptSerializer().Serialize(securityQuestionsAccounts);
+
+            // Create a list that only contains needed information: Security Question and ID
             List<object> objects = new List<object>();
             object temp;
 
@@ -86,6 +100,7 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
                 objects.Add(temp);
             }
 
+            // Serialize list as string
             var jsonContent = JsonConvert.SerializeObject(objects, Formatting.Indented,
                             new JsonSerializerSettings
                             {
@@ -94,6 +109,7 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
 
             var stringContent = new StringContent(jsonContent);
 
+            // Return successful message
             return new HttpResponseMessage
             {
                 Content = stringContent,
@@ -101,16 +117,26 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
             };
         }
 
+
+        /// <summary>
+        /// Logic takes posted answers to security questions associated with the user's account
+        /// and tests if they match with their stored answers after salting
+        /// Request is rejected if answers do not match
+        /// </summary>
+        /// <param name="answers"></param>
+        /// <returns></returns>
         public HttpResponseMessage AnswersSubmission(AccountPostAnswersDTO answers)
         {
-
+            // Retrieve original salts and answers to stored security questions by username
             var saltSecurityAnswers = _saltSecurityAnswerLogic.GetAllByUsername(answers.Username);
             var securityQuestionsAccounts = _securityQuestionsAccountLogic.GetAllByUsername(answers.Username);
 
-
+            // Bool to test if matched answers pass
             bool isAllMatched = true;
 
-            // Expensive...
+            // Expensive...?
+            // Iterate through security questions in account, salts for stored answers, and new answers
+            // to look for matching security questions to test if answers also match
             foreach (var securityQuestionsAccount in securityQuestionsAccounts)
             {
                 foreach (var saltSecurityAnswer in saltSecurityAnswers)
@@ -119,10 +145,10 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
                     {
                         if (securityQuestionsAccount.SecurityQuestionID == saltSecurityAnswer.SecurityQuestionID && saltSecurityAnswer.SecurityQuestionID == securityQuestion.Question)
                         {
-                            // Use saltSecurityAnswer.SaltValue to hash securityQuestion.Answer
+                            // Use stored salt to hash new answer
                             var hashedNewAnswer = HashService.Instance.HashPasswordWithSalt(saltSecurityAnswer.SaltValue, securityQuestion.Answer, true);
 
-                            // Check if hashed answer == securityQuestionsAccount.Answer
+                            // Check if new answer matches original answer
                             if (hashedNewAnswer != securityQuestionsAccount.Answer)
                             {
                                 isAllMatched = false;
@@ -132,6 +158,7 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
                 }
             }
 
+            // Reject user if answers don't match
             if (!isAllMatched)
             {
                 return new HttpResponseMessage
@@ -141,19 +168,27 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
                 };
             }
 
+            // Otherwise return successful message
             return new HttpResponseMessage
             {
                 StatusCode = HttpStatusCode.OK
             };
         }
 
+
+        /// <summary>
+        /// Logic takes new password credentials from controller and updates existing
+        /// password and its salt stored in the user's account
+        /// </summary>
+        /// <param name="credentials"></param>
+        /// <returns></returns>
         public HttpResponseMessage PasswordSubmission(AccountCredentialDTO credentials)
         {
-            // Create new pw salt and hashedPw
+            // Create new password salt and hash new password
             var pSalt = HashService.Instance.CreateSaltKey();
             var hashedPassword = HashService.Instance.HashPasswordWithSalt(pSalt, credentials.Password, true);
 
-            // Update Salt and Account
+            // Update new salt and password properties
             var saltModel = _saltLogic.GetSalt(credentials.Username);
             saltModel.PasswordSalt = pSalt;
 
@@ -162,15 +197,19 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
 
             try
             {
+                // Save context
                 _accountLogic.Update(accountModel);
                 _saltLogic.Update(saltModel);
 
+                // Return if successful
                 return new HttpResponseMessage
                 {
                     StatusCode = HttpStatusCode.OK
                 };
+
             } catch (Exception ex)
             {
+                // Catch if exception with EF/DB occurs
                 return new HttpResponseMessage
                 {
                     ReasonPhrase = ex.Message,

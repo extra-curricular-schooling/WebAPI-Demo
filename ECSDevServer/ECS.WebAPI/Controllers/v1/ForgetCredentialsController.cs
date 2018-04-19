@@ -17,6 +17,11 @@ namespace ECS.WebAPI.Controllers.v1
             _controllerLogic = new ForgetCredentialsControllerLogic();
         }
 
+        /// <summary>
+        /// Method consumes email in query string and returns http response
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("GetUsername")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET")]
@@ -31,7 +36,11 @@ namespace ECS.WebAPI.Controllers.v1
             return actionResultResponse;
         }
         
-
+        /// <summary>
+        /// Method consumes username in query string and returns http response
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("GetSecurityQuestions")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET")]
@@ -47,6 +56,12 @@ namespace ECS.WebAPI.Controllers.v1
             
         }
 
+        /// <summary>
+        /// Method consumes posted data to verify answers to stored security questions
+        /// and returns http response
+        /// </summary>
+        /// <param name="answers"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("SubmitAnswers")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
@@ -63,7 +78,12 @@ namespace ECS.WebAPI.Controllers.v1
             return actionResultResponse;
         }
 
-
+        /// <summary>
+        /// Method consumes new password credentials to update user information
+        /// and returns http response
+        /// </summary>
+        /// <param name="credentials"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("SubmitNewPassword")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
