@@ -1,6 +1,6 @@
 <template>
 <div class="SweepstakeAdminPage">
-  <!-- make logic where the admin can only post one sweepstake at a t time untill or unless one sweepstake
+  <!-- make logic where the admin can only post one sweepstake at a time untill or unless one sweepstake
   is closed. give an error if the admin tries to post again -->
     <h1>Admin Page to Set Sweepstake Settings</h1>
     <h2>Admin Can Set Sweepstake Open/Close Date, Sweepstake ID, Ticket Price, & Prize.</h2>
@@ -57,12 +57,9 @@ export default {
   },
   methods: {
     submitSweepstake: function (OpenDateTime, ClosedDateTime, Prize, UsernameWinner, SweepStakesID, Price) {
-      // alert('Sweepstake Set ' + OpenDateTime + ' ' + ClosedDateTime)
-      // alert('Other Information Set ' + Price + ' ' + Prize + ' ' + SweepStakesID + ' ')
       axios({
         method: 'POST',
         url: store.getters.getBaseAppUrl + 'v1/SweepstakeAdmin/submitSweepstake',
-        // url: 'https://localhost:44311/SweepstakeAdmin/submitSweepstake',
         headers: store.getters.getRequestHeaders,
         data: {
           'SweepStakesID': this.$data.SweepStakesID, // why MY ID DOESN't GO with what i want

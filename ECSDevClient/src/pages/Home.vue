@@ -21,9 +21,16 @@ import ErrorModal from '../components/Error-Modal/index'
 import LinkedInPostModal from '../components/LinkedIn-Modal/Index'
 import RedirectModal from '../components/Redirect-Modal/index'
 import SideBar from '../components/SideBar-Menu/index'
-
+import axios from 'axios'
 export default {
   name: 'home',
+  data () {
+    return {
+      username: this.$store.getters.getUsername,
+      headers: this.$store.getters.getRequestHeaders,
+      Points: 2
+    }
+  },
   components: {
     ErrorModal,
     LinkedInPostModal,
@@ -31,34 +38,37 @@ export default {
     SideBar
   },
   methods: {
-    checkFrame: function () {
-      // if (document.getElementById('FrameResult') == null) {
-      //   alert('Frame not created. Please reload')
-      // } else {
-      //   document.getElementById('FrameResult').onload = alert('Done. You might be able to earn points after 1 minute.')
-      // }
+    earnPoints: function (username, Points) {
+      alert('Hello. You earned 2 points.')
+      axios({
+        method: 'POST',
+        url: this.$store.getters.getBaseAppUrl + 'v1/SweepstakeAdmin/UpdatePoints/' + username,
+        headers: this.$store.getters.getRequestHeaders,
+        data: {
+          'Points': this.$data.Points,
+          'ScholarUserName': this.$data.username
+        }
+      })
+        .then(response => {
+          console.log(response)
+          this.$router.push({
+            name: 'Home'
+          })
+        })
+        .catch(error => {
+          console.log(error.response)
+          this.$data.error = JSON.parse(error.response.data)
+          if (error.response.status === 500) {
+            alert('We apologize.  We are unable to process your request at this time.')
+          }
+        })
     },
-    // timerPage: function () {
-    //   setTimeout(function () {
-    //     document.getElementById('myframe').innerHTML = 'Failed To Load'
-    //   }, 5000)
-    // },
-    // need timeout if the page is not rendered in 5 seconds.Have to do this is for earning points.
-    // or what really happening is the iframe gets recreated each time a new page is clicked.
-    // add a method to the else above if loads start timer and give points
-    // onload="alert('Done Loading')"
-    // onerror="alert('failed to load')"
+    // Iframe gets recreated each time a new page is clicked.
     mounted () {
-      this.$nextTick(function (checkFrame) {
-        this.checkFrame()
-      }
-      )
-    },
-    data () {
-      return {
-        username: this.$store.getters.getUsername,
-        headers: this.$store.getters.getRequestHeaders
-      }
+      setTimeout(
+        this.earnPoints
+        , 2000)
+      // after 3 minutes 30 aseconds you can earn 2 points
     }
   }
 }
