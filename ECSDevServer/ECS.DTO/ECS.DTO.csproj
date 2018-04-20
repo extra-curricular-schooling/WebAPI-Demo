@@ -45,6 +45,7 @@
     <Compile Include="AccountPostAnswersDTO.cs" />
     <Compile Include="ArticleDTO.cs" />
     <Compile Include="InterestTagsDTO.cs" />
+    <Compile Include="ScholarPointsDTO.cs" />
     <Compile Include="SecurityQuestionDTO.cs" />
     <Compile Include="RegistrationDTO.cs" />
     <Compile Include="LinkedInPostDTO.cs" />
