@@ -1,7 +1,8 @@
 ﻿using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
+using ECS.DataAccess.Models;
 
-namespace ECS.Models
+namespace ECS.DataAccess.Migrations
 {
     /// <summary>
     /// This class initializes the database to the connection string ECSContext which is found in web.config.
@@ -175,3 +176,4 @@ namespace ECS.Models
         }
     }
 }
+
