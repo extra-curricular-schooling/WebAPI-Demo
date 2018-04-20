@@ -6,13 +6,13 @@
 </template>
 
 <script>
-import registrationForm from '@/components/registration-form/Index'
+import RegistrationForm from '@/components/registration-form/Template'
 // import eventHub from '@/components/EventHub'
 
 export default {
   // name: 'RegAppToPortalRequest',
   components: {
-    'registration-form': registrationForm
+    'registration-form': RegistrationForm
   }
   // data () {
   //   return {

@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import LogoutButton from '../components/Logout-Button/index'
+import LogoutButton from '@/components/logout-button/Template'
 
 export default {
   name: 'Admin-Navbar',

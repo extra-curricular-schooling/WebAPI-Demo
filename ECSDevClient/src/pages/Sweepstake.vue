@@ -17,7 +17,7 @@ import Vue from 'vue'
 import moment from 'moment'
 import Countdown from 'vuejs-countdown'
 // import store from '@/store/index'
-import axios from 'axios'
+import Axios from 'axios'
 Vue.use(require('vue-moment'))
 export default {
   name: 'prizes',
@@ -31,12 +31,17 @@ export default {
       // OpenDateTime: moment().utc('dddd, MMMM Do YYYY , hh:mm:ss').format()
     }
   },
-  components: { Countdown },
+  components: {
+    Countdown
+  },
   methods: {
     fetchUserInfo: function (username, Points) {
-      axios({
+      Axios({
         method: 'GET',
-        url: this.$store.getters.getBaseAppUrl + 'v1/Sweepstake/ScholarPoints/' + username,
+
+        // I changed the route below and took out a v1!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+        url: this.$store.getters.getBaseAppUrl + 'Sweepstake/ScholarPoints/' + username,
         headers: this.$store.getters.getRequestHeaders
       })
         .then(response => {
@@ -63,7 +68,7 @@ export default {
         alert('Congragulations! One ticket bought for ' + Cost + ' points! Your Points are ' + Points)
         Points = Points - Cost
         alert('Points left = ' + Points)
-        // axios({
+        // Axios({
         //   // get request for sweepstake id and open date time from the sweepstake admin database table
         //   method: 'POST',
         //   // url: this.$store.getters.getBaseAppUrl + 'v1/SweepstakeAdmin/submitSweepstake',

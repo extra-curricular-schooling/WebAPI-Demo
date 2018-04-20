@@ -194,14 +194,14 @@
 
 <script>
 /* eslint-disable */
-import axios from 'axios'
-import agreementModal from '@/components/registration-form/elements/AgreementModal'
+import Axios from 'axios'
+import AgreementModal from '@/components/registration-form/elements/AgreementModal'
 // import registrationAlert from '@/components/registration-form/elements/RegistrationAlert'
 
 export default {
   name: 'RegistrationForm',
   components: {
-    'agreement-modal': agreementModal
+    'agreement-modal': AgreementModal
     // 'registration-alert': registrationAlert
   },
   data () {
@@ -483,7 +483,7 @@ export default {
       } else if (!this.$data.agreementIsChecked) {
         alert('You must agree to our Terms and Conditions to continue...')
       } else {
-        axios({
+        Axios({
           method: 'POST',
           url: this.$store.getters.getBaseAppUrl + 'Registration/SubmitRegistration',
           headers: this.$store.getters.getRequestHeaders,
@@ -539,7 +539,7 @@ export default {
       }
     },
     fetchSecurityQuestions () {
-      axios({
+      Axios({
         method: 'GET',
         url: this.$store.getters.getBaseAppUrl + 'Registration/GetSecurityQuestions',
         headers: this.$store.getters.getRequestHeaders

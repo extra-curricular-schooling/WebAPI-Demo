@@ -33,13 +33,16 @@
     <!-- <p>The winning ticket is: {{winningTicket}}</p> -->
 </div>
 </template>
+
 <script>
 import Vue from 'vue'
 import V2Datepicker from 'v2-datepicker'
 import 'v2-datepicker/lib/index.css'
-import axios from 'axios'
-import store from '@/store/index'
+import Axios from 'axios'
+import Store from '@/store/index'
+
 Vue.use(V2Datepicker)
+
 export default {
   name: 'sweepstake',
   data () {
@@ -57,10 +60,13 @@ export default {
   },
   methods: {
     submitSweepstake: function (OpenDateTime, ClosedDateTime, Prize, UsernameWinner, SweepStakesID, Price) {
-      axios({
+      Axios({
         method: 'POST',
-        url: store.getters.getBaseAppUrl + 'v1/SweepstakeAdmin/submitSweepstake',
-        headers: store.getters.getRequestHeaders,
+
+        // I changed the route below!!!!!!!!
+
+        url: Store.getters.getBaseAppUrl + 'SweepstakeAdmin/submitSweepstake',
+        headers: Store.getters.getRequestHeaders,
         data: {
           'SweepStakesID': this.$data.SweepStakesID, // why MY ID DOESN't GO with what i want
           'OpenDateTime': this.$data.OpenDateTime,
@@ -94,6 +100,7 @@ export default {
   }
 }
 </script>
+
 <style scoped>
 button {
   background-color: #E8E9E4;

@@ -50,12 +50,12 @@
 
 <script>
 import Axios from 'axios'
-import ErrorModal from '../Error-Modal/index'
-import EventBus from '../../assets/js/EventBus.js'
-import forgotPassword from '@/components/Forgot-Password-Modal/index'
-import forgotUsername from '@/components/Forgot-Username-Modal/index'
-import LoadingModal from '../Loading-Modal/index'
-var jwt = require('jsonwebtoken')
+import ErrorModal from '@/components/error-modal/Template'
+import EventBus from '@/assets/js/eventBus.js'
+import forgotPassword from '@/components/forgot-password-modal/Template'
+import forgotUsername from '@/components/Forgot-Username-Modal/Template'
+import LoadingModal from '@/components/loading-modal/Template'
+import jwt from 'jsonwebtoken'
 
 export default {
   name: 'LoginPanel',

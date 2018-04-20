@@ -17,11 +17,11 @@
 </template>
 
 <script>
-import ErrorModal from '../components/Error-Modal/index'
-import LinkedInPostModal from '../components/LinkedIn-Modal/Index'
-import RedirectModal from '../components/Redirect-Modal/index'
-import SideBar from '../components/SideBar-Menu/index'
-import axios from 'axios'
+import ErrorModal from '@/components/error-modal/Template'
+import LinkedInPostModal from '@/components/linkedin-modal/Template'
+import RedirectModal from '@/components/redirect-modal/Template'
+import SideBar from '@/components/sidebar-menu/Template'
+import Axios from 'axios'
 export default {
   name: 'home',
   data () {
@@ -40,9 +40,12 @@ export default {
   methods: {
     earnPoints: function (username, Points) {
       alert('Hello. You earned 2 points.')
-      axios({
+      Axios({
         method: 'POST',
-        url: this.$store.getters.getBaseAppUrl + 'v1/SweepstakeAdmin/UpdatePoints/' + username,
+
+        // Furkan, I changed your url from /v1/SweepstakeAdmin/UpdatePoints/ to what it is below...
+
+        url: this.$store.getters.getBaseAppUrl + 'SweepstakeAdmin/UpdatePoints/' + username,
         headers: this.$store.getters.getRequestHeaders,
         data: {
           'Points': this.$data.Points,

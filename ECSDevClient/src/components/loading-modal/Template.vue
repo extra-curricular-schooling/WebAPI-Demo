@@ -17,7 +17,7 @@
   </div>
 </template>
 <script>
-import EventBus from '../../assets/js/EventBus.js'
+import EventBus from '@/assets/js/eventBus.js'
 
 export default {
   name: 'Loading-Modal',

@@ -1,12 +1,12 @@
 // Nice to have a central location to update information. (Single Source of truth)
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { redirect } from '../components/Redirect-Modal/store/index'
+import { redirect } from '@/components/redirect-modal/store'
 import { request } from './modules/request'
 import { auth } from './modules/auth'
 import { home } from './modules/home'
-import { linkedin } from '../components/LinkedIn-Modal/store/index'
-import { login } from '../components/Login-Panel/store/index'
+import { linkedin } from '@/components/linkedin-modal/store'
+import { login } from '@/components/login-panel/store'
 import VuexPersist from 'vuex-persist'
 
 const vuexLocalStorage = new VuexPersist({

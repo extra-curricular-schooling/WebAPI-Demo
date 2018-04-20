@@ -113,11 +113,11 @@
 
 <script>
 import Axios from 'axios'
-import EventBus from '../../assets/js/EventBus.js'
+import EventBus from '@/assets/js/eventBus.js'
 
 export default {
   name: 'LinkedInPostModal',
-  data() {
+  data () {
     return {
       isActive: false,
       isButtonVisible: false,
@@ -149,15 +149,15 @@ export default {
       this.postData.description = this.$store.getters.getInterestTag
       this.currentDateTime = new Date()
     },
-    toggleLinkedInModal: function() {
-      this.isActive = !this.isActive;
+    toggleLinkedInModal: function () {
+      this.isActive = !this.isActive
     },
     modalActions: function () {
       this.updateArticleInfo()
       this.toggleLinkedInModal()
     },
-    toggleConfirmModal: function() {
-      this.isConfirm = !this.isConfirm;
+    toggleConfirmModal: function () {
+      this.isConfirm = !this.isConfirm
     },
     toggleShareButton: function () {
       this.isButtonVisible = true
@@ -175,7 +175,7 @@ export default {
     redirectToLinkedIn: function () {
       window.location.assign(this.getLinkedInTokenUri())
     },
-    shareToLinkedIn: function() {
+    shareToLinkedIn: function () {
       Axios({
         method: 'POST',
         url: this.$store.getters.getLinkedInPostURI,
@@ -188,25 +188,23 @@ export default {
           code: this.postData.code
         }
       })
-        .then( (response) => {
-          this.toggleLinkedInModal();
-          var myNode = document.getElementById("post-url");
-          myNode.href = response.data.UpdateUrl;
-          this.toggleConfirmModal();
+        .then((response) => {
+          this.toggleLinkedInModal()
+          var myNode = document.getElementById('post-url')
+          myNode.href = response.data.UpdateUrl
+          this.toggleConfirmModal()
         })
-        .catch( (error) => {
+        .catch((error) => {
           console.log(error)
-          if(error.response.data.message === 'ERR7') {
+          if (error.response.data.message === 'ERR7') {
             this.toggleLinkedInModal()
             this.toggleRedirectModal(this.getLinkedInTokenUri(), 'Your LinkedIn session has expired, do you wish to renew it?')
-          }
-          else if(error.response.data.message === 'ERR1') {
+          } else if (error.response.data.message === 'ERR1') {
             this.toggleLinkedInModal()
             this.toggleRedirectModal(this.getLinkedInTokenUri(), 'Your account does not seem to be linked to LinkedIn, would you like to start that process now?')
-          }
-          else {
-            this.toggleLinkedInModal();
-            this.toggleErrorModal('Seems like LinkedIn did not like that post! Please try again later!');
+          } else {
+            this.toggleLinkedInModal()
+            this.toggleErrorModal('Seems like LinkedIn did not like that post! Please try again later!')
           }
         })
     }

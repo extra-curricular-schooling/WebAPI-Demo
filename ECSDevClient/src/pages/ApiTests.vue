@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import SsoTest from '@/components/sso-test/index'
+import SsoTest from '@/components/sso-test/Template'
 
 export default {
   components: {

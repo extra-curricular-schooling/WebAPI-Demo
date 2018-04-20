@@ -1,16 +1,16 @@
-import axios from 'axios'
-import store from '@/store/index'
-import router from '@/router/index'
-import urlHelper from '@/assets/js/urlHelper'
-import jwtService from '@/assets/js/jwtService'
+import Axios from 'axios'
+import Store from '@/store/index'
+import Router from '@/router/index'
+import UrlHelper from '@/assets/js/urlHelper'
+import JwtService from '@/assets/js/jwtService'
 
 export default {
   submitRegistration: function (username, password, application) {
     // Test SSO Token
-    axios({
+    Axios({
       method: 'POST',
-      url: store.getters.getBaseAppUrl + 'Sso/Registration',
-      headers: store.getters.getRequestHeaders
+      url: Store.getters.getBaseAppUrl + 'Sso/Registration',
+      headers: Store.getters.getRequestHeaders
     })
       .then(function (response) {
         console.log(response)
@@ -23,23 +23,23 @@ export default {
   },
   submitLogin (username, password) {
     // Test SSO Token
-    axios({
+    Axios({
       method: 'POST',
-      url: store.getters.getBaseAppUrl + 'Sso/Login',
-      headers: store.getters.getRequestHeaders
+      url: Store.getters.getBaseAppUrl + 'Sso/Login',
+      headers: Store.getters.getRequestHeaders
     })
       .then(response => {
         console.log(response)
         console.log(response.status)
         // Testing with a 200 response to make sure the Partial Registration is working.
         if (response.status === 200) {
-          let parsedQuery = urlHelper.parseUrlQuery(response.data)
+          let parsedQuery = UrlHelper.parseUrlQuery(response.data)
           let token = parsedQuery['jwt']
           // let claims = jwtService.transform(token)
-          let claims = jwtService.myDecode(token)
-          jwtService.setClaims(claims)
+          let claims = JwtService.myDecode(token)
+          JwtService.setClaims(claims)
           console.log(claims)
-          router.push({
+          Router.push({
             name: 'PartialRegistration',
             params: {
               jwt: token
@@ -60,10 +60,10 @@ export default {
   },
   submitResetPassword: function (username, password) {
     // Test SSO Token
-    axios({
+    Axios({
       method: 'POST',
-      url: store.getters.getBaseAppUrl + 'Sso/ResetPassword',
-      headers: store.getters.getRequestHeaders
+      url: Store.getters.getBaseAppUrl + 'Sso/ResetPassword',
+      headers: Store.getters.getRequestHeaders
     })
       .then(function (response) {
         return response.data

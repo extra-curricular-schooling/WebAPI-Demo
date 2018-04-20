@@ -12,9 +12,9 @@
 
 <script>
 /* eslint-diable */
-import pwnedHasher from '../../assets/js/PwnedChecker.js'
-import ssoMockRequest from './api/mockRequest'
-import axios from 'axios'
+import PwnedHasher from '@/assets/js/pwnedChecker'
+import SsoMockRequest from './mockRequest'
+import Axios from 'axios'
 
 export default {
   data: function () {
@@ -27,28 +27,28 @@ export default {
   methods: {
     submitRegistration () {
       this.$store.dispatch('updateToken', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNzb3Rlc3Q1IiwicGFzc3dvcmQiOiJhYWEiLCJyb2xlVHlwZSI6InB1YmxpYyIsImFwcGxpY2F0aW9uIjoiZWNzIiwibmJmIjoxNTI0MDA4MzQ5LCJleHAiOjE1MjQwMTE5NDksImlhdCI6MTUyNDAwODM0OX0.KPGsk4ashBtiO8-FjPYNOW2dKxuKAe5dENZZOWU__rc')
-      ssoMockRequest.submitRegistration(
+      SsoMockRequest.submitRegistration(
         this.$store.getters.getUsername,
         this.$data.password,
         this.$data.application)
     },
     submitLogin () {
       this.$store.dispatch('updateToken', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ijc3N0xhemVyNzc3IiwicGFzc3dvcmQiOiI3NzdMYXplcjc3NyIsImFwcGxpY2F0aW9uIjoiY2FyZWF3YXkiLCJyb2xlVHlwZSI6InB1YmxpYyIsImlhdCI6MTUyMjgwMTA3OH0.RyYeO1ekdzfLnntWfs_NHV-4Dl0Qa6T-m_HkBAWwsUY')
-      ssoMockRequest.submitLogin(
+      SsoMockRequest.submitLogin(
         this.$store.getters.getUsername,
         this.$data.password)
       // Nothing after this because of redirect in api call.
     },
     submitResetPassword () {
       this.$store.dispatch('updateToken', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ijc3N0xhemVyNzc3IiwicGFzc3dvcmQiOiI3NzdMYXplcjc3NyIsImFwcGxpY2F0aW9uIjoiY2FyZWF3YXkiLCJyb2xlVHlwZSI6InB1YmxpYyIsImlhdCI6MTUyMjgwMTA3OH0.RyYeO1ekdzfLnntWfs_NHV-4Dl0Qa6T-m_HkBAWwsUY')
-      ssoMockRequest.submitResetPassword(
+      SsoMockRequest.submitResetPassword(
         this.$store.getters.getUsername,
         this.$data.password)
     },
     testPwnd () {
-      axios({
+      Axios({
         method: 'GET',
-        url: this.$store.getters.getBasePwnedUrl + pwnedHasher.getPwnedParameter(this.passwordForPwned),
+        url: this.$store.getters.getBasePwnedUrl + PwnedHasher.getPwnedParameter(this.passwordForPwned),
         // url: 'https://api.pwnedpasswords.com/range/21BD1',
         headers: {
           'Access-Control-Allow-Origin': 'http://localhost:8080',
