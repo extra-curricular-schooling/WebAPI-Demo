@@ -14,6 +14,7 @@ using ECS.WebAPI.Filters.AuthorizationFilters;
 namespace ECS.WebAPI.Controllers.v1
 {
     [RoutePrefix("v1/Sweepstake")]
+    //[AuthorizeRequired("canEnterRaffle", Roles = "Scholar")]
     public class SweepstakeController : ApiController
     {
         private readonly IAccountRepository accountRepository = new AccountRepository();

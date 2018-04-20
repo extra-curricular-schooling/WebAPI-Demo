@@ -245,5 +245,18 @@ namespace ECS.Security.AccessTokens.Jwt
             }
             return Task.FromResult<IPrincipal>(null);
         }
+        public Claim GetClaim(IPrincipal principal, string claimType)
+        {
+            // This line is called multiple times during execution... Figure out a way to get it out.
+            var claimsPrincipal = (ClaimsPrincipal)principal;
+            return claimsPrincipal.FindFirst(claimType);
+        }
+
+        public string GetClaimValue(IPrincipal principal, string claimType)
+        {
+            // This line is called multiple times during execution... Figure out a way to get it out.
+            var claimsPrincipal = (ClaimsPrincipal)principal;
+            return claimsPrincipal.FindFirst(claimType).Value;
+        }
     }
 }

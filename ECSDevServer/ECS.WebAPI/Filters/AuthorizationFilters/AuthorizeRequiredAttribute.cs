@@ -5,23 +5,23 @@ using System.Web.Http;
 using System.Web.Http.Controllers;
 using ECS.Security.AccessTokens.Jwt;
 
-namespace ECS.WebAPI.Filters.AuthenticationFilters
+namespace ECS.WebAPI.Filters.AuthorizationFilters
 {
-    public class AuthorizationRequiredAttribute : AuthorizeAttribute, IDisposable
+    public class AuthorizeRequiredAttribute : AuthorizeAttribute, IDisposable
     {
         #region Constants and fields
         private string _claim;
         private string[] _claims;
         private bool _isSingleClaim;
         #endregion
-
-        public AuthorizationRequiredAttribute(string claim)
+        // Single Claim probably won't need
+        public AuthorizeRequiredAttribute(string claim)
         {
             _claim = claim;
             _isSingleClaim = true;
         }
 
-        public AuthorizationRequiredAttribute(string[] claims)
+        public AuthorizeRequiredAttribute(string[] claims)
         {
             _claims = claims;
             _isSingleClaim = false;
@@ -36,30 +36,30 @@ namespace ECS.WebAPI.Filters.AuthenticationFilters
                 accessTokenFromRequest = actionContext.Request.Headers.Authorization.ToString();
 
                 ClaimsPrincipal principal = JwtManager.Instance.GetPrincipal(accessTokenFromRequest);
-                if(principal != null)
+                if (principal != null)
                 {
-                    if(_isSingleClaim)
+                    foreach (string claim in _claims)
                     {
-                        if(principal.HasClaim("AccountType", _claim))
+                        if (principal.HasClaim(ClaimTypes.Role, "Scholar"))
                         {
-                            return true;
+                            if (principal.HasClaim("PermissionName", claim))
+                            {
+                                return true;
+                            }
+                        }
+                        else if (principal.HasClaim(ClaimTypes.Role, "Admin"))
+                        {
+                            if (principal.HasClaim("PermissionName", claim))
+                            {
+                                return true;
+                            }
                         }
                         else
                         {
                             return false;
                         }
                     }
-                    else
-                    {
-                        foreach (string claim in _claims)
-                        {
-                            if (principal.HasClaim("AccountType", claim))
-                            {
-                                return true;
-                            }
-                        }
-                        return false;
-                    }
+                    return false;
                 }
                 else
                 {
