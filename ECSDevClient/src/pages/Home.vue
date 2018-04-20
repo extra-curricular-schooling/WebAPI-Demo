@@ -67,7 +67,7 @@ export default {
     mounted () {
       setTimeout(
         this.earnPoints
-        , 2000)
+        , 200000)
       // after 3 minutes 30 aseconds you can earn 2 points
     }
   }
