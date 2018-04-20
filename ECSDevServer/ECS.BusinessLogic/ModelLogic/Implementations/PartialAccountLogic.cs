@@ -41,5 +41,10 @@ namespace ECS.BusinessLogic.ModelLogic.Implementations
         {
             _partialAccountRepository.Update(partialAccount);
         }
+
+        public void Delete(PartialAccount partialAccount)
+        {
+            _partialAccountRepository.Delete(partialAccount);
+        }
     }
 }

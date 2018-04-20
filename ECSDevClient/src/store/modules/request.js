@@ -7,6 +7,7 @@ export const request = {
     // Since we are a web application, we will target the latest version in our api calls.
     appBaseUrl: 'https://localhost:44311/v1/',
     ssoBaseUrl: 'https://sso.com/',
+    pwnedBaseUrl: 'https://api.pwnedpasswords.com/range/',
     headers: {
       'Access-Control-Allow-Origin': 'http://localhost:8080',
       'Access-Control-Allow-Credentials': true,
@@ -19,6 +20,7 @@ export const request = {
   getters: {
     getBaseAppUrl: (state) => { return state.appBaseUrl },
     getBaseSsoUrl: (state) => { return state.ssoBaseUrl },
+    getBasePwnedUrl: (state) => { return state.pwnedBaseUrl },
     getRequestHeaders: (state) => { return state.headers }
   },
   mutations: {
