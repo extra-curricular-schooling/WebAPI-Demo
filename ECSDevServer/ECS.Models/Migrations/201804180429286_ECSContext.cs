@@ -43,6 +43,27 @@ namespace ECS.Models.Migrations
                 .Index(t => t.TagName);
             
             CreateTable(
+                "dbo.AccountType",
+                c => new
+                    {
+                        Username = c.String(nullable: false, maxLength: 20),
+                        PermissionName = c.String(nullable: false, maxLength: 128),
+                    })
+                .PrimaryKey(t => new { t.Username, t.PermissionName })
+                .ForeignKey("dbo.Account", t => t.Username, cascadeDelete: true)
+                .ForeignKey("dbo.Permission", t => t.PermissionName, cascadeDelete: true)
+                .Index(t => t.Username)
+                .Index(t => t.PermissionName);
+            
+            CreateTable(
+                "dbo.Permission",
+                c => new
+                    {
+                        PermissionName = c.String(nullable: false, maxLength: 128),
+                    })
+                .PrimaryKey(t => t.PermissionName);
+            
+            CreateTable(
                 "dbo.SaltSecurityAnswer",
                 c => new
                     {
@@ -79,27 +100,6 @@ namespace ECS.Models.Migrations
                 .ForeignKey("dbo.Account", t => t.Username, cascadeDelete: true)
                 .Index(t => t.SecurityQuestionID)
                 .Index(t => t.Username);
-            
-            CreateTable(
-                "dbo.AccountType",
-                c => new
-                    {
-                        Username = c.String(nullable: false, maxLength: 20),
-                        PermissionName = c.String(nullable: false, maxLength: 128),
-                    })
-                .PrimaryKey(t => new { t.Username, t.PermissionName })
-                .ForeignKey("dbo.Account", t => t.Username, cascadeDelete: true)
-                .ForeignKey("dbo.Permission", t => t.PermissionName, cascadeDelete: true)
-                .Index(t => t.Username)
-                .Index(t => t.PermissionName);
-            
-            CreateTable(
-                "dbo.Permission",
-                c => new
-                    {
-                        PermissionName = c.String(nullable: false, maxLength: 128),
-                    })
-                .PrimaryKey(t => t.PermissionName);
             
             CreateTable(
                 "dbo.BadAccessToken",
@@ -382,6 +382,73 @@ namespace ECS.Models.Migrations
             );
             
             CreateStoredProcedure(
+                "dbo.AccountType_Insert",
+                p => new
+                    {
+                        Username = p.String(maxLength: 20),
+                        PermissionName = p.String(maxLength: 128),
+                    },
+                body:
+                    @"INSERT [dbo].[AccountType]([Username], [PermissionName])
+                      VALUES (@Username, @PermissionName)"
+            );
+            
+            CreateStoredProcedure(
+                "dbo.AccountType_Update",
+                p => new
+                    {
+                        Username = p.String(maxLength: 20),
+                        PermissionName = p.String(maxLength: 128),
+                    },
+                body:
+                    @"RETURN"
+            );
+            
+            CreateStoredProcedure(
+                "dbo.AccountType_Delete",
+                p => new
+                    {
+                        Username = p.String(maxLength: 20),
+                        PermissionName = p.String(maxLength: 128),
+                    },
+                body:
+                    @"DELETE [dbo].[AccountType]
+                      WHERE (([Username] = @Username) AND ([PermissionName] = @PermissionName))"
+            );
+            
+            CreateStoredProcedure(
+                "dbo.Permission_Insert",
+                p => new
+                    {
+                        PermissionName = p.String(maxLength: 128),
+                    },
+                body:
+                    @"INSERT [dbo].[Permission]([PermissionName])
+                      VALUES (@PermissionName)"
+            );
+            
+            CreateStoredProcedure(
+                "dbo.Permission_Update",
+                p => new
+                    {
+                        PermissionName = p.String(maxLength: 128),
+                    },
+                body:
+                    @"RETURN"
+            );
+            
+            CreateStoredProcedure(
+                "dbo.Permission_Delete",
+                p => new
+                    {
+                        PermissionName = p.String(maxLength: 128),
+                    },
+                body:
+                    @"DELETE [dbo].[Permission]
+                      WHERE ([PermissionName] = @PermissionName)"
+            );
+            
+            CreateStoredProcedure(
                 "dbo.SecurityQuestion_Insert",
                 p => new
                     {
@@ -462,73 +529,6 @@ namespace ECS.Models.Migrations
                 body:
                     @"DELETE [dbo].[SecurityQuestionAccount]
                       WHERE (([SecurityQuestionID] = @SecurityQuestionID) AND ([Username] = @Username))"
-            );
-            
-            CreateStoredProcedure(
-                "dbo.AccountType_Insert",
-                p => new
-                    {
-                        Username = p.String(maxLength: 20),
-                        PermissionName = p.String(maxLength: 128),
-                    },
-                body:
-                    @"INSERT [dbo].[AccountType]([Username], [PermissionName])
-                      VALUES (@Username, @PermissionName)"
-            );
-            
-            CreateStoredProcedure(
-                "dbo.AccountType_Update",
-                p => new
-                    {
-                        Username = p.String(maxLength: 20),
-                        PermissionName = p.String(maxLength: 128),
-                    },
-                body:
-                    @"RETURN"
-            );
-            
-            CreateStoredProcedure(
-                "dbo.AccountType_Delete",
-                p => new
-                    {
-                        Username = p.String(maxLength: 20),
-                        PermissionName = p.String(maxLength: 128),
-                    },
-                body:
-                    @"DELETE [dbo].[AccountType]
-                      WHERE (([Username] = @Username) AND ([PermissionName] = @PermissionName))"
-            );
-            
-            CreateStoredProcedure(
-                "dbo.Permission_Insert",
-                p => new
-                    {
-                        PermissionName = p.String(maxLength: 128),
-                    },
-                body:
-                    @"INSERT [dbo].[Permission]([PermissionName])
-                      VALUES (@PermissionName)"
-            );
-            
-            CreateStoredProcedure(
-                "dbo.Permission_Update",
-                p => new
-                    {
-                        PermissionName = p.String(maxLength: 128),
-                    },
-                body:
-                    @"RETURN"
-            );
-            
-            CreateStoredProcedure(
-                "dbo.Permission_Delete",
-                p => new
-                    {
-                        PermissionName = p.String(maxLength: 128),
-                    },
-                body:
-                    @"DELETE [dbo].[Permission]
-                      WHERE ([PermissionName] = @PermissionName)"
             );
             
             CreateStoredProcedure(
@@ -1049,18 +1049,18 @@ namespace ECS.Models.Migrations
             DropStoredProcedure("dbo.BadAccessToken_Delete");
             DropStoredProcedure("dbo.BadAccessToken_Update");
             DropStoredProcedure("dbo.BadAccessToken_Insert");
-            DropStoredProcedure("dbo.Permission_Delete");
-            DropStoredProcedure("dbo.Permission_Update");
-            DropStoredProcedure("dbo.Permission_Insert");
-            DropStoredProcedure("dbo.AccountType_Delete");
-            DropStoredProcedure("dbo.AccountType_Update");
-            DropStoredProcedure("dbo.AccountType_Insert");
             DropStoredProcedure("dbo.SecurityQuestionAccount_Delete");
             DropStoredProcedure("dbo.SecurityQuestionAccount_Update");
             DropStoredProcedure("dbo.SecurityQuestionAccount_Insert");
             DropStoredProcedure("dbo.SecurityQuestion_Delete");
             DropStoredProcedure("dbo.SecurityQuestion_Update");
             DropStoredProcedure("dbo.SecurityQuestion_Insert");
+            DropStoredProcedure("dbo.Permission_Delete");
+            DropStoredProcedure("dbo.Permission_Update");
+            DropStoredProcedure("dbo.Permission_Insert");
+            DropStoredProcedure("dbo.AccountType_Delete");
+            DropStoredProcedure("dbo.AccountType_Update");
+            DropStoredProcedure("dbo.AccountType_Insert");
             DropStoredProcedure("dbo.Article_Delete");
             DropStoredProcedure("dbo.Article_Update");
             DropStoredProcedure("dbo.Article_Insert");
@@ -1079,12 +1079,12 @@ namespace ECS.Models.Migrations
             DropForeignKey("dbo.PartialAccountSalt", "UserName", "dbo.PartialAccount");
             DropForeignKey("dbo.LinkedInAccessToken", "UserName", "dbo.Account");
             DropForeignKey("dbo.JAccessToken", "UserName", "dbo.Account");
-            DropForeignKey("dbo.AccountType", "PermissionName", "dbo.Permission");
-            DropForeignKey("dbo.AccountType", "Username", "dbo.Account");
             DropForeignKey("dbo.SecurityQuestionAccount", "Username", "dbo.Account");
             DropForeignKey("dbo.SecurityQuestionAccount", "SecurityQuestionID", "dbo.SecurityQuestion");
             DropForeignKey("dbo.SaltSecurityAnswer", "UserName", "dbo.Account");
             DropForeignKey("dbo.SaltSecurityAnswer", "SecurityQuestionID", "dbo.SecurityQuestion");
+            DropForeignKey("dbo.AccountType", "PermissionName", "dbo.Permission");
+            DropForeignKey("dbo.AccountType", "Username", "dbo.Account");
             DropForeignKey("dbo.AccountInterestTag", "InterestTag_TagName", "dbo.InterestTag");
             DropForeignKey("dbo.AccountInterestTag", "Account_UserName", "dbo.Account");
             DropForeignKey("dbo.Article", "TagName", "dbo.InterestTag");
@@ -1099,12 +1099,12 @@ namespace ECS.Models.Migrations
             DropIndex("dbo.PartialAccountSalt", new[] { "UserName" });
             DropIndex("dbo.LinkedInAccessToken", new[] { "UserName" });
             DropIndex("dbo.JAccessToken", new[] { "UserName" });
-            DropIndex("dbo.AccountType", new[] { "PermissionName" });
-            DropIndex("dbo.AccountType", new[] { "Username" });
             DropIndex("dbo.SecurityQuestionAccount", new[] { "Username" });
             DropIndex("dbo.SecurityQuestionAccount", new[] { "SecurityQuestionID" });
             DropIndex("dbo.SaltSecurityAnswer", new[] { "SecurityQuestionID" });
             DropIndex("dbo.SaltSecurityAnswer", new[] { "UserName" });
+            DropIndex("dbo.AccountType", new[] { "PermissionName" });
+            DropIndex("dbo.AccountType", new[] { "Username" });
             DropIndex("dbo.Article", new[] { "TagName" });
             DropTable("dbo.Address");
             DropTable("dbo.AccountInterestTag");
@@ -1119,11 +1119,11 @@ namespace ECS.Models.Migrations
             DropTable("dbo.JAccessToken");
             DropTable("dbo.ExpiredAccessToken");
             DropTable("dbo.BadAccessToken");
-            DropTable("dbo.Permission");
-            DropTable("dbo.AccountType");
             DropTable("dbo.SecurityQuestionAccount");
             DropTable("dbo.SecurityQuestion");
             DropTable("dbo.SaltSecurityAnswer");
+            DropTable("dbo.Permission");
+            DropTable("dbo.AccountType");
             DropTable("dbo.Article");
             DropTable("dbo.InterestTag");
             DropTable("dbo.Account");

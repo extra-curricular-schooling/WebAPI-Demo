@@ -12,7 +12,7 @@ namespace ECS.Models
     {
         // TODO: @Kris might need generated ID?
         [Key]
-        [Required]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ZipCodeId { get; set; }
         // The area code given during registration
         // ZipCode should not be in ZipLocation

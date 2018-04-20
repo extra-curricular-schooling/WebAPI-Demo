@@ -17,6 +17,11 @@ namespace ECS.WebAPI.Controllers.v1
             _controllerLogic = new ForgetCredentialsControllerLogic();
         }
 
+        /// <summary>
+        /// Method consumes email in query string and returns http response
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("GetUsername")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET")]
@@ -31,56 +36,68 @@ namespace ECS.WebAPI.Controllers.v1
             return actionResultResponse;
         }
         
-
+        /// <summary>
+        /// Method consumes username in query string and returns http response
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
         [HttpGet]
-        [Route("SecurityQuestions")]
+        [Route("GetSecurityQuestions")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET")]
-        public IHttpActionResult SecurityQuestions()
+        public IHttpActionResult GetSecurityQuestions(string username)
         {
-            // Grab the repository information for User's security questions
+            if (username == null)
+                return BadRequest("Bad Request");
 
-            // Return List<SecurityQuestionDTO> to the Client
-            return Ok("Get Security Questions");
+            var response = _controllerLogic.UsernameSubmission(username);
+            IHttpActionResult actionResultResponse = ResponseMessage(response);
+
+            return actionResultResponse;
+            
         }
 
+        /// <summary>
+        /// Method consumes posted data to verify answers to stored security questions
+        /// and returns http response
+        /// </summary>
+        /// <param name="answers"></param>
+        /// <returns></returns>
         [HttpPost]
-        [Route("SecurityQuestions")]
+        [Route("SubmitAnswers")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
-        public IHttpActionResult SecurityQuestions(AccountCredentialDTO credentials)
+        public IHttpActionResult SubmitAnswers(AccountPostAnswersDTO answers)
         {
-            // Credentials is already read and deserialized into a DTO. Validate it.
-            Validate(credentials);
+            Validate(answers);
 
-            if (ModelState.IsValid)
-            {
-                // Proccess any other information.
+            if (answers.Username == null || answers.SecurityQuestions == null)
+                return BadRequest("Bad Request");
 
-                // Check the db If their answers are correct.
+            var response = _controllerLogic.AnswersSubmission(answers);
+            IHttpActionResult actionResultResponse = ResponseMessage(response);
 
-                // Return succesful response
-                return Ok("Post Security Questions");
-            }
-            return BadRequest(ModelState);
+            return actionResultResponse;
         }
 
+        /// <summary>
+        /// Method consumes new password credentials to update user information
+        /// and returns http response
+        /// </summary>
+        /// <param name="credentials"></param>
+        /// <returns></returns>
         [HttpPost]
-        [Route("NewPassword")]
+        [Route("SubmitNewPassword")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
-        public IHttpActionResult NewPassword(AccountCredentialDTO credentials)
+        public IHttpActionResult SubmitNewPassword(AccountCredentialDTO credentials)
         {
-            // Credentials is already read and deserialized into a DTO. Validate it.
             Validate(credentials);
 
-            if (ModelState.IsValid)
-            {
-                // We need to take this information and update the user's password in the db.
-                
-                // Return 200
-                return Ok("Post Reset Password");
-            }
+            if (credentials.Username == null || credentials.Password == null)
+                return BadRequest("Bad Request");
 
-            // Fail state
-            return BadRequest(ModelState);
+            var response = _controllerLogic.PasswordSubmission(credentials);
+            IHttpActionResult actionResultResponse = ResponseMessage(response);
+
+            return actionResultResponse;
         }
 
         /// <summary>

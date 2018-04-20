@@ -80,6 +80,13 @@ namespace ECS.Repositories.Implementations
     /// <summary>
     /// 
     /// </summary>
+    public interface ISaltSecurityAnswerRepository : IRepositoryBase<SaltSecurityAnswer>
+    {
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
     public interface ISecurityQuestionRepository : IRepositoryBase<SecurityQuestion>
     {
     }
@@ -227,6 +234,13 @@ namespace ECS.Repositories.Implementations
     public class SaltRepository : RepositoryBase<Salt>, ISaltRepository
     {
         public SaltRepository() : base(new ECSContext())
+        {
+        }
+    }
+
+    public class SaltSecurityAnswerRepository : RepositoryBase<SaltSecurityAnswer>, ISaltSecurityAnswerRepository
+    {
+        public SaltSecurityAnswerRepository() : base(new ECSContext())
         {
         }
     }

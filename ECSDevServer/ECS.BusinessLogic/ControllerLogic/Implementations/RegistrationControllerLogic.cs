@@ -38,6 +38,12 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
             _userProfileLogic = userProfileLogic;
         }
 
+
+        /// <summary>
+        /// Logic that takes form properties and inserts to context
+        /// </summary>
+        /// <param name="registrationForm"></param>
+        /// <returns></returns>
         public HttpResponseMessage Registration(RegistrationDTO registrationForm)
         {
 
@@ -49,17 +55,9 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
                     ReasonPhrase = "Username Exists",
                     StatusCode = HttpStatusCode.Conflict
                 };
-
-                //string summary = "Username Exists";
-                //var error = new
-                //{
-                //    summary
-                //};
-
-                //return Content(HttpStatusCode.BadRequest, new JavaScriptSerializer().Serialize(error));
             }
 
-            // Create Salts
+            // Create salts and hash password and answers to security questions
             var pSalt = HashService.Instance.CreateSaltKey();
             var aSalt1 = HashService.Instance.CreateSaltKey();
             var aSalt2 = HashService.Instance.CreateSaltKey();
@@ -72,7 +70,7 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
             var hashedAnswer3 = HashService.Instance.HashPasswordWithSalt(aSalt3, registrationForm.SecurityQuestions[2].Answer, true);
 
 
-            // Temporary Collections
+            // Collections representing child models of Account
             List<SaltSecurityAnswer> saltSecurityAnswers = new List<SaltSecurityAnswer>
             {
                 new SaltSecurityAnswer
@@ -117,25 +115,24 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
                 }
             };
 
-            // ACCOUNTTYPE
-            //List<AccountType> accountTypes = new List<AccountType>
-            //{
-            //    new AccountType()
-            //    {
-            //        PermissionName = "canEditInformation",
-            //        Username = registrationForm.Username
-            //    },
-            //    new AccountType()
-            //    {
-            //        PermissionName = "canViewArticle",
-            //        Username = registrationForm.Username
-            //    },
-            //    new AccountType()
-            //    {
-            //        PermissionName = "canEnterRaffle",
-            //        Username = registrationForm.Username
-            //    }
-            //};
+            List<AccountType> accountTypes = new List<AccountType>
+            {
+                new AccountType()
+                {
+                    PermissionName = "canEditInformation",
+                    Username = registrationForm.Username
+                },
+                new AccountType()
+                {
+                    PermissionName = "canViewArticle",
+                    Username = registrationForm.Username
+                },
+                new AccountType()
+                {
+                    PermissionName = "canEnterRaffle",
+                    Username = registrationForm.Username
+                }
+            };
 
             List<ZipLocation> zipLocations = new List<ZipLocation>
             {
@@ -148,7 +145,7 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
                 }
             };
 
-            // DTO to Models
+            // Account model child to UserProfile
             Account account = new Account
             {
                 UserName = registrationForm.Username,
@@ -156,11 +153,12 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
                 Password = hashedPassword,
                 Points = 0,
                 AccountStatus = true,
-                SuspensionTime = DateTime.UtcNow,  // TODO: @Trish
+                SuspensionTime = DateTime.UtcNow,
                 FirstTimeUser = true,
-                SecurityAnswers = securityAnswers,
-                AccountTags = new List<InterestTag>(),
-                SaltSecurityAnswers = saltSecurityAnswers
+                SecurityAnswers = securityAnswers, // Navigation Property
+                AccountTags = new List<InterestTag>(), // Navigation Property
+                SaltSecurityAnswers = saltSecurityAnswers, // Navigation Property
+                AccountTypes = accountTypes // Navigation Property
             };
 
             UserProfile user = new UserProfile()
@@ -169,7 +167,7 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
                 FirstName = registrationForm.FirstName,
                 LastName = registrationForm.LastName,
                 ZipLocations = zipLocations,
-                Account = account
+                Account = account // Navigation Property
             };
 
             Salt salt = new Salt()
