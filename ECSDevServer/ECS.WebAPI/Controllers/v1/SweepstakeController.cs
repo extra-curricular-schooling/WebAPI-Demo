@@ -20,7 +20,8 @@ namespace ECS.WebAPI.Controllers.v1
         private readonly IAccountRepository accountRepository = new AccountRepository();
         private readonly ISweepStakeEntryRepository sweepStakeEntryRepository = new SweepStakeEntryRepository();
         private ECSContext db = new ECSContext();
- 
+
+        // REQUEST TO GET THE POINTS ASSOCIATED WITH A SCHOLAR ACCOUNT
         [HttpGet]
         [Route("ScholarPoints/{username}")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET")]

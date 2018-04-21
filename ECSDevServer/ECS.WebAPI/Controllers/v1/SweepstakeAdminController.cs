@@ -23,9 +23,10 @@ namespace ECS.WebAPI.Controllers.v1
         // USING GET REQUEST TO GET THE VALID SWEEPSTAKES INFORMATION SO THAT A USER CAN BUY TICKETS
         // AND ENTER INTO A SWEEPSTAKE 
         [HttpGet]
+        [Route("ValidSweepstakeInfo")]
         [EnableCors("http://localhost:8080", "*", "GET")]
         public IHttpActionResult ValidSweepstakeInfo()
-        {//NEED HELP HERE
+        {//NEED HELP HERE // use the Sweepstake Admin DtO to tget your data back
             var need = db.SweepStakes;
             var answer = need
                 .Where(x => x.OpenDateTime >= DateTime.Now)
@@ -33,8 +34,10 @@ namespace ECS.WebAPI.Controllers.v1
             return Ok(answer.Price);
         }
 
+        // THIS IS FOR THE EARNING POINTS
         // NEED TO USE PUT OR WELL LETS JUST SAY UPDATE IN ORDER TO MODIFY AND POST NEW USER POINTS TO THE ACCOUNT
         [HttpPost]
+        [Route("UpdatePoints/{username}")]
         [EnableCors("http://localhost:8080", "*", "POST")]
         public IHttpActionResult UpdatePoints(ScholarPointsDTO scholarPoints)
         {

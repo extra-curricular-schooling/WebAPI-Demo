@@ -17,6 +17,7 @@
 </template>
 
 <script>
+import Store from '@/store/index'
 import ErrorModal from '@/components/error-modal/Template'
 import LinkedInPostModal from '@/components/linkedin-modal/Template'
 import RedirectModal from '@/components/redirect-modal/Template'
@@ -38,15 +39,13 @@ export default {
     SideBar
   },
   methods: {
+    // REQUEST TO POST POINTS TO THE SCHOLAR POINTS AFTER ARTICLE HAS BEEN READ
     earnPoints: function (username, Points) {
       alert('Hello. You earned 2 points.')
       Axios({
         method: 'POST',
-
-        // Furkan, I changed your url from /v1/SweepstakeAdmin/UpdatePoints/ to what it is below...
-
-        url: this.$store.getters.getBaseAppUrl + 'SweepstakeAdmin/UpdatePoints/' + username,
-        headers: this.$store.getters.getRequestHeaders,
+        url: Store.getters.getBaseAppUrl + 'SweepstakeAdmin/UpdatePoints/' + username,
+        headers: Store.getters.getRequestHeaders,
         data: {
           'Points': this.$data.Points,
           'ScholarUserName': this.$data.username
@@ -72,6 +71,7 @@ export default {
         this.earnPoints
         , 200000)
       // after 3 minutes 30 aseconds you can earn 2 points
+      // try to resolve the problem of when the user goes to another page the timer keep son running. use clearTimeout
     }
   }
 }
