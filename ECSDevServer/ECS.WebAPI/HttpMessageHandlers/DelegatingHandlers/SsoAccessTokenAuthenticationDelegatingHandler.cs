@@ -51,8 +51,6 @@ namespace ECS.WebAPI.HttpMessageHandlers.DelegatingHandlers
             // 4. Check the database for a reuse of expired tokens.
             var expiredAccessToken = _expiredAccessTokenRepository.GetSingle(expiredToken => expiredToken.ExpiredTokenValue == token);
                 
-
-            // TODO: @Scott Will they always have just a one-time token here? Could be a good place to start adding some hook ins.
             if (expiredAccessToken != null)
             {
                 if (expiredAccessToken.CanReuse)
@@ -98,8 +96,6 @@ namespace ECS.WebAPI.HttpMessageHandlers.DelegatingHandlers
             //    ExpiredTokenValue = token,
             //    CanReuse = true
             //});
-
-
 
             return base.SendAsync(request, cancellationToken);
         }

@@ -21,7 +21,8 @@ namespace ECS.Modules.HttpModules
             "https://localhost:44311/",
             "http://localhost:8080/",
             "https://www.ecschooling.org/",
-            "https://ecschooling.org/"
+            "https://ecschooling.org/",
+            "https://fannbrian.github.io/"
         };
 
         private readonly HashSet<string> _acceptedAuthorities = new HashSet<string>

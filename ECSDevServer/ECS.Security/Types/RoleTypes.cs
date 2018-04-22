@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ECS.Security.Types
 {
-    public static class Roles
+    public static class RoleTypes
     {
         public static string Scholar => "Scholar";
         public static string Admin => "Admin";

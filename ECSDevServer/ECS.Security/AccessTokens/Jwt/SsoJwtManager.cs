@@ -78,6 +78,35 @@ namespace ECS.Security.AccessTokens.Jwt
             return token;
         }
 
+        public string GenerateToken(SsoLoginRequestDTO loginDto)
+        {
+            // var partialAccount = _partialAccountRepository.GetSingle(acc => acc.UserName == username);
+            var claimsIdentity = new ClaimsIdentity(new List<Claim>()
+            {
+                new Claim("username", loginDto.Username),
+                new Claim("password", loginDto.Password),
+                new Claim("roleType", loginDto.RoleType),
+                new Claim("application", "ecs")
+            });
+
+            var now = DateTime.UtcNow;
+
+            var symmetricKey = Encoding.UTF8.GetBytes(Secret);
+            
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = claimsIdentity,
+                IssuedAt = now,
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(symmetricKey), SecurityAlgorithms.HmacSha256Signature),
+            };
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var stoken = tokenHandler.CreateToken(tokenDescriptor);
+            var token = tokenHandler.WriteToken(stoken);
+
+            return token;
+        }
+
         public ClaimsPrincipal GetPrincipal(string token)
         {
             var tokenHandler = new JwtSecurityTokenHandler();

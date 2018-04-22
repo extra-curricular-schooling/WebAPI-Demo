@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ECS.Validation.Validators.Contracts
+namespace ECS.WebAPI.Transformers.Interfaces
 {
-    public interface IValidator
+    interface IFactory
     {
-        bool Validate();
+        Object Create(string roleType);
     }
 }

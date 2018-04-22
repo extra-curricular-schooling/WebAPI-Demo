@@ -26,21 +26,21 @@ export default {
   },
   methods: {
     submitRegistration () {
-      this.$store.dispatch('updateToken', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNzb3Rlc3Q1IiwicGFzc3dvcmQiOiJhYWEiLCJyb2xlVHlwZSI6InB1YmxpYyIsImFwcGxpY2F0aW9uIjoiZWNzIiwibmJmIjoxNTI0MDA4MzQ5LCJleHAiOjE1MjQwMTE5NDksImlhdCI6MTUyNDAwODM0OX0.KPGsk4ashBtiO8-FjPYNOW2dKxuKAe5dENZZOWU__rc')
+      this.$store.dispatch('updateToken', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNjb290ZXItZHVkZSIsInBhc3N3b3JkIjoiYSIsImFwcGxpY2F0aW9uIjoiZWNzIiwicm9sZVR5cGUiOiJwdWJsaWMiLCJpYXQiOjE1MTYyMzkwMjJ9.G-ucGta2B5R_0A5CGewhKz_rQBsesvrvcLkShfVgqGc')
       SsoMockRequest.submitRegistration(
         this.$store.getters.getUsername,
         this.$data.password,
         this.$data.application)
     },
     submitLogin () {
-      this.$store.dispatch('updateToken', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ijc3N0xhemVyNzc3IiwicGFzc3dvcmQiOiI3NzdMYXplcjc3NyIsImFwcGxpY2F0aW9uIjoiY2FyZWF3YXkiLCJyb2xlVHlwZSI6InB1YmxpYyIsImlhdCI6MTUyMjgwMTA3OH0.RyYeO1ekdzfLnntWfs_NHV-4Dl0Qa6T-m_HkBAWwsUY')
+      this.$store.dispatch('updateToken', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNjb290ZXItZHVkZSIsInBhc3N3b3JkIjoiYWEiLCJhcHBsaWNhdGlvbiI6ImVjcyIsInJvbGVUeXBlIjoicHVibGljIiwiaWF0IjoxNTE2MjM5MDIyfQ.nkWwmcQhb0M8JehpjuTvEhGtlMOAISOOvJdcpck2vuU')
       SsoMockRequest.submitLogin(
         this.$store.getters.getUsername,
         this.$data.password)
       // Nothing after this because of redirect in api call.
     },
     submitResetPassword () {
-      this.$store.dispatch('updateToken', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ijc3N0xhemVyNzc3IiwicGFzc3dvcmQiOiI3NzdMYXplcjc3NyIsImFwcGxpY2F0aW9uIjoiY2FyZWF3YXkiLCJyb2xlVHlwZSI6InB1YmxpYyIsImlhdCI6MTUyMjgwMTA3OH0.RyYeO1ekdzfLnntWfs_NHV-4Dl0Qa6T-m_HkBAWwsUY')
+      this.$store.dispatch('updateToken', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNjb290ZXItZHVkZSIsInBhc3N3b3JkIjoiYSIsImFwcGxpY2F0aW9uIjoiZWNzIiwicm9sZVR5cGUiOiJwdWJsaWMiLCJpYXQiOjE1MTYyMzkwMjJ9.G-ucGta2B5R_0A5CGewhKz_rQBsesvrvcLkShfVgqGc')
       SsoMockRequest.submitResetPassword(
         this.$store.getters.getUsername,
         this.$data.password)

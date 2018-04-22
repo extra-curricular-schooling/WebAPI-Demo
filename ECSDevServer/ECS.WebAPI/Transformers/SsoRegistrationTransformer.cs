@@ -15,23 +15,12 @@ namespace ECS.WebAPI.Transformers
             var username = SsoJwtManager.Instance.GetClaimValue(context.Principal, "username");
             var password = SsoJwtManager.Instance.GetClaimValue(context.Principal, "password");
             var passwordSalt = HashService.Instance.CreateSaltKey();
-            var hashedPassword = HashService.Instance.HashPasswordWithSalt(passwordSalt, password, false);
+            var hashedPassword = HashService.Instance.HashPasswordWithSalt(passwordSalt, password, true);
             var roleType = SsoJwtManager.Instance.GetClaimValue(context.Principal, "roleType");
 
-            roleType = roleType.ToLower();
-            string role = null;
-            switch (roleType)
-            {
-                case "public":
-                    role = Roles.Scholar;
-                    break;
-                case "private":
-                    role = Roles.Admin;
-                    break;
-                default:
-                    role = Roles.Scholar;
-                    break;
-            }
+            IFactory factory = new RoleFactory();
+            string role = (string) factory.Create(roleType);
+            
 
             return new SsoRegistrationRequestDTO
             {

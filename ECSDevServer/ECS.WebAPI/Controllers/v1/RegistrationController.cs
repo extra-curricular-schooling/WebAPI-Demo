@@ -17,28 +17,18 @@ namespace ECS.WebAPI.Controllers.v1
     {
         // TODO: @Scott Try to make the controller logic follow interfaces (like a transformer: fetch and send)
         private readonly RegistrationControllerLogic _controllerLogic;
-        
-        private readonly IAccountRepository _accountRepository;
-        private readonly IUserProfileRepository _userProfileRepository;
+
         private readonly ISecurityQuestionRepository _securityQuestionRepository;
-        private readonly ISaltRepository _saltRepository;
 
         public RegistrationController()
         {
             _controllerLogic = new RegistrationControllerLogic();
-            _accountRepository = new AccountRepository();
-            _userProfileRepository = new UserProfileRepository();
             _securityQuestionRepository = new SecurityQuestionRepository();
-            _saltRepository = new SaltRepository();
         }
 
-        public RegistrationController(IAccountRepository accountRepo, IUserProfileRepository userRepo, 
-            ISecurityQuestionRepository securityQuestionRepo, ISaltRepository saltRepo, RegistrationControllerLogic controllerLogic)
+        public RegistrationController(ISecurityQuestionRepository securityQuestionRepo, RegistrationControllerLogic controllerLogic)
         {
-            _accountRepository = accountRepo;
-            _userProfileRepository = userRepo;
             _securityQuestionRepository = securityQuestionRepo;
-            _saltRepository = saltRepo;
             _controllerLogic = controllerLogic;
         }
 
@@ -72,9 +62,6 @@ namespace ECS.WebAPI.Controllers.v1
 
             return actionResultResponse;
         }
-
-
-        
 
         /// <summary>
         /// Method accepts request to submit incomplete form using the POST method over HTTP

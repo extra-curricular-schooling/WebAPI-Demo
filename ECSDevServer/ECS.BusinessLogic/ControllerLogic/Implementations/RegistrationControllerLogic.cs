@@ -329,28 +329,12 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
                 _saltLogic.Create(salt);
 
                 // Delete old Partial Account
-                // TODO: @Scott The partial accounts need to be deleted after finishing registration, but they won't delete.
                 _partialAccountLogic.Delete(partialAccountModel);
-                //partialAccountSaltRepository.Delete(partialAccountSaltRepository.GetSingle(s => s.UserName == partialAccountModel.UserName));
-                //partialAccountRepository.Delete(partialAccountRepository.GetSingle(acc => acc.UserName == partialAccountModel.UserName));
                 return new HttpResponseMessage(HttpStatusCode.OK);
 
             }
             catch (Exception ex)
             {
-                //string summary = "Data Access Error";
-                //string source = ex.Source;
-                //string message = ex.Message;
-                //string stackTrace = ex.StackTrace;
-
-                //var error = new
-                //{
-                //    summary,
-                //    source,
-                //    message,
-                //    stackTrace
-                //};
-
                 return new HttpResponseMessage
                 {
                     ReasonPhrase = ex.Message,
@@ -358,10 +342,5 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
                 };
             }
         }
-
-
-
     }
-
-    
 }

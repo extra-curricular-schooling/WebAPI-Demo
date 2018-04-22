@@ -140,6 +140,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\v1\AccountAdminController.cs" />
     <Compile Include="Controllers\v1\AccountController.cs" />
+    <Compile Include="Controllers\v1\BaseController.cs" />
     <Compile Include="Controllers\v1\HomeController.cs" />
     <Compile Include="Controllers\v1\LinkedInController.cs" />
     <Compile Include="Controllers\v1\LoginController.cs" />
@@ -154,7 +155,6 @@
     <Compile Include="Filters\AuthenticationFilters\AuthenticationRequiredAttribute.cs" />
     <Compile Include="Filters\AuthenticationFilters\IssueNewTokenAttribute.cs" />
     <Compile Include="Filters\AuthorizationFilters\AuthorizeRequiredAttribute.cs" />
-    <Compile Include="Filters\AuthorizationFilters\AuthorizeSsoAccessTokenAttribute.cs" />
     <Compile Include="Filters\AuthorizationFilters\RequireHttpsAttribute.cs" />
     <Compile Include="Filters\ExceptionFilters\AnyExceptionFilterAttribute.cs" />
     <Compile Include="Filters\ExceptionFilters\NotImplExceptionFilterAttribute.cs" />
