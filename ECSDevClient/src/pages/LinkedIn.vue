@@ -9,7 +9,7 @@
 
 <script>
 import Vue from 'vue'
-import EventBus from '@/assets/js/eventBus'
+import EventBus from '@/assets/js/EventBus'
 import LoadingModal from '@/components/loading-modal/Template'
 import LinkedInPostModal from '@/components/linkedin-modal/Template'
 

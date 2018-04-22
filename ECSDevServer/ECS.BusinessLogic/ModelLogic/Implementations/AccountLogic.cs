@@ -53,5 +53,11 @@ namespace ECS.BusinessLogic.ModelLogic.Implementations
         {
             return _accountRepository.Exists(acc => acc.Email == email);
         }
+
+        public Account GetByUsername (string username)
+        {
+            var accountQueryable = _accountRepository.SearchFor(acc => acc.UserName == username);
+            return accountQueryable.FirstOrDefault();
+        }
     }
 }

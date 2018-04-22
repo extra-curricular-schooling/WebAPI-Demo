@@ -33,14 +33,12 @@ namespace ECS.WebAPI.Controllers.v1
             return Ok(points);
         
         }
-        /*
+        // REQUEST TO POST A TICKET FOR A SWEEPSTAKE
         [HttpPost]
+        [Route("ScholarTicket/{username}")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
         public IHttpActionResult submitSweepstake(SweepStakeEntryDTO sweepstakeUser)
         {
-            //Account account;
-            //account = _account.GetSingle(x => x.UserName == UserName);
-
             SweepStakeEntry sweep = new SweepStakeEntry()
             {
                 SweepstakesID = sweepstakeUser.SweepstakesID,
@@ -49,9 +47,9 @@ namespace ECS.WebAPI.Controllers.v1
                 Cost = sweepstakeUser.Cost,
                 UserName = sweepstakeUser.UserName,
             };
-            _sweepStakeEntryRepository.Insert(sweep);
+            sweepStakeEntryRepository.Insert(sweep);
             return Ok("Post Sweepstake Ticket");
         }
-        */
+        
     }
 }

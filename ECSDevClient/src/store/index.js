@@ -5,8 +5,9 @@ import { redirect } from '@/components/redirect-modal/store'
 import { request } from './modules/request'
 import { auth } from './modules/auth'
 import { home } from './modules/home'
-import { linkedin } from '@/components/linkedin-modal/store'
-import { login } from '@/components/login-panel/store'
+import { linkedin } from '../components/LinkedIn-Modal/store'
+import { login } from '../components/Login-Panel/store'
+import { AccountStatusPanel } from '../components/AccountStatus-Panel/store'
 import VuexPersist from 'vuex-persist'
 
 const vuexLocalStorage = new VuexPersist({
@@ -35,7 +36,8 @@ export default new Vuex.Store({
     request,
     redirect,
     linkedin,
-    login
+    login,
+    AccountStatusPanel
   },
   // If strict should be enabled during development.
   strict: debug,

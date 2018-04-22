@@ -70,6 +70,11 @@ namespace ECS.WebAPI.Controllers.v1
                 return BadRequest("Invalid credentials.");
             }
 
+            if (!account.AccountStatus)
+            {
+                return BadRequest("SUSPENDED");
+            }
+
             // Issue login information
             if (account.Password == HashService.Instance.HashPasswordWithSalt(salt.PasswordSalt, credentials.Password, true))
             {

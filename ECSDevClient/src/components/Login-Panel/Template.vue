@@ -51,7 +51,7 @@
 <script>
 import Axios from 'axios'
 import ErrorModal from '@/components/error-modal/Template'
-import EventBus from '@/assets/js/eventBus.js'
+import EventBus from '@/assets/js/EventBus.js'
 import forgotPassword from '@/components/forgot-password-modal/Template'
 import forgotUsername from '@/components/Forgot-Username-Modal/Template'
 import LoadingModal from '@/components/loading-modal/Template'
@@ -138,9 +138,14 @@ export default {
               }
             })
             .catch((error) => {
+              if (error.response.data.message === 'SUSPENDED') {
+                this.toggleLoadingModal()
+                this.toggleErrorModal('Your account has been suspended! Please contact us for assistance.')
+              } else {
+                this.toggleLoadingModal()
+                this.toggleErrorModal('An error has occurred, please try again later!')
+              }
               console.log(error)
-              this.toggleLoadingModal()
-              this.toggleErrorModal('An error has occurred, please try again later!')
             })
         }
       }

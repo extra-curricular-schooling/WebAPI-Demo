@@ -17,7 +17,7 @@ namespace ECS.WebAPI.Controllers.v1
     {
         private readonly IAccountRepository accountRepository = new AccountRepository();
         private readonly ISweepStakeRepository sweepStakeRepository = new SweepStakeRepository();
-
+        
         private ECSContext db = new ECSContext();
 
         // USING GET REQUEST TO GET THE VALID SWEEPSTAKES INFORMATION SO THAT A USER CAN BUY TICKETS
@@ -25,14 +25,24 @@ namespace ECS.WebAPI.Controllers.v1
         [HttpGet]
         [Route("ValidSweepstakeInfo")]
         [EnableCors("http://localhost:8080", "*", "GET")]
-        public IHttpActionResult ValidSweepstakeInfo()
-        {//NEED HELP HERE // use the Sweepstake Admin DtO to tget your data back
-            var need = db.SweepStakes;
-            var answer = need
-                .Where(x => x.OpenDateTime >= DateTime.Now)
-                .FirstOrDefault<SweepStake>();
-            return Ok(answer.Price);
-        }
+        public IHttpActionResult ValidSweepstakeInfo(SweepstakeAdminDTO sweepstakeValid)
+         {// using the Sweepstake Admin DtO to get data back
+                    var answer = db.SweepStakes
+                       .Where(x => x.OpenDateTime >= DateTime.Now & x.ClosedDateTime >= DateTime.Now)
+                       .FirstOrDefault<SweepStake>();
+
+            SweepstakeAdminDTO sweepstake = new SweepstakeAdminDTO()
+            {
+                SweepStakesID = answer.SweepStakesID,
+                OpenDateTime = answer.OpenDateTime,
+                ClosedDateTime = answer.ClosedDateTime,
+                Prize = answer.Prize,
+                UsernameWinner = answer.UsernameWinner,
+                Price = answer.Price,
+
+            };
+            return Ok(sweepstake);
+         }
 
         // THIS IS FOR THE EARNING POINTS
         // NEED TO USE PUT OR WELL LETS JUST SAY UPDATE IN ORDER TO MODIFY AND POST NEW USER POINTS TO THE ACCOUNT

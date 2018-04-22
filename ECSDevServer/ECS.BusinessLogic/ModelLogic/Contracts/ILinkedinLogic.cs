@@ -11,7 +11,6 @@ namespace ECS.BusinessLogic.ModelLogic.Contracts
         LinkedInAccessToken GetLinkedInAccessToken(string username);
         bool InvalidateLinkedInAccessToken(LinkedInAccessToken token);
         bool InsertLinkedInAccessToken (LinkedInAccessToken token);
-        Object SharePost(LinkedInAccessToken linkedInAccessToken, LinkedInPostDTO linkedInPostDTO);
         bool UpdateLinkedInAccessToken (LinkedInAccessToken token);
     }
 }

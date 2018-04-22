@@ -10,14 +10,14 @@
         {{errorMessage}}
       </section>
       <footer class="modal-card-foot">
-        <button v-on:click="toggleErrorModal" class="button">Okay</button>
+        <button v-on:click="toggleErrorModal" v-on:keyup.enter="toggleErrorModal" class="button">Okay</button>
       </footer>
     </div>
   </div>
 </template>
 
 <script>
-import EventBus from '@/assets/js/eventBus.js'
+import EventBus from '@/assets/js/EventBus.js'
 
 export default {
   name: 'ErrorModal',
