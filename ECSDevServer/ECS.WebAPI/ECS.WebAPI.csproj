@@ -168,10 +168,13 @@
     <Compile Include="HttpMessageHandlers\DelegatingHandlers\AccessTokenAuthenticationDelegatingHandler.cs" />
     <Compile Include="HttpMessageHandlers\DelegatingHandlers\SsoAccessTokenAuthenticationDelegatingHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Transformers\Interfaces\IFactory.cs" />
     <Compile Include="Transformers\Interfaces\ISsoLoginTransformer.cs" />
     <Compile Include="Transformers\Interfaces\ISsoRegistrationTransformer.cs" />
     <Compile Include="Transformers\Interfaces\ISsoResetPasswordTransformer.cs" />
     <Compile Include="Transformers\Interfaces\ITransformer.cs" />
+    <Compile Include="Transformers\Outcome.cs" />
+    <Compile Include="Transformers\RoleFactory.cs" />
     <Compile Include="Transformers\SsoLoginTransformer.cs" />
     <Compile Include="Transformers\SsoRegistrationTransformer.cs" />
     <Compile Include="Transformers\SsoResetPasswordTransformer.cs" />
