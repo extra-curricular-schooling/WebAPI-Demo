@@ -138,9 +138,14 @@ export default {
               }
             })
             .catch((error) => {
+              if (error.response.data.message === 'SUSPENDED') {
+                this.toggleLoadingModal()
+                this.toggleErrorModal('Your account has been suspended! Please contact us for assistance.')
+              } else {
+                this.toggleLoadingModal()
+                this.toggleErrorModal('An error has occurred, please try again later!')
+              }
               console.log(error)
-              this.toggleLoadingModal()
-              this.toggleErrorModal('An error has occurred, please try again later!')
             })
         }
       }
