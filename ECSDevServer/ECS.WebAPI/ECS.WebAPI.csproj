@@ -200,6 +200,10 @@
       <Project>{b25549a6-0263-4126-ada9-13edfddedc0f}</Project>
       <Name>ECS.BusinessLogic</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ECS.Constants\ECS.Constants.csproj">
+      <Project>{59CC49EB-347F-40E4-86D0-F7CF71F07C55}</Project>
+      <Name>ECS.Constants</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ECS.DTO\ECS.DTO.csproj">
       <Project>{40bc80f4-7950-4a6f-b94f-c35f7081a48b}</Project>
       <Name>ECS.DTO</Name>

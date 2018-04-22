@@ -5,7 +5,7 @@ using System.Security.Claims;
 using System.Web.Http;
 using System.Web.Http.Controllers;
 using ECS.Security.AccessTokens.Jwt;
-using ECS.Security.Types;
+using ECS.Constants.Security;
 
 namespace ECS.WebAPI.Filters.AuthorizationFilters
 {

@@ -12,6 +12,7 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
 {
     public class  SsoControllerLogic
     {
+        // TODO: @Scott Remove constant
         private const string BaseClientUrl = "http://localhost:8080/";
 
         private readonly AccountLogic _accountLogic;

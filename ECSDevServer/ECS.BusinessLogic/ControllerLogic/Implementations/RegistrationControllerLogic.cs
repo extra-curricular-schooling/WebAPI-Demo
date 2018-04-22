@@ -202,18 +202,28 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
         public HttpResponseMessage FinishRegistration(RegistrationDTO registrationForm)
         {
             // Fetch: Check if user already exists
+            var userModel = _userProfileLogic.GetSingle(registrationForm.Email);
             var partialAccountModel = _partialAccountLogic.GetPartialAccount(registrationForm.Username);
             var partialAccountSaltModel = _partialAccountSaltLogic.GetSingle(registrationForm.Username);
-
+            
+            if (userModel != null)
+            {
+                return new HttpResponseMessage
+                {
+                    ReasonPhrase = "User already exists.",
+                    StatusCode = HttpStatusCode.Conflict
+                };
+            }
             // Validate: Validate Domain Models
             if (partialAccountModel == null)
             {
                 return new HttpResponseMessage
                 {
-                    ReasonPhrase = "Account does not exist",
+                    ReasonPhrase = "Partial account does not exist",
                     StatusCode = HttpStatusCode.BadRequest
                 };
             }
+            
             if (partialAccountSaltModel == null)
             {
                 return new HttpResponseMessage
@@ -222,6 +232,7 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
                     StatusCode = HttpStatusCode.InternalServerError
                 };
             }
+            
 
             // Create: Temporary Objects
             List<ZipLocation> zipLocations = new List<ZipLocation>
@@ -246,6 +257,28 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
 
 
             // Temporary Collections
+            List<SecurityQuestionAccount> securityAnswers = new List<SecurityQuestionAccount>
+            {
+                new SecurityQuestionAccount
+                {
+                    Answer = hashedAnswer1,
+                    SecurityQuestionID = registrationForm.SecurityQuestions[0].Question,
+                    Username = registrationForm.Username
+                },
+                new SecurityQuestionAccount
+                {
+                    Answer = hashedAnswer2,
+                    SecurityQuestionID = registrationForm.SecurityQuestions[1].Question,
+                    Username = registrationForm.Username
+                },
+                new SecurityQuestionAccount
+                {
+                    Answer = hashedAnswer3,
+                    SecurityQuestionID = registrationForm.SecurityQuestions[2].Question,
+                    Username = registrationForm.Username
+                }
+            };
+
             List<SaltSecurityAnswer> saltSecurityAnswers = new List<SaltSecurityAnswer>
             {
                 new SaltSecurityAnswer
@@ -290,6 +323,30 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
                 }
             };
 
+            List<AccountType> accountTypes = new List<AccountType>
+            {
+                new AccountType()
+                {
+                    PermissionName = "canEditInformation",
+                    Username = registrationForm.Username
+                },
+                new AccountType()
+                {
+                    PermissionName = "canViewArticle",
+                    Username = registrationForm.Username
+                },
+                new AccountType()
+                {
+                    PermissionName = "canEnterRaffle",
+                    Username = registrationForm.Username
+                },
+                new AccountType()
+                {
+                    PermissionName = "canShareLinkedIn",
+                    Username = registrationForm.Username
+                }
+            };
+
             Account account = new Account()
             {
                 UserName = partialAccountModel.UserName,
@@ -299,8 +356,10 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
                 AccountStatus = true,
                 SuspensionTime = DateTime.UtcNow,
                 FirstTimeUser = true,
-                SaltSecurityAnswers = saltSecurityAnswers,
-                SecurityAnswers = securityQuestionAccountListObj
+                SecurityAnswers = securityAnswers, // Navigation Property
+                AccountTags = new List<InterestTag>(), // Navigation Property
+                SaltSecurityAnswers = saltSecurityAnswers, // Navigation Property
+                AccountTypes = accountTypes // Navigation Property
             };
 
             UserProfile user = new UserProfile()

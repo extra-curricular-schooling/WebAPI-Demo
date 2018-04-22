@@ -1,66 +1,79 @@
 <template>
   <div>
-    <h1>SSO TESTS</h1>
-    <button v-on:click="submitRegistration">Send Post to Sso/Registration</button><br>
-    <button v-on:click="submitLogin">Send Post to Sso/Login</button><br>
-    <button v-on:click="submitResetPassword">Send Post to Sso/ResetPassword</button><br>
-    <br>
-    <input v-model="passwordForPwned">
-    <button v-on:click="testPwnd">have i been pwned?</button><br>
+    <section class="section">
+        <div class="container">
+          <h1 class="title">Sso Tests</h1>
+        </div>
+      </section>
+    <div class="container">
+      <div class="notification">
+        <input class="input" v-model="jwt" type="text" placeholder="JWT">
+      </div>
+    </div>
+    <div>
+      <button class="button is-primary" v-on:click="submitRegistration">Send Post to Sso/Registration</button>
+      <button class="button is-primary" v-on:click="submitLogin">Send Post to Sso/Login</button>
+      <button class="button is-primary" v-on:click="submitResetPassword">Send Post to Sso/ResetPassword</button>
+    </div>
+    <body>
+      <section class="section">
+        <div class="container">
+          <h1 class="title">Pwned Tests</h1>
+        </div>
+      </section>
+    </body>
+    <div class="container">
+      <div class="notification">
+        <input class="input" v-model="passwordForPwned" type="text" placeholder="Password">
+      </div>
+    </div>
+    <button class="button is-primary" v-on:click="testPwnd">have i been pwned?</button><br>
   </div>
 </template>
 
 <script>
 /* eslint-diable */
-import PwnedHasher from '@/assets/js/pwnedChecker'
+import PwnedHelper from '@/assets/js/pwnedChecker'
 import SsoMockRequest from './mockRequest'
 import Axios from 'axios'
 
 export default {
   data: function () {
     return {
-      password: 'aaa',
-      application: 'ecs',
+      jwt: '',
       passwordForPwned: ''
     }
   },
   methods: {
     submitRegistration () {
-      this.$store.dispatch('updateToken', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNjb290ZXItZHVkZSIsInBhc3N3b3JkIjoiYSIsImFwcGxpY2F0aW9uIjoiZWNzIiwicm9sZVR5cGUiOiJwdWJsaWMiLCJpYXQiOjE1MTYyMzkwMjJ9.G-ucGta2B5R_0A5CGewhKz_rQBsesvrvcLkShfVgqGc')
-      SsoMockRequest.submitRegistration(
-        this.$store.getters.getUsername,
-        this.$data.password,
-        this.$data.application)
+      this.$store.dispatch('updateToken', this.jwt)
+      SsoMockRequest.submitRegistration()
     },
     submitLogin () {
-      this.$store.dispatch('updateToken', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNjb290ZXItZHVkZSIsInBhc3N3b3JkIjoiYWEiLCJhcHBsaWNhdGlvbiI6ImVjcyIsInJvbGVUeXBlIjoicHVibGljIiwiaWF0IjoxNTE2MjM5MDIyfQ.nkWwmcQhb0M8JehpjuTvEhGtlMOAISOOvJdcpck2vuU')
-      SsoMockRequest.submitLogin(
-        this.$store.getters.getUsername,
-        this.$data.password)
-      // Nothing after this because of redirect in api call.
+      this.$store.dispatch('updateToken', this.jwt)
+      SsoMockRequest.submitLogin()
     },
     submitResetPassword () {
-      this.$store.dispatch('updateToken', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNjb290ZXItZHVkZSIsInBhc3N3b3JkIjoiYSIsImFwcGxpY2F0aW9uIjoiZWNzIiwicm9sZVR5cGUiOiJwdWJsaWMiLCJpYXQiOjE1MTYyMzkwMjJ9.G-ucGta2B5R_0A5CGewhKz_rQBsesvrvcLkShfVgqGc')
-      SsoMockRequest.submitResetPassword(
-        this.$store.getters.getUsername,
-        this.$data.password)
+      this.$store.dispatch('updateToken', this.jwt)
+      SsoMockRequest.submitResetPassword()
     },
     testPwnd () {
       Axios({
         method: 'GET',
-        url: this.$store.getters.getBasePwnedUrl + PwnedHasher.getPwnedParameter(this.passwordForPwned),
+        url: this.$store.getters.getBasePwnedUrl + PwnedHelper.getHashedPrefix(this.passwordForPwned),
         // url: 'https://api.pwnedpasswords.com/range/21BD1',
         headers: {
           'Access-Control-Allow-Origin': 'http://localhost:8080',
           'Access-Control-Allow-Credentials': true,
           'Accept': 'application/json',
-          'Content-Type': 'text/plain',
+          'Content-Type': 'application/json',
           'Authorization': 'null',
           'X-Requested-With': 'XMLHttpRequest'
         }
       })
         .then(response => {
-          console.log(response)
+          console.log(PwnedHelper.getHits(this.passwordForPwned, response.data))
+          this.$data.hits = PwnedHelper.getHits(this.passwordForPwned, response.data)
         })
         .catch(error => {
           console.log(error.response)

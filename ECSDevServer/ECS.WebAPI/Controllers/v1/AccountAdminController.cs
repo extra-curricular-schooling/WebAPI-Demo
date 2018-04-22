@@ -2,13 +2,14 @@
 using System.Web.Http;
 using System.Web.Http.Cors;
 using ECS.BusinessLogic.ModelLogic.Implementations;
+using ECS.Constants.Network;
 using ECS.DTO;
 using ECS.Models;
 
 namespace ECS.WebAPI.Controllers.v1
 {
     [RoutePrefix("v1/AccountAdmin")]
-    [EnableCors("http://localhost:8080", "*", "GET, POST, PUT")]
+    [EnableCors("http://localhost:44311", "*", "GET, POST, PUT")]
     public class AccountAdminController : ApiController
     {
         #region Fields and constants
