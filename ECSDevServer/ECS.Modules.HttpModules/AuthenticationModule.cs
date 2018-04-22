@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Web;
+using ECS.Constants.Network;
 
 namespace ECS.Modules.HttpModules
 {
@@ -16,32 +17,17 @@ namespace ECS.Modules.HttpModules
         }
 
         // List of accepted referrer header values.
-        private readonly HashSet<string> _acceptedUrls = new HashSet<string>
-        {
-            "https://localhost:44311/",
-            "http://localhost:8080/",
-            "https://www.ecschooling.org/",
-            "https://ecschooling.org/",
-            "https://fannbrian.github.io/"
-        };
+        private readonly ISet<string> _acceptedUrls = UrlConstants.AcceptedUrls;
 
-        private readonly HashSet<string> _acceptedAuthorities = new HashSet<string>
-        {
-            "localhost:44311"
-        };
+        // List of project accepted authority header value.
+        private readonly ISet<string> _acceptedAuthorities = UrlConstants.AcceptedAuthorities;
 
         // List of accepted orgin header values
-        private readonly HashSet<string> _acceptedOrigins = new HashSet<string>
-        {
-            "http://localhost:8080",
-            "https://www.ecschooling.org",
-            "https://ecschooling.org"
-        };
+        private readonly ISet<string> _acceptedOrigins = UrlConstants.AcceptedOrigins;
 
         private void OnHttpRequest(object sender, EventArgs e)
         {
             // Cast the sender as an HttpApplication
-
             if (sender is HttpApplication app && app.Request.GetType().Name.Equals("HttpRequest"))
             {
                 var request = app.Request;
@@ -66,16 +52,7 @@ namespace ECS.Modules.HttpModules
                 if (app.Request.HttpMethod == "OPTIONS" && isAcceptedOriginHeader)
                 {
                     app.Response.StatusCode = 200;
-                    // Change for production... String concat is costly.
-                    app.Response.AddHeader("Access-Control-Allow-Headers",
-                        "Access-Control-Allow-Origin," +
-                        "Access-Control-Allow-Credentials," +
-                        "Authorization," +
-                        "origin," +
-                        "accept," +
-                        "content-type," +
-                        "referer," +
-                        "X-Requested-With");
+                    app.Response.AddHeader("Access-Control-Allow-Headers", HeaderConstants.AcceptedHeaders);
                     app.Response.AddHeader("Access-Control-Expose-Headers", "location");
                     app.Response.AddHeader("Access-Control-Allow-Origin", request.Headers["Origin"]);
                     app.Response.AddHeader("Access-Control-Allow-Credentials", "true");

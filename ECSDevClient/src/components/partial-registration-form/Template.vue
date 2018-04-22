@@ -364,7 +364,10 @@ export default {
     isValidForm () {
       if (document.getElementById('firstName').className == 'input is-success' &&
         document.getElementById('lastName').className == 'input is-success' &&
+        document.getElementById('username').className == 'input is-success' &&
         document.getElementById('email').className == 'input is-success' &&
+        document.getElementById('password').className == 'input is-success' &&
+        document.getElementById('confirmPassword').className == 'input is-success' &&
         this.$data.questionIDs[0] != null &&
         document.getElementById('answer1').className == 'input is-success' &&
         this.$data.questionIDs[1] != null &&
@@ -420,27 +423,29 @@ export default {
           }
         })
           .then(response => {
-            
             console.log(response)
-            // this.$router.push({
-            //   name: 'Home',
-            // })
+            this.$router.push({
+              name: 'Home',
+            })
           })
           .catch(error => {
-            console.log(error.response)
-            this.$data.error = JSON.parse(error.response.data)
-
-            // HTTP Status 400 - Username in request exists
-            if (this.$data.error.summary == 'Username Exists') {
-              alert('Good news!  According to our records, you already have an account with us!')
-            }
-
-            // HTTP Status 500
-            if (error.response.status === 500) {
+            // Error
+            if (error.response) {
+              // The request was made and the server responded with a status code
+              // that falls out of the range of 2xx
+              if (error.response.status === 409) {
+                alert('Good news!  According to our records, you already have an account with us!')
+              }
+            } else if (error.request) {
+              // Server
               alert('We apologize.  We are unable to process your request at this time.')
+            } else {
+              console.log('hello')
             }
+            // Show the configuration.
+            console.log(error.config)
           })
-      }
+        }
     },
     fetchSecurityQuestions () {
       Axios({
@@ -452,15 +457,22 @@ export default {
           this.$data.questions = JSON.parse(response.data)
         })
         .catch(error => {
-          console.log(error.response)
-
           // HTTP Status 503 - No questions in resource
           
           // HTTP Status 500
-          if (error.response.status === 500) {
-            alert('We apologize.  We are unable to process your request at this time.')
-          }
-        })
+          // Error
+            if (error.response) {
+              // The request was made and the server responded with a status code
+              // that falls out of the range of 2xx
+            } else if (error.request) {
+              // Server
+              alert('We apologize.  We are unable to process your request at this time.')
+            } else {
+              console.log('hello')
+            }
+            // Show the configuration.
+            console.log(error.config)
+          })
     }
   }
 }

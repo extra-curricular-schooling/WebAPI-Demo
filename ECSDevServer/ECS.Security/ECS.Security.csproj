@@ -61,7 +61,6 @@
     <Compile Include="AccessTokens\Jwt\SsoJwtManager.cs" />
     <Compile Include="Hash\HashService.cs" />
     <Compile Include="Hash\IHashService.cs" />
-    <Compile Include="Types\RoleTypes.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ECS.DTO\ECS.DTO.csproj">

@@ -2,7 +2,6 @@
 using ECS.DTO.Sso;
 using ECS.Security.AccessTokens.Jwt;
 using ECS.Security.Hash;
-using ECS.Security.Types;
 using ECS.WebAPI.Transformers.Interfaces;
 
 namespace ECS.WebAPI.Transformers

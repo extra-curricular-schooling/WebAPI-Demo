@@ -67,9 +67,7 @@ export default {
     },
     // Iframe gets recreated each time a new page is clicked.
     mounted () {
-      setTimeout(
-        this.earnPoints
-        , 5000)
+      // setTimeout(this.earnPoints, 5000)
       // after 3 minutes 30 aseconds you can earn 2 points
       // try to resolve the problem of when the user goes to another page the timer keep son running. use clearTimeout
     }

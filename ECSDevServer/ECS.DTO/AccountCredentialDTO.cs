@@ -1,6 +1,6 @@
 ﻿namespace ECS.DTO
 {
-    public class AccountCredentialDTO
+    public class  AccountCredentialDTO
     {
         public string Username { get; set; }
 

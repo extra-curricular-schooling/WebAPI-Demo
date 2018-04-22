@@ -7,6 +7,7 @@ using System.Runtime.Remoting.Channels;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using ECS.BusinessLogic.ControllerLogic.Implementations;
+using ECS.Constants.Network;
 using ECS.Models;
 using ECS.Repositories.Implementations;
 using ECS.Security.AccessTokens.Jwt;
@@ -17,8 +18,7 @@ using ECS.WebAPI.Transformers;
 namespace ECS.WebAPI.Controllers.v1
 {
     [RoutePrefix("v1/Sso")]
-    [EnableCors(origins: "*", headers: "*", methods: "GET,POST")]
-    //[AuthorizeSsoAccessToken]
+    [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "GET,POST")]
     public class SsoController : ApiController
     {
         private readonly SsoControllerLogic _controllerLogic;
@@ -56,9 +56,9 @@ namespace ECS.WebAPI.Controllers.v1
          }
 
         /// <summary>
-        /// 
+        /// Sso Login Endpoint
         /// </summary>
-        /// <remarks>Author: Scott Roberts</remarks>
+        /// <returns>Appropriate response message</returns>
         [HttpPost]
         //[Route("Login")]
         public IHttpActionResult Login()
@@ -66,10 +66,6 @@ namespace ECS.WebAPI.Controllers.v1
             // Transform request context into DTO.
             var transformer = new SsoLoginTransformer();
             var ssoDto = transformer.Fetch(RequestContext);
-
-            // TODO: @Scott Validate / Sanitize Dto data.
-            //var validator = new SsoValidator();
-            //validator.Validate(ssoDto);
 
             var response = _controllerLogic.Login(ssoDto);
             IHttpActionResult actionResultResponse = ResponseMessage(response);
@@ -86,17 +82,10 @@ namespace ECS.WebAPI.Controllers.v1
             var transformer = new SsoResetPasswordTransformer();
             var ssoDto = transformer.Fetch(this.RequestContext);
 
-            // TODO: @Scott Validate / Sanitize Dto data.
-            
-            //var validator = new SsoValidator();
-            //validator.Validate(ssoDto);
-
             var response = _controllerLogic.ResetPassword(ssoDto);
             IHttpActionResult actionResultResponse = ResponseMessage(response);
 
             return actionResultResponse;
-
-            // return transformer.Send(response);
         }
     }
 }

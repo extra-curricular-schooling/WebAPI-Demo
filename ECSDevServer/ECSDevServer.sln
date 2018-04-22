@@ -49,6 +49,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECS.BusinessLogic", "ECS.Bu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECS.DataAccess", "ECS.DataAccess\ECS.DataAccess.csproj", "{698400A4-AF9D-4434-891F-CB60B4AA8B93}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECS.Constants", "ECS.Constants\ECS.Constants.csproj", "{59CC49EB-347F-40E4-86D0-F7CF71F07C55}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -121,6 +123,10 @@ Global
 		{698400A4-AF9D-4434-891F-CB60B4AA8B93}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{698400A4-AF9D-4434-891F-CB60B4AA8B93}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{698400A4-AF9D-4434-891F-CB60B4AA8B93}.Release|Any CPU.Build.0 = Release|Any CPU
+		{59CC49EB-347F-40E4-86D0-F7CF71F07C55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59CC49EB-347F-40E4-86D0-F7CF71F07C55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59CC49EB-347F-40E4-86D0-F7CF71F07C55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59CC49EB-347F-40E4-86D0-F7CF71F07C55}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
