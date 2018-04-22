@@ -7,14 +7,14 @@
 </template>
 
 <script>
-import welcomeMessage from '@/components/partial-registration-form/elements/WelcomeMessage'
-import registrationForm from '@/components/partial-registration-form/index'
+import WelcomeMessage from '@/components/partial-registration-form/elements/WelcomeMessage'
+import RegistrationForm from '@/components/partial-registration-form/Template'
 
 export default {
   name: 'PartialRegistration',
   components: {
-    'welcome-message': welcomeMessage,
-    'registration-form': registrationForm
+    'welcome-message': WelcomeMessage,
+    'registration-form': RegistrationForm
   },
   mounted () {
     this.welcomeUser()

@@ -15,6 +15,7 @@ namespace ECS.WebAPI.Controllers.v1
     // Had to make a custom filter for RequireHttpsAttribute
     [RequireHttps]
     [RoutePrefix("v1/LinkedIn")]
+    //[AuthorizeRequired("canShareLinkedIn", Roles = "Scholar")]
     public class LinkedInController : ApiController
     {
 

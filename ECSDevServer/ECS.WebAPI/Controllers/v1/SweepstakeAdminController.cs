@@ -3,57 +3,59 @@ using System.Web.Http.Cors;
 using ECS.Models;
 using ECS.Repositories.Implementations;
 using ECS.DTO;
+using System;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
+using System.Linq.Expressions;
+using ECS.WebAPI.Filters.AuthorizationFilters;
 
 namespace ECS.WebAPI.Controllers.v1
 {
     [RoutePrefix("v1/SweepstakeAdmin")]
     public class SweepstakeAdminController : ApiController
     {
-        private AccountRepository account;
-        private readonly ISweepStakeRepository sweepStakeRepository;
-        public SweepstakeAdminController()
-        {
-            account = new AccountRepository();
-            sweepStakeRepository = new SweepStakeRepository();
-        }
+        private readonly IAccountRepository accountRepository = new AccountRepository();
+        private readonly ISweepStakeRepository sweepStakeRepository = new SweepStakeRepository();
 
-        /// <summary>
-        /// Retrieve a scholar's points after knowing the username
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        private ECSContext db = new ECSContext();
+
+        // USING GET REQUEST TO GET THE VALID SWEEPSTAKES INFORMATION SO THAT A USER CAN BUY TICKETS
+        // AND ENTER INTO A SWEEPSTAKE 
         [HttpGet]
-        [Route("ScholarPoints/{username}")]
+        [Route("ValidSweepstakeInfo")]
         [EnableCors("http://localhost:8080", "*", "GET")]
-        public IHttpActionResult ScholarPoints(string username)
-        {
-            // Look at the account repo and search for person's points.
-
-            // Return Point object.
-            return Ok("Get Scholar Points");
+        public IHttpActionResult ValidSweepstakeInfo()
+        {//NEED HELP HERE // use the Sweepstake Admin DtO to tget your data back
+            var need = db.SweepStakes;
+            var answer = need
+                .Where(x => x.OpenDateTime >= DateTime.Now)
+                .FirstOrDefault<SweepStake>();
+            return Ok(answer.Price);
         }
 
-        /// <summary>
-        /// Modifying a Scholar's points, use a put.
-        /// </summary>
-        /// <returns></returns>
-
-        // We need to prevent the admin for blasting this with updates.
+        // THIS IS FOR THE EARNING POINTS
+        // NEED TO USE PUT OR WELL LETS JUST SAY UPDATE IN ORDER TO MODIFY AND POST NEW USER POINTS TO THE ACCOUNT
         [HttpPost]
-        [Route("ScholarPoints")]
+        [Route("UpdatePoints/{username}")]
         [EnableCors("http://localhost:8080", "*", "POST")]
-        public IHttpActionResult ScholarPoints(Account account)
+        public IHttpActionResult UpdatePoints(ScholarPointsDTO scholarPoints)
         {
-            // Check model binding
+            Account account = accountRepository.GetSingle(x => x.UserName == scholarPoints.ScholarUserName);
+            var pointsOld = account.Points;
+            // till here i have the points in the user accounts that is in our case ZERO
+            var pointsNew = pointsOld + scholarPoints.Points;
+            // TILL HERE ADDED THE POINTS THAT ARE RECIEVED FROM THE FRONT END.
 
-            // Update points in database.
-
-            // Return successful response if update correctly.
-            return Ok("Post Scholar Points");
+            //Now POST pointsNew to the username or associated account.
+            account.Points = pointsNew;
+            accountRepository.Update(account);
+            return Ok("Post Scholar Updated Points");
         }
+
+        // USING THE POST REQUEST FOR POSTING/SETTING SWEEPSTAKES TO THE DATABASE BY ADMIN ONLY
         [HttpPost]
         [Route("submitSweepstake")]
-        //[EnableCors("http://localhost:8080", "*", "POST")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
         public IHttpActionResult submitSweepstake(SweepstakeAdminDTO sweepstakeSet)
         {

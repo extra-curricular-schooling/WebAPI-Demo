@@ -9,9 +9,9 @@
 
 <script>
 import Vue from 'vue'
-import EventBus from '../assets/js/EventBus.js'
-import LoadingModal from '../components/Loading-Modal/index'
-import LinkedInPostModal from '@/components/LinkedIn-Modal/Index'
+import EventBus from '@/assets/js/eventBus'
+import LoadingModal from '@/components/loading-modal/Template'
+import LinkedInPostModal from '@/components/linkedin-modal/Template'
 
 // We need this global button in order to link a user to their LinkedIn account
 Vue.component('connect-to-linkedin', {

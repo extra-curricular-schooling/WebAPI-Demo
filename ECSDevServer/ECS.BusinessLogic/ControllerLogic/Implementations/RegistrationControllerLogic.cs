@@ -17,15 +17,11 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
         private readonly PartialAccountLogic _partialAccountLogic;
         private readonly SaltLogic _saltLogic;
         private readonly PartialAccountSaltLogic _partialAccountSaltLogic;
-        private readonly JAccessTokenLogic _jAccessTokenLogic;
-        private readonly ExpiredAccessTokenLogic _expiredAccessTokenLogic;
         private readonly UserProfileLogic _userProfileLogic;
 
         public RegistrationControllerLogic()
         {
             _userProfileLogic = new UserProfileLogic();
-            _jAccessTokenLogic = new JAccessTokenLogic();
-            _expiredAccessTokenLogic = new ExpiredAccessTokenLogic();
             _saltLogic = new SaltLogic();
             _partialAccountSaltLogic = new PartialAccountSaltLogic();
             _accountLogic = new AccountLogic();
@@ -33,15 +29,12 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
         }
 
         public RegistrationControllerLogic(AccountLogic accountLogic, PartialAccountLogic partialAccountLogic, 
-            PartialAccountSaltLogic partialAccountSaltLogic, SaltLogic saltLogic, JAccessTokenLogic jAccessTokenLogic, 
-            ExpiredAccessTokenLogic expiredAccessTokenLogic, UserProfileLogic userProfileLogic)
+            PartialAccountSaltLogic partialAccountSaltLogic, SaltLogic saltLogic, UserProfileLogic userProfileLogic)
         {
             _accountLogic = accountLogic;
             _partialAccountLogic = partialAccountLogic;
             _partialAccountSaltLogic = partialAccountSaltLogic;
             _saltLogic = saltLogic;
-            _jAccessTokenLogic = jAccessTokenLogic;
-            _expiredAccessTokenLogic = expiredAccessTokenLogic;
             _userProfileLogic = userProfileLogic;
         }
 
@@ -137,6 +130,11 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
                 new AccountType()
                 {
                     PermissionName = "canEnterRaffle",
+                    Username = registrationForm.Username
+                },
+                new AccountType()
+                {
+                    PermissionName = "canShareLinkedIn",
                     Username = registrationForm.Username
                 }
             };
@@ -237,10 +235,38 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
                 }
             };
 
-            // TODO: @Scott Change the salts for each of the hashed answers. They should all be different.
-            var hashedAnswer1 = HashService.Instance.HashPasswordWithSalt(partialAccountSaltModel.PasswordSalt, registrationForm.SecurityQuestions[0].Answer, true);
-            var hashedAnswer2 = HashService.Instance.HashPasswordWithSalt(partialAccountSaltModel.PasswordSalt, registrationForm.SecurityQuestions[1].Answer, true);
-            var hashedAnswer3 = HashService.Instance.HashPasswordWithSalt(partialAccountSaltModel.PasswordSalt, registrationForm.SecurityQuestions[2].Answer, true);
+            // Create Salts
+            var aSalt1 = HashService.Instance.CreateSaltKey();
+            var aSalt2 = HashService.Instance.CreateSaltKey();
+            var aSalt3 = HashService.Instance.CreateSaltKey();
+
+            var hashedAnswer1 = HashService.Instance.HashPasswordWithSalt(aSalt1, registrationForm.SecurityQuestions[0].Answer, true);
+            var hashedAnswer2 = HashService.Instance.HashPasswordWithSalt(aSalt2, registrationForm.SecurityQuestions[1].Answer, true);
+            var hashedAnswer3 = HashService.Instance.HashPasswordWithSalt(aSalt3, registrationForm.SecurityQuestions[2].Answer, true);
+
+
+            // Temporary Collections
+            List<SaltSecurityAnswer> saltSecurityAnswers = new List<SaltSecurityAnswer>
+            {
+                new SaltSecurityAnswer
+                {
+                    SaltValue = aSalt1,
+                    UserName = registrationForm.Username,
+                    SecurityQuestionID = registrationForm.SecurityQuestions[0].Question
+                },
+                new SaltSecurityAnswer
+                {
+                    SaltValue = aSalt2,
+                    UserName = registrationForm.Username,
+                    SecurityQuestionID = registrationForm.SecurityQuestions[1].Question
+                },
+                new SaltSecurityAnswer
+                {
+                    SaltValue = aSalt3,
+                    UserName = registrationForm.Username,
+                    SecurityQuestionID = registrationForm.SecurityQuestions[2].Question
+                },
+            };
 
             List<SecurityQuestionAccount> securityQuestionAccountListObj = new List<SecurityQuestionAccount>
             {
@@ -271,8 +297,9 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
                 Password = partialAccountModel.Password,
                 Points = 0,
                 AccountStatus = true,
-                SuspensionTime = DateTime.UtcNow,  // TODO: @Trish
+                SuspensionTime = DateTime.UtcNow,
                 FirstTimeUser = true,
+                SaltSecurityAnswers = saltSecurityAnswers,
                 SecurityAnswers = securityQuestionAccountListObj
             };
 
@@ -295,7 +322,7 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
             {
                 // Enter the user,
                 // which enters the account and zipLocations by navigation property,
-                // which enters the the securityAnswers by navigation property.
+                // which enters the the saltSecurityAnswers, securityAnswers by navigation property.
                 _userProfileLogic.Create(user);
 
                 // Enter the salt (it is not chained with the other tables).
@@ -303,6 +330,7 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
 
                 // Delete old Partial Account
                 // TODO: @Scott The partial accounts need to be deleted after finishing registration, but they won't delete.
+                _partialAccountLogic.Delete(partialAccountModel);
                 //partialAccountSaltRepository.Delete(partialAccountSaltRepository.GetSingle(s => s.UserName == partialAccountModel.UserName));
                 //partialAccountRepository.Delete(partialAccountRepository.GetSingle(acc => acc.UserName == partialAccountModel.UserName));
                 return new HttpResponseMessage(HttpStatusCode.OK);
@@ -329,8 +357,10 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
                     StatusCode = HttpStatusCode.InternalServerError
                 };
             }
-            
         }
+
+
+
     }
 
     

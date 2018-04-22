@@ -144,8 +144,8 @@
 
 <script>
 import DefaultLayout from '@/layouts/Default'
-import LoginPanel from '@/components/login-panel/Index'
-import RegistrationAlert from '@/components/Registration-Form/elements/RegistrationAlert'
+import LoginPanel from '@/components/login-panel/Template'
+import RegistrationAlert from '@/components/registration-form/elements/RegistrationAlert'
 
 export default {
   name: 'Main',

@@ -36,6 +36,9 @@ namespace ECS.WebAPI
                 routeTemplate: "{id}.html",
                 defaults: new { id = "index" });
 
+            // If we want a global accesstoken delegating handler do it here
+            
+
             // Non-default Controller Routes
             config.Routes.MapHttpRoute(
                 name: "Sso",
@@ -53,11 +56,11 @@ namespace ECS.WebAPI
                 name: "DefaultApi",
                 routeTemplate: "{version}/{controller}/{action}/{id}",
                 defaults: new { id = RouteParameter.Optional, action = "Get" },
-                constraints: new {version = "v1"}
-                //handler:
-                //HttpClientFactory.CreatePipeline(
-                //    new HttpControllerDispatcher(config),
-                //    new DelegatingHandler[] { new AccessTokenAuthenticationDelegatingHandler() })
+                constraints: new {version = "v1"},
+                handler:
+                HttpClientFactory.CreatePipeline(
+                    new HttpControllerDispatcher(config),
+                    new DelegatingHandler[] { new AccessTokenAuthenticationDelegatingHandler() })
             );
 
             // Authorization Filters

@@ -46,28 +46,18 @@ namespace ECS.Security.AccessTokens.Jwt
                 }
                 return _instance;
             }
-        }
-
-        private ClaimsIdentity CreateClaimsIdentity(List<Claim> claims)
-        {
-            var claimsIdentityTest = new ClaimsIdentity();
-
-            foreach (var claim in claims)
-            {
-                claimsIdentityTest.AddClaim(claim);
-            }
-
-            return claimsIdentityTest;
-        }      
+        }    
 
         public string GenerateToken(string username, int expireMinutes = 15)
         {
-            var partialAccount = _partialAccountRepository.GetSingle(acc => acc.UserName == username);
+            // var partialAccount = _partialAccountRepository.GetSingle(acc => acc.UserName == username);
             var claimsIdentity = new ClaimsIdentity(new List<Claim>()
             {
-                new Claim(ClaimTypes.Name, username), 
+                new Claim("username", username),
+                new Claim("password", "aaa"),
                 // TODO @Scott This should not be hardcoded to scholar in case we want to make admins from SSO.
-                new Claim(ClaimTypes.Role, "Scholar")
+                new Claim("roleType", "public"),
+                new Claim("application", "ecs")
             });
 
             var now = DateTime.UtcNow;

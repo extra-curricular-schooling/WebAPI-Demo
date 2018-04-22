@@ -4,7 +4,7 @@ using System.Data.Entity.ModelConfiguration.Conventions;
 namespace ECS.Models
 {
     /// <summary>
-    /// This class initializes the database to the connectionstring ECSContext which is found in web.config.
+    /// This class initializes the database to the connection string ECSContext which is found in web.config.
     /// It also initializes the models and provides a schema for a migration to scaffold.
     /// </summary>
     

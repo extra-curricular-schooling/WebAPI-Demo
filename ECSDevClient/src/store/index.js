@@ -1,7 +1,7 @@
 // Nice to have a central location to update information. (Single Source of truth)
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { redirect } from '../components/Redirect-Modal/store/index'
+import { redirect } from '@/components/redirect-modal/store'
 import { request } from './modules/request'
 import { auth } from './modules/auth'
 import { home } from './modules/home'

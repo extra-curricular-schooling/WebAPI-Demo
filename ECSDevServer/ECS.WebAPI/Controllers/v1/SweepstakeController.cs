@@ -14,12 +14,14 @@ using ECS.WebAPI.Filters.AuthorizationFilters;
 namespace ECS.WebAPI.Controllers.v1
 {
     [RoutePrefix("v1/Sweepstake")]
+    //[AuthorizeRequired("canEnterRaffle", Roles = "Scholar")]
     public class SweepstakeController : ApiController
     {
         private readonly IAccountRepository accountRepository = new AccountRepository();
         private readonly ISweepStakeEntryRepository sweepStakeEntryRepository = new SweepStakeEntryRepository();
         private ECSContext db = new ECSContext();
- 
+
+        // REQUEST TO GET THE POINTS ASSOCIATED WITH A SCHOLAR ACCOUNT
         [HttpGet]
         [Route("ScholarPoints/{username}")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET")]
