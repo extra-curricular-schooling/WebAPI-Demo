@@ -5,9 +5,9 @@ import { redirect } from '@/components/redirect-modal/store'
 import { request } from './modules/request'
 import { auth } from './modules/auth'
 import { home } from './modules/home'
-import { linkedin } from '../components/LinkedIn-Modal/store/index'
-import { login } from '../components/Login-Panel/store/index'
-import { AccountStatusPanel } from '../components/AccountStatus-Panel/store/index'
+import { linkedin } from '../components/LinkedIn-Modal/store'
+import { login } from '../components/Login-Panel/store'
+import { AccountStatusPanel } from '../components/AccountStatus-Panel/store'
 import VuexPersist from 'vuex-persist'
 
 const vuexLocalStorage = new VuexPersist({

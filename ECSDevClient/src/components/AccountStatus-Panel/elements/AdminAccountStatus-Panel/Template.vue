@@ -19,7 +19,7 @@
 
 <script>
 import Axios from 'axios'
-import EventBus from '../../../../assets/js/EventBus'
+import EventBus from '@/assets/js/EventBus.js'
 
 export default {
   name: 'AdminAccountStatusPanel',

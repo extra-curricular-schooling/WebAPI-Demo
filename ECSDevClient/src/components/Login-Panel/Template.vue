@@ -51,7 +51,7 @@
 <script>
 import Axios from 'axios'
 import ErrorModal from '@/components/error-modal/Template'
-import EventBus from '@/assets/js/eventBus.js'
+import EventBus from '@/assets/js/EventBus.js'
 import forgotPassword from '@/components/forgot-password-modal/Template'
 import forgotUsername from '@/components/Forgot-Username-Modal/Template'
 import LoadingModal from '@/components/loading-modal/Template'

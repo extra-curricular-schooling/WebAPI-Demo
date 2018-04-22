@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import EventBus from '@/assets/js/eventBus.js'
+import EventBus from '@/assets/js/EventBus.js'
 import Slideout from 'vue-slideout'
 import Axios from 'axios'
 var groups = {}

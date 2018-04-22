@@ -6,10 +6,10 @@
 </template>
 
 <script>
-import AdminAccountStatusPanel from './elements/AdminAccountStatus-Panel/index'
-import ErrorModal from '../../components/Error-Modal/index'
-import EventBus from '../../assets/js/EventBus'
-import SelectUserPanel from './elements/SelectUser-AccountStatus/index'
+import AdminAccountStatusPanel from './elements/AdminAccountStatus-Panel/Template'
+import ErrorModal from '../../components/error-modal/Template'
+import EventBus from '@/assets/js/EventBus.js'
+import SelectUserPanel from './elements/SelectUser-AccountStatus/Template'
 
 export default {
   name: 'AccountStatusPanel',

@@ -47,9 +47,9 @@
 </template>
 
 <script>
-import RegistrationForm from '../registration-form/Index'
-import AccountStatusPanel from '../AccountStatus-Panel/index'
-import NotImplemented from './elements/NotImplemented/index'
+import RegistrationForm from '../registration-form/Template'
+import AccountStatusPanel from '../AccountStatus-Panel/Template'
+import NotImplemented from './elements/NotImplemented/Template'
 
 export default {
   name: 'AdminDashboard',
