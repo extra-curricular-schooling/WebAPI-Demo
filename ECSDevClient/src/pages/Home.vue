@@ -8,7 +8,7 @@
         </div>
       </header>
       <h1>Welcome to Article Page</h1>
-      <iframe src="https://ecschooling.org/" id = "FrameResult" name="FrameResult" @load="mounted" @error="alert('Frame not loaded')"></iframe>
+      <iframe src="https://ecschooling.org/" id = "FrameResult" name="FrameResult" @load="mounted" @error="alert('Frame not loaded')" sandbox=""></iframe>
       <LinkedInPostModal/>
     </main>
     <RedirectModal/>
@@ -44,7 +44,7 @@ export default {
       alert('Hello. You earned 2 points.')
       Axios({
         method: 'POST',
-        url: Store.getters.getBaseAppUrl + 'SweepstakeAdmin/UpdatePoints/' + username,
+        url: Store.getters.getBaseAppUrl + 'SweepstakeAdmin/UpdatePoints/' + this.username,
         headers: Store.getters.getRequestHeaders,
         data: {
           'Points': this.$data.Points,
@@ -67,9 +67,7 @@ export default {
     },
     // Iframe gets recreated each time a new page is clicked.
     mounted () {
-      setTimeout(
-        this.earnPoints
-        , 5000)
+      // setTimeout(this.earnPoints, 5000)
       // after 3 minutes 30 aseconds you can earn 2 points
       // try to resolve the problem of when the user goes to another page the timer keep son running. use clearTimeout
     }

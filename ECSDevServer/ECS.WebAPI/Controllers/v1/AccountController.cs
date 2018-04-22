@@ -106,7 +106,7 @@ namespace ECS.WebAPI.Controllers.v1
                     context.SaveChanges();
                 }
                 return Ok("Interest tags updated successsfully");
-            } catch(Exception e)
+            } catch(Exception)
             {
                 return InternalServerError(new Exception("Error has occurred"));
             }
