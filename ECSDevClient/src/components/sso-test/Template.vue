@@ -33,7 +33,7 @@
 
 <script>
 /* eslint-diable */
-import PwnedHasher from '@/assets/js/pwnedChecker'
+import PwnedHelper from '@/assets/js/pwnedChecker'
 import SsoMockRequest from './mockRequest'
 import Axios from 'axios'
 
@@ -60,19 +60,20 @@ export default {
     testPwnd () {
       Axios({
         method: 'GET',
-        url: this.$store.getters.getBasePwnedUrl + PwnedHasher.getPwnedParameter(this.passwordForPwned),
+        url: this.$store.getters.getBasePwnedUrl + PwnedHelper.getHashedPrefix(this.passwordForPwned),
         // url: 'https://api.pwnedpasswords.com/range/21BD1',
         headers: {
           'Access-Control-Allow-Origin': 'http://localhost:8080',
           'Access-Control-Allow-Credentials': true,
           'Accept': 'application/json',
-          'Content-Type': 'text/plain',
+          'Content-Type': 'application/json',
           'Authorization': 'null',
           'X-Requested-With': 'XMLHttpRequest'
         }
       })
         .then(response => {
-          console.log(response)
+          console.log(PwnedHelper.getHits(this.passwordForPwned, response.data))
+          this.$data.hits = PwnedHelper.getHits(this.passwordForPwned, response.data)
         })
         .catch(error => {
           console.log(error.response)
