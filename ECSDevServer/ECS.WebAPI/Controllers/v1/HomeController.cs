@@ -5,9 +5,10 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using ECS.BusinessLogic.ControllerLogic.Implementations;
+using ECS.BusinessLogic.Services.ComplexDBQueries;
 using ECS.DTO;
 using ECS.Models;
-using ECS.Repositories.Implementations;
 using ECS.WebAPI.Filters.AuthorizationFilters;
 
 namespace ECS.WebAPI.Controllers.v1
@@ -22,55 +23,27 @@ namespace ECS.WebAPI.Controllers.v1
     public class HomeController : ApiController
     {
         /// <summary>
-        /// Repository objects
+        /// HomeControllerLogic to acquire account
         /// </summary>
-        private readonly IAccountRepository accountRepository = new AccountRepository();
-
+        HomeControllerLogic controllerLogic = new HomeControllerLogic();
         /// <summary>
-        /// Instantiate DB context to acquire all articles based of all the interest tags of a single user.
+        /// UserArticlesQuery to perform the service of accessing data through a linq more complex than the repo can handle
         /// </summary>
-        private ECSContext db = new ECSContext();
-
-        /// <summary>
-        /// Instantiate Article DTO
-        /// </summary>
-        private static readonly Expression<Func<Article, ArticleDTO>> AsArticleDTO = x => new DTO.ArticleDTO
-        {
-            InterestTag = x.TagName,
-            ArticleTitle = x.ArticleTitle,
-            ArticleDescription = x.ArticleDescription,
-            ArticleLink = x.ArticleLink
-        };
-
+        UserArticlesQuery userArticlesQuery = new UserArticlesQuery();
 
         /// <summary>
         /// Controller to gather the articles of a user based on their interest tags.
         /// </summary>
         /// <param name="username"></param>
         /// <returns> A list of articleDTO</returns>
-        [Route("{username}")]
+        [Route("{username}/GetUserArticles")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET")]
         public List<IQueryable<ArticleDTO>> GetUserArticles(string username)
         {
-            Account account;
-            
-            List<string> gatheredTags = new List<string>();
-            List<IQueryable<ArticleDTO>> list = new List<IQueryable<ArticleDTO>>();
-            account = accountRepository.GetSingle(x => x.UserName == username, x => x.AccountTags);
 
+            Account account = controllerLogic.accountLogic.IncludeAccountTags(username);
+            return userArticlesQuery.RetrieveUserArticles(account);
 
-            foreach (var Tag in account.AccountTags)
-                foreach (var tagname in Tag.ArticleTags)
-                {
-
-                    if (!gatheredTags.Contains(tagname.TagName))
-                    {
-                        list.Add(db.Articles.Include(x => x.TagName).Where(x => x.TagName == tagname.TagName).Select(AsArticleDTO));
-                        gatheredTags.Add(tagname.TagName);
-                    }
-
-                }
-            return list;
         }
 
     }

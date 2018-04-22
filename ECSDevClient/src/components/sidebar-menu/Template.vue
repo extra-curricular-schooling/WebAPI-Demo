@@ -32,7 +32,7 @@ export default {
     retieveArticles: function (username) {
       Axios({
         method: 'GET',
-        url: this.$store.getters.getBaseAppUrl + 'Home/' + username,
+        url: this.$store.getters.getBaseAppUrl + 'Home/' + username + '/GetUserArticles',
         headers: this.$store.getters.getRequestHeaders
       })
         .then((response) => {

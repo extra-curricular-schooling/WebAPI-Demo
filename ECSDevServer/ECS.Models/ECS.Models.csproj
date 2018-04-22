@@ -42,6 +42,9 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web.Http">
+      <HintPath>..\ECS.WebAPI\bin\System.Web.Http.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -72,6 +75,8 @@
     <Compile Include="SecurityQuestion.cs" />
     <Compile Include="SecurityQuestionAccount.cs" />
     <Compile Include="ExpiredAccessToken.cs" />
+    <Compile Include="Services\ComplexDBQueries\UpdateUserInterestTags.cs" />
+    <Compile Include="Services\ComplexDBQueries\UserArticlesQuery.cs" />
     <Compile Include="SweepStake.cs" />
     <Compile Include="SweepStakeEntry.cs" />
     <Compile Include="UserProfile.cs" />
@@ -87,6 +92,15 @@
     <EmbeddedResource Include="Migrations\201804180429286_ECSContext.resx">
       <DependentUpon>201804180429286_ECSContext.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ECS.DTO\ECS.DTO.csproj">
+      <Project>{40bc80f4-7950-4a6f-b94f-c35f7081a48b}</Project>
+      <Name>ECS.DTO</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
