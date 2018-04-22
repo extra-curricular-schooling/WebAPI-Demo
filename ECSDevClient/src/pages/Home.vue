@@ -1,19 +1,19 @@
 <template>
-<div id="Home">
-  <SideBar/>
-  <main id="EmbedContent">
-    <header>
-      <div>
-        <button class="toggle-button">☰</button>
-      </div>
-    </header>
-    <h1>Welcome to Article Page</h1>
-    <iframe src="https://ecschooling.org/" id = "FrameResult" name="FrameResult" @load="mounted" @error="alert('Frame not loaded')"></iframe>
-    <LinkedInPostModal/>
-  </main>
-  <RedirectModal/>
-  <ErrorModal/>
-</div>
+  <div id="Home">
+    <SideBar/>
+    <main id="EmbedContent">
+      <header>
+        <div>
+          <button class="toggle-button">☰</button>
+        </div>
+      </header>
+      <h1>Welcome to Article Page</h1>
+      <iframe src="https://ecschooling.org/" id = "FrameResult" name="FrameResult" @load="mounted" @error="alert('Frame not loaded')"></iframe>
+      <LinkedInPostModal/>
+    </main>
+    <RedirectModal/>
+    <ErrorModal/>
+  </div>
 </template>
 
 <script>

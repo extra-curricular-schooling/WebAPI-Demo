@@ -6,10 +6,12 @@ using System.Web.Http.Cors;
 using ECS.DTO;
 using ECS.Models;
 using ECS.Repositories.Implementations;
+using ECS.WebAPI.Filters.AuthorizationFilters;
 
 namespace ECS.WebAPI.Controllers.v1
 {
     [RoutePrefix("v1/Account")]
+    // [RequireHttps]
     public class AccountController : ApiController
     {
         private readonly IAccountRepository accountRepository = new AccountRepository();
@@ -26,9 +28,34 @@ namespace ECS.WebAPI.Controllers.v1
             return Ok();
         }
 
+        /// <summary>
+        /// Returns the interest tags from the DB to fill in the checkboxes
+        /// </summary>
+        /// <returns> A list of InterestTag Names</returns>
+        [HttpGet]
+        [Route("RetrieveInterestTags")]
+        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET")]
+        public IList<string> RetrieveInterestTags()
+        {
+            List<string> interestTags = new List<string>();
+            var interests = interestTagRepository.GetAll();
+            foreach(var tag in interests)
+            {
+                interestTags.Add(tag.TagName);
+            }
+            return interestTags;
+        }
+
+
+        /// <summary>
+        /// Returns cuurent interest tags selected by user.
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns> A list of interest tags based on a user</returns>
+        [HttpGet]
         [Route("{username}/GetInterests")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET")]
-        public IList<string> GetUserArticles(string username)
+        public IList<string> GetUserInterests(string username)
         {
             Account account;
             List<string> userInterests = new List<string>();
@@ -42,11 +69,15 @@ namespace ECS.WebAPI.Controllers.v1
         }
 
 
-
+        /// <summary>
+        /// Updates the interest tags of a user
+        /// </summary>
+        /// <param name="userInterests"></param>
+        /// <returns> Ok response </returns>
         [HttpPost]
         [Route("{username}/UpdateInterests")]
         [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
-        public IHttpActionResult PostUserArticles(InterestTagsDTO userInterests)
+        public IHttpActionResult UpdateUserInterests(InterestTagsDTO userInterests)
         {
             try
             {

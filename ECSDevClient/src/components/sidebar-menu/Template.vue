@@ -32,7 +32,8 @@ export default {
     retieveArticles: function (username) {
       Axios({
         method: 'GET',
-        url: 'https://localhost:44311/v1/Home/' + username
+        url: this.$store.getters.getBaseAppUrl + '/Home/' + username,
+        headers: this.$store.getters.getRequestHeaders
       })
         .then((response) => {
           this.groups = {}
