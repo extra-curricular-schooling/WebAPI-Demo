@@ -118,17 +118,16 @@ button {
   width: 175px;
   position: relative;
 }
-input {
+/* input {
   width: 20px;
   position: relative;
   left: 200px;
   vertical-align: middle;
-}
+} */
 
 label {
-  width:200px;
-  position: relative;
-  left: 10px;
+  width:100px;
+  position:relative;
   display:inline-block;
   vertical-align:middle;
 }
