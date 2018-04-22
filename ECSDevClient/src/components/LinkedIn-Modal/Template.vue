@@ -113,7 +113,7 @@
 
 <script>
 import Axios from 'axios'
-import EventBus from '@/assets/js/eventBus.js'
+import EventBus from '@/assets/js/EventBus.js'
 
 export default {
   name: 'LinkedInPostModal',

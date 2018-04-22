@@ -1,10 +1,23 @@
 <template>
-  <div></div>
+  <div>
+    <interests/>
+  </div>
 </template>
 
 <script>
-export default {
+import Interests from '@/components/interest-tag-modal/Template'
 
+export default {
+  name: 'account',
+  data () {
+    return {
+      username: this.$store.getters.getUsername,
+      headers: this.$store.getters.getRequestHeaders
+    }
+  },
+  components: {
+    Interests
+  }
 }
 </script>
 

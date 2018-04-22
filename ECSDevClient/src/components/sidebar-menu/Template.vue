@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import EventBus from '@/assets/js/eventBus.js'
+import EventBus from '@/assets/js/EventBus.js'
 import Slideout from 'vue-slideout'
 import Axios from 'axios'
 var groups = {}
@@ -32,7 +32,8 @@ export default {
     retieveArticles: function (username) {
       Axios({
         method: 'GET',
-        url: 'https://localhost:44311/v1/Home/' + username
+        url: this.$store.getters.getBaseAppUrl + '/Home/' + username,
+        headers: this.$store.getters.getRequestHeaders
       })
         .then((response) => {
           this.groups = {}

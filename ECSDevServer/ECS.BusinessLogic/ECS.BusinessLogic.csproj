@@ -32,6 +32,7 @@
   <ItemGroup>
     <Compile Include="ControllerLogic\Implementations\AccountControllerLogic.cs" />
     <Compile Include="ControllerLogic\Implementations\ForgetCredentialsControllerLogic.cs" />
+    <Compile Include="ControllerLogic\Implementations\LinkedInControllerLogic.cs" />
     <Compile Include="ControllerLogic\Implementations\RegistrationControllerLogic.cs" />
     <Compile Include="ControllerLogic\Implementations\SsoControllerLogic.cs" />
     <Compile Include="ModelLogic\Contracts\IAccountLogic.cs" />
