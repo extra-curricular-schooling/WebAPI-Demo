@@ -200,6 +200,17 @@ namespace ECS.WebCrawler
                         string description = GatherDescription(htmlDoc, siteAttribute);
 
                         // Gather Tag info
+                        if (!interestTagRepository.Exists(a => a.TagName == siteAttribute[18]))
+                        {
+                            InterestTag newTag = new InterestTag()
+                            {
+                                TagName = siteAttribute[18],
+                                AccountUsername = null,
+                                ArticleTags = null
+                            };
+                            interestTagRepository.Insert(newTag);
+                            Console.WriteLine($"{newTag.TagName} added to DB");
+                        }
                         InterestTag tag = interestTagRepository.GetSingle(d => d.TagName.Equals(siteAttribute[18]));
 
 

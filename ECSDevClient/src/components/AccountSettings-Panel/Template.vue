@@ -16,7 +16,7 @@
                   <ul class="menu-list">
                     <li><a v-on:click="currentComponent = 'not-implemented'">General Information</a></li>
                     <li><a v-on:click="currentComponent = 'change-password-panel'">Change Password</a></li>
-                    <li><a v-on:click="currentComponent = 'not-implemented'">Change Interest Tags</a></li>
+                    <li><a v-on:click="currentComponent = 'interests'">Change Interest Tags</a></li>
                   </ul>
                 </aside>
               </div>
@@ -37,11 +37,13 @@
 <script>
 import ChangePasswordPanel from './elements/ChangePassword-Panel/Template'
 import EventBus from '../../assets/js/EventBus'
+import Interests from '@/components/interest-tag-modal/Template'
 
 export default {
   name: 'AccountSettingsPanel',
   components: {
-    ChangePasswordPanel
+    ChangePasswordPanel,
+    Interests
   },
   created () {
     EventBus.$on('showSettingsNotification', () => {
@@ -50,7 +52,7 @@ export default {
   },
   data () {
     return {
-      currentComponent: 'change-password-panel',
+      currentComponent: 'not-implemented',
       notificationMessage: '',
       isVisibleNotification: false
     }

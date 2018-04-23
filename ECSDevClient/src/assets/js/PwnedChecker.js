@@ -1,14 +1,37 @@
 /* eslint-disable */
 var crypto = require('crypto-js')
 
+var parseAtChar = 5
+
 export default {
-  sha1: function (cleanPassword) {
-    return crypto.SHA1(cleanPassword)
+  getHashedPrefix: function (plainPassword) {
+    let hashedPassword = crypto.SHA1(plainPassword)
+    return hashedPassword.toString().substring(0, parseAtChar).toUpperCase()
   },
-  parseAtChar: function (hashedString, length) {
-    return hashedString.toString().substring(0, length)
+  getHashedSuffix: function (plainPassword) {
+    let hashedPassword = crypto.SHA1(plainPassword)
+    return hashedPassword.toString().substring(parseAtChar, hashedPassword.length).toUpperCase()
   },
-  getPwnedParameter: function (cleanPassword) {
-    return this.parseAtChar(this.sha1(cleanPassword), 5)
+  getHits: function (plainPassword, textArea) {
+    // store each hash of the string in an array
+    let myArray = textArea.split("\n")
+
+    let element
+    let pwnedHash
+    let passwordSuffix = this.getHashedSuffix(plainPassword)
+    let suffixLength = passwordSuffix.length
+
+    for (let i = 0; i < myArray.length; i++) {
+      element = myArray[i]
+
+      // extract hash
+      pwnedHash = element.substring(0, suffixLength)
+
+      // find match
+      if (passwordSuffix == pwnedHash) {
+        return Number(element.substring(suffixLength+1, element.length))
+      }
+    }
+    return 0
   }
 }

@@ -119,24 +119,29 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
             {
                 new AccountType()
                 {
-                    PermissionName = "canEditInformation",
+                    PermissionName = "Scholar",
                     Username = registrationForm.Username
                 },
                 new AccountType()
                 {
-                    PermissionName = "canViewArticle",
+                    PermissionName = "CanEditInformation",
                     Username = registrationForm.Username
                 },
                 new AccountType()
                 {
-                    PermissionName = "canEnterRaffle",
+                    PermissionName = "CanViewArticle",
                     Username = registrationForm.Username
                 },
                 new AccountType()
                 {
-                    PermissionName = "canShareLinkedIn",
+                    PermissionName = "CanEnterRaffle",
                     Username = registrationForm.Username
                 }
+                //new AccountType()
+                //{
+                //    PermissionName = "CanShareLinkedIn",
+                //    Username = registrationForm.Username
+                //}
             };
 
             List<ZipLocation> zipLocations = new List<ZipLocation>
@@ -202,18 +207,28 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
         public HttpResponseMessage FinishRegistration(RegistrationDTO registrationForm)
         {
             // Fetch: Check if user already exists
+            var userModel = _userProfileLogic.GetSingle(registrationForm.Email);
             var partialAccountModel = _partialAccountLogic.GetPartialAccount(registrationForm.Username);
             var partialAccountSaltModel = _partialAccountSaltLogic.GetSingle(registrationForm.Username);
-
+            
+            if (userModel != null)
+            {
+                return new HttpResponseMessage
+                {
+                    ReasonPhrase = "User already exists.",
+                    StatusCode = HttpStatusCode.Conflict
+                };
+            }
             // Validate: Validate Domain Models
             if (partialAccountModel == null)
             {
                 return new HttpResponseMessage
                 {
-                    ReasonPhrase = "Account does not exist",
+                    ReasonPhrase = "Partial account does not exist",
                     StatusCode = HttpStatusCode.BadRequest
                 };
             }
+            
             if (partialAccountSaltModel == null)
             {
                 return new HttpResponseMessage
@@ -222,6 +237,7 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
                     StatusCode = HttpStatusCode.InternalServerError
                 };
             }
+            
 
             // Create: Temporary Objects
             List<ZipLocation> zipLocations = new List<ZipLocation>
@@ -246,6 +262,28 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
 
 
             // Temporary Collections
+            List<SecurityQuestionAccount> securityAnswers = new List<SecurityQuestionAccount>
+            {
+                new SecurityQuestionAccount
+                {
+                    Answer = hashedAnswer1,
+                    SecurityQuestionID = registrationForm.SecurityQuestions[0].Question,
+                    Username = registrationForm.Username
+                },
+                new SecurityQuestionAccount
+                {
+                    Answer = hashedAnswer2,
+                    SecurityQuestionID = registrationForm.SecurityQuestions[1].Question,
+                    Username = registrationForm.Username
+                },
+                new SecurityQuestionAccount
+                {
+                    Answer = hashedAnswer3,
+                    SecurityQuestionID = registrationForm.SecurityQuestions[2].Question,
+                    Username = registrationForm.Username
+                }
+            };
+
             List<SaltSecurityAnswer> saltSecurityAnswers = new List<SaltSecurityAnswer>
             {
                 new SaltSecurityAnswer
@@ -290,6 +328,25 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
                 }
             };
 
+            List<AccountType> accountTypes = new List<AccountType>
+            {
+                new AccountType()
+                {
+                    PermissionName = "canEditInformation",
+                    Username = registrationForm.Username
+                },
+                new AccountType()
+                {
+                    PermissionName = "canViewArticle",
+                    Username = registrationForm.Username
+                },
+                new AccountType()
+                {
+                    PermissionName = "canEnterRaffle",
+                    Username = registrationForm.Username
+                }
+            };
+
             Account account = new Account()
             {
                 UserName = partialAccountModel.UserName,
@@ -299,8 +356,10 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
                 AccountStatus = true,
                 SuspensionTime = DateTime.UtcNow,
                 FirstTimeUser = true,
-                SaltSecurityAnswers = saltSecurityAnswers,
-                SecurityAnswers = securityQuestionAccountListObj
+                SecurityAnswers = securityAnswers, // Navigation Property
+                AccountTags = new List<InterestTag>(), // Navigation Property
+                SaltSecurityAnswers = saltSecurityAnswers, // Navigation Property
+                AccountTypes = accountTypes // Navigation Property
             };
 
             UserProfile user = new UserProfile()
@@ -329,28 +388,12 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
                 _saltLogic.Create(salt);
 
                 // Delete old Partial Account
-                // TODO: @Scott The partial accounts need to be deleted after finishing registration, but they won't delete.
                 _partialAccountLogic.Delete(partialAccountModel);
-                //partialAccountSaltRepository.Delete(partialAccountSaltRepository.GetSingle(s => s.UserName == partialAccountModel.UserName));
-                //partialAccountRepository.Delete(partialAccountRepository.GetSingle(acc => acc.UserName == partialAccountModel.UserName));
                 return new HttpResponseMessage(HttpStatusCode.OK);
 
             }
             catch (Exception ex)
             {
-                //string summary = "Data Access Error";
-                //string source = ex.Source;
-                //string message = ex.Message;
-                //string stackTrace = ex.StackTrace;
-
-                //var error = new
-                //{
-                //    summary,
-                //    source,
-                //    message,
-                //    stackTrace
-                //};
-
                 return new HttpResponseMessage
                 {
                     ReasonPhrase = ex.Message,
@@ -358,10 +401,5 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
                 };
             }
         }
-
-
-
     }
-
-    
 }

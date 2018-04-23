@@ -1,19 +1,19 @@
 <template>
-<div id="Home">
-  <SideBar/>
-  <main id="EmbedContent">
-    <header>
-      <div>
-        <button class="toggle-button">☰</button>
-      </div>
-    </header>
-    <h1>Welcome to Article Page</h1>
-    <iframe src="https://ecschooling.org/" id = "FrameResult" name="FrameResult" @load="mounted" @error="alert('Frame not loaded')"></iframe>
-    <LinkedInPostModal/>
-  </main>
-  <RedirectModal/>
-  <ErrorModal/>
-</div>
+  <div id="Home">
+    <SideBar/>
+    <main id="EmbedContent">
+      <header>
+        <div>
+          <button class="toggle-button">☰</button>
+        </div>
+      </header>
+      <h1>Welcome to Article Page</h1>
+      <iframe src="https://ecschooling.org/" id = "FrameResult" name="FrameResult" @load="mounted" @error="alert('Frame not loaded')" sandbox=""></iframe>
+      <LinkedInPostModal/>
+    </main>
+    <RedirectModal/>
+    <ErrorModal/>
+  </div>
 </template>
 
 <script>
@@ -29,7 +29,8 @@ export default {
     return {
       username: this.$store.getters.getUsername,
       headers: this.$store.getters.getRequestHeaders,
-      Points: 2
+      Points: 2,
+      timer: ''
     }
   },
   components: {
@@ -44,7 +45,7 @@ export default {
       alert('Hello. You earned 2 points.')
       Axios({
         method: 'POST',
-        url: Store.getters.getBaseAppUrl + 'SweepstakeAdmin/UpdatePoints/' + username,
+        url: Store.getters.getBaseAppUrl + 'SweepstakeAdmin/UpdatePoints/' + this.username,
         headers: Store.getters.getRequestHeaders,
         data: {
           'Points': this.$data.Points,
@@ -54,7 +55,7 @@ export default {
         .then(response => {
           console.log(response)
           this.$router.push({
-            name: 'Home'
+            // name: 'Home'
           })
         })
         .catch(error => {
@@ -64,12 +65,11 @@ export default {
             alert('We apologize.  We are unable to process your request at this time.')
           }
         })
+      clearInterval(this.timer)
     },
     // Iframe gets recreated each time a new page is clicked.
     mounted () {
-      setTimeout(
-        this.earnPoints
-        , 200000)
+      // this.timer = setTimeout(this.earnPoints, 200000)
       // after 3 minutes 30 aseconds you can earn 2 points
       // try to resolve the problem of when the user goes to another page the timer keep son running. use clearTimeout
     }

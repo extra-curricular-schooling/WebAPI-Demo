@@ -5,6 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using ECS.Constants.Network;
 using ECS.DTO;
 using ECS.Models;
 using ECS.Repositories.Implementations;
@@ -49,7 +50,7 @@ namespace ECS.WebAPI.Controllers.v1
         /// <param name="username"></param>
         /// <returns> A list of articleDTO</returns>
         [Route("{username}")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET")]
+        [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "GET")]
         public List<IQueryable<ArticleDTO>> GetUserArticles(string username)
         {
             Account account;

@@ -14,7 +14,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace ECS.Security.AccessTokens.Jwt
 {
-    public class SsoJwtManager : IJwtManager
+    public class SsoJwtManager
     {
         #region Constants and fields
         /// <summary>
@@ -36,6 +36,9 @@ namespace ECS.Security.AccessTokens.Jwt
             _partialAccountRepository = new PartialAccountRepository();
         }
 
+        /// <summary>
+        /// Singleton Instance
+        /// </summary>
         public static SsoJwtManager Instance
         {
             get
@@ -48,15 +51,18 @@ namespace ECS.Security.AccessTokens.Jwt
             }
         }    
 
-        public string GenerateToken(string username, int expireMinutes = 15)
+        /// <summary>
+        /// Generates a new Jwt Access token based on the Sso Login Dto
+        /// </summary>
+        /// <param name="loginDto"></param>
+        /// <returns>Token string</returns>
+        public string GenerateToken(SsoLoginRequestDTO loginDto)
         {
-            // var partialAccount = _partialAccountRepository.GetSingle(acc => acc.UserName == username);
             var claimsIdentity = new ClaimsIdentity(new List<Claim>()
             {
-                new Claim("username", username),
-                new Claim("password", "aaa"),
-                // TODO @Scott This should not be hardcoded to scholar in case we want to make admins from SSO.
-                new Claim("roleType", "public"),
+                new Claim("username", loginDto.Username),
+                new Claim("password", loginDto.Password),
+                new Claim("roleType", loginDto.RoleType),
                 new Claim("application", "ecs")
             });
 
@@ -78,6 +84,11 @@ namespace ECS.Security.AccessTokens.Jwt
             return token;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
         public ClaimsPrincipal GetPrincipal(string token)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -103,13 +114,12 @@ namespace ECS.Security.AccessTokens.Jwt
             return principal;
         }
 
-        public bool ValidateToken(string token, out string username)
-        {
-            throw new NotImplementedException();
-        }
-
-        // Should be deleted... Unless we need multiple JWTs from different headers.
-        public List<string> GetJwtsFromHttpHeaders(HttpRequestMessage request)
+        /// <summary>
+        /// Retrieves a list of tokens if multiple tokens are needed from different headers.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public IList<string> GetJwtsFromHttpHeaders(HttpRequestMessage request)
         {
             var jwtList = new List<string>();
             if (request.Headers.Authorization != null)
@@ -119,11 +129,12 @@ namespace ECS.Security.AccessTokens.Jwt
             return jwtList;
         }
 
-        public string GetAccessToken(HttpRequestMessage request)
-        {
-            return request.Headers.Authorization.Parameter;
-        }
-
+        /// <summary>
+        /// Retrieves a Claim from a given Principal
+        /// </summary>
+        /// <param name="principal"></param>
+        /// <param name="claimType"></param>
+        /// <returns>Claim object</returns>
         public Claim GetClaim(IPrincipal principal, string claimType)
         {
             // This line is called multiple times during execution... Figure out a way to get it out.
@@ -131,6 +142,12 @@ namespace ECS.Security.AccessTokens.Jwt
             return claimsPrincipal.FindFirst(claimType);
         }
 
+        /// <summary>
+        /// Retrieves a Claim value from a given Principal
+        /// </summary>
+        /// <param name="principal"></param>
+        /// <param name="claimType"></param>
+        /// <returns>Claim value</returns>
         public string GetClaimValue(IPrincipal principal, string claimType)
         {
             // This line is called multiple times during execution... Figure out a way to get it out.

@@ -26,5 +26,25 @@ export default {
       }
     }
     return query
+  },
+  parseUrl: function (str) {
+    if (typeof str !== 'string' || str.length === 0) {
+      return {}
+    }
+    let parsedUrl = str.split('?')
+    let moreParsedUrl = parsedUrl[0].split('/')
+    return moreParsedUrl
+  },
+  getUrlScheme: function (url) {
+    let parsedUrl = this.parseUrl(url)
+    return parsedUrl[0]
+  },
+  getUrlHost: function (url) {
+    let parsedUrl = this.parseUrl(url)
+    return parsedUrl[2]
+  },
+  getUrlPath: function (url) {
+    let parsedUrl = this.parseUrl(url)
+    return parsedUrl[3]
   }
 }

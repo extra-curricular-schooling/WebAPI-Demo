@@ -9,10 +9,12 @@ using ECS.DTO;
 using ECS.Models;
 using ECS.Repositories.Implementations;
 using ECS.Security.Hash;
+using ECS.Constants.Network;
 
 namespace ECS.WebAPI.Controllers.v1
 {
     [RoutePrefix("v1/Account")]
+    // [RequireHttps]
     public class AccountController : ApiController
     {
         #region Constants and fields
@@ -37,7 +39,7 @@ namespace ECS.WebAPI.Controllers.v1
         // View Points
         // See time remaining for suspension
         [HttpPost]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
+        [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "POST")]
         [Route("ChangePassword")]
         public IHttpActionResult ChangePassword(AccountPasswordChangeDTO accountPasswordChangeDTO)
         {
@@ -91,9 +93,34 @@ namespace ECS.WebAPI.Controllers.v1
             return Ok("Password changed.");
         }
 
+        /// <summary>
+        /// Returns the interest tags from the DB to fill in the checkboxes
+        /// </summary>
+        /// <returns> A list of InterestTag Names</returns>
+        [HttpGet]
+        [Route("RetrieveInterestTags")]
+        [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "GET")]
+        public IList<string> RetrieveInterestTags()
+        {
+            List<string> interestTags = new List<string>();
+            var interests = interestTagRepository.GetAll();
+            foreach(var tag in interests)
+            {
+                interestTags.Add(tag.TagName);
+            }
+            return interestTags;
+        }
+
+
+        /// <summary>
+        /// Returns cuurent interest tags selected by user.
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns> A list of interest tags based on a user</returns>
+        [HttpGet]
         [Route("{username}/GetInterests")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET")]
-        public IList<string> GetUserArticles(string username)
+        [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "GET")]
+        public IList<string> GetUserInterests(string username)
         {
             Account account;
             List<string> userInterests = new List<string>();
@@ -107,11 +134,15 @@ namespace ECS.WebAPI.Controllers.v1
         }
 
 
-
+        /// <summary>
+        /// Updates the interest tags of a user
+        /// </summary>
+        /// <param name="userInterests"></param>
+        /// <returns> Ok response </returns>
         [HttpPost]
         [Route("{username}/UpdateInterests")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
-        public IHttpActionResult PostUserArticles(InterestTagsDTO userInterests)
+        [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "POST")]
+        public IHttpActionResult UpdateUserInterests(InterestTagsDTO userInterests)
         {
             try
             {
@@ -140,7 +171,7 @@ namespace ECS.WebAPI.Controllers.v1
                     context.SaveChanges();
                 }
                 return Ok("Interest tags updated successsfully");
-            } catch(Exception e)
+            } catch(Exception)
             {
                 return InternalServerError(new Exception("Error has occurred"));
             }

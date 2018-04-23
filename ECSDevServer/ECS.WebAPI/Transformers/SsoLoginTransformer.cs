@@ -16,7 +16,8 @@ namespace ECS.WebAPI.Transformers
             var loginDto = new SsoLoginRequestDTO
             {
                 Username = SsoJwtManager.Instance.GetClaimValue(context.Principal, "username"),
-                Password = SsoJwtManager.Instance.GetClaimValue(context.Principal, "password")
+                Password = SsoJwtManager.Instance.GetClaimValue(context.Principal, "password"),
+                RoleType = SsoJwtManager.Instance.GetClaimValue(context.Principal, "roleType")
             };
             return loginDto;
         }

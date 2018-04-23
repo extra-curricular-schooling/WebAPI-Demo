@@ -10,8 +10,9 @@ using ECS.Security.Hash;
 
 namespace ECS.BusinessLogic.ControllerLogic.Implementations
 {
-    public class SsoControllerLogic
+    public class  SsoControllerLogic
     {
+        // TODO: @Scott Remove constant
         private const string BaseClientUrl = "http://localhost:8080/";
 
         private readonly AccountLogic _accountLogic;
@@ -63,13 +64,13 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
                 Password = registrationDto.HashedPassword,
                 AccountType = registrationDto.RoleType
             };
-            _partialAccountLogic.Create(partialAccount);
 
             // Add new attached Salt to the database connected with PartialAccount.
             var salt = new PartialAccountSalt()
             {
                 PasswordSalt = registrationDto.PasswordSalt,
-                UserName = registrationDto.Username
+                UserName = registrationDto.Username,
+                PartialAccount = partialAccount
             };
             _partialAccountSaltLogic.Create(salt);
 
@@ -120,22 +121,21 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
         }
 
         private HttpResponseMessage PartialAccountLoginHelper(SsoLoginRequestDTO loginDto, PartialAccount partialAccount)
-        {
-
-            // Generate a new access token
-            var token = JwtManager.Instance.GenerateToken(loginDto.Username);
+        { 
+            // Provide Partial Account RoleType
+            loginDto.RoleType = partialAccount.AccountType;
 
             // Generate our token for them.
-            var partialAccountToken = SsoJwtManager.Instance.GenerateToken(loginDto.Username);
+            var partialAccountToken = SsoJwtManager.Instance.GenerateToken(loginDto);
 
             // TODO @Scott The Ok response should be a 301 response to redirect the SSO to our client.
             return new HttpResponseMessage
             {
                 Content = new StringContent(BaseClientUrl + "partial-registration?jwt=" + partialAccountToken),
-                Headers =
-                {
-                    Location = new Uri(BaseClientUrl + "partial-registration?jwt=" + partialAccountToken)
-                },
+                //Headers =
+                //{
+                //    Location = new Uri(BaseClientUrl + "partial-registration?jwt=" + partialAccountToken)
+                //},
                 StatusCode = HttpStatusCode.OK
             };
         }
@@ -143,7 +143,7 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
         private HttpResponseMessage AccountLoginHelper(SsoLoginRequestDTO loginDto, Account account)
         {
             var saltModel = _saltLogic.GetSalt(loginDto.Username);
-
+            // The Saltmodel.Account is null
             if (saltModel == null)
             {
                 return new HttpResponseMessage
@@ -153,10 +153,8 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
                 };
             }
 
-            var salt = saltModel.PasswordSalt;
-
             // Make sure you append the salt, not prepend (group decision).
-            var hashedPassword = HashService.Instance.HashPasswordWithSalt(salt, loginDto.Username, false);
+            var hashedPassword = HashService.Instance.HashPasswordWithSalt(saltModel.PasswordSalt, loginDto.Password, true);
 
             if (!account.Password.Equals(hashedPassword))
             {
@@ -185,9 +183,9 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
 
             // Redirect them to our Home page with their credentials logged.
             // TODO @Scott The Ok response should be a 301 response to redirect the SSO to our client.
-            // Location: new Uri(BaseClientUrl + "home?jwt=" + token)
             return new HttpResponseMessage
             {
+                Content = new StringContent(BaseClientUrl + "home?jwt=" + token),
                 ReasonPhrase = "Redirected",
                 StatusCode = HttpStatusCode.OK
             };
