@@ -32,6 +32,7 @@
 import Axios from 'axios'
 import EventBus from '../../../../assets/js/EventBus'
 import PwnedHasher from '@/assets/js/pwnedChecker'
+var crypto = require('crypto-js')
 
 export default {
   name: 'ChangePasswordPanel',
@@ -90,10 +91,10 @@ export default {
     checkForPwnedPassword: function () {
       Axios({
         method: 'GET',
-        url: this.$store.getters.getBasePwnedUrl + PwnedHasher.getPwnedParameter(this.newPassword)
+        url: this.$store.getters.getBasePwnedUrl + PwnedHasher.getHashedPrefix(this.newPassword)
       })
         .then((response) => {
-          var hash = PwnedHasher.sha1(this.newPassword).toString()
+          var hash = crypto.SHA1(this.newPassword).toString()
           var suffix = hash.substring(5, hash.length).toUpperCase()
           if (response.data.includes(suffix)) {
             var receivedHashes = response.data.substring(response.data.indexOf(suffix), response.data.length)
