@@ -1,15 +1,9 @@
 ﻿using System.Web.Http;
 using ECS.Models;
 using ECS.DTO;
-using ECS.Repositories;
 using System.Web.Http.Cors;
-using System.Collections.Generic;
-using System;
-using System.Data.Entity;
-using System.Linq;
-using System.Linq.Expressions;
+using ECS.Constants.Network;
 using ECS.Repositories.Implementations;
-using ECS.WebAPI.Filters.AuthorizationFilters;
 
 namespace ECS.WebAPI.Controllers.v1
 {
@@ -24,7 +18,7 @@ namespace ECS.WebAPI.Controllers.v1
         // REQUEST TO GET THE POINTS ASSOCIATED WITH A SCHOLAR ACCOUNT
         [HttpGet]
         [Route("ScholarPoints/{username}")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET")]
+        [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "GET")]
         public IHttpActionResult ScholarInformation(string username)
         {
             Account account;
@@ -36,7 +30,7 @@ namespace ECS.WebAPI.Controllers.v1
         // REQUEST TO POST A TICKET FOR A SWEEPSTAKE
         [HttpPost]
         [Route("ScholarTicket/{username}")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
+        [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "POST")]
         public IHttpActionResult submitSweepstake(SweepStakeEntryDTO sweepstakeUser)
         {
             SweepStakeEntry sweep = new SweepStakeEntry()

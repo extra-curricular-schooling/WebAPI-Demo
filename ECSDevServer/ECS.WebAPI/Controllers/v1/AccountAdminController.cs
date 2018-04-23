@@ -9,7 +9,7 @@ using ECS.Models;
 namespace ECS.WebAPI.Controllers.v1
 {
     [RoutePrefix("v1/AccountAdmin")]
-    [EnableCors("http://localhost:44311", "*", "GET, POST, PUT")]
+    [EnableCors(CorsConstants.BaseAcceptedOrigins, CorsConstants.BaseAcceptedHeaders, "GET, POST, PUT")]
     public class AccountAdminController : ApiController
     {
         #region Fields and constants

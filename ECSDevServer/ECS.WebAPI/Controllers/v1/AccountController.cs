@@ -6,7 +6,7 @@ using System.Web.Http.Cors;
 using ECS.DTO;
 using ECS.Models;
 using ECS.Repositories.Implementations;
-using ECS.WebAPI.Filters.AuthorizationFilters;
+using ECS.Constants.Network;
 
 namespace ECS.WebAPI.Controllers.v1
 {
@@ -34,7 +34,7 @@ namespace ECS.WebAPI.Controllers.v1
         /// <returns> A list of InterestTag Names</returns>
         [HttpGet]
         [Route("RetrieveInterestTags")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET")]
+        [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "GET")]
         public IList<string> RetrieveInterestTags()
         {
             List<string> interestTags = new List<string>();
@@ -54,7 +54,7 @@ namespace ECS.WebAPI.Controllers.v1
         /// <returns> A list of interest tags based on a user</returns>
         [HttpGet]
         [Route("{username}/GetInterests")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET")]
+        [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "GET")]
         public IList<string> GetUserInterests(string username)
         {
             Account account;
@@ -76,7 +76,7 @@ namespace ECS.WebAPI.Controllers.v1
         /// <returns> Ok response </returns>
         [HttpPost]
         [Route("{username}/UpdateInterests")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
+        [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "POST")]
         public IHttpActionResult UpdateUserInterests(InterestTagsDTO userInterests)
         {
             try

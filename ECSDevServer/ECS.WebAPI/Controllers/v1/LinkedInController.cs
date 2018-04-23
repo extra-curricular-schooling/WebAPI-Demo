@@ -4,6 +4,7 @@ using System.Web.Http.Cors;
 using ECS.BusinessLogic.ControllerLogic.Implementations;
 using ECS.BusinessLogic.ModelLogic.Contracts;
 using ECS.BusinessLogic.ModelLogic.Implementations;
+using ECS.Constants.Network;
 using ECS.DTO;
 using ECS.Models;
 using ECS.Security.AccessTokens.Jwt;
@@ -34,7 +35,7 @@ namespace ECS.WebAPI.Controllers.v1
         [AuthenticationRequired]
         [HttpPost]
         [Route("SharePost")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
+        [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "POST")]
         public IHttpActionResult SharePost(LinkedInPostDTO postData)
         {
             // Credentials is already read and deserialized into a DTO. Validate it.
