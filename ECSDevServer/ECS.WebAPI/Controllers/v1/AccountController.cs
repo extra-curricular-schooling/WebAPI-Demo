@@ -3,27 +3,92 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using ECS.BusinessLogic.ControllerLogic.Implementations;
+using ECS.BusinessLogic.ModelLogic.Implementations;
 using ECS.DTO;
 using ECS.Models;
 using ECS.Repositories.Implementations;
+using ECS.Security.Hash;
 
 namespace ECS.WebAPI.Controllers.v1
 {
     [RoutePrefix("v1/Account")]
     public class AccountController : ApiController
     {
+        #region Constants and fields
         private readonly IAccountRepository accountRepository = new AccountRepository();
         private readonly IInterestTagRepository interestTagRepository = new InterestTagRepository();
+        private readonly AccountControllerLogic _accountControllerLogic;
+        private readonly AccountLogic _accountLogic;
+        private readonly SaltLogic _saltLogic;
+        #endregion
+
+        public AccountController ()
+        {
+            _accountControllerLogic = new AccountControllerLogic();
+            _accountLogic = new AccountLogic();
+            _saltLogic = new SaltLogic();
+        }
+
         // Should this encompass all of the Account related Action Methods:
         // Edit Personal Information
         // Edit Tag information
         // Change Password
         // View Points
         // See time remaining for suspension
+        [HttpPost]
+        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
+        [Route("ChangePassword")]
         public IHttpActionResult ChangePassword(AccountPasswordChangeDTO accountPasswordChangeDTO)
         {
+            // Credentials is already read and deserialized into a DTO. Validate it.
+            Validate(accountPasswordChangeDTO);
 
-            return Ok();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            // Proccess any other information.
+            if (!_accountLogic.Exists(accountPasswordChangeDTO.Username))
+            {
+                return BadRequest("Invalid credentials.");
+            }
+
+            if (!_saltLogic.Exists(accountPasswordChangeDTO.Username))
+            {
+                return BadRequest("Invalid credentials.");
+            }
+
+            Salt salt;
+            try
+            {
+                salt = _saltLogic.GetSalt(accountPasswordChangeDTO.Username);
+            }
+            catch (Exception)
+            {
+                return BadRequest("Invalid credentials.");
+            }
+
+            // Check app DB for user.
+            Account account;
+            try
+            {
+                account = _accountLogic.GetSingle(accountPasswordChangeDTO.Username);
+            }
+            catch (Exception)
+            {
+                return BadRequest("Invalid credentials.");
+            }
+
+            if (account.Password == HashService.Instance.HashPasswordWithSalt(salt.PasswordSalt, accountPasswordChangeDTO.Password, true))
+            {
+                _accountControllerLogic.ChangePassword(account, salt, accountPasswordChangeDTO.NewPassword);
+            }
+            else
+            {
+                return BadRequest("Invalid credentials.");
+            }
+
+            return Ok("Password changed.");
         }
 
         [Route("{username}/GetInterests")]
