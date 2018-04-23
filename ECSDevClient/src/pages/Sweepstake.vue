@@ -1,15 +1,10 @@
 <template>
   <div>
-    <!-- GET POINTS FIRST FROM USER ACCOUNT AND SOLVE THE ISSUE OF GETTING SCHOLAR POINTS -->
-    <!-- thinking of changing the Price to the ticket number, which i can use to get the max number of tickets -->
     <h1>Welcome to Sweepstake Entry. Buy A Ticket To Enter Into The Sweepstake.</h1>
     <h1>Time Left</h1>
-    <Countdown deadline="April 22, 2018"></Countdown>
-    <!-- or
-    <Countdown end="August 22, 2022"></Countdown> -->
+    <Countdown deadline="May 25, 2018"></Countdown>
     <button v-on:click="fetchUserInfo(username,Points)">What are your Points? Find it out, First.</button>
     <button v-on:click="fetchValidSweepstakeInfo(Price, SweepStakesID, OpenDateTime, Prize, ClosedDateTime)">Is Sweepstake Open??</button>
-    <!-- <button v-on:click="fetchUserInfo(username,Points),ticketBought(Points,Price)">Buy A Ticket</button> -->
     <button v-on:click="ticketBought(Points,Price,username,timeDateStamp)">Buy A Ticket and Surprise Yourself</button>
   </div>
 </template>
@@ -24,14 +19,14 @@ export default {
   name: 'prizes',
   data () {
     return {
-      Points: '', // Points i get from the scholar account
-      Price: '', // it is the Price of ticket from sweepstake that is set by admin
+      Points: '', // Points from the scholar account
+      Price: '', // it is the Price of ticket for sweepstake that is set by admin
       username: this.$store.getters.getUsername,
       timeDateStamp: moment().utc('dddd, MMMM Do YYYY , hh:mm:ss').format(), // the time date stamp is right in utc format
-      SweepStakesID: '',
-      OpenDateTime: '',
+      SweepStakesID: '', // the ID of the sweepstake that is open
+      OpenDateTime: '', // the opening date of the sweepstake
       Prize: '',
-      ClosedDateTime: '',
+      ClosedDateTime: '', // the closing date of the sweepstake
       UserNameWinner: ''
     }
   },
@@ -73,7 +68,7 @@ export default {
           this.OpenDateTime = response.data.openDateTime
           this.Prize = response.data.prize
           this.ClosedDateTime = response.data.closedDateTime
-          alert('The SweepStake Information: Price To Enter: ' + this.Price +
+          alert('SweepStake Information: Price To Enter: ' + this.Price +
           ' SweepStakesID: ' + this.SweepStakesID +
           ' SweepStake Open Date: ' + this.OpenDateTime +
           ' Prize: ' + this.Prize +
@@ -87,7 +82,8 @@ export default {
           }
         })
     },
-    ticketBought: function (Points, Price, username, timeDateStamp) {
+    // REQUEST TO POST A SWEEPSTAKE TICKET TO A SWEEPSTAKE
+    ticketBought: function (Points, Price, username, timeDateStamp, OpenDateTime) {
       if (Points >= Price) {
         // remember the points should no tbe negative
         // change the points to equal or something
@@ -100,7 +96,7 @@ export default {
         //   headers: Store.getters.getRequestHeaders,
         //   data: {
         //     'SweepstakesID': this.$data.SweepStakesID,
-        //     'OpenDateTime': this.$data.timeDateStamp, // change it later to open date time
+        //     'OpenDateTime': this.$data.OpenDateTime,
         //     'PurchaseDateTime': this.$data.timeDateStamp,
         //     'Price': this.$data.Price,
         //     'username': this.$data.username
