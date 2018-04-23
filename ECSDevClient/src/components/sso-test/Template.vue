@@ -28,6 +28,9 @@
       </div>
     </div>
     <button class="button is-primary" v-on:click="testPwnd">have i been pwned?</button><br>
+    <div class="container">
+      <p class="breaches">Number of breaches: {{ hits }}</p>
+    </div>
   </div>
 </template>
 
@@ -41,7 +44,8 @@ export default {
   data: function () {
     return {
       jwt: '',
-      passwordForPwned: ''
+      passwordForPwned: '',
+      hits: ''
     }
   },
   methods: {
@@ -82,3 +86,10 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.breaches {
+  text-align: left;
+  font-size: 14pt;
+}
+</style>
