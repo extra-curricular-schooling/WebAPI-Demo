@@ -344,11 +344,6 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
                 {
                     PermissionName = "canEnterRaffle",
                     Username = registrationForm.Username
-                },
-                new AccountType()
-                {
-                    PermissionName = "canShareLinkedIn",
-                    Username = registrationForm.Username
                 }
             };
 

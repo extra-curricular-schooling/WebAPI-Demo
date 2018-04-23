@@ -1,17 +1,7 @@
-﻿using System;
-using System.Configuration;
-using System.Data;
-using System.Net;
-using System.Net.Http;
-using System.Runtime.Remoting.Channels;
-using System.Web.Http;
+﻿using System.Web.Http;
 using System.Web.Http.Cors;
 using ECS.BusinessLogic.ControllerLogic.Implementations;
 using ECS.Constants.Network;
-using ECS.Models;
-using ECS.Repositories.Implementations;
-using ECS.Security.AccessTokens.Jwt;
-using ECS.Security.Hash;
 using ECS.WebAPI.Services.Transformers;
 using ECS.WebAPI.Transformers;
 

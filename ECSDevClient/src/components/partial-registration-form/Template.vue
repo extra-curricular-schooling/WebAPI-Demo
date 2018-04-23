@@ -364,10 +364,7 @@ export default {
     isValidForm () {
       if (document.getElementById('firstName').className == 'input is-success' &&
         document.getElementById('lastName').className == 'input is-success' &&
-        document.getElementById('username').className == 'input is-success' &&
         document.getElementById('email').className == 'input is-success' &&
-        document.getElementById('password').className == 'input is-success' &&
-        document.getElementById('confirmPassword').className == 'input is-success' &&
         this.$data.questionIDs[0] != null &&
         document.getElementById('answer1').className == 'input is-success' &&
         this.$data.questionIDs[1] != null &&
