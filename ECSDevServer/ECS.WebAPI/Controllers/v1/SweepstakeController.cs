@@ -13,6 +13,8 @@ namespace ECS.WebAPI.Controllers.v1
     {
         private readonly IAccountRepository accountRepository = new AccountRepository();
         private readonly ISweepStakeEntryRepository sweepStakeEntryRepository = new SweepStakeEntryRepository();
+        private readonly ISweepStakeRepository sweepStakeRepository = new SweepStakeRepository();
+
         private ECSContext db = new ECSContext();
 
         // REQUEST TO GET THE POINTS ASSOCIATED WITH A SCHOLAR ACCOUNT
@@ -33,16 +35,49 @@ namespace ECS.WebAPI.Controllers.v1
         [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "POST")]
         public IHttpActionResult submitSweepstake(SweepStakeEntryDTO sweepstakeUser)
         {
-            SweepStakeEntry sweep = new SweepStakeEntry()
+            // CHECKING IF THE USER ALREADY HAS A TICKET IN THE SWEEPSTAKE
+            // ADD TICKET IF NOT
+            // OTHERWISE ADD ANOTHER COST TO IT
+            // THE USER WITH THE HIGHEST "POINTS LEFT" AFTER BUYING A SWEEPSTAKE WINS
+            Account account;
+            account = accountRepository.GetSingle(x => x.UserName == sweepstakeUser.UserName);
+            var updatedPoints = sweepstakeUser.UpdatedPoints;
+            account.Points = updatedPoints;
+            accountRepository.Update(account);
+
+
+            SweepStakeEntry checkUser;
+            checkUser = sweepStakeEntryRepository.GetSingle(x => x.UserName == sweepstakeUser.UserName);
+
+            if (checkUser.UserName != sweepstakeUser.UserName)
             {
-                SweepstakesID = sweepstakeUser.SweepstakesID,
-                OpenDateTime = sweepstakeUser.OpenDateTime,
-                PurchaseDateTime = sweepstakeUser.PurchaseDateTime,
-                Cost = sweepstakeUser.Cost,
-                UserName = sweepstakeUser.UserName,
-            };
-            sweepStakeEntryRepository.Insert(sweep);
-            return Ok("Post Sweepstake Ticket");
+               SweepStakeEntry sweep = new SweepStakeEntry()
+                {
+                    SweepstakesID = sweepstakeUser.SweepstakesID,
+                    OpenDateTime = sweepstakeUser.OpenDateTime,
+                    PurchaseDateTime = sweepstakeUser.PurchaseDateTime,
+                    Cost = sweepstakeUser.Cost,
+                    UserName = sweepstakeUser.UserName,
+                };
+                sweepStakeEntryRepository.Insert(sweep);
+                return Ok("Post Sweepstake Ticket");
+            }
+            else
+            {
+             /*   var newCost = sweepstakeUser.Cost * 2;
+                sweepstakeUser.Cost = newCost;
+                SweepStakeEntry sweep = new SweepStakeEntry()
+                {
+                    SweepstakesID = sweepstakeUser.SweepstakesID,
+                    OpenDateTime = sweepstakeUser.OpenDateTime,
+                    PurchaseDateTime = sweepstakeUser.PurchaseDateTime,
+                    Cost = sweepstakeUser.Cost,
+                    UserName = sweepstakeUser.UserName,
+                };
+                
+                sweepStakeEntryRepository.Update(sweep); */
+                return Ok("Another Ticket NOT Added");
+            } 
         }
         
     }
