@@ -7,6 +7,7 @@ using System.Web.Http;
 using System.Web.Http.Cors;
 using ECS.BusinessLogic.ControllerLogic.Implementations;
 using ECS.BusinessLogic.Services.ComplexDBQueries;
+using ECS.Constants.Network;
 using ECS.DTO;
 using ECS.Models;
 using ECS.WebAPI.Filters.AuthorizationFilters;
@@ -36,8 +37,8 @@ namespace ECS.WebAPI.Controllers.v1
         /// </summary>
         /// <param name="username"></param>
         /// <returns> A list of articleDTO</returns>
-        [Route("{username}/GetUserArticles")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET")]
+        [Route("{username}")]
+        [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "GET")]
         public List<IQueryable<ArticleDTO>> GetUserArticles(string username)
         {
 

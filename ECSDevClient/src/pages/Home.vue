@@ -63,6 +63,7 @@ export default {
             alert('We apologize.  We are unable to process your request at this time.')
           }
         })
+      clearInterval(this.timer)
     },
     // Iframe gets recreated each time a new page is clicked.
     mounted () {

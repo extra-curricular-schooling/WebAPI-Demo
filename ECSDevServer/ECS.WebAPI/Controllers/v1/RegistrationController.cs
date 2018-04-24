@@ -5,6 +5,7 @@ using System.Web.Http;
 using System.Web.Http.Cors;
 using System.Web.Script.Serialization;
 using ECS.BusinessLogic.ControllerLogic.Implementations;
+using ECS.Constants.Network;
 using ECS.DTO;
 using ECS.Models;
 using ECS.Repositories.Implementations;
@@ -37,7 +38,7 @@ namespace ECS.WebAPI.Controllers.v1
         /// </summary>
         [HttpPost]
         [Route("SubmitRegistration")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
+        [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "POST")]
         public IHttpActionResult SubmitRegistration(RegistrationDTO registrationForm)
         {
             Validate(registrationForm);
@@ -68,7 +69,7 @@ namespace ECS.WebAPI.Controllers.v1
         /// </summary>
         [HttpPost]
         [Route("SubmitPartialRegistration")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
+        [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "POST")]
         public IHttpActionResult SubmitPartialRegistration(RegistrationDTO registrationForm)
         {
             Validate(registrationForm);
@@ -101,7 +102,7 @@ namespace ECS.WebAPI.Controllers.v1
         /// </summary>
         [HttpGet]
         [Route("GetSecurityQuestions")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET")]
+        [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "GET")]
         public IHttpActionResult GetSecurityQuestions()
         {
             try

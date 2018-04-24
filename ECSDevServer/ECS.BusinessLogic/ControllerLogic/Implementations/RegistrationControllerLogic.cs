@@ -119,24 +119,29 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
             {
                 new AccountType()
                 {
-                    PermissionName = "canEditInformation",
+                    PermissionName = "Scholar",
                     Username = registrationForm.Username
                 },
                 new AccountType()
                 {
-                    PermissionName = "canViewArticle",
+                    PermissionName = "CanEditInformation",
                     Username = registrationForm.Username
                 },
                 new AccountType()
                 {
-                    PermissionName = "canEnterRaffle",
+                    PermissionName = "CanViewArticle",
                     Username = registrationForm.Username
                 },
                 new AccountType()
                 {
-                    PermissionName = "canShareLinkedIn",
+                    PermissionName = "CanEnterRaffle",
                     Username = registrationForm.Username
                 }
+                //new AccountType()
+                //{
+                //    PermissionName = "CanShareLinkedIn",
+                //    Username = registrationForm.Username
+                //}
             };
 
             List<ZipLocation> zipLocations = new List<ZipLocation>
@@ -338,11 +343,6 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
                 new AccountType()
                 {
                     PermissionName = "canEnterRaffle",
-                    Username = registrationForm.Username
-                },
-                new AccountType()
-                {
-                    PermissionName = "canShareLinkedIn",
                     Username = registrationForm.Username
                 }
             };

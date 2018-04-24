@@ -4,15 +4,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ECS.BusinessLogic.ModelLogic.Implementations;
+using ECS.BusinessLogic.ModelLogic.Implementations;
 using ECS.DTO;
 using ECS.Models;
+using ECS.Security.Hash;
 
 namespace ECS.BusinessLogic.ControllerLogic.Implementations
 {
     public class AccountControllerLogic
     {
-        public AccountLogic accountLogic = new AccountLogic();
         public InterestTagLogic interestTagLogic = new InterestTagLogic();
+        #region Fields and constants
+        private readonly AccountLogic _accountLogic;
+        private readonly SaltLogic _saltLogic;
+        #endregion
+
+        public AccountControllerLogic ()
+        {
+            _accountLogic = new AccountLogic();
+            _saltLogic = new SaltLogic();
+        }
 
         public void RegisterAccount(RegistrationDTO registrationDto)
         {
@@ -31,6 +42,16 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
                 SuspensionTime = DateTime.UtcNow,
                 UserName = registrationDto.Username
             };
+        }
+
+        public void ChangePassword (Account account, Salt salt, string desiredPassword)
+        {
+            var pSalt = HashService.Instance.CreateSaltKey();
+            var newPassword = HashService.Instance.HashPasswordWithSalt(pSalt, desiredPassword, true);
+            salt.PasswordSalt = pSalt;
+            account.Password = newPassword;
+            _saltLogic.Update(salt);
+            _accountLogic.Update(account);
         }
 
         public List<string> ListAllInterestTags(IList<InterestTag> interests) 

@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
+using ECS.Constants.Network;
 using ECS.WebAPI.Filters.AuthorizationFilters;
 
 namespace ECS.WebAPI.Controllers.v1
@@ -24,11 +25,11 @@ namespace ECS.WebAPI.Controllers.v1
         // AND ENTER INTO A SWEEPSTAKE 
         [HttpGet]
         [Route("ValidSweepstakeInfo")]
-        [EnableCors("http://localhost:8080", "*", "GET")]
+        [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "GET")]
         public IHttpActionResult ValidSweepstakeInfo(SweepstakeAdminDTO sweepstakeValid)
          {// using the Sweepstake Admin DtO to get data back
                     var answer = db.SweepStakes
-                       .Where(x => x.OpenDateTime >= DateTime.Now & x.ClosedDateTime >= DateTime.Now)
+                       .Where(x => x.OpenDateTime <= DateTime.Now & x.ClosedDateTime >= DateTime.Now)
                        .FirstOrDefault<SweepStake>();
 
             SweepstakeAdminDTO sweepstake = new SweepstakeAdminDTO()
@@ -48,7 +49,7 @@ namespace ECS.WebAPI.Controllers.v1
         // NEED TO USE PUT OR WELL LETS JUST SAY UPDATE IN ORDER TO MODIFY AND POST NEW USER POINTS TO THE ACCOUNT
         [HttpPost]
         [Route("UpdatePoints/{username}")]
-        [EnableCors("http://localhost:8080", "*", "POST")]
+        [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "POST")]
         public IHttpActionResult UpdatePoints(ScholarPointsDTO scholarPoints)
         {
             Account account = accountRepository.GetSingle(x => x.UserName == scholarPoints.ScholarUserName);
@@ -66,7 +67,7 @@ namespace ECS.WebAPI.Controllers.v1
         // USING THE POST REQUEST FOR POSTING/SETTING SWEEPSTAKES TO THE DATABASE BY ADMIN ONLY
         [HttpPost]
         [Route("submitSweepstake")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
+        [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "POST")]
         public IHttpActionResult submitSweepstake(SweepstakeAdminDTO sweepstakeSet)
         {
             SweepStake sweep = new SweepStake()

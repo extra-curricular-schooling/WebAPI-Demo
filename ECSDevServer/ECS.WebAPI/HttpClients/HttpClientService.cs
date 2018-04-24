@@ -11,7 +11,7 @@ namespace ECS.WebAPI.HttpClients
     // This needs some sort of locking mechanism to ensure thread safety!!!
 
     // Use System.net.http.httpclient to receive and request
-    public class HttpClientService: IHttpClient, IHttpClientAsync
+    public class HttpClientService: IHttpClient, IHttpClientAsync, IDisposable
     {
         private HttpClient _httpClient = new HttpClient();
 
@@ -133,5 +133,9 @@ namespace ECS.WebAPI.HttpClients
             }
         }
 
+        public void Dispose()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -28,6 +28,9 @@
       </div>
     </div>
     <button class="button is-primary" v-on:click="testPwnd">have i been pwned?</button><br>
+    <div class="container">
+      <p class="breaches">Number of breaches: {{ hits }}</p>
+    </div>
   </div>
 </template>
 
@@ -41,7 +44,8 @@ export default {
   data: function () {
     return {
       jwt: '',
-      passwordForPwned: ''
+      passwordForPwned: '',
+      hits: ''
     }
   },
   methods: {
@@ -61,15 +65,7 @@ export default {
       Axios({
         method: 'GET',
         url: this.$store.getters.getBasePwnedUrl + PwnedHelper.getHashedPrefix(this.passwordForPwned),
-        // url: 'https://api.pwnedpasswords.com/range/21BD1',
-        headers: {
-          'Access-Control-Allow-Origin': 'http://localhost:8080',
-          'Access-Control-Allow-Credentials': true,
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Authorization': 'null',
-          'X-Requested-With': 'XMLHttpRequest'
-        }
+        headers: this.$store.getters.getRequestHeaders
       })
         .then(response => {
           console.log(PwnedHelper.getHits(this.passwordForPwned, response.data))
@@ -82,3 +78,10 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.breaches {
+  text-align: left;
+  font-size: 14pt;
+}
+</style>

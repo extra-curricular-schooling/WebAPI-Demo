@@ -1,26 +1,16 @@
 <template>
   <div>
-    <interests/>
+    <account-settings-panel/>
   </div>
 </template>
 
 <script>
-import Interests from '@/components/interest-tag/Template'
+import AccountSettingsPanel from '../components/AccountSettings-Panel/Template'
 
 export default {
-  name: 'account',
-  data () {
-    return {
-      username: this.$store.getters.getUsername,
-      headers: this.$store.getters.getRequestHeaders
-    }
-  },
+  name: 'Account',
   components: {
-    Interests
+    AccountSettingsPanel
   }
 }
 </script>
-
-<style>
-
-</style>
