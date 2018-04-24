@@ -1,18 +1,25 @@
 <template>
+<!-- Slideout menu created by slideout plug-in. It is toggled via the toggle-button on the home page. -->
     <Slideout id="slider" menu="#sidebar" panel="#EmbedContent" :toggleSelectors="['.toggle-button']">
         <nav id="sidebar">
-        <div>Interests</div>
-            <div class="container vue" id="Interests">
-                <div class="column">
-                    <div id ="groups"  v-for="group in groups" :key="group.articles[0].interestTag">
-                        <a id="groupName" v-text="group.name"  @click="collapse(group)" ></a>
-                        <ul v-if="group.open">
-                            <ul class="button is-link" id="articles" v-for="article in group.articles" :key="article.title" v-text="article.title" v-on:click="target(group.name, article.title, article.url)">
-                            </ul>
-                        </ul>
-                    </div>
+          <div>Interests</div>
+          <div class="container vue" id="Interests">
+              <div class="column">
+                <!-- If groups is instantiated with data from the server, display groups and articles. -->
+                <div v-if='groups'>
+                  <div id ="groups"  v-for="group in groups" :key="group.articles[0].interestTag">
+                      <a id="groupName" v-text="group.name"  @click="collapse(group)" ></a>
+                      <!-- Collapsable menus when interest tag is clicked. -->
+                      <ul v-if="group.open">
+                          <ul class="button is-link" id="articles" v-for="article in group.articles" :key="article.title" v-text="article.title" v-on:click="target(group.name, article.title, article.url)">
+                          </ul>
+                      </ul>
+                  </div>
                 </div>
-            </div>
+                <!-- If groups is not instantiated, tell user to add interest tags from account tab. -->
+                <div v-else>Navigate to Account and select your Interests</div>
+              </div>
+          </div>
         </nav>
     </Slideout>
 </template>
@@ -21,7 +28,7 @@
 import EventBus from '@/assets/js/EventBus.js'
 import Slideout from 'vue-slideout'
 import Axios from 'axios'
-var groups = {}
+// var groups = {}
 
 export default {
   name: 'SideBar-Menu',
@@ -29,12 +36,14 @@ export default {
     Slideout
   },
   methods: {
+    // Run an axios request to get the articles based on the interest tag of a user.
     retieveArticles: function (username) {
       Axios({
         method: 'GET',
         url: this.$store.getters.getBaseAppUrl + 'Home/' + username + '/GetUserArticles',
         headers: this.$store.getters.getRequestHeaders
       })
+      // Create groups based on interest tags and the articles. Each Interest Tag Group has many articles.
         .then((response) => {
           this.groups = {}
           response.data.$values.forEach(group => {
@@ -59,6 +68,7 @@ export default {
           return e
         })
     },
+    // Transfer article information for linked-in modal.
     target: function (tag, title, link) {
       document.getElementById('FrameResult').src = link
       this.$store.dispatch('updateInterestTag', tag)
@@ -66,17 +76,19 @@ export default {
       this.$store.dispatch('updateTitle', title)
       EventBus.$emit('articleChosen')
     },
+    // Collapse function for groups.
     collapse: function (group) {
       group.open = !group.open
       this.$forceUpdate()
     }
   },
+  // On Vue create, retrieve user articles.
   created () {
     this.retieveArticles(this.username)
   },
   data () {
     return {
-      groups: groups,
+      groups: null,
       username: this.$store.getters.getUsername,
       headers: this.$store.getters.getRequestHeaders
     }
@@ -95,6 +107,7 @@ export default {
     background-color: #1D1F20;
     color: white;
   }
+  /* display slide menu when slideout-open is true */
   .slideout-open .slideout-menu {
     display: block;
     overflow-y: scroll;

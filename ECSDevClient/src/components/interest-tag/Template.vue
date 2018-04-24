@@ -1,5 +1,6 @@
 <template>
   <form class="box">
+    <!-- If tags is instantiated from the server, display a checklist of Interest Tags. -->
       <fieldset v-if='tags' class='checklist'>
           <h1 id='Title'>Select Your Interests</h1>
           <div v-for='tag in tags' v-bind:key='tag.name'>
@@ -7,11 +8,10 @@
               <label :for='tag.name'> {{tag.name}}</label><br>
           </div>
            <div class="container is-fluid">
-            <button class="button is-primary submit-button" v-on:click.prevent="submit">
-            Save
-            </button>
+            <button class="button is-primary submit-button" v-on:click.prevent="submit">Save</button>
           </div>
       </fieldset>
+      <!-- If tags is not instantiated, show error message. -->
       <fieldset v-else>Something is wrong, please refresh. If issue persists, <router-link to="About" class="link is-info">contact us.</router-link></fieldset>
   </form>
 </template>
@@ -20,16 +20,19 @@
 import Axios from 'axios'
 export default {
   name: 'interestTags',
+  // On vue creation, retrieve interest tags and fill with user info.
   created () {
     window.onload = this.retrieveInterestTags()
   },
   methods: {
+    // Axios call to get Interest tags from server.
     retrieveInterestTags: function () {
       Axios({
         method: 'GET',
         url: this.$store.getters.getBaseAppUrl + 'Account/RetrieveInterestTags',
         headers: this.$store.getters.getRequestHeaders
       })
+      // Instantiate tags with response data
         .then((response) => {
           this.tags = {}
           response.data.$values.forEach(tag => {
@@ -39,6 +42,7 @@ export default {
             }
           })
         })
+        // Check current User Interest Tags
         .then(() => {
           this.getUserInterestTags()
         })
@@ -47,6 +51,7 @@ export default {
           return e
         })
     },
+    // Get the User Interest Tags and set the check attribute to true.
     getUserInterestTags: function () {
       Axios({
         method: 'GET',
@@ -63,6 +68,7 @@ export default {
           this.$forceUpdate()
         })
     },
+    // Verify the user has selected at least one interest tag. If so, update in the database else notify user to select an interest tag.
     submit: function () {
       if (!this.isInterestChecked()) {
         alert('You must select at least one interest.')
@@ -70,6 +76,7 @@ export default {
         this.updateInterestTags()
       }
     },
+    // Checks if an interest is checked
     isInterestChecked: function () {
       var checked = false
       for (var tag in this.tags) {
@@ -84,6 +91,7 @@ export default {
         return false
       }
     },
+    // Send Axios post to update the interest tags associated with the account.
     updateInterestTags: function () {
       Axios({
         method: 'POST',
@@ -160,5 +168,4 @@ label {
   vertical-align:middle;
   border: turquoise;
 }
-
 </style>

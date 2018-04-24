@@ -131,7 +131,7 @@ namespace ECS.WebAPI.Controllers.v1
         /// <param name="userInterests"></param>
         /// <returns> Ok response </returns>
         [HttpPost]
-        [Route("{username}/UpdateUserInterests")]
+        [Route("UpdateUserInterests")]
         [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "POST")]
         public IHttpActionResult UpdateUserInterests(InterestTagsDTO userInterests)
         {

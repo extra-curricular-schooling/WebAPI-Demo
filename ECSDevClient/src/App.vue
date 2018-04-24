@@ -21,16 +21,23 @@ var renewal
 
 export default {
   name: 'App',
+  // Watch is set to watch for routing from home. User will be asked to confirm. if they leave, emit to cancel interval. close slide menu
   watch: {
     '$route' (to, from) {
+      // Check if route is coming from home.
       if (from.name === 'Home' && to.name !== 'Home') {
-        const answer = window.confirm('Do you really want to leave? you may not earn points for this.')
+        // Confirm user wants to leave home and lose points for any articles that have not passed the treshhold
+        const answer = window.confirm('Do you really want to leave? You may not earn points for the current article.')
+        // If user cancels move, stay in home
         if (!answer) {
           this.$router.push({
             name: 'Home'
           })
+          // emit cancellation for time interval and close slideout.
         } else {
           EventBus.$emit('cancelInterval', this.cancelInterval)
+          var html = document.documentElement
+          html.classList.remove('slideout-open')
         }
       }
     }

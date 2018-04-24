@@ -52,7 +52,7 @@ export default {
           'Points': this.$data.Points,
           'ScholarUserName': this.$data.username
         }
-      })
+      }) // Alert user they earned points if server responds with ok
         .then(response => {
           alert('You earned ' + this.Points + ' points')
         })
@@ -67,10 +67,12 @@ export default {
     },
     // Iframe gets recreated each time a new page is clicked.
     mounted () {
+      // If user barely logs in, does not start times.
       if (this.FirstLoad) {
         this.FirstLoad = false
       } else {
         this.interval = setTimeout(this.earnPoints, 210000)
+        // listen for eventbus to cancel the time interval is user leaves home.
         EventBus.$on('cancelInterval', cancelInterval => {
           clearInterval(this.interval)
         })
