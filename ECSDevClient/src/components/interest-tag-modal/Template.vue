@@ -1,5 +1,5 @@
 <template>
-  <form>
+  <form class="box">
       <fieldset v-if='tags' class='checklist'>
           <h1 id='Title'>Select Your Interests</h1>
           <div v-for='tag in tags' v-bind:key='tag.name'>

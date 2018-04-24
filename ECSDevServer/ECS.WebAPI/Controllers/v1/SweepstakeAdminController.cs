@@ -29,7 +29,7 @@ namespace ECS.WebAPI.Controllers.v1
         public IHttpActionResult ValidSweepstakeInfo(SweepstakeAdminDTO sweepstakeValid)
          {// using the Sweepstake Admin DtO to get data back
                     var answer = db.SweepStakes
-                       .Where(x => x.OpenDateTime >= DateTime.Now & x.ClosedDateTime >= DateTime.Now)
+                       .Where(x => x.OpenDateTime <= DateTime.Now & x.ClosedDateTime >= DateTime.Now)
                        .FirstOrDefault<SweepStake>();
 
             SweepstakeAdminDTO sweepstake = new SweepstakeAdminDTO()

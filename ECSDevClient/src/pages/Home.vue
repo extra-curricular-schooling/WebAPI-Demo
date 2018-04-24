@@ -29,7 +29,8 @@ export default {
     return {
       username: this.$store.getters.getUsername,
       headers: this.$store.getters.getRequestHeaders,
-      Points: 2
+      Points: 2,
+      timer: ''
     }
   },
   components: {
@@ -54,7 +55,7 @@ export default {
         .then(response => {
           console.log(response)
           this.$router.push({
-            name: 'Home'
+            // name: 'Home'
           })
         })
         .catch(error => {
@@ -64,10 +65,11 @@ export default {
             alert('We apologize.  We are unable to process your request at this time.')
           }
         })
+      clearInterval(this.timer)
     },
     // Iframe gets recreated each time a new page is clicked.
     mounted () {
-      // setTimeout(this.earnPoints, 5000)
+      // this.timer = setTimeout(this.earnPoints, 200000)
       // after 3 minutes 30 aseconds you can earn 2 points
       // try to resolve the problem of when the user goes to another page the timer keep son running. use clearTimeout
     }
