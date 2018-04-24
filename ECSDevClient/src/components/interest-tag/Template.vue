@@ -12,7 +12,7 @@
             </button>
           </div>
       </fieldset>
-      <fieldset v-else>Something is wrong, please refresh. If issue persists, contact Scott Roberts.</fieldset>
+      <fieldset v-else>Something is wrong, please refresh. If issue persists, <router-link to="About" class="link is-info">contact us.</router-link></fieldset>
   </form>
 </template>
 
@@ -105,7 +105,7 @@ export default {
   },
   data () {
     return {
-      // tags: [],
+      tags: null,
       checkedTags: [],
       username: this.$store.getters.getUsername
     }

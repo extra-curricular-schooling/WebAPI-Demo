@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import Interests from '@/components/interest-tag-modal/Template'
+import Interests from '@/components/interest-tag/Template'
 
 export default {
   name: 'account',

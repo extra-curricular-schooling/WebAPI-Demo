@@ -23,13 +23,16 @@ import LinkedInPostModal from '@/components/linkedin-modal/Template'
 import RedirectModal from '@/components/redirect-modal/Template'
 import SideBar from '@/components/sidebar-menu/Template'
 import Axios from 'axios'
+import EventBus from '@/assets/js/EventBus.js'
 export default {
   name: 'home',
   data () {
     return {
       username: this.$store.getters.getUsername,
       headers: this.$store.getters.getRequestHeaders,
-      Points: 2
+      Points: 2,
+      FirstLoad: true,
+      interval: null
     }
   },
   components: {
@@ -41,7 +44,6 @@ export default {
   methods: {
     // REQUEST TO POST POINTS TO THE SCHOLAR POINTS AFTER ARTICLE HAS BEEN READ
     earnPoints: function (username, Points) {
-      alert('Hello. You earned 2 points.')
       Axios({
         method: 'POST',
         url: Store.getters.getBaseAppUrl + 'SweepstakeAdmin/UpdatePoints/' + this.username,
@@ -52,10 +54,7 @@ export default {
         }
       })
         .then(response => {
-          console.log(response)
-          this.$router.push({
-            name: 'Home'
-          })
+          alert('You earned ' + this.Points + ' points')
         })
         .catch(error => {
           console.log(error.response)
@@ -67,9 +66,15 @@ export default {
     },
     // Iframe gets recreated each time a new page is clicked.
     mounted () {
-      // setTimeout(this.earnPoints, 5000)
+      if (this.FirstLoad) {
+        this.FirstLoad = false
+      } else {
+        this.interval = setTimeout(this.earnPoints, 210000)
+        EventBus.$on('cancelInterval', cancelInterval => {
+          clearInterval(this.interval)
+        })
+      }
       // after 3 minutes 30 aseconds you can earn 2 points
-      // try to resolve the problem of when the user goes to another page the timer keep son running. use clearTimeout
     }
   }
 }

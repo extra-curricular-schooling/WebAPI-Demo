@@ -14,9 +14,25 @@ import Vue from 'vue'
 import DefaultLayout from './layouts/Default'
 import AdminLayout from './layouts/Admin'
 import ScholarLayout from './layouts/Scholar'
+import EventBus from '@/assets/js/EventBus.js'
 
 export default {
   name: 'App',
+  watch: {
+    '$route' (to, from) {
+      if (from.name === 'Home') {
+        const answer = window.confirm('Do you really want to leave? you have unsaved changes!')
+        if (!answer) {
+          this.$router.push({
+            name: 'Home'
+          })
+        } else {
+          EventBus.$emit('cancelInterval', this.cancelInterval)
+          console.log('sent out emit')
+        }
+      }
+    }
+  },
   components: {
     Bulma,
     DefaultLayout,
