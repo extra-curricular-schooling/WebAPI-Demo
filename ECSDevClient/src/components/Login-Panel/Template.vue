@@ -130,6 +130,7 @@ export default {
                   this.$store.dispatch('signIn', response.data.AuthToken)
                   this.$store.dispatch('updateToken', response.data.AuthToken)
                   this.toggleLoadingModal()
+                  EventBus.$emit('loggedIn')
                   this.$router.push('/Home')
                 }
               } else {

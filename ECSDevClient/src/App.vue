@@ -8,6 +8,7 @@
 </template>
 
 <script>
+import Axios from 'axios'
 import Bulma from 'bulma'
 // eslint-disable-next-line
 import Vue from 'vue'
@@ -15,6 +16,8 @@ import DefaultLayout from './layouts/Default'
 import AdminLayout from './layouts/Admin'
 import ScholarLayout from './layouts/Scholar'
 import EventBus from '@/assets/js/EventBus.js'
+
+var renewal
 
 export default {
   name: 'App',
@@ -72,6 +75,20 @@ export default {
     },
     checkCurrentRole () {
       this.currentRole = this.$store.getters.getRole
+    },
+    tokenRenewal: function () {
+      Axios({
+        method: 'GET',
+        url: this.$store.getters.getBaseAppUrl + 'Account/RenewToken',
+        headers: this.$store.getters.getRequestHeaders
+      })
+        .then((response) => {
+          this.$store.dispatch('signIn', response.data.AuthToken)
+          this.$store.dispatch('updateToken', response.data.AuthToken)
+        })
+        .catch((error) => {
+          console.log(error)
+        })
     }
   },
   // end of methods
@@ -84,6 +101,28 @@ export default {
       this.checkCurrentLogin()
       this.checkCurrentRole()
     }
+
+    // Set behavior once the window has been closed
+    window.onbeforeunload = () => {
+      this.$store.dispatch('updateUsername', '')
+      this.$store.dispatch('signOut')
+      this.$store.dispatch('updateToken', '')
+      clearInterval(renewal)
+    }
+
+    // Set interval depending on whether or not a user is logged in
+    if (this.$store.getters.isAuth) {
+      renewal = setInterval(() => { this.tokenRenewal() }, 900000)
+    } else {
+      EventBus.$on('loggedIn', () => {
+        renewal = setInterval(() => { this.tokenRenewal() }, 900000)
+      })
+    }
+
+    // Clear interval on logout
+    EventBus.$on('logOut', () => {
+      clearInterval(renewal)
+    })
   },
   updated () {
     if (this.$store.getters.getRole === 'Scholar') {

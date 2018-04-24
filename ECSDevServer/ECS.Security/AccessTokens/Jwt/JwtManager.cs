@@ -42,7 +42,7 @@ namespace ECS.Security.AccessTokens.Jwt
             }
         }
 
-        public string GenerateToken(string username, int expireMinutes = 15)
+        public string GenerateToken(string username, int expireMinutes = 20)
         {
             var symmetricKey = Convert.FromBase64String(Secrets.AppSecret);
             var tokenHandler = new JwtSecurityTokenHandler();

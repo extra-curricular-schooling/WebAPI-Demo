@@ -11,6 +11,8 @@ using ECS.Security.Hash;
 using ECS.Constants.Network;
 using ECS.Models.Services.ComplexDBQueries;
 using ECS.WebAPI.Filters.AuthorizationFilters;
+using System.Net.Http.Headers;
+using ECS.Security.AccessTokens.Jwt;
 
 namespace ECS.WebAPI.Controllers.v1
 {
@@ -20,6 +22,7 @@ namespace ECS.WebAPI.Controllers.v1
         #region Constants and fields
         private readonly AccountControllerLogic _accountControllerLogic;
         private readonly AccountLogic _accountLogic;
+        private readonly JAccessTokenLogic _jAccessTokenLogic;
         private readonly SaltLogic _saltLogic;
         #endregion
 
@@ -27,6 +30,7 @@ namespace ECS.WebAPI.Controllers.v1
         {
             _accountControllerLogic = new AccountControllerLogic();
             _accountLogic = new AccountLogic();
+            _jAccessTokenLogic = new JAccessTokenLogic();
             _saltLogic = new SaltLogic();
         }
 
@@ -105,7 +109,6 @@ namespace ECS.WebAPI.Controllers.v1
 
         }
 
-
         /// <summary>
         /// Returns cuurent interest tags selected by user.
         /// </summary>
@@ -137,6 +140,67 @@ namespace ECS.WebAPI.Controllers.v1
             IHttpActionResult actionResultResponse = ResponseMessage(response);
             return actionResultResponse;
            
+        }
+
+        [HttpGet]
+        [Route("RenewToken")]
+        [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "GET")]
+        public IHttpActionResult RenewToken()
+        {
+            string accessTokenFromRequest = "";
+            if (Request.Headers.Authorization.ToString() != null)
+            {
+                var authHeader = Request.Headers.Authorization;
+                if (authHeader != null)
+                {
+                    var authHeaderVal = AuthenticationHeaderValue.Parse(authHeader.ToString());
+
+                    // RFC 2617 sec 1.2, "scheme" name is case-insensitive
+                    if (authHeaderVal.Scheme.Equals("bearer",
+                            StringComparison.OrdinalIgnoreCase) &&
+                        authHeaderVal.Parameter != null)
+                    {
+                        accessTokenFromRequest = authHeaderVal.Parameter;
+                    }
+                }
+
+                // get the access token
+                // accessTokenFromRequest = actionContext.Request.Headers.Authorization.ToString();
+
+                string username = "";
+                if (JwtManager.Instance.ValidateToken(accessTokenFromRequest, out username))
+                {
+                    JAccessToken accessToken = _jAccessTokenLogic.GetJAccessToken(username);
+                    if (accessToken != null)
+                    {
+                        string accessTokenStored = accessToken.Value;
+                        if (accessTokenFromRequest == accessTokenStored)
+                        {
+                            accessToken.DateTimeIssued = DateTime.UtcNow;
+                            string token = JwtManager.Instance.GenerateToken(username);
+                            accessToken.Value = token;
+                            _jAccessTokenLogic.Update(accessToken);
+                            return Json(new { AuthToken = token });
+                        }
+                        else
+                        {
+                            return Unauthorized();
+                        }
+                    }
+                    else
+                    {
+                        return Unauthorized();
+                    }
+                }
+                else
+                {
+                    return Unauthorized();
+                }
+            }
+            else
+            {
+                return Unauthorized();
+            }
         }
     }
 }

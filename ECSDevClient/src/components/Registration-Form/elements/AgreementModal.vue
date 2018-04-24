@@ -25,11 +25,19 @@ export default {
   name: 'AgreementModal',
   data () {
     return {
+      // Event properties
       isActive: false,
+
+      // Properties
       body: content
     }
   },
   methods: {
+    // ************************* Togglers *************************
+    /**
+     * @description
+     * toggles agreement modal to serve terms and conditions
+     */
     toggle: function () {
       this.isActive = !this.isActive
     }
