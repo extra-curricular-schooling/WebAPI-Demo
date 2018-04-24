@@ -38,7 +38,7 @@ namespace ECS.WebAPI.Controllers.v1
             // CHECKING IF THE USER ALREADY HAS A TICKET IN THE SWEEPSTAKE
             // ADD TICKET IF NOT
             // OTHERWISE ADD ANOTHER COST TO IT
-            // THE USER WITH THE HIGHEST "POINTS LEFT" AFTER BUYING A SWEEPSTAKE WINS
+            // THE USER WITH THE HIGHEST "COST" (POINTS SPENT ON TICKETS) WINS A SWEEPSTAKE
             Account account;
             account = accountRepository.GetSingle(x => x.UserName == sweepstakeUser.UserName);
             var updatedPoints = sweepstakeUser.UpdatedPoints;
@@ -47,7 +47,7 @@ namespace ECS.WebAPI.Controllers.v1
 
 
             SweepStakeEntry checkUser;
-            checkUser = sweepStakeEntryRepository.GetSingle(x => x.UserName == sweepstakeUser.UserName);
+            checkUser = sweepStakeEntryRepository.GetSingle(x => x.SweepstakesID == sweepstakeUser.SweepstakesID);
 
             if (checkUser.UserName != sweepstakeUser.UserName)
             {
@@ -64,19 +64,15 @@ namespace ECS.WebAPI.Controllers.v1
             }
             else
             {
-             /*   var newCost = sweepstakeUser.Cost * 2;
-                sweepstakeUser.Cost = newCost;
-                SweepStakeEntry sweep = new SweepStakeEntry()
-                {
-                    SweepstakesID = sweepstakeUser.SweepstakesID,
-                    OpenDateTime = sweepstakeUser.OpenDateTime,
-                    PurchaseDateTime = sweepstakeUser.PurchaseDateTime,
-                    Cost = sweepstakeUser.Cost,
-                    UserName = sweepstakeUser.UserName,
-                };
-                
-                sweepStakeEntryRepository.Update(sweep); */
-                return Ok("Another Ticket NOT Added");
+                // GETTING THE OLD COST IN THE TABLE
+                var oldCost = checkUser.Cost;
+                // GETTING THE NEW COST SEND OVER AND ADDING IT TO THE OLD
+                var newCost = sweepstakeUser.Cost + oldCost;
+                checkUser.Cost = newCost;
+                // UPDATING THE COST
+                sweepStakeEntryRepository.Update(checkUser);
+
+                return Ok("Another Ticket Added");
             } 
         }
         

@@ -85,8 +85,7 @@ export default {
     // REQUEST TO POST A SWEEPSTAKE TICKET TO A SWEEPSTAKE
     ticketBought: function (Points, Price, username, timeDateStamp, OpenDateTime, SweepStakesID) {
       if (this.Points >= this.Price) {
-        // remember the points should no tbe negative
-        // change the points to equal or something
+        // remember the points should not be negative
         this.Points = this.Points - this.Price
         alert('Congragulations! One ticket bought for ' + this.Price + ' points! Your Points are ' + this.Points)
         Axios({
@@ -104,9 +103,8 @@ export default {
         })
           .then(response => {
             console.log(response)
-            // WORKING ON FIXING THIS
-            if (response.data === 'Another Ticket NOT Added') {
-              alert('Another Milestone NOT Added Towards Your Win')
+            if (response.data === 'Another Ticket Added') {
+              alert('Another Milestone Added Towards Your Win')
             } else { alert('Successfully Bought First Ticket') }
             this.$router.push({
               name: 'Sweepstake'
