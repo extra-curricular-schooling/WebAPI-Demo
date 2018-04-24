@@ -31,7 +31,7 @@ namespace ECS.WebAPI.HttpMessageHandlers.DelegatingHandlers
             // Might have to check the request route to see if it is SSO, if so return base.SendAsync(request, cancellationToken
             Uri isSSO = request.RequestUri;
 
-            if (isSSO.Segments[2] == "Sso")
+            if (isSSO.Segments[2] == "Sso/")
             {
                 return base.SendAsync(request, cancellationToken);
             }
