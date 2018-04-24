@@ -3,6 +3,8 @@
 </template>
 
 <script>
+import EventBus from '../../assets/js/EventBus'
+
 export default {
   name: 'Logout-Button',
   methods: {
@@ -10,6 +12,7 @@ export default {
       this.$store.dispatch('updateUsername', '')
       this.$store.dispatch('signOut')
       this.$store.dispatch('updateToken', '')
+      EventBus.$emit('loggedOut')
       if (this.$router.currentRoute.path !== '/') {
         this.$router.push('/')
       } else {
