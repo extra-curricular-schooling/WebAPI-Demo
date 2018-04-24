@@ -72,6 +72,7 @@
           <!-- END security questions -->
         </div>
 
+        <bad-password ref="alert"></bad-password>
         <div class="body" v-if="body==='thirdStep'">
           <p>Please enter a <strong>new password</strong><p>
           <div class="field password">
@@ -90,7 +91,7 @@
             <label class="label field-element is-required">Confirm New Password</label>
             <div class="control has-icons-left">
               <!-- <input id="confirmPassword" class="input" type="password" @keyup="validateConfirmPassword" autocomplete="new-password" placeholder="************" required> -->
-              <input id="confirmPassword" class="input" type="password" @keyup="validateConfirmPassword" placeholder="************" required>
+              <input id="confirmPassword" class="input" type="password" @keyup="passwordEventHelper(getPassword())" placeholder="************" required>
               <span class="icon is-small is-left">
                 <i class="fas fa-lock"></i>
               </span>
@@ -143,9 +144,14 @@
 <script>
 /* eslint-disable */
 import axios from 'axios'
+import BadPassword from '@/components/bad-password/Template'
+import EventBus from '@/assets/js/EventBus'
 
 export default {
   name: 'ForgotPassword',
+  components: {
+    'bad-password': BadPassword
+  },
   data () {
     return {
       // Request Data
@@ -241,6 +247,26 @@ export default {
     close () {
       this.toggle()
       this.body = 'firstStep'
+    },
+    toggleAlert (password) {
+      this.$refs.alert.toggle(password)
+      EventBus.$on('click', (status) => {
+        console.log(status)
+        if (status == 'rejected') {
+          document.getElementById('password').value = ''
+          document.getElementById('password').className = 'input'
+          document.getElementById('confirmPassword').value = ''
+          document.getElementById('confirmPassword').className = 'input'
+        }
+      })
+    },
+    // Helpers
+    passwordEventHelper(password) {
+      this.validateConfirmPassword()
+      if (document.getElementById('password').className == 'input is-success' &&
+        document.getElementById('confirmPassword').className == 'input is-success') {
+        this.toggleAlert(password)
+      }
     },
     // APIs
     getSecurityQuestions () {

@@ -481,9 +481,9 @@ export default {
         console.log(status)
         if (status == 'rejected') {
           document.getElementById('password').value = ''
-          document.getElementById('password').className == 'input'
+          document.getElementById('password').className = 'input'
           document.getElementById('confirmPassword').value = ''
-          document.getElementById('confirmPassword').className == 'input'
+          document.getElementById('confirmPassword').className = 'input'
         }
       })
     },
