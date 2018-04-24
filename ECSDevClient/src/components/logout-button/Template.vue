@@ -7,7 +7,6 @@ export default {
   name: 'Logout-Button',
   methods: {
     logOut: function () {
-      window.localStorage.removeItem('ECSStore')
       this.$store.dispatch('updateUsername', '')
       this.$store.dispatch('signOut')
       this.$store.dispatch('updateToken', '')

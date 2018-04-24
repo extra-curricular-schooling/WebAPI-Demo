@@ -8,6 +8,9 @@ using System.Linq;
 using System.Collections.Generic;
 using System;
 using System.Threading.Tasks;
+using ECS.Repositories.Implementations;
+using ECS.Models;
+using ECS.Repositories.Contracts;
 
 namespace ECS.WebCrawler.Tests
 {
@@ -82,40 +85,24 @@ namespace ECS.WebCrawler.Tests
             public async void HomeCrawler_GatherArticles()
             {
                 // Arrange
-                KeyValuePair<string, List<string>> siteAttributes = new KeyValuePair<string, List<string>>("http://hugogarcia.me/site/testing.html", new List<string> { "div", "class", "test", "a", "href", "http://hugogarcia.me/site/", "meta", "name", "keywords", "content", "meta", "property", "og:title", "content", "meta", "name", "description", "content", "Testing" });
-                List<string> actualLinks = new List<string> {
-                    "http://hugogarcia.me/site/testSite1.html",
-                    "http://www.hugogarcia.me/site/testSite2.html",
-                    "http://hugogarcia.me/site/testSite3.html",
-                    "http://hugogarcia.me/site/testSite4.html",
-                    "http://hugogarcia.me/site/testSite5.html"
+                List<KeyValuePair<string, List<string>>> Sites = new List<KeyValuePair<string, List<string>>>() { };
+                Sites.Add(new KeyValuePair<string, List<string>>("http://hugogarcia.me/site/testing.html", new List<string> { "div", "class", "test", "a", "href", "http://hugogarcia.me/site/", "meta", "name", "keywords", "content", "meta", "property", "og:title", "content", "meta", "name", "description", "content", "Testing" }));
+                List<string[]> actualLinks = new List<string[]> {
+                    new string[] {"http://hugogarcia.me/site/testSite1.html", "http://hugogarcia.me/site/testing.html"},
+                    new string[] {"http://www.hugogarcia.me/site/testSite2.html", "http://hugogarcia.me/site/testing.html" },
+                    new string[] {"http://hugogarcia.me/site/testSite3.html" , "http://hugogarcia.me/site/testing.html"},
+                    new string[] {"http://hugogarcia.me/site/testSite4.html", "http://hugogarcia.me/site/testing.html" },
+                    new string[] {"http://hugogarcia.me/site/testSite5.html" , "http://hugogarcia.me/site/testing.html" }
                 };
+                HashSet<string> Tags = new HashSet<string> { "hm", "test", "tester" };
 
+                BaseCrawler test = new BaseCrawler(Sites, Tags);
 
                 // Act
-                List<string> attributes = siteAttributes.Value;
-                var links = new List<string>();
-                var httpClient = new HttpClient();
-                var html = await httpClient.GetStringAsync(siteAttributes.Key);
-                var htmlDoc = new HtmlDocument();
-                htmlDoc.LoadHtml(html);
-
-
-                var blocks = htmlDoc.DocumentNode.Descendants(attributes[0]).Where(node => node.GetAttributeValue(attributes[1], "").Equals(attributes[2])).ToList();
-                foreach (var li in blocks)
-                {
-                    var articleLink = li.Descendants(attributes[3]).FirstOrDefault().ChildAttributes(attributes[4]).FirstOrDefault().Value;
-                    if (articleLink.Substring(0, 4) != "http")
-                    {
-                        articleLink = attributes[5] + articleLink;
-                    }
-
-                    links.Add(articleLink);
-                }
-
+                var result = await test.GatherArticles(Sites);
 
                 // Assert
-                Assert.Equal(actualLinks, links);
+                Assert.Equal(actualLinks, result);
             }
 
 
@@ -127,45 +114,22 @@ namespace ECS.WebCrawler.Tests
             {
 
                 // Arrange
+                
+                List<KeyValuePair<string, List<string>>> Sites = new List<KeyValuePair<string, List<string>>>() { };
                 KeyValuePair<string, List<string>> siteAttributes = new KeyValuePair<string, List<string>>("http://hugogarcia.me/site/testing.html", new List<string> { "div", "class", "test", "a", "href", "http://hugogarcia.me/site/", "meta", "name", "keywords", "content", "meta", "property", "og:title", "content", "meta", "name", "description", "content", "Testing" });
-                string[] actualTags = { "test", "testing", "tester", "blah", "bla", "foo","bar"};
-                List<string> links = new List<string> { "http://hugogarcia.me/site/testSite1.html" };
+                string links =  "http://hugogarcia.me/site/testSite1.html" ;
+                BaseCrawler test = new BaseCrawler(Sites, null);
+                var httpClient = new HttpClient();
+                var htmlDoc = new HtmlDocument();
+                var html = await httpClient.GetStringAsync(links);
+                htmlDoc.LoadHtml(html);
 
-                string tags = "";
+                string[] actualTags = { "test", "", "testing", "", "tester", "", "blah", "", "bla", "", "foo", "", "bar" };
+
                 string[] contentTags = { };
 
                 // Act
-                var httpClient = new HttpClient();
-                var htmlDoc = new HtmlDocument();
-
-                foreach (var art in links)
-                {
-
-                    // load the site html
-                    var html = await httpClient.GetStringAsync(art);
-                    htmlDoc.LoadHtml(html);
-
-                    // Associate the proper attributes for the Site. 
-                    List<string> siteAttribute = siteAttributes.Value;
-
-                    // Gather the blocks where the keywords/tags are held in the article. 
-                    var tagList = htmlDoc.DocumentNode.Descendants(siteAttribute[6]).Where(node => node.GetAttributeValue(siteAttribute[7], "").Equals(siteAttribute[8])).ToList();
-
-                    // Gather each tag from the block.
-                    foreach (var lt in tagList)
-                    {
-                        tags = lt.GetAttributeValue(siteAttribute[9], "");
-                    }
-
-                    // Lowercase the tags for easier comparison
-                    tags = tags.ToLower();
-
-                    // Replace any ',' if site stored tags as a CSV.
-                    tags = tags.Replace(",", "");
-
-                    // Split up tags 
-                    contentTags = tags.Split(' ');
-                }
+                contentTags = test.GatherTags(htmlDoc, siteAttributes.Value);
 
                 // Assert
                 Assert.Equal(actualTags, contentTags);
@@ -180,19 +144,16 @@ namespace ECS.WebCrawler.Tests
             [InlineData(new object[] { new string[] { "test", "testing", "1", "2", "4" } })]
             public void ArticleCrawler_MatchTagsTrue(string[] contentTags)
             {
+
                 // Arrange
-                bool tagMatch = false;
+                List<KeyValuePair<string, List<string>>> Sites = new List<KeyValuePair<string, List<string>>>() { };
+                KeyValuePair<string, List<string>> siteAttributes = new KeyValuePair<string, List<string>>("http://hugogarcia.me/site/testing.html", new List<string> { "div", "class", "test", "a", "href", "http://hugogarcia.me/site/", "meta", "name", "keywords", "content", "meta", "property", "og:title", "content", "meta", "name", "description", "content", "Testing" });
                 HashSet<string> Tags = new HashSet<string> { "hm", "test", "tester" };
 
+                BaseCrawler test = new BaseCrawler(Sites, Tags);
                 // Act
-                foreach (var t in contentTags)
-                {
-                    if (Tags.Contains(t))
-                    {
-                        tagMatch = true;
-                        break;
-                    }
-                }
+                bool tagMatch = test.MatchTags(contentTags);
+
 
                 // Assert
                 Assert.True(tagMatch);
@@ -208,18 +169,13 @@ namespace ECS.WebCrawler.Tests
             public void ArticleCrawler_MatchTagsFalse(string[] contentTags)
             {
                 // Arrange
-                bool tagMatch = false;
+                List<KeyValuePair<string, List<string>>> Sites = new List<KeyValuePair<string, List<string>>>() { };
+                KeyValuePair<string, List<string>> siteAttributes = new KeyValuePair<string, List<string>>("http://hugogarcia.me/site/testing.html", new List<string> { "div", "class", "test", "a", "href", "http://hugogarcia.me/site/", "meta", "name", "keywords", "content", "meta", "property", "og:title", "content", "meta", "name", "description", "content", "Testing" });
                 HashSet<string> Tags = new HashSet<string> { "hm", "test", "tester" };
 
+                BaseCrawler test = new BaseCrawler(Sites, Tags);
                 // Act
-                foreach (var t in contentTags)
-                {
-                    if (Tags.Contains(t))
-                    {
-                        tagMatch = true;
-                        break;
-                    }
-                }
+                bool tagMatch = test.MatchTags(contentTags);
 
                 // Assert
                 Assert.False(tagMatch);
@@ -233,83 +189,25 @@ namespace ECS.WebCrawler.Tests
             [Fact]
             public async void ArticleCrawler_AcceptArticles()
             {
-                // Arrange
-                KeyValuePair<string, List<string>> siteAttributes = new KeyValuePair<string, List<string>>("http://hugogarcia.me/site/testing.html", new List<string> { "div", "class", "test", "a", "href", "http://hugogarcia.me/site/", "meta", "name", "keywords", "content", "meta", "property", "og:title", "content", "meta", "name", "description", "content", "Testing" });
+                var tag = new InterestTag
+                {
+                    TagName = "Testing",
+                    AccountUsername = null,
+                    ArticleTags = null
+                };
+
+                var mockInterestRepo = new Mock<IInterestTagRepository>();
+                mockInterestRepo.Setup(x => x.Insert(tag));
+                List<KeyValuePair<string, List<string>>> Sites = new List<KeyValuePair<string, List<string>>>() { };
+                Sites.Add(new KeyValuePair<string, List<string>>("http://hugogarcia.me/site/testing.html", new List<string> { "div", "class", "test", "a", "href", "http://hugogarcia.me/site/", "meta", "name", "keywords", "content", "meta", "property", "og:title", "content", "meta", "name", "description", "content", "Testing" }));
+                // KeyValuePair<string, List<string>> siteAttributes = new KeyValuePair<string, List<string>>("http://hugogarcia.me/site/testing.html", new List<string> { "div", "class", "test", "a", "href", "http://hugogarcia.me/site/", "meta", "name", "keywords", "content", "meta", "property", "og:title", "content", "meta", "name", "description", "content", "Testing" });
                 HashSet<string> Tags = new HashSet<string> { "hm", "test", "tester" };
-                List<Article> testArticles = new List<Article> {
-                new Article() {ArticleLink = "http://hugogarcia.me/site/testSite1.html", TagName= "Testing", ArticleTitle="testing testing 1 2 4", ArticleDescription ="This is testSite 1" },
-                new Article() {ArticleLink = "http://www.hugogarcia.me/site/testSite2.html", TagName= "Testing", ArticleTitle="testing testing 1 2 4", ArticleDescription ="This is testSite 2" },
-                new Article() {ArticleLink = "http://hugogarcia.me/site/testSite4.html", TagName= "Testing", ArticleTitle="testing testing 1 2 4", ArticleDescription ="This is testSite 4" },
-                new Article() {ArticleLink = "http://hugogarcia.me/site/testSite5.html", TagName= "Testing", ArticleTitle="testing testing 1 2 4", ArticleDescription ="This is testSite 5" },
-                };
-                List<string> actualLinks = new List<string> {
-                    "http://hugogarcia.me/site/testSite1.html",
-                    "http://www.hugogarcia.me/site/testSite2.html",
-                    "http://hugogarcia.me/site/testSite3.html",
-                    "http://hugogarcia.me/site/testSite4.html",
-                    "http://hugogarcia.me/site/testSite5.html"
-                };
+
+                BaseCrawler test = new BaseCrawler(Sites, Tags);
 
                 // Act
-                var links = actualLinks;
-                List<string> list = new List<string>();
-                var httpClient = new HttpClient();
-                var htmlDoc = new HtmlDocument();
-
-                // Will hold the article info.
-                string tags = "";
-
-                // Boolean to check if article matches a keyword/tag
-                bool tagMatch = false;
-
-                // For each article, check if valid
-                foreach (var art in links)
-                {
-
-                    // Will hold the proper attributes for the site.
-                    var html = await httpClient.GetStringAsync(art);
-                    htmlDoc.LoadHtml(html);
-
-                    // Associate the proper attributes for the Site. 
-                    List<string> siteAttribute = siteAttributes.Value;
-
-                    // Gather the blocks where the keywords/tags are held in the article. 
-                    var tagList = htmlDoc.DocumentNode.Descendants(siteAttribute[6]).Where(node => node.GetAttributeValue(siteAttribute[7], "").Equals(siteAttribute[8])).ToList();
-
-                    // Gather each tag from the block.
-                    foreach (var lt in tagList)
-                    {
-                        tags = lt.GetAttributeValue(siteAttribute[9], "");
-                    }
-
-                    // Lowercase the tags for easier comparison
-                    tags = tags.ToLower();
-
-                    // Reset tagMatch to false.
-                    tagMatch = false;
-
-                    // Replace any ',' if site stored tags as a CSV.
-                    tags = tags.Replace(",", "");
-
-                    // Split up tags 
-                    string[] contentTags = tags.Split(' ');
-
-                    // For each tag in list, check if it is contained in HashSet of valid tags. If so, tagMatch = true, assign hit tag to Article tag then break.
-                    foreach (var t in contentTags)
-                    {
-                        if (Tags.Contains(t))
-                        {
-                            tagMatch = true;
-
-                            break;
-                        }
-                    }
-
-                    if (tagMatch)
-                    {
-                        list.Add(art);
-                    }
-                }
+                var result = await test.GatherArticles(Sites);
+                var list = await test.ArticleCrawler(result);
 
                 // Assert
                 Assert.Equal(4, list.Count);
@@ -323,27 +221,20 @@ namespace ECS.WebCrawler.Tests
             public async void ArticleCrawler_GatherDescription()
             {
 
-                // Arrange
+                // Assert
+                List<KeyValuePair<string, List<string>>> Sites = new List<KeyValuePair<string, List<string>>>() { };
                 KeyValuePair<string, List<string>> siteAttributes = new KeyValuePair<string, List<string>>("http://hugogarcia.me/site/testing.html", new List<string> { "div", "class", "test", "a", "href", "http://hugogarcia.me/site/", "meta", "name", "keywords", "content", "meta", "property", "og:title", "content", "meta", "name", "description", "content", "Testing" });
-                List<string> actualLinks = new List<string> { "http://hugogarcia.me/site/testSite1.html" };
-
-                // Act
-                var testSite = actualLinks[0];
-                string description = "";
-
+                string links = "http://hugogarcia.me/site/testSite1.html";
+                BaseCrawler test = new BaseCrawler(Sites, null);
                 var httpClient = new HttpClient();
                 var htmlDoc = new HtmlDocument();
-                var html = await httpClient.GetStringAsync(testSite);
+                var html = await httpClient.GetStringAsync(links);
                 htmlDoc.LoadHtml(html);
 
-                // Associate the proper attributes for the Site. 
-                List<string> siteAttribute = siteAttributes.Value;
-                // Gather blocks that hold the Description information and store to description.
-                var descriptionHolder = htmlDoc.DocumentNode.Descendants(siteAttribute[14]).Where(node => node.GetAttributeValue(siteAttribute[15], "").Equals(siteAttribute[16]));
-                foreach (var descriptionString in descriptionHolder)
-                {
-                    description = descriptionString.GetAttributeValue(siteAttribute[17], "");
-                }
+
+                // Act
+                string description = test.GatherDescription(htmlDoc, siteAttributes.Value);
+
 
 
                 // Assert
@@ -358,28 +249,19 @@ namespace ECS.WebCrawler.Tests
             public async void ArticleCrawler_GatherTitle()
             {
 
-                // Arrange
+                // Assert
+                List<KeyValuePair<string, List<string>>> Sites = new List<KeyValuePair<string, List<string>>>() { };
                 KeyValuePair<string, List<string>> siteAttributes = new KeyValuePair<string, List<string>>("http://hugogarcia.me/site/testing.html", new List<string> { "div", "class", "test", "a", "href", "http://hugogarcia.me/site/", "meta", "name", "keywords", "content", "meta", "property", "og:title", "content", "meta", "name", "description", "content", "Testing" });
-                List<string> actualLinks = new List<string> { "http://hugogarcia.me/site/testSite1.html" };
+                string links = "http://hugogarcia.me/site/testSite1.html";
+                BaseCrawler test = new BaseCrawler(Sites, null);
+                var httpClient = new HttpClient();
+                var htmlDoc = new HtmlDocument();
+                var html = await httpClient.GetStringAsync(links);
+                htmlDoc.LoadHtml(html);
 
 
                 // Act
-                var testSite = actualLinks[0];
-                string title = "";
-
-                var httpClient = new HttpClient();
-                var htmlDoc = new HtmlDocument();
-                var html = await httpClient.GetStringAsync(testSite);
-                htmlDoc.LoadHtml(html);
-
-                // Associate the proper attributes for the Site. 
-                List<string> siteAttribute = siteAttributes.Value;
-                // Gather blocks that hold the Title information and store to title.
-                var titleHolder = htmlDoc.DocumentNode.Descendants(siteAttribute[10]).Where(node => node.GetAttributeValue(siteAttribute[11], "").Equals(siteAttribute[12]));
-                foreach (var titleName in titleHolder)
-                {
-                    title = titleName.GetAttributeValue(siteAttribute[13], "");
-                }
+                string title = test.GatherTitle(htmlDoc, siteAttributes.Value);
 
 
                 // Assert

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ECS.BusinessLogic.ModelLogic.Contracts;
-using ECS.DTO;
+﻿using System.Linq;
 using ECS.Models;
 using ECS.Repositories.Implementations;
 
@@ -32,6 +26,11 @@ namespace ECS.BusinessLogic.ModelLogic.Implementations
         public Account GetSingle(string username)
         {
             return _accountRepository.GetSingle(partial => partial.UserName == username);
+        }
+
+        public Account IncludeAccountTags(string username)
+        {
+            return _accountRepository.GetSingle(x => x.UserName == username, x => x.AccountTags);
         }
 
         public Account GetByEmail(string email)

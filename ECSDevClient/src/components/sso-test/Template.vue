@@ -65,15 +65,7 @@ export default {
       Axios({
         method: 'GET',
         url: this.$store.getters.getBasePwnedUrl + PwnedHelper.getHashedPrefix(this.passwordForPwned),
-        // url: 'https://api.pwnedpasswords.com/range/21BD1',
-        headers: {
-          'Access-Control-Allow-Origin': 'http://localhost:8080',
-          'Access-Control-Allow-Credentials': true,
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Authorization': 'null',
-          'X-Requested-With': 'XMLHttpRequest'
-        }
+        headers: this.$store.getters.getRequestHeaders
       })
         .then(response => {
           console.log(PwnedHelper.getHits(this.passwordForPwned, response.data))

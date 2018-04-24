@@ -32,7 +32,7 @@ export default {
     retieveArticles: function (username) {
       Axios({
         method: 'GET',
-        url: this.$store.getters.getBaseAppUrl + 'Home/' + username,
+        url: this.$store.getters.getBaseAppUrl + 'Home/' + username + '/GetUserArticles',
         headers: this.$store.getters.getRequestHeaders
       })
         .then((response) => {
@@ -60,8 +60,6 @@ export default {
         })
     },
     target: function (tag, title, link) {
-      console.log('target clicked')
-      console.log(tag)
       document.getElementById('FrameResult').src = link
       this.$store.dispatch('updateInterestTag', tag)
       this.$store.dispatch('updateArticle', link)
@@ -70,11 +68,6 @@ export default {
     },
     collapse: function (group) {
       group.open = !group.open
-      if (group.open) {
-        console.log(group.name + ': open')
-      } else {
-        console.log(group.name + ': closed')
-      }
       this.$forceUpdate()
     }
   },

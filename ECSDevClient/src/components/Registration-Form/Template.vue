@@ -49,6 +49,7 @@
         <p id="emailControl" class="help">{{ emailMessage }}</p>
       </div>
 
+      <bad-password ref="alert"></bad-password>
       <div class="field password">
         <label class="label field-element is-required">Password</label>
         <div class="control has-icons-left">
@@ -63,7 +64,7 @@
       <div class="field confirm-password">
         <label class="label field-element is-required">Confirm Password</label>
         <div class="control has-icons-left">
-          <input id="confirmPassword" class="input" type="password" @keyup="validateConfirmPassword" autocomplete="new-password" placeholder="************" required>
+          <input id="confirmPassword" class="input" type="password" @keyup="passwordEventHelper(getPassword())" autocomplete="new-password" placeholder="************" required>
           <span class="icon is-small is-left">
             <i class="fas fa-lock"></i>
           </span>
@@ -192,12 +193,15 @@
 /* eslint-disable */
 import Axios from 'axios'
 import AgreementModal from '@/components/registration-form/elements/AgreementModal'
+import BadPassword from '@/components/bad-password/Template'
 import Shuffler from '@/assets/js/arrayShuffler'
+import EventBus from '@/assets/js/EventBus'
 
 export default {
   name: 'RegistrationForm',
   components: {
-    'agreement-modal': AgreementModal
+    'agreement-modal': AgreementModal,
+    'bad-password': BadPassword
   },
   data () {
     return {
@@ -471,6 +475,18 @@ export default {
     toggleModal () {
       this.$refs.modal.toggle()
     },
+    toggleAlert (password) {
+      this.$refs.alert.toggle(password)
+      EventBus.$on('click', (status) => {
+        console.log(status)
+        if (status == 'rejected') {
+          document.getElementById('password').value = ''
+          document.getElementById('password').className = 'input'
+          document.getElementById('confirmPassword').value = ''
+          document.getElementById('confirmPassword').className = 'input'
+        }
+      })
+    },
     checkBox () {
       this.agreementIsChecked = !this.agreementIsChecked
     },
@@ -558,6 +574,13 @@ export default {
         })
     },
     // helpers
+    passwordEventHelper(password) {
+      this.validateConfirmPassword()
+      if (document.getElementById('password').className == 'input is-success' &&
+        document.getElementById('confirmPassword').className == 'input is-success') {
+        this.toggleAlert(password)
+      }
+    },
     divideQuestions () {
       let partSize = this.$data.questions.length/3
 

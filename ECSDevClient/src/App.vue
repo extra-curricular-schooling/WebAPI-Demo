@@ -14,9 +14,24 @@ import Vue from 'vue'
 import DefaultLayout from './layouts/Default'
 import AdminLayout from './layouts/Admin'
 import ScholarLayout from './layouts/Scholar'
+import EventBus from '@/assets/js/EventBus.js'
 
 export default {
   name: 'App',
+  watch: {
+    '$route' (to, from) {
+      if (from.name === 'Home' && to.name !== 'Home') {
+        const answer = window.confirm('Do you really want to leave? you may not earn points for this.')
+        if (!answer) {
+          this.$router.push({
+            name: 'Home'
+          })
+        } else {
+          EventBus.$emit('cancelInterval', this.cancelInterval)
+        }
+      }
+    }
+  },
   components: {
     Bulma,
     DefaultLayout,
@@ -25,9 +40,9 @@ export default {
   },
   data () {
     return {
-      authorizationRequired: ['/Home', '/LinkedIn', '/account', '/sweepstakeadmin', '/sweepstake'],
+      authorizationRequired: ['/Home', '/LinkedIn', '/account', '/account-admin', '/sweepstakeadmin', '/sweepstake'],
       currentRole: '',
-      adminAuthorizationRequired: ['/sweepstakeadmin', '/LinkedIn'], // reintroduce '/account-admin'
+      adminAuthorizationRequired: ['/sweepstakeadmin', '/LinkedIn', '/account-admin'],
       scholarAuthorizationRequired: ['/sweepstake']
     }
   },
