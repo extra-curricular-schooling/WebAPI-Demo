@@ -26,7 +26,10 @@ namespace ECS.WebAPI.Filters.AuthorizationFilters
             _claims = claims;
             _isSingleClaim = false;
         }
+        public AuthorizeRequiredAttribute()
+        {
 
+        }
         protected override bool IsAuthorized(HttpActionContext actionContext)
         {
             string accessTokenFromRequest = "";
