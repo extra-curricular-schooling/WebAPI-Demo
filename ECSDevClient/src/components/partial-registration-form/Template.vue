@@ -74,11 +74,10 @@
       <div class="field security-questions">
         <label class="label field-element is-required">Security Questions</label>
         <div class="control">
-          <!-- <input v-model="question1" class="input" type="number" placeholder="Question 1" required> -->
           <span class="select">
             <select @change="getSelectionID(0, question1)" v-model="question1">
               <option disabled value="">--select--</option>
-              <option v-for="question in questions" v-bind:key="question.SecurityQuestionID"> {{ question.SecQuestion }} </option>
+              <option v-for="question in questionSet1" v-bind:key="question.SecurityQuestionID"> {{ question.SecQuestion }} </option>
             </select>
           </span>
         </div>
@@ -91,11 +90,10 @@
 
       <div class="field security-questions">
         <div class="control">
-          <!-- <input v-model="question2" class="input" type="number" placeholder="Question 2" required> -->
           <span class="select">
             <select @change="getSelectionID(1, question2)" v-model="question2">
               <option disabled value="">--select--</option>
-              <option v-for="question in questions" v-bind:key="question.SecurityQuestionID"> {{ question.SecQuestion }} </option>
+              <option v-for="question in questionSet2" v-bind:key="question.SecurityQuestionID"> {{ question.SecQuestion }} </option>
             </select>
           </span>
         </div>
@@ -108,11 +106,10 @@
 
       <div class="field security-questions">
         <div class="control">
-          <!-- <input v-model="question3" class="input" type="number" placeholder="Question 1" required> -->
           <span class="select">
             <select @change="getSelectionID(2, question3)" v-model="question3">
               <option disabled value="">--select--</option>
-              <option v-for="question in questions" v-bind:key="question.SecurityQuestionID"> {{ question.SecQuestion }} </option>
+              <option v-for="question in questionSet3" v-bind:key="question.SecurityQuestionID"> {{ question.SecQuestion }} </option>
             </select>
           </span>
         </div>
@@ -133,7 +130,6 @@
       </label><br>
       <label class="checkbox">
         <agreement-modal ref="modal"></agreement-modal>
-        <!-- <input type="checkbox"> -->
         <input type="checkbox" @click="checkBox" v-bind:class="{ 'checked' : agreementIsChecked }">
         I agree to the <a @click.prevent="toggleModal">Terms and Conditions</a>.
       </label>
@@ -160,13 +156,12 @@
 /* eslint-disable */
 import Axios from 'axios'
 import AgreementModal from '@/components/registration-form/elements/AgreementModal'
-// import registrationAlert from '@/components/registration-form/elements/RegistrationAlert'
+import Shuffler from '@/assets/js/arrayShuffler'
 
 export default {
   name: 'RegistrationForm',
   components: {
     'agreement-modal': AgreementModal
-    // 'registration-alert': registrationAlert
   },
   data () {
     return {
@@ -175,6 +170,9 @@ export default {
       question2: '',
       question3: '',
       agreementIsChecked: false,
+      questionSet1: [],
+      questionSet2: [],
+      questionSet3: [],
 
       // Request Data
       firstName: '',
@@ -420,27 +418,29 @@ export default {
           }
         })
           .then(response => {
-            
             console.log(response)
-            // this.$router.push({
-            //   name: 'Home',
-            // })
+            this.$router.push({
+              name: 'Home',
+            })
           })
           .catch(error => {
-            console.log(error.response)
-            this.$data.error = JSON.parse(error.response.data)
-
-            // HTTP Status 400 - Username in request exists
-            if (this.$data.error.summary == 'Username Exists') {
-              alert('Good news!  According to our records, you already have an account with us!')
-            }
-
-            // HTTP Status 500
-            if (error.response.status === 500) {
+            // Error
+            if (error.response) {
+              // The request was made and the server responded with a status code
+              // that falls out of the range of 2xx
+              if (error.response.status === 409) {
+                alert('Good news!  According to our records, you already have an account with us!')
+              }
+            } else if (error.request) {
+              // Server
               alert('We apologize.  We are unable to process your request at this time.')
+            } else {
+              console.log('hello')
             }
+            // Show the configuration.
+            console.log(error.config)
           })
-      }
+        }
     },
     fetchSecurityQuestions () {
       Axios({
@@ -449,18 +449,39 @@ export default {
         headers: this.$store.getters.getRequestHeaders
       })
         .then(response => {
-          this.$data.questions = JSON.parse(response.data)
+          this.$data.questions = Shuffler.shuffleArray(JSON.parse(response.data)) 
+          this.divideQuestions() 
         })
         .catch(error => {
-          console.log(error.response)
-
           // HTTP Status 503 - No questions in resource
           
           // HTTP Status 500
-          if (error.response.status === 500) {
-            alert('We apologize.  We are unable to process your request at this time.')
-          }
-        })
+          // Error
+            if (error.response) {
+              // The request was made and the server responded with a status code
+              // that falls out of the range of 2xx
+            } else if (error.request) {
+              // Server
+              alert('We apologize.  We are unable to process your request at this time.')
+            } else {
+              console.log('hello')
+            }
+            // Show the configuration.
+            console.log(error.config)
+          })
+    },
+    divideQuestions () {
+      let partSize = this.$data.questions.length/3 
+ 
+      for (let i = 0; i < this.$data.questions.length; i+=partSize) { 
+        if (i == 0) { 
+          this.$data.questionSet1 = this.$data.questions.slice(i,i+partSize) 
+        } else if (i == partSize) { 
+          this.$data.questionSet2 = this.$data.questions.slice(i,i+partSize) 
+        } else if (i == partSize*2) { 
+          this.$data.questionSet3 = this.$data.questions.slice(i,i+partSize) 
+        } 
+      }
     }
   }
 }

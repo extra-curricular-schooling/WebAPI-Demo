@@ -1,13 +1,16 @@
 <template>
-  <div></div>
+  <div>
+    <account-settings-panel/>
+  </div>
 </template>
 
 <script>
-export default {
+import AccountSettingsPanel from '../components/AccountSettings-Panel/Template'
 
+export default {
+  name: 'Account',
+  components: {
+    AccountSettingsPanel
+  }
 }
 </script>
-
-<style>
-
-</style>

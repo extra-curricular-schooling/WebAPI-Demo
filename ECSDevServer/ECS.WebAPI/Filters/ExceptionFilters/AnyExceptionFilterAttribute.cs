@@ -1,20 +1,33 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Data.SqlClient;
 using System.Net;
 using System.Net.Http;
-using System.Web;
 using System.Web.Http.Filters;
 
 namespace ECS.WebAPI.Filters.ExceptionFilters
 {
+    /// <summary>
+    /// Filter used as a catch-all in case any revealing exceptions start to escape.
+    /// </summary>
     public class AnyExceptionFilterAttribute : ExceptionFilterAttribute
     {
         public override void OnException(HttpActionExecutedContext actionExecutedContext)
         {
             if (actionExecutedContext.Exception != null)
             {
-                actionExecutedContext.Response = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+                var response = actionExecutedContext.Response;
+                switch (actionExecutedContext.Exception)
+                {
+                    case NotImplementedException e:
+                        response = new HttpResponseMessage(HttpStatusCode.NotImplemented);
+                        break;
+                    case UnauthorizedAccessException e:
+                        response = new HttpResponseMessage(HttpStatusCode.Unauthorized);
+                        break;
+                    default:
+                        response = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+                        break;
+                }
             }
         }
     }

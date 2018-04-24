@@ -12,10 +12,16 @@ export default {
  name: 'RegistrationAlert',
   data () {
     return {
+      // Event properties
       isHidden: true
     }
   },
   methods: {
+    // ************************* Togglers *************************
+    /**
+     * @description
+     * toggles notification upon successful registration
+     */
     toggleNotification: function () {
       this.isHidden = !this.isHidden
     }

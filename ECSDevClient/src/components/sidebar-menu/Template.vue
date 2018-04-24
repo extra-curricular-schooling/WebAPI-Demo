@@ -1,5 +1,5 @@
 <template>
-    <Slideout menu="#sidebar" panel="#EmbedContent" :toggleSelectors="['.toggle-button']">
+    <Slideout id="slider" menu="#sidebar" panel="#EmbedContent" :toggleSelectors="['.toggle-button']">
         <nav id="sidebar">
         <div>Interests</div>
             <div class="container vue" id="Interests">
@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import EventBus from '@/assets/js/eventBus.js'
+import EventBus from '@/assets/js/EventBus.js'
 import Slideout from 'vue-slideout'
 import Axios from 'axios'
 var groups = {}
@@ -32,7 +32,8 @@ export default {
     retieveArticles: function (username) {
       Axios({
         method: 'GET',
-        url: 'https://localhost:44311/v1/Home/' + username
+        url: this.$store.getters.getBaseAppUrl + 'Home/' + username + '/GetUserArticles',
+        headers: this.$store.getters.getRequestHeaders
       })
         .then((response) => {
           this.groups = {}
@@ -59,8 +60,6 @@ export default {
         })
     },
     target: function (tag, title, link) {
-      console.log('target clicked')
-      console.log(tag)
       document.getElementById('FrameResult').src = link
       this.$store.dispatch('updateInterestTag', tag)
       this.$store.dispatch('updateArticle', link)
@@ -69,11 +68,6 @@ export default {
     },
     collapse: function (group) {
       group.open = !group.open
-      if (group.open) {
-        console.log(group.name + ': open')
-      } else {
-        console.log(group.name + ': closed')
-      }
       this.$forceUpdate()
     }
   },

@@ -71,9 +71,6 @@ namespace ECS.WebAPI
             // Action Filters
 
             // Exception Filters
-            config.Filters.Add(new NotImplExceptionFilterAttribute());
-            config.Filters.Add(new SqlExceptionFilterAttribute());
-
             config.Filters.Add(new AnyExceptionFilterAttribute());
         }
     }

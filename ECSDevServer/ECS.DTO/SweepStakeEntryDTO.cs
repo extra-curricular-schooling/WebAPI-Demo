@@ -18,10 +18,7 @@ namespace ECS.DTO
 
         public int SweepstakesID { get; set; }
 
-        //public List<SweepstakeAdminDTO> SweepStakeEntry { get; set; }
-
-
-        //   public int Points { get; set; }
+        public int UpdatedPoints { get; set; }
 
     }
 }

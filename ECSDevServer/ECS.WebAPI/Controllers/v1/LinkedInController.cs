@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using ECS.BusinessLogic.ControllerLogic.Implementations;
+using ECS.BusinessLogic.ModelLogic.Contracts;
 using ECS.BusinessLogic.ModelLogic.Implementations;
+using ECS.Constants.Network;
 using ECS.DTO;
 using ECS.Models;
 using ECS.Security.AccessTokens.Jwt;
@@ -16,11 +19,23 @@ namespace ECS.WebAPI.Controllers.v1
     //[AuthorizeRequired("canShareLinkedIn", Roles = "Scholar")]
     public class LinkedInController : ApiController
     {
+
+        #region Fields and constants
+        private readonly LinkedInControllerLogic _linkedInControllerLogic;
+        private readonly ILinkedinLogic _linkedinLogic;
+        #endregion
+
+        public LinkedInController ()
+        {
+            _linkedInControllerLogic = new LinkedInControllerLogic();
+            _linkedinLogic = new LinkedinLogic();
+        }
+
         // GET: LinkedIn]
         [AuthenticationRequired]
         [HttpPost]
         [Route("SharePost")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
+        [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "POST")]
         public IHttpActionResult SharePost(LinkedInPostDTO postData)
         {
             // Credentials is already read and deserialized into a DTO. Validate it.
@@ -42,10 +57,10 @@ namespace ECS.WebAPI.Controllers.v1
 
             try
             {
-                if (LinkedinLogic.Instance.CheckForLinkedInAccessToken(username))
+                if (_linkedinLogic.CheckForLinkedInAccessToken(username))
                 {
-                    access = LinkedinLogic.Instance.GetLinkedInAccessToken(username);
-                    if (LinkedinLogic.Instance.CheckForExpiredLinkedInAccessToken(access))
+                    access = _linkedinLogic.GetLinkedInAccessToken(username);
+                    if (_linkedinLogic.CheckForExpiredLinkedInAccessToken(access))
                     {
                         return BadRequest("ERR7");
                     }
@@ -60,7 +75,7 @@ namespace ECS.WebAPI.Controllers.v1
                 return Unauthorized();
             }
 
-            var result = LinkedinLogic.Instance.SharePost(access, postData);
+            var result = _linkedInControllerLogic.SharePost(access, postData);
             if (result != null)
             {
                 return Json(result);

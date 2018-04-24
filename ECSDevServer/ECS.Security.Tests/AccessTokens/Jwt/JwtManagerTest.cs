@@ -1,4 +1,5 @@
 ﻿using System.Threading;
+using ECS.DTO.Sso;
 using ECS.Security.AccessTokens.Jwt;
 using Xunit;
 using Xunit.Abstractions;
@@ -46,10 +47,17 @@ namespace ECS.Security.Tests.AccessTokens.Jwt
                 Assert.NotEqual(token1, token2);
             }
 
-            [Fact]
-            public void PrintSsoToken()
+            [Theory]
+            [InlineData("a", "Scholar", "a")]
+            public void PrintSsoToken(string password, string roleType, string username)
             {
-                output.WriteLine(SsoJwtManager.Instance.GenerateToken("scott", 100));
+                SsoLoginRequestDTO loginDto = new SsoLoginRequestDTO
+                {
+                    Password = password,
+                    RoleType = roleType,
+                    Username = username
+                };
+                output.WriteLine(SsoJwtManager.Instance.GenerateToken(loginDto));
             }
         }
     }

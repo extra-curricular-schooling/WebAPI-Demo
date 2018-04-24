@@ -10,8 +10,9 @@ using ECS.Security.Hash;
 
 namespace ECS.BusinessLogic.ControllerLogic.Implementations
 {
-    public class SsoControllerLogic
+    public class  SsoControllerLogic
     {
+        // TODO: @Scott Remove constant
         private const string BaseClientUrl = "http://localhost:8080/";
 
         private readonly AccountLogic _accountLogic;
@@ -51,7 +52,7 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
             {
                 return new HttpResponseMessage
                 {
-                    ReasonPhrase = "Account already exists.",
+                    Content = new StringContent("Account already exists"),
                     StatusCode = HttpStatusCode.Conflict
                 };
             }
@@ -63,13 +64,13 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
                 Password = registrationDto.HashedPassword,
                 AccountType = registrationDto.RoleType
             };
-            _partialAccountLogic.Create(partialAccount);
 
             // Add new attached Salt to the database connected with PartialAccount.
             var salt = new PartialAccountSalt()
             {
                 PasswordSalt = registrationDto.PasswordSalt,
-                UserName = registrationDto.Username
+                UserName = registrationDto.Username,
+                PartialAccount = partialAccount
             };
             _partialAccountSaltLogic.Create(salt);
 
@@ -120,22 +121,21 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
         }
 
         private HttpResponseMessage PartialAccountLoginHelper(SsoLoginRequestDTO loginDto, PartialAccount partialAccount)
-        {
-
-            // Generate a new access token
-            var token = JwtManager.Instance.GenerateToken(loginDto.Username);
+        { 
+            // Provide Partial Account RoleType
+            loginDto.RoleType = partialAccount.AccountType;
 
             // Generate our token for them.
-            var partialAccountToken = SsoJwtManager.Instance.GenerateToken(loginDto.Username);
+            var partialAccountToken = SsoJwtManager.Instance.GenerateToken(loginDto);
 
             // TODO @Scott The Ok response should be a 301 response to redirect the SSO to our client.
             return new HttpResponseMessage
             {
                 Content = new StringContent(BaseClientUrl + "partial-registration?jwt=" + partialAccountToken),
-                Headers =
-                {
-                    Location = new Uri(BaseClientUrl + "partial-registration?jwt=" + partialAccountToken)
-                },
+                //Headers =
+                //{
+                //    Location = new Uri(BaseClientUrl + "partial-registration?jwt=" + partialAccountToken)
+                //},
                 StatusCode = HttpStatusCode.OK
             };
         }
@@ -143,51 +143,48 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
         private HttpResponseMessage AccountLoginHelper(SsoLoginRequestDTO loginDto, Account account)
         {
             var saltModel = _saltLogic.GetSalt(loginDto.Username);
-
+            // TODO: @Scott Check if the Saltmodel.Account is still null
             if (saltModel == null)
             {
                 return new HttpResponseMessage
                 {
-                    ReasonPhrase = "Database does not contain salt",
+                    Content = new StringContent("Database does not contain salt"),
                     StatusCode = HttpStatusCode.InternalServerError
                 };
             }
 
-            var salt = saltModel.PasswordSalt;
-
             // Make sure you append the salt, not prepend (group decision).
-            var hashedPassword = HashService.Instance.HashPasswordWithSalt(salt, loginDto.Username, false);
+            var hashedPassword = HashService.Instance.HashPasswordWithSalt(saltModel.PasswordSalt, loginDto.Password, true);
 
             if (!account.Password.Equals(hashedPassword))
             {
                 return new HttpResponseMessage
                 {
-                    ReasonPhrase = "Hashed password does not match database password.",
+                    Content = new StringContent("Hashed Password mismatch account password"),
                     StatusCode = HttpStatusCode.Unauthorized
                 };
             }
 
             var token = JwtManager.Instance.GenerateToken(loginDto.Username);
 
-            //// Grab the previous access token associated with the account.
+            // Grab the previous access token associated with the account.
             var accountAccessToken = _jAccessTokenLogic.GetJAccessToken(loginDto.Username);
             if (accountAccessToken != null)
             {
                 // Set current account token to expired list.
-                var deadToken = new ExpiredAccessToken
-                {
-                    ExpiredTokenValue = accountAccessToken.Value
-                };
-                _expiredAccessTokenLogic.Create(deadToken);
+                var expiredToken = new ExpiredAccessToken(accountAccessToken.Value, false);
+                _expiredAccessTokenLogic.Create(expiredToken);
+
+                // Updated new access token.
                 accountAccessToken.Value = token;
                 _jAccessTokenLogic.Update(accountAccessToken);
             }
 
             // Redirect them to our Home page with their credentials logged.
             // TODO @Scott The Ok response should be a 301 response to redirect the SSO to our client.
-            // Location: new Uri(BaseClientUrl + "home?jwt=" + token)
             return new HttpResponseMessage
             {
+                Content = new StringContent(BaseClientUrl + "home?jwt=" + token),
                 ReasonPhrase = "Redirected",
                 StatusCode = HttpStatusCode.OK
             };
@@ -202,23 +199,23 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
 
             // Validate
 
-            //if (partialAccount == null && account == null)
-            //{
-            //    return new HttpResponseMessage
-            //    {
-            //        ReasonPhrase = "Invalid Credentials",
-            //        StatusCode = HttpStatusCode.BadRequest
-            //    };
-            //}
+            if (partialAccount == null && account == null)
+            {
+                return new HttpResponseMessage
+                {
+                    Content = new StringContent("Invalid Credentials"),
+                    StatusCode = HttpStatusCode.BadRequest
+                };
+            }
 
-            //if (partialAccount != null && account != null)
-            //{
-            //    return new HttpResponseMessage
-            //    {
-            //        ReasonPhrase = "Database Inconsistency",
-            //        StatusCode = HttpStatusCode.InternalServerError
-            //    };
-            //}
+            if (partialAccount != null && account != null)
+            {
+                return new HttpResponseMessage
+                {
+                    Content = new StringContent("Database Inconsistency"),
+                    StatusCode = HttpStatusCode.InternalServerError
+                };
+            }
 
             if (partialAccount != null)
             {
@@ -230,10 +227,8 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
                 return AccountResetPasswordHelper(resetPasswordDto, account);
             }
 
-            return new HttpResponseMessage
-            {
-                StatusCode = HttpStatusCode.InternalServerError
-            };
+            // Login Failure
+            return new HttpResponseMessage(HttpStatusCode.InternalServerError);
         }
 
         private HttpResponseMessage PartialAccountResetPasswordHelper(SsoResetPasswordRequestDTO resetPasswordDto,

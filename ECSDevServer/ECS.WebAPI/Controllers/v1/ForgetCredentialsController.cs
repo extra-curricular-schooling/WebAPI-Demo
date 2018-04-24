@@ -1,9 +1,8 @@
-﻿using System.Net;
-using System.Web.Http;
+﻿using System.Web.Http;
 using System.Web.Http.Cors;
 using ECS.BusinessLogic.ControllerLogic.Implementations;
 using ECS.DTO;
-using ECS.WebAPI.HttpClients;
+using ECS.Constants.Network;
 
 namespace ECS.WebAPI.Controllers.v1
 {
@@ -24,7 +23,7 @@ namespace ECS.WebAPI.Controllers.v1
         /// <returns></returns>
         [HttpGet]
         [Route("GetUsername")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET")]
+        [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "GET")]
         public IHttpActionResult GetUsername(string email)
         {
             if (email == null)
@@ -43,7 +42,7 @@ namespace ECS.WebAPI.Controllers.v1
         /// <returns></returns>
         [HttpGet]
         [Route("GetSecurityQuestions")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET")]
+        [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "GET")]
         public IHttpActionResult GetSecurityQuestions(string username)
         {
             if (username == null)
@@ -64,7 +63,7 @@ namespace ECS.WebAPI.Controllers.v1
         /// <returns></returns>
         [HttpPost]
         [Route("SubmitAnswers")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
+        [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "POST")]
         public IHttpActionResult SubmitAnswers(AccountPostAnswersDTO answers)
         {
             Validate(answers);
@@ -86,7 +85,7 @@ namespace ECS.WebAPI.Controllers.v1
         /// <returns></returns>
         [HttpPost]
         [Route("SubmitNewPassword")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
+        [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "POST")]
         public IHttpActionResult SubmitNewPassword(AccountCredentialDTO credentials)
         {
             Validate(credentials);
@@ -98,87 +97,6 @@ namespace ECS.WebAPI.Controllers.v1
             IHttpActionResult actionResultResponse = ResponseMessage(response);
 
             return actionResultResponse;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <remarks>Author: Scott Roberts</remarks>
-        //[HttpPost]
-        //[Route("Password")]
-        //// The DTO we are using worries me because it will have an empty password field for this action
-        //// Should I make a AccountUsernameDTO???
-        //public IHttpActionResult Username(AccountCredentialDTO credentials)
-        //{
-        //    // Credentials is already read and deserialized into a DTO. Validate it.
-        //    Validate(credentials);
-
-        //    if (!ModelState.IsValid)
-        //        return BadRequest(ModelState);
-
-        //    // Proccess any other information.
-
-        //    // Check DB for username
-
-        //    // Send User's security questions.
-        //    using (HttpClientService client = HttpClientService.SsoInstance)
-        //    {
-        //        // send to client.
-        //    }
-
-        //    // Return successful response
-        //    return Ok();
-        //}
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <remarks>Author: Scott Roberts</remarks>
-        [HttpPost]
-        [Route("SecurityAnswers")]
-        public IHttpActionResult SecurityAnswers(SecurityQuestionDTO securityQuestions)
-        {
-            // Credentials is already read and deserialized into a DTO. Validate it.
-            Validate(securityQuestions);
-
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            // Proccess any other information.
-
-            // Verify User's answers.
-
-            // Redirect User to Account reset password page??
-
-            // Return successful response
-            return Ok();
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <remarks>Author: Scott Roberts</remarks>
-        [HttpPost]
-        [Route("AccountPassword")]
-        public IHttpActionResult AccountPassword(AccountCredentialDTO credentials)
-        {
-            // Credentials is already read and deserialized into a DTO. Validate it.
-            Validate(credentials);
-
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            // Proccess any other information.
-
-            // Submit new password to app DB.
-
-            // After you finish the resetpassword action, we need to send the finished information to the SSO.
-            //PostNewPasswordToSSO(credentials);
-
-            // Redirect User to Account reset password page??
-
-            // Return successful response
-            return Ok();
         }
     }
 }

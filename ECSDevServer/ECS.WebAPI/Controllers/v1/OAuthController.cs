@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using DotNetOpenAuth.LinkedInOAuth2;
+using ECS.Constants.Network;
 using ECS.Models;
 using ECS.Repositories.Implementations;
 using ECS.Security.AccessTokens.Jwt;
@@ -193,7 +194,7 @@ namespace ECS.WebAPI.Controllers.v1
         [AllowAnonymous]
         [HttpGet]
         [Route("RedirectToLinkedIn")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "GET")]
+        [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "GET")]
         public IHttpActionResult RedirectToLinkedIn(string authtoken, string returnURI)
         {
             string username;

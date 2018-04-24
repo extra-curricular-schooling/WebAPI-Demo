@@ -61,9 +61,12 @@
     <Compile Include="AccessTokens\Jwt\SsoJwtManager.cs" />
     <Compile Include="Hash\HashService.cs" />
     <Compile Include="Hash\IHashService.cs" />
-    <Compile Include="Types\Roles.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ECS.Constants\ECS.Constants.csproj">
+      <Project>{59cc49eb-347f-40e4-86d0-f7cf71f07c55}</Project>
+      <Name>ECS.Constants</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ECS.DTO\ECS.DTO.csproj">
       <Project>{40BC80F4-7950-4A6F-B94F-C35F7081A48B}</Project>
       <Name>ECS.DTO</Name>

@@ -5,6 +5,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
+using ECS.DTO.Sso;
 using ECS.Repositories;
 using ECS.Repositories.Implementations;
 using Microsoft.IdentityModel.Tokens;

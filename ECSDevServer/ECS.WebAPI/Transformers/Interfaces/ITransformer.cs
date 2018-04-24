@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Net.Http;
+using System.Web.Http.Controllers;
 
-namespace ECS.WebAPI.Services.Transformers.Interfaces
+namespace ECS.WebAPI.Transformers.Interfaces
 {
-    interface ITransformer<T> where T : class
+    interface ITransformer
     {
-        T Fetch(T content);
-        T Send(T content);
+        Object Fetch(HttpRequestContext context);
+        HttpResponseMessage Send(Object dto);
     }
 }

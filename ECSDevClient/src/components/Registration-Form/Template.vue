@@ -49,6 +49,7 @@
         <p id="emailControl" class="help">{{ emailMessage }}</p>
       </div>
 
+      <bad-password ref="alert"></bad-password>
       <div class="field password">
         <label class="label field-element is-required">Password</label>
         <div class="control has-icons-left">
@@ -63,7 +64,7 @@
       <div class="field confirm-password">
         <label class="label field-element is-required">Confirm Password</label>
         <div class="control has-icons-left">
-          <input id="confirmPassword" class="input" type="password" @keyup="validateConfirmPassword" autocomplete="new-password" placeholder="************" required>
+          <input id="confirmPassword" class="input" type="password" @keyup="passwordEventHelper(getPassword())" autocomplete="new-password" placeholder="************" required>
           <span class="icon is-small is-left">
             <i class="fas fa-lock"></i>
           </span>
@@ -110,11 +111,10 @@
       <div class="field security-questions">
         <label class="label field-element is-required">Security Questions</label>
         <div class="control">
-          <!-- <input v-model="question1" class="input" type="number" placeholder="Question 1" required> -->
           <span class="select">
             <select @change="getSelectionID(0, question1)" v-model="question1">
               <option disabled value="">--select--</option>
-              <option v-for="question in questions" v-bind:key="question.SecurityQuestionID"> {{ question.SecQuestion }} </option>
+              <option v-for="question in questionSet1" v-bind:key="question.SecurityQuestionID"> {{ question.SecQuestion }} </option>
             </select>
           </span>
         </div>
@@ -127,11 +127,10 @@
 
       <div class="field security-questions">
         <div class="control">
-          <!-- <input v-model="question2" class="input" type="number" placeholder="Question 2" required> -->
           <span class="select">
             <select @change="getSelectionID(1, question2)" v-model="question2">
               <option disabled value="">--select--</option>
-              <option v-for="question in questions" v-bind:key="question.SecurityQuestionID"> {{ question.SecQuestion }} </option>
+              <option v-for="question in questionSet2" v-bind:key="question.SecurityQuestionID"> {{ question.SecQuestion }} </option>
             </select>
           </span>
         </div>
@@ -144,11 +143,10 @@
 
       <div class="field security-questions">
         <div class="control">
-          <!-- <input v-model="question3" class="input" type="number" placeholder="Question 1" required> -->
           <span class="select">
             <select @change="getSelectionID(2, question3)" v-model="question3">
               <option disabled value="">--select--</option>
-              <option v-for="question in questions" v-bind:key="question.SecurityQuestionID"> {{ question.SecQuestion }} </option>
+              <option v-for="question in questionSet3" v-bind:key="question.SecurityQuestionID"> {{ question.SecQuestion }} </option>
             </select>
           </span>
         </div>
@@ -169,7 +167,6 @@
       </label><br>
       <label class="checkbox">
         <agreement-modal ref="modal"></agreement-modal>
-        <!-- <input type="checkbox"> -->
         <input type="checkbox" @click="checkBox" v-bind:class="{ 'checked' : agreementIsChecked }">
         I agree to the <a @click.prevent="toggleModal">Terms and Conditions</a>.
       </label>
@@ -196,13 +193,15 @@
 /* eslint-disable */
 import Axios from 'axios'
 import AgreementModal from '@/components/registration-form/elements/AgreementModal'
-// import registrationAlert from '@/components/registration-form/elements/RegistrationAlert'
+import BadPassword from '@/components/bad-password-alert/Template'
+import Shuffler from '@/assets/js/arrayShuffler'
+import EventBus from '@/assets/js/EventBus'
 
 export default {
   name: 'RegistrationForm',
   components: {
-    'agreement-modal': AgreementModal
-    // 'registration-alert': registrationAlert
+    'agreement-modal': AgreementModal,
+    'bad-password': BadPassword
   },
   data () {
     return {
@@ -210,6 +209,11 @@ export default {
       question1: '',
       question2: '',
       question3: '',
+      questionSet1: [],
+      questionSet2: [],
+      questionSet3: [],
+
+      // Event Properties
       agreementIsChecked: false,
 
       // Request Data
@@ -255,10 +259,21 @@ export default {
     this.fetchSecurityQuestions()
   },
   methods: {
-    // Data Getters
+    // ************************* Getters *************************
+    /**
+     * @description
+     * gets password inputted by user
+     * @returns {string} Password
+     */
     getPassword () {
       return document.getElementById('password').value;
     },
+    /**
+     * @description
+     * gets a particular security answer
+     * @param {number} i - The label of a security answer
+     * @returns {string} Security answer
+     */
     getSecurityAnswer (i) {
       var answer
       if (i == 1) {
@@ -270,6 +285,12 @@ export default {
       }
       return document.getElementById(answer).value;
     },
+    /**
+     * @description
+     * gets ID of a selected security question
+     * @param {number} i - Index of a question ID
+     * @param {string} selected - The selected security question
+     */
     getSelectionID (i, selected) {
       for (var key in this.$data.questions) {
         var question = this.$data.questions[key]
@@ -279,7 +300,13 @@ export default {
       }
       this.$data.questionIDs[i] = ID
     },
-    // Data Validations
+    // ************************* Data Validators *************************
+    /**
+     * @description
+     * validates the first name of a user as defined by the constraint of the 
+     * name regular expression
+     * regex: NAME_REGEX
+     */
     validateFirstName () {
       if (!this.$data.NAME_REGEX.test(this.$data.firstName) && this.$data.firstName != '') {
         document.getElementById('firstName').className = 'input';
@@ -295,6 +322,12 @@ export default {
         this.$data.firstNameMessage = '';
       }
     },
+    /**
+     * @description
+     * validates the last name of a user as defined by the constraint of the 
+     * name regular expression
+     * regex: NAME_REGEX
+     */
     validateLastName () {
       if (!this.$data.NAME_REGEX.test(this.$data.lastName) && this.$data.lastName != '') {
         document.getElementById('lastName').className = 'input';
@@ -310,6 +343,12 @@ export default {
         this.$data.lastNameMessage = '';
       }
     },
+    /**
+     * @description
+     * validates the username of a user as defined by the constraint of the 
+     * username regular expression
+     * regex: USERNAME_REGEX
+     */
     validateUsername () {
       if (!this.$data.USERNAME_REGEX.test(this.$data.username) && this.$data.username != '') {
         document.getElementById('username').className = 'input';
@@ -325,6 +364,12 @@ export default {
         this.$data.usernameMessage = '';
       }
     },
+    /**
+     * @description
+     * validates the email of a user as defined by the constraint of the 
+     * email regular expression
+     * regex: EMAIL_REGEX
+     */
     validateEmail () {
       if (!this.$data.EMAIL_REGEX.test(this.$data.email) && this.$data.email != '') {
         document.getElementById('email').className = 'input';
@@ -340,6 +385,12 @@ export default {
         this.$data.emailMessage = '';
       }
     },
+    /**
+     * @description
+     * validates the password of a user as defined by the constraint of the 
+     * password regular expression
+     * regex: PASSWORD_REGEX
+     */
     validatePassword () {
       if (!this.$data.PASSWORD_REGEX.test(document.getElementById('password').value) && document.getElementById('password').value != '') {
         document.getElementById('password').className = 'input';
@@ -355,6 +406,10 @@ export default {
         this.$data.passwordMessage = '';
       }
     },
+    /**
+     * @description
+     * validates if the conifrmed password matches the inputted password
+     */
     validateConfirmPassword () {
       if (document.getElementById('password').value != document.getElementById('confirmPassword').value && document.getElementById('confirmPassword').value != '') {
         document.getElementById('confirmPassword').className = 'input';
@@ -370,6 +425,12 @@ export default {
         this.$data.confirmPasswordMessage = '';
       }
     },
+    /**
+     * @description
+     * validates the address of a user as defined by the constraint of the 
+     * address regular expression
+     * regex: ADDRESS_REGEX
+     */
     validateAddress () {
       if (!this.$data.ADDRESS_REGEX.test(this.$data.address) && this.$data.address != '') {
         document.getElementById('address').className = 'input';
@@ -385,6 +446,12 @@ export default {
         this.$data.addressMessage = '';
       }
     },
+    /**
+     * @description
+     * validates the city of a user as defined by the constraint of the 
+     * city regular expression
+     * regex: CITY_REGEX
+     */
     validateCity () {
       if (!this.$data.CITY_REGEX.test(this.$data.city) && this.$data.city != '') {
         document.getElementById('city').className = 'input';
@@ -400,6 +467,12 @@ export default {
         this.$data.cityMessage = '';
       }
     },
+    /**
+     * @description
+     * validates the state of a user as defined by the constraint of the 
+     * state regular expression
+     * regex: STATE_REGEX
+     */
     validateState () {
       if (!this.$data.STATE_REGEX.test(this.$data.state) && this.$data.state != '') {
         document.getElementById('state').className = 'input';
@@ -415,6 +488,12 @@ export default {
         this.$data.stateMessage = '';
       }
     },
+    /**
+     * @description
+     * validates the zip code of a user as defined by the constraint of the 
+     * zip code regular expression
+     * regex: ZIPCODE_REGEX
+     */
     validateZipCode () {
       if (!this.$data.ZIPCODE_REGEX.test(this.$data.zipCode) && this.$data.zipCode != '') {
         document.getElementById('zipCode').className = 'input';
@@ -430,6 +509,10 @@ export default {
         this.$data.zipCodeMessage = '';
       }
     },
+    /**
+     * @description
+     * validates if all three answers have been provided
+     */
     validateAnswers () {
       if (document.getElementById('answer1').value == '' && document.getElementById('answer2').value == '' && document.getElementById('answer3').value == '') {
         document.getElementById('answer1').className = 'input';
@@ -451,6 +534,12 @@ export default {
         this.$data.answersMessage = 'Please provide answers to all questions.';
       }
     },
+    /**
+     * @description
+     * validates if all information has been successfully filled and validated
+     * @returns {boolean} true - If the form is valid
+     * @returns {boolean} false - If the form is not valid
+     */
     isValidForm () {
       if (document.getElementById('firstName').className == 'input is-success' &&
         document.getElementById('lastName').className == 'input is-success' &&
@@ -469,14 +558,47 @@ export default {
         return false
       }
     },
-    // Togglers
+    // ************************* Togglers *************************
+    /**
+     * @description
+     * toggles/activates and deactivates the agreement modal that contains
+     * the site's terms and conditions
+     */
     toggleModal () {
       this.$refs.modal.toggle()
     },
+    /**
+     * @description
+     * toggles/activates and deactivates alert if password provided has been 
+     * previously breached
+     * @param {string} password - Password inputed by user
+     */
+    toggleAlert (password) {
+      this.$refs.alert.toggle(password)
+      EventBus.$on('click', (status) => {
+        console.log(status)
+        if (status == 'rejected') {
+          document.getElementById('password').value = ''
+          document.getElementById('password').className = 'input'
+          document.getElementById('confirmPassword').value = ''
+          document.getElementById('confirmPassword').className = 'input'
+        }
+      })
+    },
+    /**
+     * @description
+     * toggles the checkbox of the form if clicked/selected
+     */
     checkBox () {
       this.agreementIsChecked = !this.agreementIsChecked
     },
-    // APIs
+    // ************************* APIs *************************
+    /**
+     * @description
+     * POST request to server to submit form to register a new user
+     * @throws {Conflict} Throws exception if user already has an existing account
+     * @throws {InternalServerError} Throws exception if request cannot be processed
+     */
     submit () {
       if (!this.isValidForm()) { 
         alert('It seems either your form is incomplete or some of your inputs are invalid...') 
@@ -538,6 +660,11 @@ export default {
           })
       }
     },
+    /**
+     * @description
+     * GET request to get security questions from database
+     * @throws {InternalServerError} Throws exception if request cannot be processed
+     */
     fetchSecurityQuestions () {
       Axios({
         method: 'GET',
@@ -545,7 +672,8 @@ export default {
         headers: this.$store.getters.getRequestHeaders
       })
         .then(response => {
-          this.$data.questions = JSON.parse(response.data)
+          this.$data.questions = Shuffler.shuffleArray(JSON.parse(response.data))
+          this.divideQuestions()
         })
         .catch(error => {
           console.log(error.response)
@@ -557,6 +685,37 @@ export default {
             alert('We apologize.  We are unable to process your request at this time.')
           }
         })
+    },
+    // ************************* Helpers *************************
+    /**
+     * @description
+     * event helper to handle validation of confirm password and pwned password checker
+     * on keyup
+     */
+    passwordEventHelper(password) {
+      this.validateConfirmPassword()
+      if (document.getElementById('password').className == 'input is-success' &&
+        document.getElementById('confirmPassword').className == 'input is-success') {
+        this.toggleAlert(password)
+      }
+    },
+    /**
+     * @description
+     * divides security questions GET response from server into 3 groups to populate
+     * form upon component creation
+     */
+    divideQuestions () {
+      let partSize = this.$data.questions.length/3
+
+      for (let i = 0; i < this.$data.questions.length; i+=partSize) {
+        if (i == 0) {
+          this.$data.questionSet1 = this.$data.questions.slice(i,i+partSize)
+        } else if (i == partSize) {
+          this.$data.questionSet2 = this.$data.questions.slice(i,i+partSize)
+        } else if (i == partSize*2) {
+          this.$data.questionSet3 = this.$data.questions.slice(i,i+partSize)
+        }
+      }
     }
   }
 }

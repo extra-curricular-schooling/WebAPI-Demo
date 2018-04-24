@@ -2,6 +2,7 @@
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using ECS.Constants.Network;
 using ECS.DTO;
 using ECS.Models;
 using ECS.Repositories.Implementations;
@@ -29,7 +30,7 @@ namespace ECS.WebAPI.Controllers.v1
         [HttpPost]
         [AllowAnonymous]
         [Route("Submit")]
-        [EnableCors(origins: "http://localhost:8080", headers: "*", methods: "POST")]
+        [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "POST")]
         public IHttpActionResult Submit(AccountCredentialDTO credentials)
         {
             // Credentials is already read and deserialized into a DTO. Validate it.
@@ -68,6 +69,11 @@ namespace ECS.WebAPI.Controllers.v1
             catch (Exception)
             {
                 return BadRequest("Invalid credentials.");
+            }
+
+            if (!account.AccountStatus)
+            {
+                return BadRequest("SUSPENDED");
             }
 
             // Issue login information

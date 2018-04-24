@@ -14,5 +14,17 @@ namespace ECS.Models
 
         [Required]
         public bool CanReuse { get; set; }
+
+        public ExpiredAccessToken()
+        {
+            ExpiredTokenValue = "";
+            CanReuse = false;
+        }
+
+        public ExpiredAccessToken(string expiredTokenValue, bool canReuse)
+        {
+            ExpiredTokenValue = expiredTokenValue;
+            CanReuse = canReuse;
+        }
     }
 }

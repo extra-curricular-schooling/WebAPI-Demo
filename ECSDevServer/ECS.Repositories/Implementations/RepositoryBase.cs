@@ -39,6 +39,7 @@ namespace ECS.Repositories.Implementations
         public void Delete(T entity)
         {
             //Use the context object and entity state to delete the entity
+            DbSet.Attach(entity);
             DbSet.Remove(entity);
             _context.Entry(entity).State = EntityState.Deleted;
             _context.SaveChanges();
@@ -47,7 +48,7 @@ namespace ECS.Repositories.Implementations
         public void Update(T entity)
         {
             //Use the context object and entity state to update the entity
-            _context.Entry(entity).State = EntityState.Modified;
+            //_context.Entry(entity).State = EntityState.Modified;
             _context.SaveChanges();
         }
 

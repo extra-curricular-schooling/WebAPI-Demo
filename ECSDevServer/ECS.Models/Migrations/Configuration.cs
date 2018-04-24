@@ -2539,6 +2539,14 @@ namespace ECS.Models.Migrations
                 {
                     // RoleId = roles.Single(i => i.// RoleId == 2).// RoleId,
                     PermissionName = "CanViewArticle"
+                },
+                new Permission
+                {
+                    PermissionName = "Scholar"
+                },
+                new Permission
+                {
+                    PermissionName = "Admin"
                 }
             };
             permissions.ForEach(s => context.Permissions.AddOrUpdate(p => p.PermissionName, s));
@@ -2565,6 +2573,11 @@ namespace ECS.Models.Migrations
                         // RoleId = permissions.First(i => i.// RoleId == 1).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test1").UserName
                      },
+                new AccountType
+                {
+                    PermissionName = permissions.First(i => i.PermissionName == "Scholar").PermissionName,
+                    Username = accounts.Single(i => i.UserName == "test1").UserName
+                },
                      new AccountType
                      {
                         PermissionName = permissions.First(i => i.PermissionName == "CanEditInformation").PermissionName,
@@ -2583,6 +2596,11 @@ namespace ECS.Models.Migrations
                         // RoleId = permissions.First(i => i.// RoleId == 2).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test2").UserName
                      },
+                new AccountType
+                {
+                    PermissionName = permissions.First(i => i.PermissionName == "Scholar").PermissionName,
+                    Username = accounts.Single(i => i.UserName == "test2").UserName
+                },
                      new AccountType
                      {
                         PermissionName = permissions.First(i => i.PermissionName == "CanCreateUser").PermissionName,
@@ -2601,6 +2619,11 @@ namespace ECS.Models.Migrations
                         // RoleId = permissions.First(i => i.// RoleId == 1).// RoleId,
                         Username = accounts.Single(i => i.UserName == "test3").UserName
                      },
+                new AccountType
+                {
+                    PermissionName = permissions.First(i => i.PermissionName == "Admin").PermissionName,
+                    Username = accounts.Single(i => i.UserName == "test3").UserName
+                },
                      new AccountType
                      {
                         PermissionName = permissions.First(i =>i.PermissionName == "CanCreateUser").PermissionName,
@@ -3874,11 +3897,7 @@ namespace ECS.Models.Migrations
 
             var expiredAcessTokens = new List<ExpiredAccessToken>
             {
-                new ExpiredAccessToken
-                {
-                    ExpiredTokenValue = "uifuafnnionwaengv920n3gnioawev",
-                    CanReuse = false
-                }
+                new ExpiredAccessToken("uifuafnnionwaengv920n3gnioawev",false)
             };
             expiredAcessTokens.ForEach(s => context.ExpiredAccessTokens.AddOrUpdate(p => p.ExpiredTokenId, s));
             context.SaveChanges();
