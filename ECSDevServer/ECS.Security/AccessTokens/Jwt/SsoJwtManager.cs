@@ -17,14 +17,7 @@ namespace ECS.Security.AccessTokens.Jwt
 {
     public class SsoJwtManager
     {
-        #region Constants and fields
-        /// <summary>
-        /// Use the below code to generate symmetric Secret Key
-        ///     var hmac = new HMACSHA256();
-        ///     var key = Convert.ToBase64String(hmac.Key);
-        /// </summary>
-        private const string Secret = "db3OIsj+BXE9NZDy0t8W3TcNekrF+2d/1sFnWG4HnV8TZY30iTOdtVWJG8abWvB1GlOgJuQZdcF2Luqm/hccMw==";
-
+        #region Fields
         // Single repository to query users associated with tokens.
         private readonly IPartialAccountRepository _partialAccountRepository;
 
@@ -64,12 +57,12 @@ namespace ECS.Security.AccessTokens.Jwt
                 new Claim(ClaimNames.Username, loginDto.Username),
                 new Claim(ClaimNames.Password, loginDto.Password),
                 new Claim(ClaimNames.RoleType, loginDto.RoleType),
-                new Claim(ClaimNames.Application, "ecs")
+                new Claim(ClaimNames.Application, ClaimValues.Ecs)
             });
 
             var now = DateTime.UtcNow;
 
-            var symmetricKey = Encoding.UTF8.GetBytes(Secret);
+            var symmetricKey = Encoding.UTF8.GetBytes(Secrets.SsoSecret);
             
             var tokenDescriptor = new SecurityTokenDescriptor
             {
@@ -97,7 +90,7 @@ namespace ECS.Security.AccessTokens.Jwt
             if (!(tokenHandler.ReadToken(token) is JwtSecurityToken))
                 throw new Exception("Token is not a compatible JwtSecurityToken type");
 
-            var symmetricKey = Encoding.UTF8.GetBytes(Secret);   
+            var symmetricKey = Encoding.UTF8.GetBytes(Secrets.SsoSecret);   
 
             // The checks that occur during validation of the JWT.
             var validationParameters = new TokenValidationParameters()

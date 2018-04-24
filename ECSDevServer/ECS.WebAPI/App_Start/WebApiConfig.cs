@@ -58,16 +58,17 @@ namespace ECS.WebAPI
                 name: "DefaultApi",
                 routeTemplate: "{version}/{controller}/{action}/{id}",
                 defaults: new { id = RouteParameter.Optional, action = "Get" },
-                constraints: new { version = "v1" },
-                handler:
-                HttpClientFactory.CreatePipeline(
-                    new HttpControllerDispatcher(config),
-                    new DelegatingHandler[] { new AccessTokenAuthenticationDelegatingHandler() })
+                constraints: new { version = "v1" }
+                //handler:
+                //HttpClientFactory.CreatePipeline(
+                //    new HttpControllerDispatcher(config),
+                //    new DelegatingHandler[] { new AccessTokenAuthenticationDelegatingHandler() })
             );
 
             // Authorization Filters
             //GlobalConfiguration.Configuration.Filters.Add(new AuthorizeRequiredAttribute());
-            config.Filters.Add(new AuthorizeRequiredAttribute());
+            // TODO: @Scott/Kris This is authenticating SSO. It cant be global.
+            //config.Filters.Add(new AuthorizeRequiredAttribute());
             // Action Filters
 
             // Exception Filters
