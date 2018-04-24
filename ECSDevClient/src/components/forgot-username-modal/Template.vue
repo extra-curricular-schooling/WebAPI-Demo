@@ -87,29 +87,53 @@ export default {
       // Validation Messages
       emailMessage: '',
 
-      // Reg Ex
+      // Regular Expressions
       EMAIL_REGEX: /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
 
-      // Event Handling
+      // Event Properties
       isActive: false,
       body: 'firstStep'
     }
   },
   methods: {
+    // ************************* Togglers *************************
+    /**
+     * @description
+     * toggles/activates and deactivates forgot username modal
+     */
     toggle () {
       this.isActive = !this.isActive
     },
+    /**
+     * @description
+     * closes modal if user clicks 'cancel'
+     */
     cancel () {
       this.toggle()
       this.body = 'firstStep'
     },
+    /**
+     * @description
+     * makes request to server to submit email and search for username
+     */
     submit () {
       this.submitEmail()
     },
+    /**
+     * @description
+     * closes modal if modal is closed
+     */
     close () {
       this.toggle()
       this.body = 'firstStep'
     },
+    // ************************* Data Validators *************************
+    /**
+     * @description
+     * validates if user enters correctly formatted email as defined by the
+     * constraint of the email regular expression
+     * regex: EMAIL_REGEX
+     */
     validateEmail () {
       if (!this.$data.EMAIL_REGEX.test(this.$data.email) && this.$data.email != '') {
         document.getElementById('email').className = 'input';
@@ -125,6 +149,12 @@ export default {
         this.$data.emailMessage = '';
       }
     },
+    /**
+     * @description
+     * validates if input is completed and information is ready for submission
+     * @returns {boolean} true - If input is valid
+     * @returns {boolean} false - If input is not valid
+     */
     isValid () {
       if (document.getElementById('email').className == 'input is-success') {
         return true
@@ -132,6 +162,12 @@ export default {
         return false
       }
     },
+    // ************************* APIs *************************
+    /**
+     * @description
+     * GET request to get username from account using email
+     * @throws {Conflict} Throws exception if user is not found
+     */
     submitEmail () {
       if (this.isValid()) {
         Axios({
