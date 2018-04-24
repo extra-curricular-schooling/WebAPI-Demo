@@ -4,7 +4,9 @@ using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Principal;
+using System.ServiceModel.Security.Tokens;
 using System.Threading.Tasks;
+using ECS.Constants.Security;
 using ECS.DTO.Sso;
 using ECS.Repositories;
 using ECS.Repositories.Implementations;
@@ -15,14 +17,7 @@ namespace ECS.Security.AccessTokens.Jwt
     public class JwtManager : IJwtManager
     {
 
-        #region Constants and fields
-        /// <summary>
-        /// Use the below code to generate symmetric Secret Key
-        ///     var hmac = new HMACSHA256();
-        ///     var key = Convert.ToBase64String(hmac.Key);
-        /// </summary>
-        private const string Secret = "db3OIsj+BXE9NZDy0t8W3TcNekrF+2d/1sFnWG4HnV8TZY30iTOdtVWJG8abWvB1GlOgJuQZdcF2Luqm/hccMw==";
-
+        #region Fields
         // Single repository to query users associated with tokens.
         private static AccountRepository _accountRepository;
 
@@ -49,7 +44,7 @@ namespace ECS.Security.AccessTokens.Jwt
 
         public string GenerateToken(string username, int expireMinutes = 15)
         {
-            var symmetricKey = Convert.FromBase64String(Secret);
+            var symmetricKey = Convert.FromBase64String(Secrets.AppSecret);
             var tokenHandler = new JwtSecurityTokenHandler();
 
             var now = DateTime.UtcNow;
@@ -58,7 +53,8 @@ namespace ECS.Security.AccessTokens.Jwt
                 Issuer = "https://localhost:44311/",
                 Subject = new ClaimsIdentity(new[]
                         {
-                            new Claim(ClaimTypes.Name, username), 
+                            new Claim(ClaimTypes.Name, username),
+                            // TODO: @Kris Why is this hardcoded to be scholar only?
                             new Claim(ClaimTypes.Role, "Scholar")
                         }),
                 IssuedAt = now,
@@ -83,7 +79,7 @@ namespace ECS.Security.AccessTokens.Jwt
                 if (jwtToken == null)
                     return null;
 
-                var symmetricKey = Convert.FromBase64String(Secret);
+                var symmetricKey = Convert.FromBase64String(Secrets.AppSecret);
 
                 var validationParameters = new TokenValidationParameters()
                 {
@@ -96,7 +92,7 @@ namespace ECS.Security.AccessTokens.Jwt
                     IssuerSigningKey = new SymmetricSecurityKey(symmetricKey)
                 };
 
-                var principal = tokenHandler.ValidateToken(token, validationParameters, out SecurityToken securityToken);
+                var principal = tokenHandler.ValidateToken(token, validationParameters, out _);
 
                 return principal;
             }
@@ -117,7 +113,7 @@ namespace ECS.Security.AccessTokens.Jwt
                 if (jwtToken == null)
                     return null;
 
-                var symmetricKey = Convert.FromBase64String(Secret);
+                var symmetricKey = Convert.FromBase64String(Secrets.AppSecret);
 
                 var validationParameters = new TokenValidationParameters()
                 {
@@ -129,7 +125,7 @@ namespace ECS.Security.AccessTokens.Jwt
                     IssuerSigningKey = new SymmetricSecurityKey(symmetricKey)
                 };
 
-                var principal = tokenHandler.ValidateToken(token, validationParameters, out SecurityToken securityToken);
+                var principal = tokenHandler.ValidateToken(token, validationParameters, out _);
 
                 return principal;
             }

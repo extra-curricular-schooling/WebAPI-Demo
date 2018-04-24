@@ -10,7 +10,7 @@ namespace ECS.Repositories.Implementations
     public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class
     {
         // DbContext represents the data context (database connection) currently in use.
-        private readonly DbContext _context;
+        protected readonly DbContext Context;
 
         // DbSet represents the "table" that you are performing operations on.
         protected readonly IDbSet<T> DbSet;
@@ -24,16 +24,16 @@ namespace ECS.Repositories.Implementations
         protected RepositoryBase(DbContext datacontext)
         {
             //You can use the cpmt
-            _context = datacontext;
-            DbSet = _context.Set<T>();
+            Context = datacontext;
+            DbSet = Context.Set<T>();
         }
         
         public void Insert(T entity)
         {
             //Use the context object and entity state to save the entity
             DbSet.Add(entity);
-            _context.Entry(entity).State = EntityState.Added;
-            _context.SaveChanges();
+            Context.Entry(entity).State = EntityState.Added;
+            Context.SaveChanges();
         }
         
         public void Delete(T entity)
@@ -41,15 +41,15 @@ namespace ECS.Repositories.Implementations
             //Use the context object and entity state to delete the entity
             DbSet.Attach(entity);
             DbSet.Remove(entity);
-            _context.Entry(entity).State = EntityState.Deleted;
-            _context.SaveChanges();
+            Context.Entry(entity).State = EntityState.Deleted;
+            Context.SaveChanges();
         }
         
         public void Update(T entity)
         {
             //Use the context object and entity state to update the entity
-            //_context.Entry(entity).State = EntityState.Modified;
-            _context.SaveChanges();
+            Context.Entry(entity).State = EntityState.Modified;
+            Context.SaveChanges();
         }
 
         public T GetById(int id)
@@ -130,7 +130,7 @@ namespace ECS.Repositories.Implementations
 
         public void Dispose()
         {
-            _context?.Dispose();
+            Context?.Dispose();
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using ECS.BusinessLogic.ModelLogic.Implementations;
 using System.Net.Http;
+using ECS.BusinessLogic.ModelLogic.Contracts;
 using ECS.Constants.Security;
 using ECS.DTO;
 using ECS.Models;
@@ -12,8 +13,6 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
 {
     public class RegistrationControllerLogic
     {
-        private const string BaseClientUrl = "http://localhost:8080/";
-
         private readonly AccountLogic _accountLogic;
         private readonly PartialAccountLogic _partialAccountLogic;
         private readonly SaltLogic _saltLogic;
@@ -217,15 +216,16 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
                 return new HttpResponseMessage
                 {
                     ReasonPhrase = "User already exists.",
+                    Content = new StringContent("User already exists"),
                     StatusCode = HttpStatusCode.Conflict
                 };
             }
-            // Validate: Validate Domain Models
             if (partialAccountModel == null)
             {
                 return new HttpResponseMessage
                 {
                     ReasonPhrase = "Partial account does not exist",
+                    Content = new StringContent("Partial account does not exist"),
                     StatusCode = HttpStatusCode.BadRequest
                 };
             }
@@ -235,6 +235,7 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
                 return new HttpResponseMessage
                 {
                     ReasonPhrase = "Salt does not exist",
+                    Content = new StringContent("Salt does not exist"),
                     StatusCode = HttpStatusCode.InternalServerError
                 };
             }
@@ -340,10 +341,10 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
                 AccountStatus = true,
                 SuspensionTime = DateTime.UtcNow,
                 FirstTimeUser = true,
-                SecurityAnswers = securityAnswers, // Navigation Property
-                AccountTags = new List<InterestTag>(), // Navigation Property
-                SaltSecurityAnswers = saltSecurityAnswers, // Navigation Property
-                AccountTypes = accountTypes // Navigation Property
+                SecurityAnswers = securityAnswers, 
+                AccountTags = new List<InterestTag>(), 
+                SaltSecurityAnswers = saltSecurityAnswers, 
+                AccountTypes = accountTypes 
             };
 
             UserProfile user = new UserProfile()

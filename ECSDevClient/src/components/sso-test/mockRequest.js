@@ -50,13 +50,8 @@ export default {
         // Testing with a 200 response to make sure the Partial Registration is working.
         if (response.status === 200) {
           let parsedQuery = UrlHelper.parseUrlQuery(response.data)
-          console.log(parsedQuery)
           let token = parsedQuery['jwt']
-          // let claims = jwtService.transform(token)
           let claims = JwtService.myDecode(token)
-
-          // Change this back to claims['roleType'] when roleType is not public.
-
           console.log(claims)
           if (UrlHelper.getUrlPath(url) === 'partial-registration') {
             Store.dispatch('updateRole', claims['roleType'])

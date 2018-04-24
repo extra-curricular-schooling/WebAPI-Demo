@@ -36,10 +36,12 @@
     <Compile Include="ControllerLogic\Implementations\LinkedInControllerLogic.cs" />
     <Compile Include="ControllerLogic\Implementations\RegistrationControllerLogic.cs" />
     <Compile Include="ControllerLogic\Implementations\SsoControllerLogic.cs" />
-    <Compile Include="ModelLogic\Contracts\IAccountLogic.cs" />
+    <Compile Include="ModelLogic\Contracts\IBadAccessTokenLogic.cs" />
+    <Compile Include="ModelLogic\Contracts\ICrud.cs" />
+    <Compile Include="ModelLogic\Contracts\IExpiredAccessTokenLogic.cs" />
     <Compile Include="ModelLogic\Contracts\ILinkedinLogic.cs" />
-    <Compile Include="ModelLogic\Contracts\IModelLogic.cs" />
     <Compile Include="ModelLogic\Implementations\AccountLogic.cs" />
+    <Compile Include="ModelLogic\Implementations\BadAccessTokenLogic.cs" />
     <Compile Include="ModelLogic\Implementations\ExpiredAccessTokenLogic.cs" />
     <Compile Include="ModelLogic\Implementations\InterestTagLogic.cs" />
     <Compile Include="ModelLogic\Implementations\JAccessTokenLogic.cs" />
@@ -50,7 +52,8 @@
     <Compile Include="ModelLogic\Implementations\SaltSecurityAnswerLogic.cs" />
     <Compile Include="ModelLogic\Implementations\SecurityQuestionsAccountLogic.cs" />
     <Compile Include="ModelLogic\Implementations\UserProfileLogic.cs" />
-    <Compile Include="Services\RegistrationService.cs" />
+    <Compile Include="Services\Implementations\AuthenticationService.cs" />
+    <Compile Include="Services\Implementations\RegistrationService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ECS.Constants\ECS.Constants.csproj">
@@ -79,11 +82,15 @@
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Annotations, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ComponentModel.Annotations.4.4.1\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Web.Http">
-      <HintPath>..\ECS.WebAPI\bin\System.Web.Http.dll</HintPath>
+    <Reference Include="System.Web.Http, Version=5.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.4\lib\net45\System.Web.Http.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
@@ -93,8 +100,10 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ControllerLogic\Contracts\" />
+    <Folder Include="Services\Contracts\" />
     <Folder Include="Services\RepositoryFacades\" />
     <Folder Include="Validators\DtoValidators\" />
+    <Folder Include="Validators\ModelValidators\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
