@@ -40,13 +40,26 @@ export default {
   name: 'BadPassword',
   data () {
     return {
+      // Properties
       status: '',
-      // Event Handling
+
+      // Event Properties
       isActive: false,
       body: ''
     }
   },
   methods: {
+    // ************************* Togglers *************************
+    /**
+     * @description
+     * toggles the bad password alert if response from API returns a number of breaches
+     * greater than 0
+     * if the number of breaches > 0 and < 100, toggle alert that suggests a user 
+     * to provide a different password
+     * if the number of breaches > 100, toggle alert that rejects the given password
+     * and asks the user to provide a new password
+     * @param {string} userPassword - The password the user provides to be tested if it has been pwned
+     */
     toggle (userPassword) {
       Axios({
         method: 'GET',
@@ -69,6 +82,11 @@ export default {
           console.log(error.response)
         })
     },
+    /**
+     * @description
+     * toggles the alert to close if a button is clicked
+     * @param {string} status - The status (rejected or warned) of the password
+     */
     close (status) {
       this.body = ''
       this.isActive = false
