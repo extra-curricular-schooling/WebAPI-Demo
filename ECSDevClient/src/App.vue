@@ -28,7 +28,6 @@ export default {
           })
         } else {
           EventBus.$emit('cancelInterval', this.cancelInterval)
-          console.log('sent out emit')
         }
       }
     }
