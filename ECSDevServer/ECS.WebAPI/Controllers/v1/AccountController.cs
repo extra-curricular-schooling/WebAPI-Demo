@@ -18,8 +18,6 @@ namespace ECS.WebAPI.Controllers.v1
     public class AccountController : ApiController
     {
         #region Constants and fields
-        private readonly IAccountRepository accountRepository = new AccountRepository();
-        private readonly IInterestTagRepository interestTagRepository = new InterestTagRepository();
         private readonly AccountControllerLogic _accountControllerLogic;
         private readonly AccountLogic _accountLogic;
         private readonly SaltLogic _saltLogic;
@@ -102,8 +100,8 @@ namespace ECS.WebAPI.Controllers.v1
         [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "GET")]
         public IList<string> RetrieveInterestTags()
         {
-            var interests = accountControllerLogic.interestTagLogic.GetAllInterestTags();
-            return accountControllerLogic.ListAllInterestTags(interests);
+            var interests = _accountControllerLogic.RetrieveInterestTags();
+            return _accountControllerLogic.ListAllInterestTags(interests);
 
         }
 
@@ -114,12 +112,12 @@ namespace ECS.WebAPI.Controllers.v1
         /// <param name="username"></param>
         /// <returns> A list of interest tags based on a user</returns>
         [HttpGet]
-        [Route("{username}/GetInterests")]
+        [Route("{username}/GetUserInterests")]
         [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "GET")]
         public IList<string> GetUserInterests(string username)
         {
-            Account account = accountControllerLogic.accountLogic.IncludeAccountTags(username);
-            return accountControllerLogic.GetUserInterestTags(account);
+            Account account = _accountControllerLogic.accountRetrieval(username);
+            return _accountControllerLogic.GetUserInterestTags(account);
             
         }
 
@@ -130,7 +128,7 @@ namespace ECS.WebAPI.Controllers.v1
         /// <param name="userInterests"></param>
         /// <returns> Ok response </returns>
         [HttpPost]
-        [Route("{username}/UpdateInterests")]
+        [Route("{username}/UpdateUserInterests")]
         [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "POST")]
         public IHttpActionResult UpdateUserInterests(InterestTagsDTO userInterests)
         {

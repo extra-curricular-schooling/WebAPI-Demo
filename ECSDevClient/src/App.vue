@@ -20,8 +20,8 @@ export default {
   name: 'App',
   watch: {
     '$route' (to, from) {
-      if (from.name === 'Home') {
-        const answer = window.confirm('Do you really want to leave? you have unsaved changes!')
+      if (from.name === 'Home' && to.name !== 'Home') {
+        const answer = window.confirm('Do you really want to leave? you may not earn points for this.')
         if (!answer) {
           this.$router.push({
             name: 'Home'

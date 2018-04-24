@@ -37,7 +37,7 @@
 <script>
 import ChangePasswordPanel from './elements/ChangePassword-Panel/Template'
 import EventBus from '../../assets/js/EventBus'
-import Interests from '@/components/interest-tag-modal/Template'
+import Interests from '@/components/interest-tag/Template'
 
 export default {
   name: 'AccountSettingsPanel',

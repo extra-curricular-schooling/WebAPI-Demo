@@ -37,7 +37,8 @@ namespace ECS.WebAPI.Controllers.v1
         /// </summary>
         /// <param name="username"></param>
         /// <returns> A list of articleDTO</returns>
-        [Route("{username}")]
+        [HttpGet]
+        [Route("{username}/GetUserArticles")]
         [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "GET")]
         public List<IQueryable<ArticleDTO>> GetUserArticles(string username)
         {

@@ -27,12 +27,6 @@ namespace ECS.BusinessLogic.ModelLogic.Implementations
             _interestTagRepository.Insert(interestTag);
         }
 
-        //public List<InterestTag> GetAllByUsername(string interestTag)
-        //{
-        //    List<InterestTag> interestTags = _interestTagRepository.SearchFor(acc => acc.UserName == interestTag).ToList();
-
-        //    return interestTags;
-        //}
         public IList<InterestTag> GetAllInterestTags()
         {
             return _interestTagRepository.GetAll();
