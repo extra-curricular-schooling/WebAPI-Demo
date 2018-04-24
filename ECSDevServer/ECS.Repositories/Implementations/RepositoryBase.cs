@@ -48,7 +48,7 @@ namespace ECS.Repositories.Implementations
         public void Update(T entity)
         {
             //Use the context object and entity state to update the entity
-            _context.Entry(entity).State = EntityState.Modified;
+            //_context.Entry(entity).State = EntityState.Modified;
             _context.SaveChanges();
         }
 

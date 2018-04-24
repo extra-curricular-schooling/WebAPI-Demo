@@ -2,9 +2,9 @@
 using System.Web.Http;
 using System.Web.Http.Controllers;
 using System.Web.Http.Results;
+using ECS.Constants.Security;
 using ECS.DTO.Sso;
 using ECS.Security.AccessTokens.Jwt;
-using ECS.WebAPI.Services.Transformers.Interfaces;
 using ECS.WebAPI.Transformers.Interfaces;
 
 namespace ECS.WebAPI.Transformers
@@ -15,9 +15,9 @@ namespace ECS.WebAPI.Transformers
         {
             var loginDto = new SsoLoginRequestDTO
             {
-                Username = SsoJwtManager.Instance.GetClaimValue(context.Principal, "username"),
-                Password = SsoJwtManager.Instance.GetClaimValue(context.Principal, "password"),
-                RoleType = SsoJwtManager.Instance.GetClaimValue(context.Principal, "roleType")
+                Username = SsoJwtManager.Instance.GetClaimValue(context.Principal, ClaimNames.Username),
+                Password = SsoJwtManager.Instance.GetClaimValue(context.Principal, ClaimNames.Password),
+                RoleType = SsoJwtManager.Instance.GetClaimValue(context.Principal, ClaimNames.RoleType)
             };
             return loginDto;
         }

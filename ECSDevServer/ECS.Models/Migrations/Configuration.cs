@@ -3897,11 +3897,7 @@ namespace ECS.Models.Migrations
 
             var expiredAcessTokens = new List<ExpiredAccessToken>
             {
-                new ExpiredAccessToken
-                {
-                    ExpiredTokenValue = "uifuafnnionwaengv920n3gnioawev",
-                    CanReuse = false
-                }
+                new ExpiredAccessToken("uifuafnnionwaengv920n3gnioawev",false)
             };
             expiredAcessTokens.ForEach(s => context.ExpiredAccessTokens.AddOrUpdate(p => p.ExpiredTokenId, s));
             context.SaveChanges();

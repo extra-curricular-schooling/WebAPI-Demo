@@ -22,19 +22,25 @@ namespace ECS.Modules.HttpModules
         // List of project accepted authority header value.
         private readonly ISet<string> _acceptedAuthorities = UrlConstants.AcceptedAuthorities;
 
-        // List of accepted orgin header values
+        // List of accepted origin header values
         private readonly ISet<string> _acceptedOrigins = UrlConstants.AcceptedOrigins;
 
         private void OnHttpRequest(object sender, EventArgs e)
         {
             // Cast the sender as an HttpApplication
-            if (sender is HttpApplication app && app.Request.GetType().Name.Equals("HttpRequest"))
+            if (sender is HttpApplication app && app.Request.GetType().Name.Equals(RequestTypes.HttpRequest))
             {
                 var request = app.Request;
                 var type = request.GetType();
 
-                var isAcceptedRefererHeader = request.Headers["Referer"] != null && _acceptedUrls.Contains(request.Headers["Referer"]);
-                var isAcceptedOriginHeader = request.Headers["Origin"] != null && _acceptedOrigins.Contains(request.Headers["Origin"]);
+                var isAcceptedRefererHeader = 
+                    request.Headers[HeaderConstants.Origin] != null && 
+                    _acceptedUrls.Contains(request.Headers[HeaderConstants.Origin]);
+
+                var isAcceptedOriginHeader = 
+                    request.Headers[HeaderConstants.Referer] != null && 
+                    _acceptedOrigins.Contains(request.Headers[HeaderConstants.Referer]);
+
                 var isAcceptedUrlAuthorityHeader = _acceptedAuthorities.Contains(request.Url.Authority);
 
                 // Return the bad request
@@ -53,8 +59,7 @@ namespace ECS.Modules.HttpModules
                 {
                     app.Response.StatusCode = 200;
                     app.Response.AddHeader("Access-Control-Allow-Headers", HeaderConstants.AcceptedHeaders);
-                    app.Response.AddHeader("Access-Control-Expose-Headers", "location");
-                    app.Response.AddHeader("Access-Control-Allow-Origin", request.Headers["Origin"]);
+                    app.Response.AddHeader("Access-Control-Allow-Origin", request.Headers[HeaderConstants.Origin]);
                     app.Response.AddHeader("Access-Control-Allow-Credentials", "true");
                     app.Response.AddHeader("Access-Control-Allow-Methods", "POST,GET,OPTIONS");
                     app.Response.AddHeader("Content-Type", "application/json");

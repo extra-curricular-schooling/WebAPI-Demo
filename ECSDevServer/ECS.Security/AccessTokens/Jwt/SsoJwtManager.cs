@@ -11,6 +11,7 @@ using ECS.DTO.Sso;
 using ECS.Repositories;
 using ECS.Repositories.Implementations;
 using Microsoft.IdentityModel.Tokens;
+using ECS.Constants.Security;
 
 namespace ECS.Security.AccessTokens.Jwt
 {
@@ -60,10 +61,10 @@ namespace ECS.Security.AccessTokens.Jwt
         {
             var claimsIdentity = new ClaimsIdentity(new List<Claim>()
             {
-                new Claim("username", loginDto.Username),
-                new Claim("password", loginDto.Password),
-                new Claim("roleType", loginDto.RoleType),
-                new Claim("application", "ecs")
+                new Claim(ClaimNames.Username, loginDto.Username),
+                new Claim(ClaimNames.Password, loginDto.Password),
+                new Claim(ClaimNames.RoleType, loginDto.RoleType),
+                new Claim(ClaimNames.Application, "ecs")
             });
 
             var now = DateTime.UtcNow;

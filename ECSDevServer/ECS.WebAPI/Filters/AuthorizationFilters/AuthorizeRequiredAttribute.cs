@@ -41,14 +41,14 @@ namespace ECS.WebAPI.Filters.AuthorizationFilters
             {
                 foreach (var claim in _claims)
                 {
-                    if (principal.HasClaim(ClaimTypes.Role, RoleTypes.Scholar))
+                    if (principal.HasClaim(ClaimTypes.Role, ClaimValues.Scholar))
                     {
                         if (principal.HasClaim("PermissionName", claim))
                         {
                             return true;
                         }
                     }
-                    else if (principal.HasClaim(ClaimTypes.Role, RoleTypes.Admin))
+                    else if (principal.HasClaim(ClaimTypes.Role, ClaimValues.Admin))
                     {
                         if (principal.HasClaim("PermissionName", claim))
                         {

@@ -1,8 +1,7 @@
-﻿using System.Web.Http;
-using System.Web.Http.Controllers;
+﻿using System.Web.Http.Controllers;
 using ECS.DTO.Sso;
 
-namespace ECS.WebAPI.Services.Transformers.Interfaces
+namespace ECS.WebAPI.Transformers.Interfaces
 {
     interface ISsoResetPasswordTransformer
     {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using ECS.BusinessLogic.ModelLogic.Implementations;
 using System.Net.Http;
+using ECS.Constants.Security;
 using ECS.DTO;
 using ECS.Models;
 using ECS.Security.Hash;
@@ -119,22 +120,22 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
             {
                 new AccountType()
                 {
-                    PermissionName = "Scholar",
+                    PermissionName = ClaimValues.Scholar,
                     Username = registrationForm.Username
                 },
                 new AccountType()
                 {
-                    PermissionName = "CanEditInformation",
+                    PermissionName = ClaimValues.CanEditInformation,
                     Username = registrationForm.Username
                 },
                 new AccountType()
                 {
-                    PermissionName = "CanViewArticle",
+                    PermissionName = ClaimValues.CanViewArticle,
                     Username = registrationForm.Username
                 },
                 new AccountType()
                 {
-                    PermissionName = "CanEnterRaffle",
+                    PermissionName = ClaimValues.CanEnterRaffle,
                     Username = registrationForm.Username
                 }
                 //new AccountType()
@@ -306,43 +307,26 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
                 },
             };
 
-            List<SecurityQuestionAccount> securityQuestionAccountListObj = new List<SecurityQuestionAccount>
-            {
-                new SecurityQuestionAccount
-                {
-                    Answer = hashedAnswer1,
-                    SecurityQuestionID = registrationForm.SecurityQuestions[0].Question,
-                    Username = registrationForm.Username
-                },
-                new SecurityQuestionAccount
-                {
-                    Answer = hashedAnswer2,
-                    SecurityQuestionID = registrationForm.SecurityQuestions[1].Question,
-                    Username = registrationForm.Username
-                },
-                new SecurityQuestionAccount
-                {
-                    Answer = hashedAnswer3,
-                    SecurityQuestionID = registrationForm.SecurityQuestions[2].Question,
-                    Username = registrationForm.Username
-                }
-            };
-
             List<AccountType> accountTypes = new List<AccountType>
             {
                 new AccountType()
                 {
-                    PermissionName = "canEditInformation",
+                    PermissionName = ClaimValues.Scholar,
                     Username = registrationForm.Username
                 },
                 new AccountType()
                 {
-                    PermissionName = "canViewArticle",
+                    PermissionName = ClaimValues.CanEditInformation,
                     Username = registrationForm.Username
                 },
                 new AccountType()
                 {
-                    PermissionName = "canEnterRaffle",
+                    PermissionName = ClaimValues.CanViewArticle,
+                    Username = registrationForm.Username
+                },
+                new AccountType()
+                {
+                    PermissionName = ClaimValues.CanEnterRaffle,
                     Username = registrationForm.Username
                 }
             };

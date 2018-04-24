@@ -87,10 +87,7 @@ namespace ECS.WebAPI.HttpMessageHandlers.DelegatingHandlers
             }
             catch (Exception e)
             {
-                _badAccessTokenRepository.Insert(new BadAccessToken
-                {
-                    BadTokenValue = token
-                });
+                _badAccessTokenRepository.Insert(new BadAccessToken(token));
                 return SendError(tsc, e.Message);
             }
             return base.SendAsync(request, cancellationToken);

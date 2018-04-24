@@ -159,6 +159,7 @@
     <Compile Include="Filters\ExceptionFilters\AnyExceptionFilterAttribute.cs" />
     <Compile Include="Filters\ExceptionFilters\NotImplExceptionFilterAttribute.cs" />
     <Compile Include="Filters\ExceptionFilters\SqlExceptionFilterAttribute.cs" />
+    <Compile Include="Filters\ExceptionFilters\UnauthorizedAccessExceptionFilterAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

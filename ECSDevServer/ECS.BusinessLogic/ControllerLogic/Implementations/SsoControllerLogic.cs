@@ -52,7 +52,7 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
             {
                 return new HttpResponseMessage
                 {
-                    ReasonPhrase = "Account already exists.",
+                    Content = new StringContent("Account already exists"),
                     StatusCode = HttpStatusCode.Conflict
                 };
             }
@@ -143,12 +143,12 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
         private HttpResponseMessage AccountLoginHelper(SsoLoginRequestDTO loginDto, Account account)
         {
             var saltModel = _saltLogic.GetSalt(loginDto.Username);
-            // The Saltmodel.Account is null
+            // TODO: @Scott Check if the Saltmodel.Account is still null
             if (saltModel == null)
             {
                 return new HttpResponseMessage
                 {
-                    ReasonPhrase = "Database does not contain salt",
+                    Content = new StringContent("Database does not contain salt"),
                     StatusCode = HttpStatusCode.InternalServerError
                 };
             }
@@ -160,23 +160,22 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
             {
                 return new HttpResponseMessage
                 {
-                    ReasonPhrase = "Hashed password does not match database password.",
+                    Content = new StringContent("Hashed Password mismatch account password"),
                     StatusCode = HttpStatusCode.Unauthorized
                 };
             }
 
             var token = JwtManager.Instance.GenerateToken(loginDto.Username);
 
-            //// Grab the previous access token associated with the account.
+            // Grab the previous access token associated with the account.
             var accountAccessToken = _jAccessTokenLogic.GetJAccessToken(loginDto.Username);
             if (accountAccessToken != null)
             {
                 // Set current account token to expired list.
-                var deadToken = new ExpiredAccessToken
-                {
-                    ExpiredTokenValue = accountAccessToken.Value
-                };
-                _expiredAccessTokenLogic.Create(deadToken);
+                var expiredToken = new ExpiredAccessToken(accountAccessToken.Value, false);
+                _expiredAccessTokenLogic.Create(expiredToken);
+
+                // Updated new access token.
                 accountAccessToken.Value = token;
                 _jAccessTokenLogic.Update(accountAccessToken);
             }
@@ -200,23 +199,23 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
 
             // Validate
 
-            //if (partialAccount == null && account == null)
-            //{
-            //    return new HttpResponseMessage
-            //    {
-            //        ReasonPhrase = "Invalid Credentials",
-            //        StatusCode = HttpStatusCode.BadRequest
-            //    };
-            //}
+            if (partialAccount == null && account == null)
+            {
+                return new HttpResponseMessage
+                {
+                    Content = new StringContent("Invalid Credentials"),
+                    StatusCode = HttpStatusCode.BadRequest
+                };
+            }
 
-            //if (partialAccount != null && account != null)
-            //{
-            //    return new HttpResponseMessage
-            //    {
-            //        ReasonPhrase = "Database Inconsistency",
-            //        StatusCode = HttpStatusCode.InternalServerError
-            //    };
-            //}
+            if (partialAccount != null && account != null)
+            {
+                return new HttpResponseMessage
+                {
+                    Content = new StringContent("Database Inconsistency"),
+                    StatusCode = HttpStatusCode.InternalServerError
+                };
+            }
 
             if (partialAccount != null)
             {
@@ -228,10 +227,8 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
                 return AccountResetPasswordHelper(resetPasswordDto, account);
             }
 
-            return new HttpResponseMessage
-            {
-                StatusCode = HttpStatusCode.InternalServerError
-            };
+            // Login Failure
+            return new HttpResponseMessage(HttpStatusCode.InternalServerError);
         }
 
         private HttpResponseMessage PartialAccountResetPasswordHelper(SsoResetPasswordRequestDTO resetPasswordDto,

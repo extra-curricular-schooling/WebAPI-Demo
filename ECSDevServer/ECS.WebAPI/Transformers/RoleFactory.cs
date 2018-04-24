@@ -12,11 +12,11 @@ namespace ECS.WebAPI.Transformers
             switch (roleType)
             {
                 case "public":
-                    return RoleTypes.Scholar;
+                    return ClaimValues.Scholar;
                 case "private":
-                    return RoleTypes.Admin;
+                    return ClaimValues.Admin;
                 default:
-                    return RoleTypes.Scholar;
+                    throw new UnauthorizedAccessException("RoleType input invalid");
             }
         }
     }

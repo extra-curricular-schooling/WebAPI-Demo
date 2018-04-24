@@ -11,5 +11,14 @@ namespace ECS.Models
 
         [Required]
         public string BadTokenValue { get; set; }
+
+        public BadAccessToken()
+        {
+            BadTokenValue = "";
+        }
+        public BadAccessToken(string badTokenValue)
+        {
+            BadTokenValue = badTokenValue;
+        }
     }
 }

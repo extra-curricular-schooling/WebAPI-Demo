@@ -48,8 +48,13 @@
     <Compile Include="ModelLogic\Implementations\SaltSecurityAnswerLogic.cs" />
     <Compile Include="ModelLogic\Implementations\SecurityQuestionsAccountLogic.cs" />
     <Compile Include="ModelLogic\Implementations\UserProfileLogic.cs" />
+    <Compile Include="Services\RegistrationService.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ECS.Constants\ECS.Constants.csproj">
+      <Project>{59CC49EB-347F-40E4-86D0-F7CF71F07C55}</Project>
+      <Name>ECS.Constants</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ECS.DTO\ECS.DTO.csproj">
       <Project>{40bc80f4-7950-4a6f-b94f-c35f7081a48b}</Project>
       <Name>ECS.DTO</Name>

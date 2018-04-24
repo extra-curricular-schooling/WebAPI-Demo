@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ECS.DTO;
-using ECS.Models;
 
-namespace ECS.BusinessLogic.ControllerLogic.Implementations
+namespace ECS.Constants.Network
 {
-    public class AccountControllerLogic
+    public static class RequestTypes
     {
-
+        public const string HttpRequest = "HttpRequest";
     }
 }

@@ -18,5 +18,9 @@ namespace ECS.Constants.Network
             "content-type," +
             "referer," +
             "X-Requested-With";
+
+        public const string Origin = "Origin";
+
+        public const string Referer = "Referer";
     }
 }
