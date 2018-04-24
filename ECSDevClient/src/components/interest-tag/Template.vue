@@ -12,7 +12,7 @@
             </button>
           </div>
       </fieldset>
-      <fieldset v-else>Something is wrong, please refresh. If issue persists, contact Scott Roberts.</fieldset>
+      <fieldset v-else>Something is wrong, please refresh. If issue persists, <router-link to="About" class="link is-info">contact us.</router-link></fieldset>
   </form>
 </template>
 
@@ -50,7 +50,7 @@ export default {
     getUserInterestTags: function () {
       Axios({
         method: 'GET',
-        url: this.$store.getters.getBaseAppUrl + 'Account/' + this.username + '/GetInterests',
+        url: this.$store.getters.getBaseAppUrl + 'Account/' + this.username + '/GetUserInterests',
         headers: this.$store.getters.getRequestHeaders
       })
         .then((response) => {
@@ -87,15 +87,15 @@ export default {
     updateInterestTags: function () {
       Axios({
         method: 'POST',
-        url: this.$store.getters.getBaseAppUrl + 'Account/' + this.username + '/UpdateInterests',
+        url: this.$store.getters.getBaseAppUrl + 'Account/UpdateUserInterests',
         headers: this.$store.getters.getRequestHeaders,
         data: {
-          'Account': this.$store.getters.getUsername,
+          'username': this.$store.getters.getUsername,
           'interestTags': this.checkedTags
         }
       })
         .then((response) => {
-          alert(response.data)
+          alert('Successfully updated Interest Tags')
         })
         .catch(e => {
           alert(e)
@@ -105,7 +105,7 @@ export default {
   },
   data () {
     return {
-      tags: [],
+      tags: null,
       checkedTags: [],
       username: this.$store.getters.getUsername
     }

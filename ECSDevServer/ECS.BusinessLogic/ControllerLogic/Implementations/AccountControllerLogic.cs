@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using ECS.BusinessLogic.ModelLogic.Implementations;
 using ECS.DTO;
 using ECS.Models;
@@ -9,6 +13,7 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
     public class AccountControllerLogic
     {
         #region Fields and constants
+        private readonly InterestTagLogic _interestTagLogic;
         private readonly AccountLogic _accountLogic;
         private readonly SaltLogic _saltLogic;
         #endregion
@@ -17,6 +22,7 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
         {
             _accountLogic = new AccountLogic();
             _saltLogic = new SaltLogic();
+            _interestTagLogic = new InterestTagLogic();
         }
 
         public void RegisterAccount(RegistrationDTO registrationDto)
@@ -46,6 +52,37 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
             account.Password = newPassword;
             _saltLogic.Update(salt);
             _accountLogic.Update(account);
+        }
+
+        public Account accountRetrieval(string username)
+        {
+            return _accountLogic.IncludeAccountTags(username);
+        }
+
+        public IList<InterestTag> RetrieveInterestTags()
+        {
+            return _interestTagLogic.GetAllInterestTags();
+        }
+
+        public List<string> ListAllInterestTags(IList<InterestTag> interests) 
+        {
+            List<string> interestTags = new List<string>();
+            foreach (var tag in interests)
+            {
+                interestTags.Add(tag.TagName);
+            }
+            return interestTags;
+        }
+
+        public List<string> GetUserInterestTags(Account account)
+        {
+            List<string> userInterests = new List<string>();
+            foreach (var Tag in account.AccountTags)
+            {
+                userInterests.Add(Tag.TagName);
+            }
+
+            return userInterests;
         }
     }
 }

@@ -83,38 +83,42 @@ export default {
         })
     },
     // REQUEST TO POST A SWEEPSTAKE TICKET TO A SWEEPSTAKE
-    ticketBought: function (Points, Price, username, timeDateStamp, OpenDateTime) {
-      if (Points >= Price) {
+    ticketBought: function (Points, Price, username, timeDateStamp, OpenDateTime, SweepStakesID) {
+      if (this.Points >= this.Price) {
         // remember the points should no tbe negative
         // change the points to equal or something
-        alert('Congragulations! One ticket bought for ' + Price + ' points! Your Points are ' + Points)
-        Points = Points - Price
-        alert('Points left = ' + Points)
-        // Axios({
-        //   method: 'POST',
-        //   url: Store.getters.getBaseAppUrl + 'Sweepstake/ScholarTicket/' + username,
-        //   headers: Store.getters.getRequestHeaders,
-        //   data: {
-        //     'SweepstakesID': this.$data.SweepStakesID,
-        //     'OpenDateTime': this.$data.OpenDateTime,
-        //     'PurchaseDateTime': this.$data.timeDateStamp,
-        //     'Price': this.$data.Price,
-        //     'username': this.$data.username
-        //   }
-        // })
-        //   .then(response => {
-        //     console.log(response)
-        //     this.$router.push({
-        //       name: 'Sweepstake'
-        //     })
-        //   })
-        //   .catch(error => {
-        //     console.log(error.response)
-        //     this.$data.error = JSON.parse(error.response.data)
-        //     if (error.response.status === 500) {
-        //       alert('We apologize.  We are unable to process your request at this time.')
-        //     }
-        //   })
+        this.Points = this.Points - this.Price
+        alert('Congragulations! One ticket bought for ' + this.Price + ' points! Your Points are ' + this.Points)
+        Axios({
+          method: 'POST',
+          url: Store.getters.getBaseAppUrl + 'Sweepstake/ScholarTicket/' + username,
+          headers: Store.getters.getRequestHeaders,
+          data: {
+            'SweepstakesID': this.SweepStakesID,
+            'OpenDateTime': this.OpenDateTime,
+            'PurchaseDateTime': this.timeDateStamp,
+            'Cost': this.Price, // this is the 'COST' the user has PAID for entering one sweepstake
+            'username': this.username,
+            'UpdatedPoints': this.Points
+          }
+        })
+          .then(response => {
+            console.log(response)
+            // WORKING ON FIXING THIS
+            if (response.data === 'Another Ticket NOT Added') {
+              alert('Another Milestone NOT Added Towards Your Win')
+            } else { alert('Successfully Bought First Ticket') }
+            this.$router.push({
+              name: 'Sweepstake'
+            })
+          })
+          .catch(error => {
+            console.log(error.response)
+            this.$data.error = JSON.parse(error.response.data)
+            if (error.response.status === 500) {
+              alert('We apologize.  We are unable to process your request at this time.')
+            }
+          })
       } else {
         alert('Sorry! You have Insufficient Points!')
       }

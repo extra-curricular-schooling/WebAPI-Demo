@@ -18,7 +18,8 @@ namespace ECS.WebAPI.Controllers.v1
     {
         private readonly IAccountRepository accountRepository = new AccountRepository();
         private readonly ISweepStakeRepository sweepStakeRepository = new SweepStakeRepository();
-        
+        private readonly ISweepStakeEntryRepository sweepStakeEntryRepository = new SweepStakeEntryRepository();
+
         private ECSContext db = new ECSContext();
 
         // USING GET REQUEST TO GET THE VALID SWEEPSTAKES INFORMATION SO THAT A USER CAN BUY TICKETS

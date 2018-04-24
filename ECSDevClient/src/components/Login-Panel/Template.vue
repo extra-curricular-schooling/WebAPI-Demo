@@ -17,7 +17,7 @@
     <div class="field password">
       <label class="label field-element is-required">Password</label>
       <div class="control has-icons-left">
-        <input class="input" type="password" placeholder="************" v-model="password" required>
+        <input class="input" type="password" placeholder="************" v-model="password" required @keyup.enter="postCredentials">
         <span class="icon is-small is-left">
           <i class="fas fa-lock"></i>
         </span>
@@ -35,7 +35,7 @@
     </div>
     <div class="field is-grouped is-grouped-centered">
       <p class="control">
-        <button class="button is-primary login-button" @keyup.enter="postCredentials" v-on:click="postCredentials" :disabled="isDisabled">
+        <button class="button is-primary login-button" v-on:click="postCredentials" :disabled="isDisabled">
           Login
         </button>
       </p>

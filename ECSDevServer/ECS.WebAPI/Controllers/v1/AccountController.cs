@@ -7,19 +7,17 @@ using ECS.BusinessLogic.ControllerLogic.Implementations;
 using ECS.BusinessLogic.ModelLogic.Implementations;
 using ECS.DTO;
 using ECS.Models;
-using ECS.Repositories.Implementations;
 using ECS.Security.Hash;
 using ECS.Constants.Network;
+using ECS.Models.Services.ComplexDBQueries;
+using ECS.WebAPI.Filters.AuthorizationFilters;
 
 namespace ECS.WebAPI.Controllers.v1
 {
     [RoutePrefix("v1/Account")]
-    // [RequireHttps]
     public class AccountController : ApiController
     {
         #region Constants and fields
-        private readonly IAccountRepository accountRepository = new AccountRepository();
-        private readonly IInterestTagRepository interestTagRepository = new InterestTagRepository();
         private readonly AccountControllerLogic _accountControllerLogic;
         private readonly AccountLogic _accountLogic;
         private readonly SaltLogic _saltLogic;
@@ -102,13 +100,9 @@ namespace ECS.WebAPI.Controllers.v1
         [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "GET")]
         public IList<string> RetrieveInterestTags()
         {
-            List<string> interestTags = new List<string>();
-            var interests = interestTagRepository.GetAll();
-            foreach(var tag in interests)
-            {
-                interestTags.Add(tag.TagName);
-            }
-            return interestTags;
+            var interests = _accountControllerLogic.RetrieveInterestTags();
+            return _accountControllerLogic.ListAllInterestTags(interests);
+
         }
 
 
@@ -118,19 +112,13 @@ namespace ECS.WebAPI.Controllers.v1
         /// <param name="username"></param>
         /// <returns> A list of interest tags based on a user</returns>
         [HttpGet]
-        [Route("{username}/GetInterests")]
+        [Route("{username}/GetUserInterests")]
         [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "GET")]
         public IList<string> GetUserInterests(string username)
         {
-            Account account;
-            List<string> userInterests = new List<string>();
-            account = accountRepository.GetSingle(x => x.UserName == username, x => x.AccountTags);
-            foreach (var Tag in account.AccountTags)
-            {
-               userInterests.Add(Tag.TagName);
-            }
-
-            return userInterests;
+            Account account = _accountControllerLogic.accountRetrieval(username);
+            return _accountControllerLogic.GetUserInterestTags(account);
+            
         }
 
 
@@ -140,41 +128,14 @@ namespace ECS.WebAPI.Controllers.v1
         /// <param name="userInterests"></param>
         /// <returns> Ok response </returns>
         [HttpPost]
-        [Route("{username}/UpdateInterests")]
+        [Route("{username}/UpdateUserInterests")]
         [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "POST")]
         public IHttpActionResult UpdateUserInterests(InterestTagsDTO userInterests)
         {
-            try
-            {
-                using (var context = new ECSContext())
-                {
-                    var account = context.Accounts.Single(x => x.UserName == userInterests.Account);
-                    var accountTags = account.AccountTags;
-                    foreach (var interest in accountTags.ToList())
-                    {
-                        if (!userInterests.interestTags.Contains(interest.TagName))
-                        {
-                            var tag = context.InterestTags.Single(x => x.TagName == interest.TagName);
-                            account.AccountTags.Remove(tag);
-                        }
-                    }
-
-                    foreach (var interest in userInterests.interestTags)
-                    {
-                        var tag = context.InterestTags.Single(x => x.TagName == interest);
-                        if (!account.AccountTags.Contains(tag))
-                        {
-                            account.AccountTags.Add(tag);
-                            tag.AccountUsername.Add(account);
-                        }
-                    }
-                    context.SaveChanges();
-                }
-                return Ok("Interest tags updated successsfully");
-            } catch(Exception)
-            {
-                return InternalServerError(new Exception("Error has occurred"));
-            }
+            UpdateUserInterestTags updateUserInterestTags = new UpdateUserInterestTags();
+            var response = updateUserInterestTags.UpdateUserInterests(userInterests);
+            IHttpActionResult actionResultResponse = ResponseMessage(response);
+            return actionResultResponse;
            
         }
     }

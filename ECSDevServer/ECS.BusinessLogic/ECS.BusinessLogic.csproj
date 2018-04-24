@@ -32,6 +32,7 @@
   <ItemGroup>
     <Compile Include="ControllerLogic\Implementations\AccountControllerLogic.cs" />
     <Compile Include="ControllerLogic\Implementations\ForgetCredentialsControllerLogic.cs" />
+    <Compile Include="ControllerLogic\Implementations\HomeControllerLogic.cs" />
     <Compile Include="ControllerLogic\Implementations\LinkedInControllerLogic.cs" />
     <Compile Include="ControllerLogic\Implementations\RegistrationControllerLogic.cs" />
     <Compile Include="ControllerLogic\Implementations\SsoControllerLogic.cs" />
@@ -40,6 +41,7 @@
     <Compile Include="ModelLogic\Contracts\IModelLogic.cs" />
     <Compile Include="ModelLogic\Implementations\AccountLogic.cs" />
     <Compile Include="ModelLogic\Implementations\ExpiredAccessTokenLogic.cs" />
+    <Compile Include="ModelLogic\Implementations\InterestTagLogic.cs" />
     <Compile Include="ModelLogic\Implementations\JAccessTokenLogic.cs" />
     <Compile Include="ModelLogic\Implementations\LinkedinLogic.cs" />
     <Compile Include="ModelLogic\Implementations\PartialAccountLogic.cs" />
