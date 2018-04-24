@@ -143,8 +143,8 @@
 
 <script>
 /* eslint-disable */
-import axios from 'axios'
-import BadPassword from '@/components/bad-password/Template'
+import Axios from 'axios'
+import BadPassword from '@/components/bad-password-alert/Template'
 import EventBus from '@/assets/js/EventBus'
 
 export default {
@@ -270,7 +270,7 @@ export default {
     },
     // APIs
     getSecurityQuestions () {
-      axios({
+      Axios({
           method: 'GET',
           url: this.$store.getters.getBaseAppUrl + 'ForgetCredentials/GetSecurityQuestions?username=' + this.username,
           headers: this.$store.getters.getRequestHeaders
@@ -291,7 +291,7 @@ export default {
           })
     },
     submitAnswers () {
-      axios({
+      Axios({
           method: 'POST',
           url: this.$store.getters.getBaseAppUrl + 'ForgetCredentials/SubmitAnswers',
           headers: this.$store.getters.getRequestHeaders,
@@ -336,7 +336,7 @@ export default {
     },
     submitNewPassword () {
       if (this.isValidCredentials()){
-        axios({
+        Axios({
             method: 'POST',
             url: this.$store.getters.getBaseAppUrl + 'ForgetCredentials/SubmitNewPassword',
             headers: this.$store.getters.getRequestHeaders,

@@ -72,7 +72,7 @@
 
 <script>
 /* eslint-disable */
-import axios from 'axios'
+import Axios from 'axios'
 
 export default {
   name: 'ForgotUsername',
@@ -134,7 +134,7 @@ export default {
     },
     submitEmail () {
       if (this.isValid()) {
-        axios({
+        Axios({
           method: 'GET',
           url: this.$store.getters.getBaseAppUrl + 'ForgetCredentials/GetUsername?email=' + this.email,
           headers: this.$store.getters.getRequestHeaders

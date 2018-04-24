@@ -193,7 +193,7 @@
 /* eslint-disable */
 import Axios from 'axios'
 import AgreementModal from '@/components/registration-form/elements/AgreementModal'
-import BadPassword from '@/components/bad-password/Template'
+import BadPassword from '@/components/bad-password-alert/Template'
 import Shuffler from '@/assets/js/arrayShuffler'
 import EventBus from '@/assets/js/EventBus'
 
