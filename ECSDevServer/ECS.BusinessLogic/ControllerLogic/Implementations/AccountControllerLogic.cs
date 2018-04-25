@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using ECS.BusinessLogic.ModelLogic.Implementations;
 using ECS.DTO;
 using ECS.Models;
+using ECS.Security.AccessTokens.Jwt;
 using ECS.Security.Hash;
 
 namespace ECS.BusinessLogic.ControllerLogic.Implementations
@@ -23,6 +25,36 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
             _accountLogic = new AccountLogic();
             _saltLogic = new SaltLogic();
             _interestTagLogic = new InterestTagLogic();
+        }
+
+        public string GetUsername(string authHeader)
+        {
+            string accessTokenFromRequest = "";
+            if (authHeader != null)
+            {
+                var authHeaderVal = AuthenticationHeaderValue.Parse(authHeader.ToString());
+
+                // RFC 2617 sec 1.2, "scheme" name is case-insensitive
+                if (authHeaderVal.Scheme.Equals("bearer",
+                        StringComparison.OrdinalIgnoreCase) &&
+                    authHeaderVal.Parameter != null)
+                {
+                    accessTokenFromRequest = authHeaderVal.Parameter;
+                }
+            }
+
+            // get the access token
+            // accessTokenFromRequest = actionContext.Request.Headers.Authorization.ToString();
+
+            string username = "";
+            if (JwtManager.Instance.ValidateToken(accessTokenFromRequest, out username))
+            {
+                return username;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public void RegisterAccount(RegistrationDTO registrationDto)

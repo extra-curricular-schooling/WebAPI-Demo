@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using ECS.BusinessLogic.ControllerLogic.Implementations;
@@ -10,7 +9,6 @@ using ECS.Models;
 using ECS.Security.Hash;
 using ECS.Constants.Network;
 using ECS.Models.Services.ComplexDBQueries;
-using ECS.WebAPI.Filters.AuthorizationFilters;
 using System.Net.Http.Headers;
 using ECS.Security.AccessTokens.Jwt;
 
@@ -24,6 +22,7 @@ namespace ECS.WebAPI.Controllers.v1
         private readonly AccountLogic _accountLogic;
         private readonly JAccessTokenLogic _jAccessTokenLogic;
         private readonly SaltLogic _saltLogic;
+        private readonly UserProfileLogic _userProfileLogic;
         #endregion
 
         public AccountController ()
@@ -32,6 +31,7 @@ namespace ECS.WebAPI.Controllers.v1
             _accountLogic = new AccountLogic();
             _jAccessTokenLogic = new JAccessTokenLogic();
             _saltLogic = new SaltLogic();
+            _userProfileLogic = new UserProfileLogic();
         }
 
         // Should this encompass all of the Account related Action Methods:
@@ -191,6 +191,67 @@ namespace ECS.WebAPI.Controllers.v1
                     {
                         return Unauthorized();
                     }
+                }
+                else
+                {
+                    return Unauthorized();
+                }
+            }
+            else
+            {
+                return Unauthorized();
+            }
+        }
+
+        [HttpGet]
+        [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "GET")]
+        [Route("GetUserInfo")]
+        public IHttpActionResult GetUserInfo()
+        {
+            string username = _accountControllerLogic.GetUsername(Request.Headers.Authorization.ToString());
+            if (username != null)
+            {
+                if(_accountLogic.Exists(username))
+                {
+                    var account = _accountLogic.GetByUsername(username);
+                    string email = account.Email;
+                    var user = _userProfileLogic.GetSingle(email);
+                    var userAddresses = user.ZipLocations;
+                    List<object> zipLocations = new List<object>();
+                    foreach (var zipLocation in userAddresses)
+                    {
+                        zipLocations.Add(new { zipLocation.Address, zipLocation.City, zipLocation.State, zipLocation.ZipCode, zipLocation.ZipCodeId });
+                    }
+                    return Json(new { user.FirstName, user.LastName, zipLocations });
+                }
+                else
+                {
+                    return Unauthorized();
+                }
+            }
+            else
+            {
+                return Unauthorized();
+            }
+        }
+
+        [HttpPost]
+        [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "POST")]
+        [Route("PostUserInfo")]
+        public IHttpActionResult PostUserInfo(UserInfoDTO userInfoDTO)
+        {
+            string username = _accountControllerLogic.GetUsername(Request.Headers.Authorization.ToString());
+            if (username != null)
+            {
+                if(_accountLogic.Exists(username))
+                {
+                    var account = _accountLogic.GetByUsername(username);
+                    string email = account.Email;
+                    var user = _userProfileLogic.GetSingle(email);
+                    user.FirstName = userInfoDTO.FirstName;
+                    user.LastName = userInfoDTO.LastName;
+                    _userProfileLogic.Update(user);
+                    return Ok();
                 }
                 else
                 {
