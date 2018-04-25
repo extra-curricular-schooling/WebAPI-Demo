@@ -63,16 +63,20 @@ export default {
       })
         .then(response => {
           console.log(response.data)
-          this.Price = response.data.price
-          this.SweepStakesID = response.data.sweepStakesID
-          this.OpenDateTime = response.data.openDateTime
-          this.Prize = response.data.prize
-          this.ClosedDateTime = response.data.closedDateTime
-          alert('SweepStake Information: Price To Enter: ' + this.Price +
-          '\nSweepStakesID: ' + this.SweepStakesID +
-          '\nSweepStake Open Date: ' + this.OpenDateTime +
-          '\nPrize: ' + this.Prize +
-          '\nClosing Date: ' + this.ClosedDateTime)
+          if (response.data === 'Sweepstake Not Open') {
+            alert('Sweepstake Not Open')
+          } else {
+            this.Price = response.data.price
+            this.SweepStakesID = response.data.sweepStakesID
+            this.OpenDateTime = response.data.openDateTime
+            this.Prize = response.data.prize
+            this.ClosedDateTime = response.data.closedDateTime
+            alert('SweepStake Information: Price To Enter: ' + this.Price +
+            '\nSweepStakesID: ' + this.SweepStakesID +
+            '\nSweepStake Open Date: ' + this.OpenDateTime +
+            '\nPrize: ' + this.Prize +
+            '\nClosing Date: ' + this.ClosedDateTime)
+          }
         })
         .catch(error => {
           console.log(error.response)

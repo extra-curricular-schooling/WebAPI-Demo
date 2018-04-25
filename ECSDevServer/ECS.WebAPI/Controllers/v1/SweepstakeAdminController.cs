@@ -32,18 +32,24 @@ namespace ECS.WebAPI.Controllers.v1
                     var answer = db.SweepStakes
                        .Where(x => x.OpenDateTime <= DateTime.Now & x.ClosedDateTime >= DateTime.Now)
                        .FirstOrDefault<SweepStake>();
-
-            SweepstakeAdminDTO sweepstake = new SweepstakeAdminDTO()
+            if (answer == null)
             {
-                SweepStakesID = answer.SweepStakesID,
-                OpenDateTime = answer.OpenDateTime,
-                ClosedDateTime = answer.ClosedDateTime,
-                Prize = answer.Prize,
-                UsernameWinner = answer.UsernameWinner,
-                Price = answer.Price,
+                return Ok("Sweepstake Not Open");
+            }
+            else
+            {
+                SweepstakeAdminDTO sweepstake = new SweepstakeAdminDTO()
+                {
+                    SweepStakesID = answer.SweepStakesID,
+                    OpenDateTime = answer.OpenDateTime,
+                    ClosedDateTime = answer.ClosedDateTime,
+                    Prize = answer.Prize,
+                    UsernameWinner = answer.UsernameWinner,
+                    Price = answer.Price,
 
-            };
-            return Ok(sweepstake);
+                };
+                return Ok(sweepstake);
+            }
          }
 
         // THIS IS FOR THE EARNING POINTS
