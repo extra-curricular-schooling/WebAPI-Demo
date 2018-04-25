@@ -103,12 +103,12 @@ export default {
     }
 
     // Set behavior once the window has been closed
-    window.onbeforeunload = () => {
-      this.$store.dispatch('updateUsername', '')
-      this.$store.dispatch('signOut')
-      this.$store.dispatch('updateToken', '')
-      clearInterval(renewal)
-    }
+    // window.onbeforeunload = () => {
+    //   this.$store.dispatch('updateUsername', '')
+    //   this.$store.dispatch('signOut')
+    //   this.$store.dispatch('updateToken', '')
+    //   clearInterval(renewal)
+    // }
 
     // Set interval depending on whether or not a user is logged in
     if (this.$store.getters.isAuth) {
