@@ -71,17 +71,24 @@ namespace ECS.WebAPI.Controllers.v1
         [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "POST")]
         public IHttpActionResult submitSweepstake(SweepstakeAdminDTO sweepstakeSet)
         {
-            SweepStake sweep = new SweepStake()
+            if (sweepstakeSet.OpenDateTime <= DateTime.Now & sweepstakeSet.ClosedDateTime >= DateTime.Now)
             {
-                SweepStakesID = sweepstakeSet.SweepStakesID,
-                OpenDateTime = sweepstakeSet.OpenDateTime,
-                ClosedDateTime = sweepstakeSet.ClosedDateTime,
-                Prize = sweepstakeSet.Prize,
-                UsernameWinner = sweepstakeSet.UsernameWinner,
-                Price = sweepstakeSet.Price,
-            };
-            sweepStakeRepository.Insert(sweep);
-            return Ok("Post Sweepstake by Admin");
+                SweepStake sweep = new SweepStake()
+                {
+                    SweepStakesID = sweepstakeSet.SweepStakesID,
+                    OpenDateTime = sweepstakeSet.OpenDateTime,
+                    ClosedDateTime = sweepstakeSet.ClosedDateTime,
+                    Prize = sweepstakeSet.Prize,
+                    UsernameWinner = sweepstakeSet.UsernameWinner,
+                    Price = sweepstakeSet.Price,
+                };
+                sweepStakeRepository.Insert(sweep);
+                return Ok("Post Sweepstake by Admin");
+            }
+            else
+            {
+                return Ok("Wromg Sweepstakes Dates");
+            }
         }
     }
 }
