@@ -27,6 +27,7 @@
     "moment": "^2.21.0",
     "npm": "^5.8.0",
     "save": "^2.3.2",
+    "sweetalert2": "^7.19.1",
     "typescript": "^2.7.2",
     "url-search-params": "^0.10.0",
     "v2-datepicker": "^2.0.0",

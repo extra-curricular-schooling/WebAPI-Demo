@@ -199,6 +199,7 @@
 <script>
 /* eslint-disable */
 import Axios from 'axios'
+import Swal from 'sweetalert2'
 import AgreementModal from '@/components/registration-form/elements/AgreementModal'
 import BadPassword from '@/components/bad-password-alert/Template'
 import Shuffler from '@/assets/js/arrayShuffler'
@@ -587,10 +588,21 @@ export default {
      * @throws {InternalServerError} Throws exception if request cannot be processed
      */
     submit () {
-      if (!this.isValidForm()) { 
-        alert('It seems either your form is incomplete or some of your inputs are invalid...') 
+      // Check if form is valid
+      if (!this.isValidForm()) {
+        Swal({
+          type: 'warning',
+          title: 'Uh-Oh',
+          html: 'It seems either your form is <b>incomplete</b> or some of your inputs are <b>invalid</b>...'})
+
+      // Check if user has agreed to terms and conditions
       } else if (!this.$data.agreementIsChecked) {
-        alert('You must agree to our Terms and Conditions to continue...')
+        Swal({
+          type: 'warning',
+          title: 'Uh-Oh',
+          html: 'You must <b>read and agree</b> to our Terms and Conditions to continue...'})
+
+      // Submit form
       } else {
         Axios({
           method: 'POST',
@@ -632,17 +644,22 @@ export default {
             }
           })
           .catch(error => {
-            console.log(error.response)
-            //this.$data.error = JSON.parse(error.response.data)
+            console.log(error)
 
             // HTTP Status 409
             if (error.response.status === 409) {
-              alert('Good news!  According to our records, you already have an account with us!')
+              Swal({
+              title: 'Good News',
+              text: 'According to our records, you already have an account with us!',
+              footer: '<a href="/">Take me to the home page</a>'})
             }
 
             // HTTP Status 500
             if (error.response.status === 500) {
-              alert('We apologize.  We are unable to process your request at this time.')
+              Swal({
+              type: 'error',
+              title: 'We Apologize',
+              text: 'We are unable to process your request at this time.'})
             }
           })
       }
@@ -650,13 +667,16 @@ export default {
     /**
      * @description
      * GET request to get security questions from database
+     * @throws {ECONNABORTED} If request/response timed out
+     * @throws {ServiceUnavailable} Throws exception if resource requested is not available
      * @throws {InternalServerError} Throws exception if request cannot be processed
      */
     fetchSecurityQuestions () {
       Axios({
         method: 'GET',
         url: this.$store.getters.getBaseAppUrl + 'Registration/GetSecurityQuestions',
-        headers: this.$store.getters.getRequestHeaders
+        headers: this.$store.getters.getRequestHeaders,
+        timeout: this.$store.getters.getFormTimeout // allow 60 seconds before timeout
       })
         .then(response => {
           this.$data.questions = Shuffler.shuffleArray(JSON.parse(response.data))
@@ -664,13 +684,30 @@ export default {
           this.loadingIsDisabled = true
         })
         .catch(error => {
-          console.log(error.response)
+          console.log(error)
 
-          // HTTP Status 503 - No questions in resource
-          
+          // Connection Timeout
+          if (error.code == 'ECONNABORTED') {
+            Swal({
+              type: 'error',
+              title: 'We Apologize',
+              text: 'Fetching your security questions took too long.'})
+          }
+
+          // HTTP Status 503
+          if (error.response.status === 503) {
+            Swal({
+              type: 'error',
+              title: 'We Apologize',
+              text: 'The resource your are requesting is not available.'})
+          }
+
           // HTTP Status 500
           if (error.response.status === 500) {
-            alert('We apologize.  We are unable to process your request at this time.')
+            Swal({
+              type: 'error',
+              title: 'We Apologize',
+              text: 'We are unable to process your request at this time.'})
           }
         })
     },

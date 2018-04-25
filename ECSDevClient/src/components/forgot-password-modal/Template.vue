@@ -21,8 +21,10 @@
               </span>
             </div>
           </div>
-          <!-- <forgot-username ref="username"/>
-          <a class="no-username" @click.prevent="getUsername">I don't remember my username.</a><br> -->
+        </div>
+
+        <div class="body" v-if="body==='noUsername'">
+          <p>Uh-Oh.  It seems the username you entered does not exist.  You may need to create an account or recover a forgotten username.</p><br>
         </div>
 
         <div class="body" v-if="body==='secondStep'">
@@ -118,6 +120,18 @@
             </button>
           </p>
 
+          <p class="control" v-if="body==='noUsername'">
+            <router-link to="/Registration" tag="button" class="button is-primary register-button">
+            Create An Account
+            </router-link>
+          </p>
+
+          <p class="control" v-if="body==='noUsername'">
+            <button class="button is-primary" v-on:click.prevent="toggleForgetUsername">
+            I Forgot My Username
+            </button>
+          </p>
+
           <p class="control" v-if="body==='secondStep'">
             <button class="button is-primary submit-button" v-on:click.prevent="submit">
             Submit
@@ -144,8 +158,10 @@
 <script>
 /* eslint-disable */
 import Axios from 'axios'
+import Swal from 'sweetalert2'
 import BadPassword from '@/components/bad-password-alert/Template'
 import EventBus from '@/assets/js/EventBus'
+import LoadingModal from '@/components/loading-modal/Template'
 
 export default {
   name: 'ForgotPassword',
@@ -241,6 +257,21 @@ export default {
     },
     /**
      * @description
+     * checks if answers are not null upon submission
+     * @return {boolean} true - If answers are not null
+     * @return {boolean} false - If at least one answer is null
+     */
+    isValidAnswers () {
+      if (document.getElementById('answer1').value != null && 
+        document.getElementById('answer2').value != null && 
+        document.getElementById('answer2').value != null) {
+        return true
+      } else {
+        return false
+      }
+    },
+    /**
+     * @description
      * validates that the user has successfully entered information
      * without particular validation errors
      * @return {boolean} true - If all information provided is valid
@@ -275,8 +306,7 @@ export default {
      * deactivates the modal if the user clicks 'cancel'
      */
     cancel () {
-      this.toggle()
-      this.body = 'firstStep'
+      this.close()
     },
     /**
      * @description
@@ -299,6 +329,7 @@ export default {
      */
     close () {
       this.toggle()
+      this.flush()
       this.body = 'firstStep'
     },
     /**
@@ -318,6 +349,14 @@ export default {
         }
       })
     },
+    /**
+     * @description
+     * toggles forget username modal
+     */
+    toggleForgetUsername () {
+      this.close()
+      EventBus.$emit('forgetUsername')
+    },
     // ************************* Helpers *************************
     /**
      * @description
@@ -332,6 +371,24 @@ export default {
         this.toggleAlert(password)
       }
     },
+    /**
+     * @description
+     * resets data
+     */
+    flush () {
+      this.username = ''
+
+      if (this.body == 'secondStep') {
+        document.getElementById('answer1').value = ''
+        document.getElementById('answer2').value = ''
+        document.getElementById('answer3').value = ''
+      }
+
+      if (this.body == 'thirdStep') {
+        document.getElementById('password').value = ''
+        document.getElementById('confirmPassword').value = ''
+      }
+    },
     // ************************* APIs *************************
     /**
      * @description
@@ -339,25 +396,54 @@ export default {
      * @throws {Conflict} Throws an exception if username is not found in resource
      */
     getSecurityQuestions () {
-      Axios({
-          method: 'GET',
-          url: this.$store.getters.getBaseAppUrl + 'ForgetCredentials/GetSecurityQuestions?username=' + this.username,
-          headers: this.$store.getters.getRequestHeaders
-        })
-          .then(response => {
-            console.log(response)
-            if (response.status === 200) {
-              this.questions = response.data
-              this.body = 'secondStep'
-            }
-          })
-          .catch(error => {
-            console.log(error.response)
+      if (this.username != null) {
+        // Temporarily hide modal
+        this.toggle()
 
-            // HTTP Status 409
-            if (error.response.status === 409) {
-            }
+        // Enable loading screen
+        EventBus.$emit('loading')
+
+        Axios({
+            method: 'GET',
+            url: this.$store.getters.getBaseAppUrl + 'ForgetCredentials/GetSecurityQuestions?username=' + this.username,
+            headers: this.$store.getters.getRequestHeaders,
+            timeout: this.$store.getters.getDefaultTimeout
           })
+            .then(response => {
+              console.log(response)
+              if (response.status === 200) {
+                this.questions = response.data
+
+                // Disable loading screen
+                EventBus.$emit('loading')
+
+                // Show modal
+                this.toggle()
+                this.body = 'secondStep'
+              }
+            })
+            .catch(error => {
+              console.log(error)
+              this.flush() 
+
+              // Disable loading screen
+              EventBus.$emit('loading')
+
+              // Connection timeout
+              if (error.code == 'ECONNABORTED') {
+                Swal({
+                  type: 'error',
+                  title: 'We Apologize',
+                  text: 'Fetching your information took too long.'})
+              }
+
+              // HTTP Status 409
+              if (error.response.status === 409) {
+                this.toggle()
+                this.$data.body = 'noUsername'
+              }
+            })
+      }
     },
     /**
      * @description
@@ -366,48 +452,91 @@ export default {
      * @throws {InternalServerError} Throws exception if request cannot be processed
      */
     submitAnswers () {
-      Axios({
-          method: 'POST',
-          url: this.$store.getters.getBaseAppUrl + 'ForgetCredentials/SubmitAnswers',
-          headers: this.$store.getters.getRequestHeaders,
-          data: {
-            'username': this.$data.username,
-            'securityQuestions': [
-              {
-                'question': Number(this.$data.questions[0].SecurityQuestionID),
-                'answer': this.getSecurityAnswer(1)
-              },
-              {
-                'question': Number(this.$data.questions[1].SecurityQuestionID),
-                'answer': this.getSecurityAnswer(2)
-              },
-              {
-                'question': Number(this.$data.questions[2].SecurityQuestionID),
-                'answer': this.getSecurityAnswer(3)
+      if (this.isValidAnswers()) {
+        // Temporarily hide modal
+        this.toggle()
+
+        // Enable loading screen
+        EventBus.$emit('loading')
+
+        Axios({
+            method: 'POST',
+            url: this.$store.getters.getBaseAppUrl + 'ForgetCredentials/SubmitAnswers',
+            headers: this.$store.getters.getRequestHeaders,
+            timeout: this.$store.getters.getDefaultTimeout,
+            data: {
+              'username': this.$data.username,
+              'securityQuestions': [
+                {
+                  'question': Number(this.$data.questions[0].SecurityQuestionID),
+                  'answer': this.getSecurityAnswer(1)
+                },
+                {
+                  'question': Number(this.$data.questions[1].SecurityQuestionID),
+                  'answer': this.getSecurityAnswer(2)
+                },
+                {
+                  'question': Number(this.$data.questions[2].SecurityQuestionID),
+                  'answer': this.getSecurityAnswer(3)
+                }
+              ]
+            }
+          })
+            .then(response => {
+              console.log(response)
+              if (response.status === 200) {
+                // Disable loading screen
+                EventBus.$emit('loading')
+
+                // Show modal
+                this.toggle()
+                this.body = 'thirdStep'
               }
-            ]
-          }
-        })
-          .then(response => {
-            console.log(response)
-            if (response.status === 200) {
-              this.body = 'thirdStep'
-            }
-          })
-          .catch(error => {
-            console.log(error.response)
-            //this.$data.error = JSON.parse(error.response.data)
+            })
+            .catch(error => {
+              console.log(error)
 
-            // HTTP Status 403
-            if (error.response.status === 403) {
-              alert('Incorrect answers...')
-            }
+              // Disable loading screen
+              EventBus.$emit('loading')
+              
+              // Connection timeout
+              if (error.code == 'ECONNABORTED') {
+                this.flush()
+                this.body = 'firstStep'
 
-            // HTTP Status 500
-            if (error.response.status === 500) {
-              alert('We apologize.  We are unable to process your request at this time.')
-            }
-          })
+                Swal({
+                  type: 'error',
+                  title: 'We Apologize',
+                  text: 'Fetching your information took too long.'})
+              }
+
+              // HTTP Status 403
+              if (error.response.status === 403) {
+                this.toggle()
+
+                // reset answers
+                document.getElementById('answer1').value = ''
+                document.getElementById('answer2').value = ''
+                document.getElementById('answer3').value = ''
+
+                Swal({
+                  type: 'error',
+                  title: 'Hmm...',
+                  text: 'The answers you submitted are not correct'})
+              }
+
+              // HTTP Status 500
+              if (error.response.status === 500) {
+                this.flush()
+                this.body = 'firstStep'
+
+                Swal({
+                  type: 'error',
+                  title: 'We Apologize',
+                  text: 'We are unable to process your request at this time.'})
+              }
+            })
+      }
     },
     /**
      * @description
@@ -416,10 +545,17 @@ export default {
      */
     submitNewPassword () {
       if (this.isValidCredentials()){
+        // Temporarily hide modal
+        this.toggle()
+
+        // Enable loading screen
+        EventBus.$emit('loading')
+
         Axios({
             method: 'POST',
             url: this.$store.getters.getBaseAppUrl + 'ForgetCredentials/SubmitNewPassword',
             headers: this.$store.getters.getRequestHeaders,
+            timeout: this.$store.getters.getDefaultTimeout,
             data: {
               'username': this.username,
               'password': this.getPassword()
@@ -429,15 +565,41 @@ export default {
               console.log(response)
               if (response.status === 200) {
                 this.questions = response.data
+
+                // Disable loading screen
+                EventBus.$emit('loading')
+
+                // Show modal
                 this.body = 'success'
+                this.toggle()
               }
             })
             .catch(error => {
-              console.log(error.response)
+              console.log(error)
+
+              // Disable loading screen
+              EventBus.$emit('loading')
+
+              // Connection timeout
+              if (error.code == 'ECONNABORTED') {
+                this.flush()
+                this.body = 'firstStep'
+
+                Swal({
+                  type: 'error',
+                  title: 'We Apologize',
+                  text: 'Fetching your information took too long.'})
+              }
 
               // HTTP Status 500
               if (error.response.status === 500) {
-                alert('We apologize.  We are unable to process your request at this time.')
+                this.flush()
+                this.body = 'firstStep'
+
+                Swal({
+                type: 'error',
+                title: 'We Apologize',
+                text: 'We are unable to process your request at this time.'})
               }
             })
       }

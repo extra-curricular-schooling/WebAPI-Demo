@@ -8,16 +8,16 @@
           <h1>Forgot Username</h1><br>
         </span>
 
+        <loading-modal></loading-modal>
         <div class="body" v-if="body==='firstStep'">
           <p>Forgot your username?  No worries.</p>
           <p>We just need the email you used to register.</p><br>
           <div class="field email">
             <label class="label field-element is-required">Email</label>
             <div class="control has-icons-left has-icons-right">
-              <!-- <input v-model="email" id="email" class="input" type="email" @keyup="validateEmail" autocomplete="email" placeholder="Email" required> -->
               <input v-model="email" id="email" class="input" type="email" @keyup="validateEmail" placeholder="Email Address">
               <span class="icon is-small is-left">
-                <i class="fas fa-user"></i>
+                <i class="fas fa-envelope"></i>
               </span>
             </div>
             <p id="emailControl" class="help">{{ emailMessage }}</p>
@@ -34,11 +34,6 @@
         <div class="body" v-if="body==='noEmail'">
           <p>Uh-Oh.  It seems the email you entered does not exist.  Perhaps you may need to create an account.</p><br>
         </div>
-
-        <div class="body" v-if="body==='error'">
-          <p>Sorry.  We are unable to process your request at this time.</p><br>
-        </div>
-
         <br>
         <div class="field is-grouped is-grouped-centered form-buttons">
           <p class="control" v-if="body!=='success'">
@@ -73,9 +68,15 @@
 <script>
 /* eslint-disable */
 import Axios from 'axios'
+import Swal from 'sweetalert2'
+import EventBus from '@/assets/js/EventBus'
+import LoadingModal from '@/components/loading-modal/Template'
 
 export default {
   name: 'ForgotUsername',
+  components: {
+    'loading-modal': LoadingModal
+  },
   data () {
     return {
       // Request Data
@@ -109,8 +110,7 @@ export default {
      * closes modal if user clicks 'cancel'
      */
     cancel () {
-      this.toggle()
-      this.body = 'firstStep'
+      this.close()
     },
     /**
      * @description
@@ -126,6 +126,8 @@ export default {
     close () {
       this.toggle()
       this.body = 'firstStep'
+      this.email = ''
+      this.username = ''
     },
     // ************************* Data Validators *************************
     /**
@@ -166,31 +168,72 @@ export default {
     /**
      * @description
      * GET request to get username from account using email
+     * @throws {ECONNABORTED} If request/response timed out
      * @throws {Conflict} Throws exception if user is not found
+     * @throws {InteralServerError} Throws general exception if exception thrown in server
      */
     submitEmail () {
       if (this.isValid()) {
+
+        // Hide modal
+        this.toggle()
+
+        // Enable loading screen
+        EventBus.$emit('loading')
+
+        // Get username
         Axios({
           method: 'GET',
           url: this.$store.getters.getBaseAppUrl + 'ForgetCredentials/GetUsername?email=' + this.email,
-          headers: this.$store.getters.getRequestHeaders
+          headers: this.$store.getters.getRequestHeaders,
+          timeout: this.$store.getters.getDefaultTimeout
         })
           .then(response => {
             console.log(response)
             if (response.status === 200) {
               this.$data.username = response.data
+
+              // Disable loading screen
+              EventBus.$emit('loading')
+
+              // Show modal
+              this.toggle()
               this.$data.body = 'success'
+
+              // Clear
+              this.$data.email = ''
             }
           })
           .catch(error => {
-            console.log(error.response)
+            console.log(error)
+
+            // Disable loading screen
+            EventBus.$emit('loading')
+
+            // Connection timeout
+            if (error.code == 'ECONNABORTED') {
+              Swal({
+                type: 'error',
+                title: 'We Apologize',
+                text: 'Fetching your information took too long.'})
+            }
 
             // HTTP Status 409
             if (error.response.status === 409) {
+              this.toggle()
               this.$data.body = 'noEmail'
-            } else {
-              this.$data.body = 'error'
             }
+
+            // HTTP Status 500
+            if (error.response.status === 500) {
+              Swal({
+                type: 'error',
+                title: 'We Apologize',
+                text: 'We are unable to process your request at this time.'})
+            }
+
+            // Clear
+            this.$data.email = ''
           })
       }
     }
