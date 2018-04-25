@@ -88,7 +88,7 @@ export default {
     },
     // REQUEST TO POST A SWEEPSTAKE TICKET TO A SWEEPSTAKE
     ticketBought: function (Points, Price, username, timeDateStamp, OpenDateTime, SweepStakesID) {
-      if (this.Points >= this.Price) {
+      if (this.Points >= this.Price & this.Points !== 0) {
         // remember the points should not be negative
         this.Points = this.Points - this.Price
         Axios({
