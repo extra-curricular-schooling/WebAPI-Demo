@@ -34,7 +34,7 @@ import V2Datepicker from 'v2-datepicker'
 import 'v2-datepicker/lib/index.css'
 import Axios from 'axios'
 import Store from '@/store/index'
-
+import Swal from 'sweetalert2'
 Vue.use(V2Datepicker)
 
 export default {
@@ -70,8 +70,8 @@ export default {
         .then(response => {
           console.log(response)
           if (response.data === 'Wromg Sweepstakes Dates') {
-            alert('Wromg Sweepstakes Dates')
-          } else { alert('Sweepstake Set') }
+            Swal('Wromg Sweepstakes Dates')
+          } else { Swal('Sweepstake Set') }
           this.$router.push({
             name: 'SweepstakeAdmin'
           })
@@ -80,13 +80,13 @@ export default {
           console.log(error.response)
           this.$data.error = JSON.parse(error.response.data)
           if (error.response.status === 500) {
-            alert('We apologize.  We are unable to process your request at this time.')
+            Swal('We apologize.  We are unable to process your request at this time.')
           }
         })
     },
     randomNumberGenerator: function (totalNumberTickets, winningTicket) {
       winningTicket = Math.floor(Math.random() * Math.floor(totalNumberTickets))
-      alert(winningTicket)
+      Swal(winningTicket)
       return winningTicket
       // generate the random number which is total number of tickets = sweepstakes id.
       // look at the corresponding username and notify that user and post it to the sweepstake table

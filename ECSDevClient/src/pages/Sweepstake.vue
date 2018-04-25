@@ -14,6 +14,7 @@ import moment from 'moment'
 import Countdown from 'vuejs-countdown'
 import Store from '@/store/index'
 import Axios from 'axios'
+import Swal from 'sweetalert2'
 Vue.use(require('vue-moment'))
 export default {
   name: 'prizes',
@@ -44,13 +45,13 @@ export default {
         .then(response => {
           console.log(response.data)
           this.Points = response.data
-          alert('Points are ' + this.Points)
+          Swal('Points are ' + this.Points)
         })
         .catch(error => {
           console.log(error.response)
           this.$data.error = JSON.parse(error.response.data)
           if (error.response.status === 500) {
-            alert('We apologize.  We are unable to process your request at this time.')
+            Swal('We apologize.  We are unable to process your request at this time.')
           }
         })
     },
@@ -64,14 +65,14 @@ export default {
         .then(response => {
           console.log(response.data)
           if (response.data === 'Sweepstake Not Open') {
-            alert('Sweepstake Not Open')
+            Swal('Sweepstake Not Open')
           } else {
             this.Price = response.data.price
             this.SweepStakesID = response.data.sweepStakesID
             this.OpenDateTime = response.data.openDateTime
             this.Prize = response.data.prize
             this.ClosedDateTime = response.data.closedDateTime
-            alert('SweepStake Information: Price To Enter: ' + this.Price +
+            Swal('SweepStake Information: Price To Enter: ' + this.Price +
             '\nSweepStakesID: ' + this.SweepStakesID +
             '\nSweepStake Open Date: ' + this.OpenDateTime +
             '\nPrize: ' + this.Prize +
@@ -82,7 +83,7 @@ export default {
           console.log(error.response)
           this.$data.error = JSON.parse(error.response.data)
           if (error.response.status === 500) {
-            alert('We apologize.  We are unable to process your request at this time.')
+            Swal('We apologize.  We are unable to process your request at this time.')
           }
         })
     },
@@ -107,22 +108,22 @@ export default {
           .then(response => {
             console.log(response)
             if (response.data === 'Another Ticket Added') {
-              alert('Another Milestone Added Towards Your Win')
-              alert('Congragulations! One ticket bought for ' + this.Price + ' points! Your Points are ' + this.Points)
+              Swal('Another Milestone Added Towards Your Win')
+              Swal('Congragulations! One ticket bought for ' + this.Price + ' points! Your Points are ' + this.Points)
             } else {
-              alert('Successfully Bought First Ticket')
-              alert('Congragulations! One ticket bought for ' + this.Price + ' points! Your Points are ' + this.Points)
+              Swal('Successfully Bought First Ticket')
+              Swal('Congragulations! One ticket bought for ' + this.Price + ' points! Your Points are ' + this.Points)
             }
           })
           .catch(error => {
             console.log(error.response)
             this.$data.error = JSON.parse(error.response.data)
             if (error.response.status === 500) {
-              alert('We apologize.  We are unable to process your request at this time.')
+              Swal('We apologize.  We are unable to process your request at this time.')
             }
           })
       } else {
-        alert('Sorry! You have Insufficient Points!')
+        Swal('Sorry! You have Insufficient Points!')
       }
     }
   }
