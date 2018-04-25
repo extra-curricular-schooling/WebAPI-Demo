@@ -3,7 +3,6 @@ import Store from '@/store/index'
 import Router from '@/router/index'
 import UrlHelper from '@/assets/js/urlHelper'
 import JwtService from '@/assets/js/jwtService'
-import urlHelper from '../../assets/js/urlHelper'
 
 export default {
   submitRegistration: function () {
@@ -56,7 +55,7 @@ export default {
           if (UrlHelper.getUrlPath(url) === 'partial-registration') {
             Store.dispatch('updateRole', claims['roleType'])
             Store.dispatch('updateUsername', claims['username'])
-            Store.commit('signIn', token)
+            // Store.commit('signIn', token)
             Router.push({
               name: 'PartialRegistration',
               params: {
@@ -64,7 +63,7 @@ export default {
               }
             })
           }
-          if (urlHelper.getUrlPath(url) === 'home') {
+          if (UrlHelper.getUrlPath(url) === 'home') {
             Store.dispatch('updateRole', claims['role'])
             Store.dispatch('updateUsername', claims['unique_name'])
             Store.commit('signIn', token)

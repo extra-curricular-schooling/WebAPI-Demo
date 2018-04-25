@@ -62,7 +62,7 @@ namespace ECS.Security.AccessTokens.Jwt
 
             var now = DateTime.UtcNow;
 
-            var symmetricKey = Encoding.UTF8.GetBytes(Secrets.SsoSecret);
+            var symmetricKey = Encoding.UTF8.GetBytes(Secrets.SsoAccessTokenSecret);
             
             var tokenDescriptor = new SecurityTokenDescriptor
             {
@@ -90,7 +90,7 @@ namespace ECS.Security.AccessTokens.Jwt
             if (!(tokenHandler.ReadToken(token) is JwtSecurityToken))
                 throw new Exception("Token is not a compatible JwtSecurityToken type");
 
-            var symmetricKey = Encoding.UTF8.GetBytes(Secrets.SsoSecret);   
+            var symmetricKey = Encoding.UTF8.GetBytes(Secrets.SsoAccessTokenSecret);   
 
             // The checks that occur during validation of the JWT.
             var validationParameters = new TokenValidationParameters()

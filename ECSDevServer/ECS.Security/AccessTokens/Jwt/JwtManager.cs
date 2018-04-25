@@ -44,7 +44,7 @@ namespace ECS.Security.AccessTokens.Jwt
 
         public string GenerateToken(string username, int expireMinutes = 20)
         {
-            var symmetricKey = Convert.FromBase64String(Secrets.AppSecret);
+            var symmetricKey = Convert.FromBase64String(Secrets.AppAccessTokenSecret);
             var tokenHandler = new JwtSecurityTokenHandler();
 
             var now = DateTime.UtcNow;
@@ -79,7 +79,7 @@ namespace ECS.Security.AccessTokens.Jwt
                 if (jwtToken == null)
                     return null;
 
-                var symmetricKey = Convert.FromBase64String(Secrets.AppSecret);
+                var symmetricKey = Convert.FromBase64String(Secrets.AppAccessTokenSecret);
 
                 var validationParameters = new TokenValidationParameters()
                 {
@@ -113,7 +113,7 @@ namespace ECS.Security.AccessTokens.Jwt
                 if (jwtToken == null)
                     return null;
 
-                var symmetricKey = Convert.FromBase64String(Secrets.AppSecret);
+                var symmetricKey = Convert.FromBase64String(Secrets.AppAccessTokenSecret);
 
                 var validationParameters = new TokenValidationParameters()
                 {

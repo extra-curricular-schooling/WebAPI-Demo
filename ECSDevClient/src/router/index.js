@@ -113,8 +113,8 @@ export default new Router({
       },
       component: () => import('@/pages/PartialRegistration'),
       beforeEnter: function (to, from, next) {
-        document.title = to.meta.title
         if (to.params.jwt) {
+          document.title = to.meta.title
           let jwt = to.params.jwt
           console.log(jwt)
           // Decode the jwt

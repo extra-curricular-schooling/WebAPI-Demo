@@ -418,7 +418,7 @@ export default {
           }
         })
           .then(response => {
-            console.log(response)
+            this.$store.dispatch('signIn', this.$store.getters.getAuthToken)
             this.$router.push({
               name: 'Home',
             })
