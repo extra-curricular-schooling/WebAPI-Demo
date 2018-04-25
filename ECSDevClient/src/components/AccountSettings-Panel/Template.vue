@@ -1,6 +1,6 @@
 <template>
   <div class="container is-fullhd">
-    <div v-if="isVisibleNotification" v-on:click="isVisibleNotification = false" class="notification is-danger">
+    <div id="snotification" v-if="isVisibleNotification" v-on:click="isVisibleNotification = false" class="notification is-danger">
       <button v-on:click="isVisibleNotification = false" class="delete"></button>
       {{notificationMessage}}
     </div>
@@ -14,7 +14,8 @@
                     General
                   </p>
                   <ul class="menu-list">
-                    <li><a v-on:click="currentComponent = 'not-implemented'">General Information</a></li>
+                    <li><a v-on:click="currentComponent = 'edit-user-info'">General Information</a></li>
+                    <li><a v-on:click="currentComponent = 'not-implemented'">Manage Addresses</a></li>
                     <li><a v-on:click="currentComponent = 'change-password-panel'">Change Password</a></li>
                     <li><a v-on:click="currentComponent = 'interests'">Change Interest Tags</a></li>
                   </ul>
@@ -36,6 +37,7 @@
 
 <script>
 import ChangePasswordPanel from './elements/ChangePassword-Panel/Template'
+import EditUserInfo from './elements/edituserinfo-panel/Template'
 import EventBus from '../../assets/js/EventBus'
 import Interests from '@/components/interest-tag/Template'
 
@@ -43,6 +45,7 @@ export default {
   name: 'AccountSettingsPanel',
   components: {
     ChangePasswordPanel,
+    EditUserInfo,
     Interests
   },
   created () {
@@ -61,6 +64,9 @@ export default {
     toggleNotification: function () {
       this.notificationMessage = this.$store.getters.getSettingsNotificationMessage
       this.isVisibleNotification = true
+      if (this.notificationMessage.toLowerCase().includes('success')) {
+        // document.getElementById('snotification').className = 'notification is-success'
+      }
     }
   }
 }

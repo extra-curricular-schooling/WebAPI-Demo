@@ -48,9 +48,8 @@ namespace ECS.WebAPI.Controllers.v1
 
 
             SweepStakeEntry checkUser;
-            checkUser = sweepStakeEntryRepository.GetSingle(x => x.SweepstakesID == sweepstakeUser.SweepstakesID);
-
-            if (checkUser.UserName != sweepstakeUser.UserName)
+            checkUser = sweepStakeEntryRepository.GetSingle(x => x.UserName == sweepstakeUser.UserName);
+            if (checkUser == null)
             {
                SweepStakeEntry sweep = new SweepStakeEntry()
                 {

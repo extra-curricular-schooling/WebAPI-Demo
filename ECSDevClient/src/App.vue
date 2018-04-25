@@ -16,6 +16,7 @@ import DefaultLayout from './layouts/Default'
 import AdminLayout from './layouts/Admin'
 import ScholarLayout from './layouts/Scholar'
 import EventBus from '@/assets/js/EventBus.js'
+import jwt from 'jsonwebtoken'
 
 var renewal
 
@@ -83,19 +84,36 @@ export default {
     checkCurrentRole () {
       this.currentRole = this.$store.getters.getRole
     },
+    checkTokenLife: function () {
+      var decoded = jwt.decode(this.$store.getters.getAuthToken, {complete: true})
+      if ((new Date().getTime() - new Date(decoded.payload.exp * 1000).getTime()) / 1000 > -120) {
+        this.$store.dispatch('updateUsername', '')
+        this.$store.dispatch('signOut')
+        this.$store.dispatch('updateToken', '')
+        clearInterval(renewal)
+        if (this.$router.currentRoute.path !== '/') {
+          this.$router.push('/')
+        } else {
+          this.$router.go()
+        }
+      }
+    },
     tokenRenewal: function () {
-      Axios({
-        method: 'GET',
-        url: this.$store.getters.getBaseAppUrl + 'Account/RenewToken',
-        headers: this.$store.getters.getRequestHeaders
-      })
-        .then((response) => {
-          this.$store.dispatch('signIn', response.data.AuthToken)
-          this.$store.dispatch('updateToken', response.data.AuthToken)
+      var decoded = jwt.decode(this.$store.getters.getAuthToken, {complete: true})
+      if ((new Date().getTime() - new Date(decoded.payload.exp * 1000).getTime()) / 1000 > -360) {
+        Axios({
+          method: 'GET',
+          url: this.$store.getters.getBaseAppUrl + 'Account/RenewToken',
+          headers: this.$store.getters.getRequestHeaders
         })
-        .catch((error) => {
-          console.log(error)
-        })
+          .then((response) => {
+            this.$store.dispatch('signIn', response.data.AuthToken)
+            this.$store.dispatch('updateToken', response.data.AuthToken)
+          })
+          .catch((error) => {
+            console.log(error)
+          })
+      }
     }
   },
   // end of methods
@@ -109,20 +127,13 @@ export default {
       this.checkCurrentRole()
     }
 
-    // Set behavior once the window has been closed
-    // window.onbeforeunload = () => {
-    //   this.$store.dispatch('updateUsername', '')
-    //   this.$store.dispatch('signOut')
-    //   this.$store.dispatch('updateToken', '')
-    //   clearInterval(renewal)
-    // }
-
     // Set interval depending on whether or not a user is logged in
     if (this.$store.getters.isAuth) {
-      renewal = setInterval(() => { this.tokenRenewal() }, 900000)
+      this.checkTokenLife()
+      renewal = setInterval(() => { this.tokenRenewal() }, 120000)
     } else {
       EventBus.$on('loggedIn', () => {
-        renewal = setInterval(() => { this.tokenRenewal() }, 900000)
+        renewal = setInterval(() => { this.tokenRenewal() }, 120000)
       })
     }
 
