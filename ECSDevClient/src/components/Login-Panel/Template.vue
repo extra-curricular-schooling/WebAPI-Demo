@@ -9,9 +9,6 @@
         <span class="icon is-small is-left">
           <i class="fas fa-user"></i>
         </span>
-        <span class="icon is-small is-right">
-          <i class="fas fa-check"></i>
-        </span>
       </div>
     </div>
     <div class="field password">
@@ -89,6 +86,9 @@ export default {
     },
     changePassword () {
       this.$refs.password.toggle()
+      EventBus.$on('forgetUsername', () => {
+        this.rememberUsername()
+      })
     },
     rememberUsername () {
       this.$refs.username.toggle()

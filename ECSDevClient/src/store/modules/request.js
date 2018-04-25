@@ -15,13 +15,17 @@ export const request = {
       'Content-Type': 'application/json',
       'Authorization': 'null',
       'X-Requested-With': 'XMLHttpRequest'
-    }
+    },
+    formTimeout: 60000, // 60 seconds
+    defaultTimeout: 30000 // 30 seconds
   },
   getters: {
     getBaseAppUrl: (state) => { return state.appBaseUrl },
     getBaseSsoUrl: (state) => { return state.ssoBaseUrl },
     getBasePwnedUrl: (state) => { return state.pwnedBaseUrl },
-    getRequestHeaders: (state) => { return state.headers }
+    getRequestHeaders: (state) => { return state.headers },
+    getDefaultTimeout: (state) => { return state.defaultTimeout },
+    getFormTimeout: (state) => { return state.formTimeout }
   },
   mutations: {
     setAuthorizationHeader: function (state, token) {

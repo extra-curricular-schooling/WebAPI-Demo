@@ -5,6 +5,7 @@ import { redirect } from '@/components/redirect-modal/store'
 import { request } from './modules/request'
 import { auth } from './modules/auth'
 import { home } from './modules/home'
+import { validation } from './modules/validation'
 import { linkedin } from '../components/LinkedIn-Modal/store'
 import { login } from '../components/Login-Panel/store'
 import { AccountStatusPanel } from '../components/AccountStatus-Panel/store'
@@ -35,6 +36,7 @@ export default new Vuex.Store({
     auth,
     home,
     request,
+    validation,
     redirect,
     linkedin,
     login,

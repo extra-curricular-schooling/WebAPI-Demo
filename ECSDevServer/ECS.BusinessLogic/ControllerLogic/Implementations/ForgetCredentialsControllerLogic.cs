@@ -51,16 +51,26 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
                 };
             }
 
-            // Retrieve username from the user's account by email
-            var accountModel = _accountLogic.GetByEmail(email);
-            var username = new StringContent(accountModel.UserName);
-
-            // Return successful message
-            return new HttpResponseMessage
+            try
             {
-                Content = username,
-                StatusCode = HttpStatusCode.OK
-            };
+                // Retrieve username from the user's account by email
+                var accountModel = _accountLogic.GetByEmail(email);
+                var username = new StringContent(accountModel.UserName);
+
+                // Return successful message
+                return new HttpResponseMessage
+                {
+                    Content = username,
+                    StatusCode = HttpStatusCode.OK
+                };
+            } catch (Exception ex)
+            {
+                return new HttpResponseMessage
+                {
+                    ReasonPhrase = ex.Message,
+                    StatusCode = HttpStatusCode.InternalServerError
+                };
+            }
         }
 
 
