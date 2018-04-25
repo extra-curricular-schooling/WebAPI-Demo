@@ -83,13 +83,13 @@ export default {
       email: '',
 
       // Response Data
-      username: 'test',
+      username: '',
 
       // Validation Messages
       emailMessage: '',
 
       // Regular Expressions
-      EMAIL_REGEX: /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+      EMAIL_REGEX: this.$store.getters.getEmailRegex,
 
       // Event Properties
       isActive: false,
@@ -124,6 +124,7 @@ export default {
      * closes modal if modal is closed
      */
     close () {
+      document.getElementById('email').className = 'input'
       this.toggle()
       this.body = 'firstStep'
       this.email = ''
@@ -140,7 +141,7 @@ export default {
       if (!this.$data.EMAIL_REGEX.test(this.$data.email) && this.$data.email != '') {
         document.getElementById('email').className = 'input';
         document.getElementById('emailControl').className = 'help is-info';
-        this.$data.emailMessage = 'Please enter a valid email.';
+        this.$data.emailMessage = this.$store.getters.getEmailMessage;
       } else if (this.$data.email == '') {
         document.getElementById('email').className = 'input';
         document.getElementById('emailControl').className = 'help';
@@ -158,7 +159,7 @@ export default {
      * @returns {boolean} false - If input is not valid
      */
     isValid () {
-      if (document.getElementById('email').className == 'input is-success') {
+      if (document.getElementById('email').className == 'input is-success' && this.email != null) {
         return true
       } else {
         return false

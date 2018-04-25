@@ -181,7 +181,7 @@ export default {
       confirmPasswordMessage: '',
 
       // Regular Expressions
-      PASSWORD_REGEX: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_])[a-zA-Z0-9!@#$%^&*()_]{8,64}$/,
+      PASSWORD_REGEX: this.$store.getters.getPasswordRegex,
 
       // Event Properties
       isActive: false,
@@ -224,7 +224,7 @@ export default {
       if (!this.$data.PASSWORD_REGEX.test(document.getElementById('password').value) && document.getElementById('password').value != '') {
         document.getElementById('password').className = 'input';
         document.getElementById('passwordControl').className = 'help is-info';
-        this.$data.passwordMessage = 'Password must be 8-64 characters long, must not contain any spaces, and must contain at least 1 lowercase letter, 1 uppercase letter, 1 number, and 1 special character.';
+        this.$data.passwordMessage = this.$store.getters.getPasswordMessage;
       } else if (document.getElementById('password').value == '') {
         document.getElementById('password').className = 'input';
         document.getElementById('passwordControl').className = 'help';
@@ -244,7 +244,7 @@ export default {
       if (document.getElementById('password').value != document.getElementById('confirmPassword').value && document.getElementById('confirmPassword').value != '') {
         document.getElementById('confirmPassword').className = 'input';
         document.getElementById('confirmPasswordControl').className = 'help is-info';
-        this.$data.confirmPasswordMessage = 'Retype Password';
+        this.$data.confirmPasswordMessage = this.$store.getters.getConfirmPasswordMessage;
       } else if (document.getElementById('confirmPassword').value == '') {
         document.getElementById('confirmPassword').className = 'input';
         document.getElementById('confirmPasswordControl').className = 'help';
@@ -393,6 +393,7 @@ export default {
     /**
      * @description
      * GET request to get security questions from server
+     * @throws {ECONNABORTED} If request/response timed out
      * @throws {Conflict} Throws an exception if username is not found in resource
      */
     getSecurityQuestions () {
@@ -448,6 +449,7 @@ export default {
     /**
      * @description
      * POST request to submit answers to account security questions
+     * @throws {ECONNABORTED} If request/response timed out
      * @throws {Forbidden} Throws exception if answers are incorrect and source access is denied
      * @throws {InternalServerError} Throws exception if request cannot be processed
      */
@@ -541,6 +543,7 @@ export default {
     /**
      * @description
      * POST request to submit new password credentials
+     * @throws {ECONNABORTED} If request/response timed out
      * @throws {InternalServerError} Throws exception if request cannot be processed
      */
     submitNewPassword () {
