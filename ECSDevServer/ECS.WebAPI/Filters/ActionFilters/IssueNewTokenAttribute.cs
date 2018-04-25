@@ -1,12 +1,11 @@
-﻿using ECS.Models;
-using ECS.Repositories;
-using ECS.Security.AccessTokens.Jwt;
-using System;
+﻿using System;
 using System.Net.Http.Headers;
 using System.Web.Http.Filters;
+using ECS.Models;
 using ECS.Repositories.Implementations;
+using ECS.Security.AccessTokens.Jwt;
 
-namespace ECS.WebAPI.Filters.AuthenticationFilters
+namespace ECS.WebAPI.Filters.ActionFilters
 {
     public class IssueNewTokenAttribute : ActionFilterAttribute
     {
@@ -20,7 +19,6 @@ namespace ECS.WebAPI.Filters.AuthenticationFilters
         public override void OnActionExecuted(HttpActionExecutedContext filterContext)
         {
             string accessTokenFromRequest = "";
-            if (filterContext.Request.Headers.Authorization.ToString() != null)
             {
                 var authHeader = filterContext.Request.Headers.Authorization;
                 if (authHeader != null)
@@ -107,11 +105,6 @@ namespace ECS.WebAPI.Filters.AuthenticationFilters
                         filterContext.Response.ReasonPhrase = "Invalid token.";
                     }
                 }
-            }
-            else
-            {
-                filterContext.Response.StatusCode = System.Net.HttpStatusCode.BadRequest;
-                filterContext.Response.ReasonPhrase = "Authorization header must contain valid token.";
             }
         }
     }

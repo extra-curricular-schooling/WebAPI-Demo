@@ -97,6 +97,7 @@ export default {
           // Something happened in setting up the request that triggered an Error
           console.log('Error', error.message)
         }
+        Router.push({name: 'Main'})
         console.log(error.config)
       })
   },
