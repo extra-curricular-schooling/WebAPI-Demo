@@ -6,7 +6,7 @@
     <div class="navbar-item level-item has-dropdown is-hoverable">
       <a class="navbar-link" >Partner Sites</a>
       <div class="navbar-dropdown is-boxed">
-        <a class="navbar-item" href="">GitGrub</a>
+        <a class="navbar-item" href="https://getusgrub.com/">GitGrub</a>
         <a class="navbar-item" href="https://careaway.me">Careaway</a>
         <a class="navbar-item" href="">WhatFits</a>
       </div>
