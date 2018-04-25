@@ -25,6 +25,8 @@ namespace ECS.Constants.Security
         
         public const string CanViewArticle = "CanViewArticle";
 
+        public const string CanShareLinkedIn = "CanShareLinkedIn";
+
         // Role Claims
         public const string Admin = "Admin";
         
