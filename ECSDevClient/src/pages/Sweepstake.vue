@@ -69,10 +69,10 @@ export default {
           this.Prize = response.data.prize
           this.ClosedDateTime = response.data.closedDateTime
           alert('SweepStake Information: Price To Enter: ' + this.Price +
-          ' SweepStakesID: ' + this.SweepStakesID +
-          ' SweepStake Open Date: ' + this.OpenDateTime +
-          ' Prize: ' + this.Prize +
-          ' Closing Date: ' + this.ClosedDateTime)
+          '\nSweepStakesID: ' + this.SweepStakesID +
+          '\nSweepStake Open Date: ' + this.OpenDateTime +
+          '\nPrize: ' + this.Prize +
+          '\nClosing Date: ' + this.ClosedDateTime)
         })
         .catch(error => {
           console.log(error.response)
@@ -87,7 +87,6 @@ export default {
       if (this.Points >= this.Price) {
         // remember the points should not be negative
         this.Points = this.Points - this.Price
-        alert('Congragulations! One ticket bought for ' + this.Price + ' points! Your Points are ' + this.Points)
         Axios({
           method: 'POST',
           url: Store.getters.getBaseAppUrl + 'Sweepstake/ScholarTicket/' + username,
@@ -105,10 +104,11 @@ export default {
             console.log(response)
             if (response.data === 'Another Ticket Added') {
               alert('Another Milestone Added Towards Your Win')
-            } else { alert('Successfully Bought First Ticket') }
-            this.$router.push({
-              name: 'Sweepstake'
-            })
+              alert('Congragulations! One ticket bought for ' + this.Price + ' points! Your Points are ' + this.Points)
+            } else {
+              alert('Successfully Bought First Ticket')
+              alert('Congragulations! One ticket bought for ' + this.Price + ' points! Your Points are ' + this.Points)
+            }
           })
           .catch(error => {
             console.log(error.response)

@@ -3,6 +3,7 @@ using ECS.Repositories.Contracts;
 
 namespace ECS.Repositories.Implementations
 {
+
     /// <summary>
     /// Account Repository Interface for Account Models
     /// </summary>
@@ -30,6 +31,13 @@ namespace ECS.Repositories.Implementations
     public interface IBadAccessTokenRepository : IRepositoryBase<BadAccessToken>
     {
 
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public interface IExpiredAccessTokenRepository : IRepositoryBase<ExpiredAccessToken>
+    {
     }
 
     /// <summary>
@@ -95,13 +103,6 @@ namespace ECS.Repositories.Implementations
     /// 
     /// </summary>
     public interface ISecurityQuestionAccountRepository : IRepositoryBase<SecurityQuestionAccount>
-    {
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public interface IExpiredAccessTokenRepository : IRepositoryBase<ExpiredAccessToken>
     {
     }
 

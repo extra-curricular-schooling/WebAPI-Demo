@@ -28,7 +28,10 @@ namespace ECS.WebAPI.Filters.AuthorizationFilters
             _claims = claims;
             _isSingleClaim = false;
         }
+        public AuthorizeRequiredAttribute()
+        {
 
+        }
         protected override bool IsAuthorized(HttpActionContext actionContext)
         {
             var checkList = new List<bool>();
@@ -36,6 +39,7 @@ namespace ECS.WebAPI.Filters.AuthorizationFilters
             // get the access token
             var accessTokenFromRequest = actionContext.Request.Headers.Authorization.ToString();
 
+            // TODO: @Scott/Kris This is autorizing the SSO request with the AppManager... problems.
             ClaimsPrincipal principal = JwtManager.Instance.GetPrincipal(accessTokenFromRequest);
             if (principal != null)
             {

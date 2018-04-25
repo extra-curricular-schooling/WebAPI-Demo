@@ -4,11 +4,12 @@ using ECS.DTO;
 using System.Web.Http.Cors;
 using ECS.Constants.Network;
 using ECS.Repositories.Implementations;
+using ECS.WebAPI.Filters.AuthorizationFilters;
 
 namespace ECS.WebAPI.Controllers.v1
 {
     [RoutePrefix("v1/Sweepstake")]
-    //[AuthorizeRequired("canEnterRaffle", Roles = "Scholar")]
+   //  [AuthorizeRequired("CanEnterRaffle", Roles = "Scholar")]
     public class SweepstakeController : ApiController
     {
         private readonly IAccountRepository accountRepository = new AccountRepository();

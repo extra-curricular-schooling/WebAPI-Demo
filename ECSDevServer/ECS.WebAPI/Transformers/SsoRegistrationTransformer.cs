@@ -16,7 +16,7 @@ namespace ECS.WebAPI.Transformers
             var password = SsoJwtManager.Instance.GetClaimValue(context.Principal, ClaimNames.Password);
             var passwordSalt = HashService.Instance.CreateSaltKey();
             var hashedPassword = HashService.Instance.HashPasswordWithSalt(passwordSalt, password, true);
-            var roleType = SsoJwtManager.Instance.GetClaimValue(context.Principal, ClaimNames.Password);
+            var roleType = SsoJwtManager.Instance.GetClaimValue(context.Principal, ClaimNames.RoleType);
 
             IFactory factory = new RoleFactory();
             string role = (string) factory.Create(roleType);

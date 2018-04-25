@@ -9,7 +9,6 @@ namespace ECS.WebAPI.Controllers.v1
 {
     [RoutePrefix("v1/Sso")]
     [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "GET,POST")]
-    [UnauthorizedAccessExceptionFilter]
     public class SsoController : ApiController
     {
         private readonly SsoControllerLogic _controllerLogic;
