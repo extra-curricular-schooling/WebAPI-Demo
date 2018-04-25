@@ -32,18 +32,24 @@ namespace ECS.WebAPI.Controllers.v1
                     var answer = db.SweepStakes
                        .Where(x => x.OpenDateTime <= DateTime.Now & x.ClosedDateTime >= DateTime.Now)
                        .FirstOrDefault<SweepStake>();
-
-            SweepstakeAdminDTO sweepstake = new SweepstakeAdminDTO()
+            if (answer == null)
             {
-                SweepStakesID = answer.SweepStakesID,
-                OpenDateTime = answer.OpenDateTime,
-                ClosedDateTime = answer.ClosedDateTime,
-                Prize = answer.Prize,
-                UsernameWinner = answer.UsernameWinner,
-                Price = answer.Price,
+                return Ok("Sweepstake Not Open");
+            }
+            else
+            {
+                SweepstakeAdminDTO sweepstake = new SweepstakeAdminDTO()
+                {
+                    SweepStakesID = answer.SweepStakesID,
+                    OpenDateTime = answer.OpenDateTime,
+                    ClosedDateTime = answer.ClosedDateTime,
+                    Prize = answer.Prize,
+                    UsernameWinner = answer.UsernameWinner,
+                    Price = answer.Price,
 
-            };
-            return Ok(sweepstake);
+                };
+                return Ok(sweepstake);
+            }
          }
 
         // THIS IS FOR THE EARNING POINTS
@@ -71,17 +77,24 @@ namespace ECS.WebAPI.Controllers.v1
         [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "POST")]
         public IHttpActionResult submitSweepstake(SweepstakeAdminDTO sweepstakeSet)
         {
-            SweepStake sweep = new SweepStake()
+            if (sweepstakeSet.OpenDateTime <= DateTime.Now & sweepstakeSet.ClosedDateTime >= DateTime.Now)
             {
-                SweepStakesID = sweepstakeSet.SweepStakesID,
-                OpenDateTime = sweepstakeSet.OpenDateTime,
-                ClosedDateTime = sweepstakeSet.ClosedDateTime,
-                Prize = sweepstakeSet.Prize,
-                UsernameWinner = sweepstakeSet.UsernameWinner,
-                Price = sweepstakeSet.Price,
-            };
-            sweepStakeRepository.Insert(sweep);
-            return Ok("Post Sweepstake by Admin");
+                SweepStake sweep = new SweepStake()
+                {
+                    SweepStakesID = sweepstakeSet.SweepStakesID,
+                    OpenDateTime = sweepstakeSet.OpenDateTime,
+                    ClosedDateTime = sweepstakeSet.ClosedDateTime,
+                    Prize = sweepstakeSet.Prize,
+                    UsernameWinner = sweepstakeSet.UsernameWinner,
+                    Price = sweepstakeSet.Price,
+                };
+                sweepStakeRepository.Insert(sweep);
+                return Ok("Post Sweepstake by Admin");
+            }
+            else
+            {
+                return Ok("Wromg Sweepstakes Dates");
+            }
         }
     }
 }

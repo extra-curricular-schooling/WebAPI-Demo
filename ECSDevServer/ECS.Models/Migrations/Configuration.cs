@@ -1586,6 +1586,21 @@ namespace ECS.Models.Migrations
                 {
                     SecQuestion = "What is your quest?",
                     SecurityQuestionID = 9
+                },
+                new SecurityQuestion
+                {
+                    SecQuestion = "What is your favorite movie?",
+                    SecurityQuestionID = 10
+                },
+                new SecurityQuestion
+                {
+                    SecQuestion = "Who is your favorite musical artist?",
+                    SecurityQuestionID = 11
+                },
+                new SecurityQuestion
+                {
+                    SecQuestion = "What is your favorite book?",
+                    SecurityQuestionID = 12
                 }
             };
             // For each item in the list securityQuestion, addorupdate a SecurityQuestion with an ID
@@ -2539,6 +2554,11 @@ namespace ECS.Models.Migrations
                 {
                     // RoleId = roles.Single(i => i.// RoleId == 2).// RoleId,
                     PermissionName = "CanViewArticle"
+                },
+                new Permission
+                {
+                    // RoleId = roles.Single(i => i.// RoleId == 2).// RoleId,
+                    PermissionName = "CanShareLinkedIn"
                 },
                 new Permission
                 {

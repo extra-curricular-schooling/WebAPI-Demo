@@ -136,12 +136,12 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
                 {
                     PermissionName = ClaimValues.CanEnterRaffle,
                     Username = registrationForm.Username
+                },
+                new AccountType()
+                {
+                    PermissionName = ClaimValues.CanShareLinkedIn,
+                    Username = registrationForm.Username
                 }
-                //new AccountType()
-                //{
-                //    PermissionName = "CanShareLinkedIn",
-                //    Username = registrationForm.Username
-                //}
             };
 
             List<ZipLocation> zipLocations = new List<ZipLocation>
