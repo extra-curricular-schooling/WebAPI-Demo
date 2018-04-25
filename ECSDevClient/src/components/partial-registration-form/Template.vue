@@ -157,6 +157,7 @@
 import Axios from 'axios'
 import AgreementModal from '@/components/registration-form/elements/AgreementModal'
 import Shuffler from '@/assets/js/arrayShuffler'
+import Swal from 'sweetalert2'
 
 export default {
   name: 'RegistrationForm',
@@ -428,8 +429,18 @@ export default {
             if (error.response) {
               // The request was made and the server responded with a status code
               // that falls out of the range of 2xx
+              if (error.response.status === 400) {
+                this.$store.dispatch('signOut')
+                Swal({
+                  title: 'Bad News',
+                  text: 'According to our records, you are not in our database',
+                  footer: '<a href="/">Take me to the main page</a>'})
+              }
               if (error.response.status === 409) {
-                alert('Good news!  According to our records, you already have an account with us!')
+                Swal({
+                  title: 'Good News',
+                  text: 'According to our records, you already have an account with us!',
+                  footer: '<a href="/">Take me to the home page</a>'})
               }
             } else if (error.request) {
               // Server

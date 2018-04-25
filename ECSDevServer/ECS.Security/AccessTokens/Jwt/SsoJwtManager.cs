@@ -148,5 +148,19 @@ namespace ECS.Security.AccessTokens.Jwt
             var claimsPrincipal = (ClaimsPrincipal) principal;
             return claimsPrincipal.FindFirst(claimType).Value;
         }
+
+        public bool HasAcceptedClaims(IPrincipal principal)
+        {
+            // Read the Request Principal (User), and grab the necessary jwt claims.
+            var usernameClaim = GetClaim(principal, "username");
+            var passwordClaim = GetClaim(principal, "password");
+            var issuedAtClaim = GetClaim(principal, "iat");
+            var applicationClaim = GetClaim(principal, "application");
+            var applicationClaimValue = applicationClaim.Value.ToLower();
+            var isCorrectApp = applicationClaimValue.Equals(ClaimValues.Ecs);
+
+            return usernameClaim != null && passwordClaim != null &&
+                   issuedAtClaim != null && isCorrectApp;
+        }
     }
 }
