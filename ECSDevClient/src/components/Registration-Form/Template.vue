@@ -28,9 +28,6 @@
           <span class="icon is-small is-left">
             <i class="fas fa-user"></i>
           </span>
-          <span class="icon is-small is-right">
-            <i class="fas fa-check"></i>
-          </span>
         </div>
         <p id="usernameControl" class="help">{{ usernameMessage }}</p>
       </div>
@@ -41,9 +38,6 @@
           <input v-model="email" id="email" class="input" type="email" @keyup="validateEmail" autocomplete="email" placeholder="Email" required>
           <span class="icon is-small is-left">
             <i class="fas fa-envelope"></i>
-          </span>
-          <span class="icon is-small is-right">
-            <i class="fas fa-check"></i>
           </span>
         </div>
         <p id="emailControl" class="help">{{ emailMessage }}</p>
@@ -91,13 +85,17 @@
       </div>
       <div class="is-table">
         <div class="field mailing-adress state">
-          <p class="control">
-            <input v-model="state" id="state" class="input" text="text" @keyup="validateState" autocomplete="address-line2" placeholder="State">
-          </p>
-          <p id="stateControl" class="help">{{ stateMessage }}</p>
+          <div class="control left-cell">
+            <span class="select select-state">
+              <select class="select-state" v-model="state">
+                  <option disabled value="">--select--</option>
+                  <option v-for="s in states" v-bind:key="s"> {{ s }} </option>
+              </select>
+            </span>
+          </div>
         </div>
         <div class="field mailing-address zip">
-          <p class="control">
+          <p class="control right-cell">
             <input v-model="zipCode" id="zipCode" class="input" @keyup="validateZipCode" autocomplete="postal-code" placeholder="Zip Code">
           </p>
           <p id="zipCodeControl" class="help">{{ zipCodeMessage }}</p>
@@ -111,11 +109,14 @@
       <div class="field security-questions">
         <label class="label field-element is-required">Security Questions</label>
         <div class="control">
-          <span class="select">
-            <select @change="getSelectionID(0, question1)" v-model="question1">
+          <span class="select questions">
+            <select class="pull-down" @change="getSelectionID(0, question1)" v-model="question1">
               <option disabled value="">--select--</option>
               <option v-for="question in questionSet1" v-bind:key="question.SecurityQuestionID"> {{ question.SecQuestion }} </option>
             </select>
+          </span>
+          <span v-if="!loadingIsDisabled" class="icon is-medium">
+            <i id="loadingQuestions" class="fas fa-spinner fa-pulse"></i>
           </span>
         </div>
       </div>
@@ -127,11 +128,14 @@
 
       <div class="field security-questions">
         <div class="control">
-          <span class="select">
-            <select @change="getSelectionID(1, question2)" v-model="question2">
+          <span class="select questions">
+            <select class="pull-down" @change="getSelectionID(1, question2)" v-model="question2">
               <option disabled value="">--select--</option>
               <option v-for="question in questionSet2" v-bind:key="question.SecurityQuestionID"> {{ question.SecQuestion }} </option>
             </select>
+          </span>
+          <span v-if="!loadingIsDisabled" class="icon is-medium">
+            <i id="loadingQuestions" class="fas fa-spinner fa-pulse"></i>
           </span>
         </div>
       </div>
@@ -143,11 +147,14 @@
 
       <div class="field security-questions">
         <div class="control">
-          <span class="select">
-            <select @change="getSelectionID(2, question3)" v-model="question3">
+          <span class="select questions">
+            <select class="pull-down" @change="getSelectionID(2, question3)" v-model="question3">
               <option disabled value="">--select--</option>
               <option v-for="question in questionSet3" v-bind:key="question.SecurityQuestionID"> {{ question.SecQuestion }} </option>
             </select>
+          </span>
+          <span v-if="!loadingIsDisabled" class="icon is-medium">
+            <i id="loadingQuestions" class="fas fa-spinner fa-pulse"></i>
           </span>
         </div>
       </div>
@@ -196,6 +203,7 @@ import AgreementModal from '@/components/registration-form/elements/AgreementMod
 import BadPassword from '@/components/bad-password-alert/Template'
 import Shuffler from '@/assets/js/arrayShuffler'
 import EventBus from '@/assets/js/EventBus'
+import States from '@/assets/js/enumerations/states'
 
 export default {
   name: 'RegistrationForm',
@@ -212,9 +220,11 @@ export default {
       questionSet1: [],
       questionSet2: [],
       questionSet3: [],
+      states: States,
 
       // Event Properties
       agreementIsChecked: false,
+      loadingIsDisabled: false,
 
       // Request Data
       firstName: '',
@@ -240,7 +250,6 @@ export default {
       emailMessage: '',
       addressMessage: '',
       cityMessage: '',
-      stateMessage: '',
       zipCodeMessage: '',
       answersMessage: '',
 
@@ -251,7 +260,6 @@ export default {
       EMAIL_REGEX: /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
       ADDRESS_REGEX: /^[a-zA-Z0-9#.,-/ ]{0,}$/,
       CITY_REGEX: /^[a-zA-Z ]{0,}$/,
-      STATE_REGEX: /^[a-zA-Z]{0,2}$/,
       ZIPCODE_REGEX: /^\d{5}(?:[-\s]\d{4})?$/,
     }
   },
@@ -469,27 +477,6 @@ export default {
     },
     /**
      * @description
-     * validates the state of a user as defined by the constraint of the 
-     * state regular expression
-     * regex: STATE_REGEX
-     */
-    validateState () {
-      if (!this.$data.STATE_REGEX.test(this.$data.state) && this.$data.state != '') {
-        document.getElementById('state').className = 'input';
-        document.getElementById('stateControl').className = 'help is-info';
-        this.$data.stateMessage = 'State must be in abbreviated format (i.e. IA for Iowa).';
-      } else if (this.$data.state == '') {
-        document.getElementById('state').className = 'input';
-        document.getElementById('stateControl').className = 'help';
-        this.$data.stateMessage = '';
-      } else {
-        document.getElementById('state').className = 'input is-success';
-        document.getElementById('stateControl').className = 'help';
-        this.$data.stateMessage = '';
-      }
-    },
-    /**
-     * @description
      * validates the zip code of a user as defined by the constraint of the 
      * zip code regular expression
      * regex: ZIPCODE_REGEX
@@ -674,6 +661,7 @@ export default {
         .then(response => {
           this.$data.questions = Shuffler.shuffleArray(JSON.parse(response.data))
           this.divideQuestions()
+          this.loadingIsDisabled = true
         })
         .catch(error => {
           console.log(error.response)
@@ -752,11 +740,19 @@ export default {
 .is-table {
   width: 100%;
   display: table;
-  table-layout: fixed;
+  table-layout:unset;
+}
+
+.left-cell {
+  padding-right: 10px;
 }
 
 .modal-content {
   padding-top: 100px;
+}
+
+.right-cell {
+  padding-top: 0px;
 }
 
 .state {
@@ -774,5 +770,17 @@ export default {
 
 button {
   width: 175px;
+}
+
+select.pull-down {
+  width: 400px;
+}
+
+select.select-state {
+  width:100%;
+}
+
+span.select-state {
+  width: 100%;
 }
 </style>

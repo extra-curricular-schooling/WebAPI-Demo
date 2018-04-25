@@ -1,7 +1,5 @@
 <template>
 <div class="SweepstakeAdminPage">
-  <!-- make logic where the admin can only post one sweepstake at a time untill or unless one sweepstake
-  is closed. give an error if the admin tries to post again -->
     <h1>Admin Page to Set Sweepstake Settings</h1>
     <h2>Admin Can Set Sweepstake Open/Close Date, Sweepstake ID, Ticket Price, & Prize.</h2>
     <div class="dates">
@@ -11,10 +9,6 @@
       <p>Admin Selected Opening Date: {{OpenDateTime}}</p>
       <v2-datepicker v-model="ClosedDateTime" lang="en" format="MM/DD/YYYY" placeholder="Closing Date"></v2-datepicker>
       <p>Admin Selected Closing Date: {{ClosedDateTime}}</p>
-      <!-- <template v-if="OpenDateTime>ClosedDateTime">
-        <p>Wrong Close Date Entered: {{ClosedDateTime}}</p>
-      </template> -->
-      <!-- use business logic to check this -->
       <p v-if="OpenDateTime>ClosedDateTime">Wrong Close Date Entered</p>
     </div>
     <div class="settings">
@@ -22,8 +16,8 @@
       <p>Admin Selected Ticket Price: {{ Price }}</p>
       <input type="text" v-model.lazy="Prize" placeholder="Prize Sweepstake">
       <p>Admin Selected Prize: {{ Prize }}</p>
-      <input type="number" v-model.lazy="SweepStakesID" placeholder="Enter Sweepstake ID">
-      <p>Admin Selected Sweepstakes ID: {{ SweepStakesID }}</p>
+      <!-- <input type="number" v-model.lazy="SweepStakesID" placeholder="Enter Sweepstake ID">
+      <p>Admin Selected Sweepstakes ID: {{ SweepStakesID }}</p> -->
     </div>
     <!-- button to POST everything to the database -->
     <button v-on:click.prevent="submitSweepstake(OpenDateTime,ClosedDateTime,Prize,UsernameWinner,SweepStakesID,Price)">Submit Sweepstake</button>
@@ -62,22 +56,22 @@ export default {
     submitSweepstake: function (OpenDateTime, ClosedDateTime, Prize, UsernameWinner, SweepStakesID, Price) {
       Axios({
         method: 'POST',
-
-        // I changed the route below!!!!!!!!
-
         url: Store.getters.getBaseAppUrl + 'SweepstakeAdmin/submitSweepstake',
         headers: Store.getters.getRequestHeaders,
         data: {
-          'SweepStakesID': this.$data.SweepStakesID, // why MY ID DOESN't GO with what i want
-          'OpenDateTime': this.$data.OpenDateTime,
-          'ClosedDateTime': this.$data.ClosedDateTime,
-          'Prize': this.$data.Prize,
-          'Price': this.$data.Price,
-          'UsernameWinner': this.$data.UsernameWinner
+          'SweepStakesID': this.SweepStakesID, // ID DOESN't GO
+          'OpenDateTime': this.OpenDateTime,
+          'ClosedDateTime': this.ClosedDateTime,
+          'Prize': this.Prize,
+          'Price': this.Price,
+          'UsernameWinner': this.UsernameWinner
         }
       })
         .then(response => {
           console.log(response)
+          if (response.data === 'Wromg Sweepstakes Dates') {
+            alert('Wromg Sweepstakes Dates')
+          } else { alert('Sweepstake Set') }
           this.$router.push({
             name: 'SweepstakeAdmin'
           })
