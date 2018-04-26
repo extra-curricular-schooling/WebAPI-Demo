@@ -1,5 +1,5 @@
 <template>
-  <div v-if="currentRole === ''">
+  <div v-if="!isAuth">
     <error-modal/>
     <loading-modal/>
     <div class="field">
@@ -71,18 +71,20 @@ export default {
       isDisabled: true,
       headers: this.$store.getters.getRequestHeaders,
       loginURI: this.$store.getters.getLoginPortal,
-      currentRole: ''
+      currentRole: '',
+      isAuth: ''
     }
   },
   mounted () {
-    this.checkCurrentRole()
+    this.updateLocalSecurityState()
   },
   updated () {
-    this.checkCurrentRole()
+    this.updateLocalSecurityState()
   },
   methods: {
-    checkCurrentRole () {
+    updateLocalSecurityState () {
       this.currentRole = this.$store.getters.getRole
+      this.isAuth = this.$store.getters.isAuth
     },
     changePassword () {
       this.$refs.password.toggle()

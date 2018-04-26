@@ -52,7 +52,6 @@ export default {
   methods: {
     submitRegistration () {
       this.$store.dispatch('updateToken', this.jwt)
-      alert()
       SsoMockRequest.submitRegistration()
     },
     submitLogin () {

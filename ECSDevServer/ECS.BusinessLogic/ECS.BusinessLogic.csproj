@@ -101,7 +101,6 @@
   <ItemGroup>
     <Folder Include="ControllerLogic\Contracts\" />
     <Folder Include="Services\Contracts\" />
-    <Folder Include="Services\RepositoryFacades\" />
     <Folder Include="Validators\DtoValidators\" />
     <Folder Include="Validators\ModelValidators\" />
   </ItemGroup>

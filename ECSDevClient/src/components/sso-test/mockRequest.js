@@ -12,10 +12,6 @@ export default {
       url: Store.getters.getBaseAppUrl + 'Sso/Registration',
       headers: Store.getters.getRequestHeaders
     })
-      .then(function (response) {
-        console.log(response)
-        return response.data
-      })
       .catch(error => {
         if (error.response) {
           // The request was made and the server responded with a status code
@@ -49,33 +45,36 @@ export default {
           let url = response.data
           let parsedQuery = UrlHelper.parseUrlQuery(response.data)
           let token = parsedQuery['jwt']
-          let claims = JwtService.myDecode(token)
-          console.log(claims)
-          if (UrlHelper.getUrlPath(url) === 'partial-registration') {
-            Store.dispatch('updateRole', claims['roleType'])
-            Store.dispatch('updateUsername', claims['username'])
-            // Store.commit('signIn', token)
-            Router.push({
-              name: 'PartialRegistration',
-              params: {
-                jwt: token
-              }
-            })
-          }
-          if (UrlHelper.getUrlPath(url) === 'home') {
-            Store.dispatch('updateRole', claims['role'])
-            Store.dispatch('updateUsername', claims['unique_name'])
-            Store.commit('signIn', token)
-            Router.push({
-              name: 'Home'
-            })
+          return {
+            'url': url,
+            'token': token
           }
         }
-        // Should be a 301 response when you figure that out.
         if (response.status === 301) {
-          let headers = response.headers
-          let headersString = JSON.stringify(headers)
-          console.log(headersString)
+        }
+      })
+      .then((loginInfo) => {
+        console.log(loginInfo)
+        console.log(loginInfo.url)
+        let claims = JwtService.myDecode(loginInfo.token)
+        console.log(loginInfo.claims)
+        if (UrlHelper.getUrlPath(loginInfo.url) === 'partial-registration') {
+          Store.dispatch('updateRole', claims['roleType'])
+          Store.dispatch('updateUsername', claims['username'])
+          Router.push({
+            name: 'PartialRegistration',
+            params: {
+              jwt: loginInfo.token
+            }
+          })
+        }
+        if (UrlHelper.getUrlPath(loginInfo.url) === 'home') {
+          Store.dispatch('updateRole', claims['role'])
+          Store.dispatch('updateUsername', claims['unique_name'])
+          Store.commit('signIn', loginInfo.token)
+          Router.push({
+            name: 'Home'
+          })
         }
       })
       .catch(error => {
@@ -106,8 +105,6 @@ export default {
       url: Store.getters.getBaseAppUrl + 'Sso/ResetPassword',
       headers: Store.getters.getRequestHeaders
     })
-      .then(function (response) {
-      })
       .catch(function (error) {
         if (error.response) {
           // The request was made and the server responded with a status code
