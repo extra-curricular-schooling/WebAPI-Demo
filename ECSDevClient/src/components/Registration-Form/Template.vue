@@ -265,6 +265,7 @@ export default {
     }
   },
   created () {
+    this.$store.commit('clearAuthorizationHeader')
     this.fetchSecurityQuestions()
   },
   methods: {
