@@ -19,15 +19,14 @@ namespace ECS.WebAPI.Controllers.v1
         // TODO: @Scott Try to make the controller logic follow interfaces (like a transformer: fetch and send)
         private readonly RegistrationControllerLogic _controllerLogic;
         
-
         public RegistrationController()
         {
             _controllerLogic = new RegistrationControllerLogic();
         }
 
-        public RegistrationController(RegistrationControllerLogic controllerLogic)
+        public RegistrationController(RegistrationControllerLogic registrationLogic)
         {
-            _controllerLogic = controllerLogic;
+            _controllerLogic = registrationLogic;
         }
 
         /// <summary>
