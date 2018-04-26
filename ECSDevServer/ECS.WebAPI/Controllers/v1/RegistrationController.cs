@@ -33,6 +33,11 @@ namespace ECS.WebAPI.Controllers.v1
             _controllerLogic = controllerLogic;
         }
 
+        public RegistrationController(RegistrationControllerLogic registrationLogic)
+        {
+            _controllerLogic = registrationLogic;
+        }
+
         /// <summary>
         /// Method accepts request to submit form using the POST method over HTTP
         /// </summary>

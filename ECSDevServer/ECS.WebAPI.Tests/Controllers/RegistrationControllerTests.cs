@@ -17,7 +17,7 @@ namespace ECS.WebAPI.Tests
     {
         public class SubmitRegistration
         {
-            private static RegistrationControllerLogic _controllerLogic;
+            private static RegistrationControllerLogic _controllerLogic = new RegistrationControllerLogic();
 
             private static RegistrationDTO account = new RegistrationDTO
             {
@@ -54,9 +54,11 @@ namespace ECS.WebAPI.Tests
             public void PostReturnsOkResponse()
             {
                 // Arrange
-                var controller = new RegistrationController(_controllerLogic);
-                controller.Request = new HttpRequestMessage();
-                controller.Configuration = new HttpConfiguration();
+                var controller = new RegistrationController(_controllerLogic)
+                {
+                    Request = new HttpRequestMessage(),
+                    Configuration = new HttpConfiguration()
+                };
 
                 // Act
                 var response = controller.SubmitRegistration(account);

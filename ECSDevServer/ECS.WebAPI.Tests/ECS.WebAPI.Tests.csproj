@@ -94,6 +94,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ECS.BusinessLogic\ECS.BusinessLogic.csproj">
+      <Project>{B25549A6-0263-4126-ADA9-13EDFDDEDC0F}</Project>
+      <Name>ECS.BusinessLogic</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ECS.DTO\ECS.DTO.csproj">
       <Project>{40BC80F4-7950-4A6F-B94F-C35F7081A48B}</Project>
       <Name>ECS.DTO</Name>
