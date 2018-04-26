@@ -51,11 +51,11 @@ export default {
   },
   data () {
     return {
-      authorizationRequired: ['/Home', '/LinkedIn', '/account', '/account-admin', '/sweepstakeadmin', '/sweepstake'],
-      adminAuthorizationRequired: ['/sweepstakeadmin', '/LinkedIn', '/account-admin'],
+      authorizationRequired: ['/Home', '/home', '/linkedIn', '/account', '/account-admin', '/sweepstake-admin', '/sweepstake'],
+      adminAuthorizationRequired: ['/sweepstake-admin', '/linkedIn', '/account-admin'],
       currentRole: '',
       isAuth: false,
-      scholarAuthorizationRequired: ['/sweepstake']
+      scholarAuthorizationRequired: ['/sweepstake', '/account']
     }
   },
   methods: {
