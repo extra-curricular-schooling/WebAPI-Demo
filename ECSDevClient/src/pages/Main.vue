@@ -3,7 +3,6 @@
     <section class="hero is-dark">
       <div class="hero-body">
         <div class="container is-fluid">
-
         </div>
       </div>
     </section>
@@ -42,7 +41,7 @@
         </div>
       </div>
     </section>
-    <section class="hero is-lights">
+    <section class="hero is-light">
       <div class="hero-body">
         <div class="container is-fluid">
           <div class="tile is-ancestor">
@@ -130,8 +129,8 @@
         </div>
       </div>
     </section>
-    <footer class="footer">
-        <div class="container">
+    <section class="hero is-light">
+        <div class="hero-body">
             <div class="content has-text-centered">
                 <p>
                     <strong>ECS</strong> by
@@ -141,7 +140,8 @@
                 </p>
             </div>
         </div>
-    </footer>
+    </section>
+    <div style="height: 1px;"/>
 </div>
 </template>
 

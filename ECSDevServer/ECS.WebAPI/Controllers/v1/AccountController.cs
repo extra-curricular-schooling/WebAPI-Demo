@@ -246,6 +246,7 @@ namespace ECS.WebAPI.Controllers.v1
         [HttpPost]
         [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "POST")]
         [Route("PostUserInfo")]
+        [AuthorizeRequired(ClaimValues.CanEditInformation)]
         public IHttpActionResult PostUserInfo(UserInfoDTO userInfoDTO)
         {
             string username = _accountControllerLogic.GetUsername(Request.Headers.Authorization.ToString());
@@ -275,6 +276,7 @@ namespace ECS.WebAPI.Controllers.v1
         [HttpPost]
         [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "POST")]
         [Route("PostUserAddress")]
+        [AuthorizeRequired(ClaimValues.CanEditInformation)]
         public IHttpActionResult PostUserAddress (ZipLocationDTO zipLocationDTO)
         {
             string username = _accountControllerLogic.GetUsername(Request.Headers.Authorization.ToString());
