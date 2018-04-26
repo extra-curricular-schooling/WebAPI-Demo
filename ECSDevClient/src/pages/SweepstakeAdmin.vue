@@ -20,12 +20,8 @@
     </div>
     <!-- button to POST SWEEPSTAKE to the database -->
     <div class ="submission">
-      <!-- <input type="number" v-model.lazy="SweepStakesID" placeholder="Enter Sweepstake ID To Close">
-      <p>Admin Selected Sweepstakes ID To Close: {{ SweepStakesID }}</p> -->
       <button v-on:click="CloseSweepstake(winningTicket)">Close Sweepstake/Select the Winner</button>
     </div>
-    <!-- fire the random number generator event at time expiration or when it goes to zero -->
-    <!-- <p>The winning ticket is: {{winningTicket}}</p> -->
 </div>
 </template>
 
@@ -48,14 +44,15 @@ export default {
       UsernameWinner: 'No Winner',
       SweepStakesID: '',
       winningTicket: '',
-      Price: ''
+      Price: '',
+      username: this.$store.getters.getUsername
     }
   },
   methods: {
-    submitSweepstake: function (OpenDateTime, ClosedDateTime, Prize, UsernameWinner, SweepStakesID, Price) {
+    submitSweepstake: function (OpenDateTime, ClosedDateTime, Prize, UsernameWinner, SweepStakesID, Price, username) {
       Axios({
         method: 'POST',
-        url: Store.getters.getBaseAppUrl + 'SweepstakeAdmin/submitSweepstake',
+        url: Store.getters.getBaseAppUrl + 'SweepstakeAdmin/SubmitSweepstake/' + this.username,
         headers: Store.getters.getRequestHeaders,
         data: {
           'SweepStakesID': this.SweepStakesID, // ID DOESN't GO

@@ -77,11 +77,11 @@ namespace ECS.WebAPI.Controllers.v1
         }
 
         // USING THE POST REQUEST FOR POSTING/SETTING SWEEPSTAKES TO THE DATABASE BY ADMIN ONLY
-        [AuthorizeRequired(ClaimValues.Admin)]
+        [AuthorizeRequired(ClaimValues.CanDeleteUser)]
         [HttpPost]
-        [Route("submitSweepstake")]
+        [Route("SubmitSweepstake/{username}")]
         [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "POST")]
-        public IHttpActionResult submitSweepstake(SweepstakeAdminDTO sweepstakeSet)
+        public IHttpActionResult SubmitSweepstake(SweepstakeAdminDTO sweepstakeSet)
         {
             if (sweepstakeSet.OpenDateTime <= DateTime.Now & sweepstakeSet.ClosedDateTime >= DateTime.Now)
             {
@@ -104,7 +104,7 @@ namespace ECS.WebAPI.Controllers.v1
         }
 
         // REQUEST TO CLOSE SWEEPSTAKE THAT IS SEND OVER BY THE ADMIN
-        [AuthorizeRequired(ClaimValues.Admin)]
+        [AuthorizeRequired(ClaimValues.CanDeleteUser)]
         [HttpGet]
         [Route("CloseSweepstake")]
         [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "GET")]
