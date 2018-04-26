@@ -28,9 +28,6 @@
           <span class="icon is-small is-left">
             <i class="fas fa-envelope"></i>
           </span>
-          <span class="icon is-small is-right">
-            <i class="fas fa-check"></i>
-          </span>
         </div>
         <p id="emailControl" class="help">{{ emailMessage }}</p>
       </div>
@@ -52,7 +49,7 @@
         </div>
         <p id="cityControl" class="help">{{ cityMessage }}</p>
       </div>
-            <div class="is-table">
+      <div class="is-table">
         <div class="field mailing-adress state">
           <div class="control left-cell">
             <span class="select select-state">
@@ -78,11 +75,14 @@
       <div class="field security-questions">
         <label class="label field-element is-required">Security Questions</label>
         <div class="control">
-          <span class="select">
-            <select @change="getSelectionID(0, question1)" v-model="question1">
+          <span class="select questions">
+            <select class="pull-down" @change="getSelectionID(0, question1)" v-model="question1">
               <option disabled value="">--select--</option>
               <option v-for="question in questionSet1" v-bind:key="question.SecurityQuestionID"> {{ question.SecQuestion }} </option>
             </select>
+          </span>
+          <span v-if="!loadingIsDisabled" class="icon is-medium">
+            <i id="loadingQuestions" class="fas fa-spinner fa-pulse"></i>
           </span>
         </div>
       </div>
@@ -94,11 +94,14 @@
 
       <div class="field security-questions">
         <div class="control">
-          <span class="select">
-            <select @change="getSelectionID(1, question2)" v-model="question2">
+          <span class="select questions">
+            <select class="pull-down" @change="getSelectionID(1, question2)" v-model="question2">
               <option disabled value="">--select--</option>
               <option v-for="question in questionSet2" v-bind:key="question.SecurityQuestionID"> {{ question.SecQuestion }} </option>
             </select>
+          </span>
+          <span v-if="!loadingIsDisabled" class="icon is-medium">
+            <i id="loadingQuestions" class="fas fa-spinner fa-pulse"></i>
           </span>
         </div>
       </div>
@@ -110,11 +113,14 @@
 
       <div class="field security-questions">
         <div class="control">
-          <span class="select">
-            <select @change="getSelectionID(2, question3)" v-model="question3">
+          <span class="select questions">
+            <select class="pull-down" @change="getSelectionID(2, question3)" v-model="question3">
               <option disabled value="">--select--</option>
               <option v-for="question in questionSet3" v-bind:key="question.SecurityQuestionID"> {{ question.SecQuestion }} </option>
             </select>
+          </span>
+          <span v-if="!loadingIsDisabled" class="icon is-medium">
+            <i id="loadingQuestions" class="fas fa-spinner fa-pulse"></i>
           </span>
         </div>
       </div>
@@ -175,11 +181,14 @@ export default {
       question1: '',
       question2: '',
       question3: '',
-      agreementIsChecked: false,
       questionSet1: [],
       questionSet2: [],
       questionSet3: [],
       states: States,
+
+      // Event Properties
+      agreementIsChecked: false,
+      loadingIsDisabled: false,
 
       // Request Data
       firstName: '',
@@ -201,17 +210,15 @@ export default {
       emailMessage: '',
       addressMessage: '',
       cityMessage: '',
-      stateMessage: '',
       zipCodeMessage: '',
       answersMessage: '',
 
       // Regular Expressions
-      NAME_REGEX: /^[a-zA-Z ]{1,50}$/,
-      EMAIL_REGEX: /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-      ADDRESS_REGEX: /^[a-zA-Z0-9#.,-/ ]{0,}$/,
-      CITY_REGEX: /^[a-zA-Z ]{0,}$/,
-      STATE_REGEX: /^[a-zA-Z]{0,2}$/,
-      ZIPCODE_REGEX: /^\d{5}(?:[-\s]\d{4})?$/,
+      NAME_REGEX: this.$store.getters.getNameRegex,
+      EMAIL_REGEX: this.$store.getters.getEmailRegex,
+      ADDRESS_REGEX: this.$store.getters.getAddressRegex,
+      CITY_REGEX: this.getCityRegex,
+      ZIPCODE_REGEX: this.$store.getters.getZipCodeRegex,
     }
   },
   created () {
@@ -219,7 +226,13 @@ export default {
     this.fetchSecurityQuestions()
   },
   methods: {
-    // Data Getters
+    // ************************* Getters *************************
+    /**
+     * @description
+     * gets a particular security answer
+     * @param {number} i - The label of a security answer
+     * @returns {string} Security answer
+     */
     getSecurityAnswer (i) {
       var answer
       if (i == 1) {
@@ -231,6 +244,12 @@ export default {
       }
       return document.getElementById(answer).value;
     },
+    /**
+     * @description
+     * gets ID of a selected security question
+     * @param {number} i - Index of a question ID
+     * @param {string} selected - The selected security question
+     */
     getSelectionID (i, selected) {
       for (var key in this.$data.questions) {
         var question = this.$data.questions[key]
@@ -240,12 +259,18 @@ export default {
       }
       this.$data.questionIDs[i] = ID
     },
-    // Data Validations
+    // ************************* Data Validators *************************
+    /**
+     * @description
+     * validates the first name of a user as defined by the constraint of the 
+     * name regular expression
+     * regex: NAME_REGEX
+     */
     validateFirstName () {
       if (!this.$data.NAME_REGEX.test(this.$data.firstName) && this.$data.firstName != '') {
         document.getElementById('firstName').className = 'input';
         document.getElementById('firstNameControl').className = 'help is-info';
-        this.$data.firstNameMessage = 'Sorry, the name you entered either contains invalid characters or is too long.';
+        this.$data.firstNameMessage = this.$store.getters.getNameMessage;
       } else if (this.$data.firstName == '') {
         document.getElementById('firstName').className = 'input';
         document.getElementById('firstNameControl').className = 'help';
@@ -256,11 +281,17 @@ export default {
         this.$data.firstNameMessage = '';
       }
     },
+    /**
+     * @description
+     * validates the last name of a user as defined by the constraint of the 
+     * name regular expression
+     * regex: NAME_REGEX
+     */
     validateLastName () {
       if (!this.$data.NAME_REGEX.test(this.$data.lastName) && this.$data.lastName != '') {
         document.getElementById('lastName').className = 'input';
         document.getElementById('lastNameControl').className = 'help is-info';
-        this.$data.lastNameMessage = 'Sorry, the name you entered either contains invalid characters or is too long.';
+        this.$data.lastNameMessage = this.$store.getters.getNameMessage;
       } else if (this.$data.lastName == '') {
         document.getElementById('lastName').className = 'input';
         document.getElementById('lastNameControl').className = 'help';
@@ -271,11 +302,17 @@ export default {
         this.$data.lastNameMessage = '';
       }
     },
+    /**
+     * @description
+     * validates the email of a user as defined by the constraint of the 
+     * email regular expression
+     * regex: EMAIL_REGEX
+     */
     validateEmail () {
       if (!this.$data.EMAIL_REGEX.test(this.$data.email) && this.$data.email != '') {
         document.getElementById('email').className = 'input';
         document.getElementById('emailControl').className = 'help is-info';
-        this.$data.emailMessage = 'Email is not a valid email.';
+        this.$data.emailMessage = this.$store.getters.getEmailMessage;
       } else if (this.$data.email == '') {
         document.getElementById('email').className = 'input';
         document.getElementById('emailControl').className = 'help';
@@ -286,11 +323,17 @@ export default {
         this.$data.emailMessage = '';
       }
     },
+    /**
+     * @description
+     * validates the address of a user as defined by the constraint of the 
+     * address regular expression
+     * regex: ADDRESS_REGEX
+     */
     validateAddress () {
       if (!this.$data.ADDRESS_REGEX.test(this.$data.address) && this.$data.address != '') {
         document.getElementById('address').className = 'input';
         document.getElementById('addressControl').className = 'help is-info';
-        this.$data.addressMessage = 'The address you entered contains invalid characters.';
+        this.$data.addressMessage = this.$store.getters.getAddressMessage;
       } else if (this.$data.address == '') {
         document.getElementById('address').className = 'input';
         document.getElementById('addressControl').className = 'help';
@@ -301,11 +344,17 @@ export default {
         this.$data.addressMessage = '';
       }
     },
+    /**
+     * @description
+     * validates the city of a user as defined by the constraint of the 
+     * city regular expression
+     * regex: CITY_REGEX
+     */
     validateCity () {
       if (!this.$data.CITY_REGEX.test(this.$data.city) && this.$data.city != '') {
         document.getElementById('city').className = 'input';
         document.getElementById('cityControl').className = 'help is-info';
-        this.$data.cityMessage = 'The city you entered contains invalid characters.';
+        this.$data.cityMessage = this.$store.getters.getCityMessage;
       } else if (this.$data.city == '') {
         document.getElementById('city').className = 'input';
         document.getElementById('cityControl').className = 'help';
@@ -316,26 +365,17 @@ export default {
         this.$data.cityMessage = '';
       }
     },
-    validateState () {
-      if (!this.$data.STATE_REGEX.test(this.$data.state) && this.$data.state != '') {
-        document.getElementById('state').className = 'input';
-        document.getElementById('stateControl').className = 'help is-info';
-        this.$data.stateMessage = 'State must be in abbreviated format (i.e. IA for Iowa).';
-      } else if (this.$data.state == '') {
-        document.getElementById('state').className = 'input';
-        document.getElementById('stateControl').className = 'help';
-        this.$data.stateMessage = '';
-      } else {
-        document.getElementById('state').className = 'input is-success';
-        document.getElementById('stateControl').className = 'help';
-        this.$data.stateMessage = '';
-      }
-    },
+    /**
+     * @description
+     * validates the zip code of a user as defined by the constraint of the 
+     * zip code regular expression
+     * regex: ZIPCODE_REGEX
+     */
     validateZipCode () {
       if (!this.$data.ZIPCODE_REGEX.test(this.$data.zipCode) && this.$data.zipCode != '') {
         document.getElementById('zipCode').className = 'input';
         document.getElementById('zipCodeControl').className = 'help is-info';
-        this.$data.zipCodeMessage = 'ZIP Code must be a valid ZIP Code';
+        this.$data.zipCodeMessage = this.$store.getters.getZipCodeMessage;
       } else if (this.$data.zipCode == '') {
         document.getElementById('zipCode').className = 'input';
         document.getElementById('zipCodeControl').className = 'help';
@@ -346,6 +386,10 @@ export default {
         this.$data.zipCodeMessage = '';
       }
     },
+    /**
+     * @description
+     * validates if all three answers have been provided
+     */
     validateAnswers () {
       if (document.getElementById('answer1').value == '' && document.getElementById('answer2').value == '' && document.getElementById('answer3').value == '') {
         document.getElementById('answer1').className = 'input';
@@ -364,9 +408,15 @@ export default {
         document.getElementById('answer2').className = 'input';
         document.getElementById('answer3').className = 'input';
         document.getElementById('answersControl').className = 'help is-info';
-        this.$data.answersMessage = 'Please provide answers to all questions.';
+        this.$data.answersMessage = this.$store.getters.getAnswerMessage;
       }
     },
+    /**
+     * @description
+     * validates if all information has been successfully filled and validated
+     * @returns {boolean} true - If the form is valid
+     * @returns {boolean} false - If the form is not valid
+     */
     isValidForm () {
       if (document.getElementById('firstName').className == 'input is-success' &&
         document.getElementById('lastName').className == 'input is-success' &&
@@ -382,14 +432,27 @@ export default {
         return false
       }
     },
-    // Togglers
+    // ************************* Togglers *************************
+    /**
+     * @description
+     * toggles/activates and deactivates the agreement modal that contains
+     * the site's terms and conditions
+     */
     toggleModal () {
       this.$refs.modal.toggle()
     },
+    /**
+     * @description
+     * toggles the checkbox of the form if clicked/selected
+     */
     checkBox () {
       this.agreementIsChecked = !this.agreementIsChecked
     },
-    // APIs
+    // ************************* APIs *************************
+    /**
+     * @description
+     * POST request to server to submit form to register a new user
+     */
     submit () {
       // Check if form is valid
       if (!this.isValidForm()) {
@@ -461,7 +524,10 @@ export default {
               }
             } else if (error.request) {
               // Server
-              alert('We apologize.  We are unable to process your request at this time.')
+              Swal({
+                type: 'error',
+                title: 'We Apologize',
+                text: 'We are unable to process your request at this time.'})
             } else {
               console.log('hello')
             }
@@ -470,17 +536,32 @@ export default {
           })
         }
     },
+    /**
+     * @description
+     * GET request to get security questions from database
+     */
     fetchSecurityQuestions () {
       Axios({
         method: 'GET',
         url: this.$store.getters.getBaseAppUrl + 'Registration/GetSecurityQuestions',
-        headers: this.$store.getters.getRequestHeaders
+        headers: this.$store.getters.getRequestHeaders,
+        timeout: this.$store.getters.getFormTimeout
       })
         .then(response => {
           this.$data.questions = Shuffler.shuffleArray(JSON.parse(response.data)) 
-          this.divideQuestions() 
+          console.log(this.$data.questions)
+          this.divideQuestions()
+          this.loadingIsDisabled = true
         })
         .catch(error => {
+
+          // Connection Timeout
+          if (error.code == 'ECONNABORTED') {
+            Swal({
+              type: 'error',
+              title: 'We Apologize',
+              text: 'Fetching your security questions took too long.'})
+          }
           // HTTP Status 503 - No questions in resource
           
           // HTTP Status 500
@@ -490,7 +571,10 @@ export default {
               // that falls out of the range of 2xx
             } else if (error.request) {
               // Server
-              alert('We apologize.  We are unable to process your request at this time.')
+              Swal({
+                type: 'error',
+                title: 'We Apologize',
+                text: 'We are unable to process your request at this time.'})
             } else {
               console.log('hello')
             }
@@ -498,6 +582,12 @@ export default {
             console.log(error.config)
           })
     },
+    // ************************* Helpers *************************
+    /**
+     * @description
+     * divides security questions GET response from server into 3 groups to populate
+     * form upon component creation
+     */
     divideQuestions () {
       let partSize = this.$data.questions.length/3 
  
@@ -546,11 +636,19 @@ export default {
 .is-table {
   width: 100%;
   display: table;
-  table-layout: fixed;
+  table-layout: unset;
+}
+
+.left-cell {
+  padding-right: 10px;
 }
 
 .modal-content {
   padding-top: 100px;
+}
+
+.right-cell {
+  padding-top: 0px;
 }
 
 .state {
@@ -568,6 +666,18 @@ export default {
 
 button {
   width: 175px;
+}
+
+select.pull-down {
+  width: 400px;
+}
+
+select.select-state {
+  width: 100%;
+}
+
+span.select-state {
+  width: 100%;
 }
 </style>
 

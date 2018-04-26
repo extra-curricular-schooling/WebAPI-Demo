@@ -50,6 +50,7 @@
     <Compile Include="ModelLogic\Implementations\PartialAccountSaltLogic.cs" />
     <Compile Include="ModelLogic\Implementations\SaltLogic.cs" />
     <Compile Include="ModelLogic\Implementations\SaltSecurityAnswerLogic.cs" />
+    <Compile Include="ModelLogic\Implementations\SecurityQuestionLogic.cs" />
     <Compile Include="ModelLogic\Implementations\SecurityQuestionsAccountLogic.cs" />
     <Compile Include="ModelLogic\Implementations\UserProfileLogic.cs" />
     <Compile Include="ModelLogic\Implementations\ZipLocationLogic.cs" />

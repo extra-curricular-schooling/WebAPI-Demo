@@ -680,6 +680,7 @@ export default {
       })
         .then(response => {
           this.$data.questions = Shuffler.shuffleArray(JSON.parse(response.data))
+          console.log(this.$data.questions)          
           this.divideQuestions()
           this.loadingIsDisabled = true
         })
