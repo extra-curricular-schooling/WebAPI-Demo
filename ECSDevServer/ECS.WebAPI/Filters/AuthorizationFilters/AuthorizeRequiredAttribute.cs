@@ -34,27 +34,25 @@ namespace ECS.WebAPI.Filters.AuthorizationFilters
         }
         protected override bool IsAuthorized(HttpActionContext actionContext)
         {
-            var checkList = new List<bool>();
-
             // get the access token
-            var accessTokenFromRequest = actionContext.Request.Headers.Authorization.ToString();
+            var accessTokenFromRequest = actionContext.Request.Headers.Authorization.Parameter.ToString();
 
-            // TODO: @Scott/Kris This is autorizing the SSO request with the AppManager... problems.
+            // TODO: @Scott/Kris This is authorizing the SSO request with the AppManager... problems.
             ClaimsPrincipal principal = JwtManager.Instance.GetPrincipal(accessTokenFromRequest);
             if (principal != null)
             {
-                foreach (var claim in _claims)
+                if (_isSingleClaim)
                 {
                     if (principal.HasClaim(ClaimTypes.Role, ClaimValues.Scholar))
                     {
-                        if (principal.HasClaim("PermissionName", claim))
+                        if (principal.HasClaim("PermissionName", _claim))
                         {
                             return true;
                         }
                     }
                     else if (principal.HasClaim(ClaimTypes.Role, ClaimValues.Admin))
                     {
-                        if (principal.HasClaim("PermissionName", claim))
+                        if (principal.HasClaim("PermissionName", _claim))
                         {
                             return true;
                         }
@@ -64,7 +62,28 @@ namespace ECS.WebAPI.Filters.AuthorizationFilters
                         return false;
                     }
                 }
-                    
+                //foreach (var claim in _claims)
+                //{
+                //    if (principal.HasClaim(ClaimTypes.Role, ClaimValues.Scholar))
+                //    {
+                //        if (principal.HasClaim("PermissionName", claim))
+                //        {
+                //            return true;
+                //        }
+                //    }
+                //    else if (principal.HasClaim(ClaimTypes.Role, ClaimValues.Admin))
+                //    {
+                //        if (principal.HasClaim("PermissionName", claim))
+                //        {
+                //            return true;
+                //        }
+                //    }
+                //    else
+                //    {
+                //        return false;
+                //    }
+                //}
+
             }
             return false;
         }

@@ -51,9 +51,9 @@ export default {
   },
   data () {
     return {
-      authorizationRequired: ['/Home', '/LinkedIn', '/account', '/account-admin', '/sweepstakeadmin', '/sweepstake'],
+      authorizationRequired: ['/Home', '/home', '/linkedIn', '/account', '/account-admin', '/sweepstake-admin', '/sweepstake'],
       currentRole: '',
-      adminAuthorizationRequired: ['/sweepstakeadmin', '/LinkedIn', '/account-admin'],
+      adminAuthorizationRequired: ['/sweepstake-admin', '/linkedIn', '/account-admin'],
       scholarAuthorizationRequired: ['/sweepstake']
     }
   },

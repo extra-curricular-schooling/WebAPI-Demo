@@ -83,6 +83,10 @@
       <Project>{40BC80F4-7950-4A6F-B94F-C35F7081A48B}</Project>
       <Name>ECS.DTO</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ECS.Models\ECS.Models.csproj">
+      <Project>{F8F04460-D2EB-4907-8B96-C3B915749A82}</Project>
+      <Name>ECS.Models</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ECS.Security\ECS.Security.csproj">
       <Project>{31f4e181-8b78-4fcf-a79c-4c50be2ab1dd}</Project>
       <Name>ECS.Security</Name>

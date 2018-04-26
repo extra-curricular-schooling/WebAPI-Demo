@@ -11,10 +11,13 @@ using ECS.Constants.Network;
 using ECS.Models.Services.ComplexDBQueries;
 using System.Net.Http.Headers;
 using ECS.Security.AccessTokens.Jwt;
+using ECS.WebAPI.Filters.AuthorizationFilters;
+using ECS.Constants.Security;
 
 namespace ECS.WebAPI.Controllers.v1
 {
     [RoutePrefix("v1/Account")]
+    [AuthorizeRequired(ClaimValues.Scholar)]
     public class AccountController : ApiController
     {
         #region Constants and fields

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Cors;
@@ -92,12 +93,12 @@ namespace ECS.WebAPI.Controllers.v1
             {
                 var response = new HttpResponseMessage();
                 JAccessToken token;
-
+                var claims = (List<AccountType>)account.AccountTypes;
                 // JWT token already exists
                 if (_jwtRepository.Exists(d => d.UserName == account.UserName, d => d.Account))
                 {
                     token = _jwtRepository.GetSingle(d => d.UserName == account.UserName, d => d.Account);
-                    token.Value = JwtManager.Instance.GenerateToken(account.UserName);
+                    token.Value = JwtManager.Instance.GenerateToken(claims);
                     token.DateTimeIssued = DateTime.UtcNow;
                     _jwtRepository.Update(token);
                 }
@@ -106,7 +107,7 @@ namespace ECS.WebAPI.Controllers.v1
                 {
                     token = new JAccessToken
                     {
-                        Value = JwtManager.Instance.GenerateToken(account.UserName),
+                        Value = JwtManager.Instance.GenerateToken(claims),
                         UserName = account.UserName,
                         DateTimeIssued = DateTime.UtcNow
                     };
@@ -114,7 +115,8 @@ namespace ECS.WebAPI.Controllers.v1
                 }
 
                 return Json(new { AuthToken = token.Value });
-            } else
+            }
+            else
             {
                 return BadRequest("Invalid credentials.");
             }

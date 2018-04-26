@@ -10,10 +10,12 @@ using System.Linq;
 using System.Linq.Expressions;
 using ECS.Constants.Network;
 using ECS.WebAPI.Filters.AuthorizationFilters;
+using ECS.Constants.Security;
 
 namespace ECS.WebAPI.Controllers.v1
 {
     [RoutePrefix("v1/SweepstakeAdmin")]
+    [AuthorizeRequired(ClaimValues.Admin)]
     public class SweepstakeAdminController : ApiController
     {
         private readonly IAccountRepository accountRepository = new AccountRepository();
