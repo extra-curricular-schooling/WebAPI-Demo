@@ -61,6 +61,7 @@ export default {
         if (UrlHelper.getUrlPath(loginInfo.url) === 'partial-registration') {
           Store.dispatch('updateRole', claims['roleType'])
           Store.dispatch('updateUsername', claims['username'])
+          Store.commit('setAuthToken', loginInfo.token)
           Router.push({
             name: 'PartialRegistration',
             params: {

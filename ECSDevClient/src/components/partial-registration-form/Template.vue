@@ -209,6 +209,7 @@ export default {
     }
   },
   created () {
+    this.$store.dispatch('updateToken', '')
     this.fetchSecurityQuestions()
   },
   methods: {
@@ -420,6 +421,7 @@ export default {
         })
           .then(response => {
             this.$store.dispatch('signIn', this.$store.getters.getAuthToken)
+            this.$store.dispatch('updateToken', this.$store.getters.getAuthToken)
             this.$router.push({
               name: 'Home',
             })

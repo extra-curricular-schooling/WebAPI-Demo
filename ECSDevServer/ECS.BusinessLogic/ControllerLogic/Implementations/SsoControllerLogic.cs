@@ -83,24 +83,23 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
             var account = _accountLogic.GetSingle(loginDto.Username);
 
             // Validate
+            if (partialAccount == null && account == null)
+            {
+                return new HttpResponseMessage
+                {
+                    ReasonPhrase = "Invalid Credentials",
+                    StatusCode = HttpStatusCode.BadRequest
+                };
+            }
 
-            //if (partialAccount == null && account == null)
-            //{
-            //    return new HttpResponseMessage
-            //    {
-            //        ReasonPhrase = "Invalid Credentials",
-            //        StatusCode = HttpStatusCode.BadRequest
-            //    };
-            //}
-
-            //if (partialAccount != null && account != null)
-            //{
-            //    return new HttpResponseMessage
-            //    {
-            //        ReasonPhrase = "Database Inconsistency",
-            //        StatusCode = HttpStatusCode.InternalServerError
-            //    };
-            //}
+            if (partialAccount != null && account != null)
+            {
+                return new HttpResponseMessage
+                {
+                    ReasonPhrase = "Database Inconsistency",
+                    StatusCode = HttpStatusCode.InternalServerError
+                };
+            }
 
             if (partialAccount != null)
             {

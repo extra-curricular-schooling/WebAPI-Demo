@@ -181,6 +181,7 @@ export default {
       if (UrlHelper.getUrlPath(url) === 'home') {
         this.$store.dispatch('updateRole', claims['role'])
         this.$store.dispatch('updateUsername', claims['unique_name'])
+        this.$store.dispatch('updateToken', token)
         this.$store.commit('signIn', token)
         this.$router.push({
           name: 'Home'
