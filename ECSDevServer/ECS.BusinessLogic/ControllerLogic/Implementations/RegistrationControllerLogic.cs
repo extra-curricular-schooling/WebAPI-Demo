@@ -204,6 +204,11 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
             }
         }
 
+        /// <summary>
+        /// Business Logic to complete registration for PartialAccounts
+        /// </summary>
+        /// <param name="registrationForm"></param>
+        /// <returns></returns>
         public HttpResponseMessage FinishRegistration(RegistrationDTO registrationForm)
         {
             // Fetch: Check if user already exists
@@ -364,9 +369,8 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
 
             try
             {
-                // Enter the user,
-                // which enters the account and zipLocations by navigation property,
-                // which enters the the saltSecurityAnswers, securityAnswers by navigation property.
+                // Enter the user, which then chains all of the navigation properties
+                // into one transaction.
                 _userProfileLogic.Create(user);
 
                 // Enter the salt (it is not chained with the other tables).

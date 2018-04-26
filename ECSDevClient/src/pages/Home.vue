@@ -71,7 +71,7 @@ export default {
         .then(response => {
           Swal({
             title: 'WooHoo!',
-            text: 'You earned ' + this.points + ' points!',
+            text: 'You earned ' + this.Points + ' points!',
             type: 'success',
             toast: true,
             imageUrl: 'http://cliparting.com/wp-content/uploads/2016/08/Great-job-excellent-job-clipart-clipart-kid.png',

@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace ECS.BusinessLogic.ModelLogic.Contracts
 {
+    /// <summary>
+    /// Generic Crud (Create, Read, Update, Delete) Interface
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public interface ICrud<T> where T : class
     {
         bool Create(Object entity);
@@ -19,6 +23,9 @@ namespace ECS.BusinessLogic.ModelLogic.Contracts
         bool Delete(Object entity);
     }
 
+    /// <summary>
+    /// Object Crud (Create, Read, Update, Delete) Interface
+    /// </summary>
     public interface ICrud
     {
         bool Create(Object entity);

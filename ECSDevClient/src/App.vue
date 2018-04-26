@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <admin-layout v-if="currentRole === 'Admin'"/>
-    <scholar-layout v-else-if="currentRole === 'Scholar'"/>
+    <admin-layout v-if="currentRole === 'Admin' && isAuth"/>
+    <scholar-layout v-else-if="currentRole === 'Scholar' && isAuth"/>
     <default-layout v-else/>
     <router-view/>
   </div>
@@ -36,7 +36,7 @@ export default {
         Swal({
           title: 'We miss you already!',
           text: 'Come back soon!',
-          type: 'info'
+          imageUrl: 'https://i.pinimg.com/736x/f0/ba/22/f0ba22c10f942fb16fae5f7850ddd70f--panda-tattoos-cute-tattoos.jpg'
         }).then(response => {
           html.classList.remove('slideout-open')
         })
@@ -51,9 +51,10 @@ export default {
   },
   data () {
     return {
-      authorizationRequired: ['/Home', '/home', '/linkedIn', '/account', '/account-admin', '/sweepstake-admin', '/sweepstake'],
+      authorizationRequired: ['/Home', '/LinkedIn', '/account', '/account-admin', '/sweepstakeadmin', '/sweepstake'],
+      adminAuthorizationRequired: ['/sweepstakeadmin', '/LinkedIn', '/account-admin'],
       currentRole: '',
-      adminAuthorizationRequired: ['/sweepstake-admin', '/linkedIn', '/account-admin'],
+      isAuth: false,
       scholarAuthorizationRequired: ['/sweepstake']
     }
   },
@@ -81,8 +82,9 @@ export default {
         }
       }
     },
-    checkCurrentRole () {
+    updateLocalAuthState () {
       this.currentRole = this.$store.getters.getRole
+      this.isAuth = this.$store.getters.isAuth
     },
     checkTokenLife: function () {
       var decoded = jwt.decode(this.$store.getters.getAuthToken, {complete: true})
@@ -124,7 +126,7 @@ export default {
       this.checkAdminLogin()
     } else {
       this.checkCurrentLogin()
-      this.checkCurrentRole()
+      this.updateLocalAuthState()
     }
 
     // Set interval depending on whether or not a user is logged in
@@ -145,14 +147,12 @@ export default {
   updated () {
     if (this.$store.getters.getRole === 'Scholar') {
       this.checkScholarLogin()
-      this.checkCurrentRole()
     } else if (this.$store.getters.getRole === 'Admin') {
       this.checkAdminLogin()
-      this.checkCurrentRole()
     } else {
       this.checkCurrentLogin()
-      this.checkCurrentRole()
     }
+    this.updateLocalAuthState()
   }
 }
 </script>
