@@ -19,7 +19,7 @@ namespace ECS.WebAPI.Controllers.v1
         private ECSContext db = new ECSContext();
 
         // REQUEST TO GET THE POINTS ASSOCIATED WITH A SCHOLAR ACCOUNT
-        [AuthorizeRequired(ClaimValues.CanEditInformation)]
+        [AuthorizeRequired(ClaimValues.CanEnterRaffle)]
         [HttpGet]
         [Route("ScholarPoints/{username}")]
         [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "GET")]
