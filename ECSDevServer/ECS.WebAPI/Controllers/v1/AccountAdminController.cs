@@ -12,7 +12,7 @@ namespace ECS.WebAPI.Controllers.v1
 {
     [RoutePrefix("v1/AccountAdmin")]
     [EnableCors(CorsConstants.BaseAcceptedOrigins, CorsConstants.BaseAcceptedHeaders, "GET, POST, PUT")]
-    [AuthorizeRequired(ClaimValues.Admin)]
+    [AuthorizeRequired(ClaimValues.CanDeleteUser)]
     public class AccountAdminController : ApiController
     {
         #region Fields and constants

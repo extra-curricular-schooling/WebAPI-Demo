@@ -108,41 +108,46 @@ namespace ECS.WebAPI.Controllers.v1
         [AllowAnonymous]
         public IHttpActionResult GetSecurityQuestions()
         {
-            try
-            {
-                List<SecurityQuestion> allQuestions;
-                allQuestions = (List<SecurityQuestion>) _securityQuestionRepository.GetAll();
+            var response = _controllerLogic.SecurityQuestions();
+            IHttpActionResult actionResultResponse = ResponseMessage(response);
 
-                if (allQuestions.Count == 0)
-                {
-                    string summary = "No Content";
+            return actionResultResponse;
 
-                    var error = new
-                    {
-                        summary
-                    };
+            //try
+            //{
+            //    List<SecurityQuestion> allQuestions;
+            //    allQuestions = (List<SecurityQuestion>)_securityQuestionRepository.GetAll();
 
-                    return Content(HttpStatusCode.ServiceUnavailable, new JavaScriptSerializer().Serialize(error));
-                }
-                return Content(HttpStatusCode.OK, new JavaScriptSerializer().Serialize(allQuestions));
-            }
-            catch (Exception ex)
-            {
-                string summary = "Data Access Error";
-                string source = ex.Source;
-                string message = ex.Message;
-                string stackTrace = ex.StackTrace;
+            //    if (allQuestions.Count == 0)
+            //    {
+            //        string summary = "No Content";
 
-                var error = new
-                {
-                    summary,
-                    source,
-                    message,
-                    stackTrace
-                };
+            //        var error = new
+            //        {
+            //            summary
+            //        };
 
-                return Content(HttpStatusCode.InternalServerError, new JavaScriptSerializer().Serialize(error));
-            }
+            //        return Content(HttpStatusCode.ServiceUnavailable, new JavaScriptSerializer().Serialize(error));
+            //    }
+            //    return Content(HttpStatusCode.OK, new JavaScriptSerializer().Serialize(allQuestions));
+            //}
+            //catch (Exception ex)
+            //{
+            //    string summary = "Data Access Error";
+            //    string source = ex.Source;
+            //    string message = ex.Message;
+            //    string stackTrace = ex.StackTrace;
+
+            //    var error = new
+            //    {
+            //        summary,
+            //        source,
+            //        message,
+            //        stackTrace
+            //    };
+
+            //    return Content(HttpStatusCode.InternalServerError, new JavaScriptSerializer().Serialize(error));
+            //}
         }
     }
 }

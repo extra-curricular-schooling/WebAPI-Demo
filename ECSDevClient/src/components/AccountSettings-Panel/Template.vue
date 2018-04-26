@@ -32,6 +32,7 @@
           </section>
       </div>
     </section>
+    <div style="height: 1.5em;"/>
   </div>
 </template>
 

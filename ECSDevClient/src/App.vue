@@ -36,7 +36,7 @@ export default {
         Swal({
           title: 'We miss you already!',
           text: 'Come back soon!',
-          type: 'info'
+          imageUrl: 'https://i.pinimg.com/736x/f0/ba/22/f0ba22c10f942fb16fae5f7850ddd70f--panda-tattoos-cute-tattoos.jpg'
         }).then(response => {
           html.classList.remove('slideout-open')
         })

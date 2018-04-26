@@ -1,5 +1,5 @@
 <template>
-  <nav class="level is-transparent">
+  <nav class="level is-transparent" style="background-color: #fff; padding: 1em;">
     <p class="level-item has-text-centered">
         <router-link to="/" class="link is-info">Main</router-link>
     </p>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <button v-if="isButtonVisible" v-on:click="modalActions" class="button is-primary">Share on LinkedIn!</button>
+    <button :disabled="!isButtonVisible" v-on:click="modalActions" class="button is-primary">Share on LinkedIn!</button>
     <div class="modal" v-bind:class="{ 'is-active' : isActive }">
       <div v-on:click="toggleLinkedInModal" class="modal-background"></div>
       <div id="linkedin-modal" class="modal-card">

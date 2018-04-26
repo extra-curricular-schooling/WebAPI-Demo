@@ -1,11 +1,18 @@
 <template>
-  <div>
-    <h1>Welcome to Sweepstake Entry. Buy A Ticket To Enter Into The Sweepstake.</h1>
-    <h1>Time Left</h1>
-    <Countdown deadline="May 25, 2018"></Countdown>
-    <button v-on:click="fetchUserInfo(username,Points)">What are your Points? Find it out, First.</button>
-    <button v-on:click="fetchValidSweepstakeInfo(Price, SweepStakesID, OpenDateTime, Prize, ClosedDateTime)">Is Sweepstake Open??</button>
-    <button v-on:click="ticketBought(Points,Price,username,timeDateStamp)">Buy A Ticket and Surprise Yourself</button>
+  <div class="container">
+    <div class="box" style="background-color: hsl(0, 0%, 96%);">
+      <h1>Welcome to Sweepstake Entry. Buy A Ticket To Enter Into The Sweepstake.</h1>
+      <h1>Time Left For The Big Surprise</h1>
+      <Countdown deadline="May 25, 2018"></Countdown>
+      <h2> Just Follow The Three Steps To Enter Sweepstake</h2>
+      <h2> * Get your Points * Check Whether Sweepstake Open * Buy Your Ticket</h2>
+      <button v-on:click="fetchUserInfo(username,Points)">What are your Points? Find it out, First.</button>
+      <button v-on:click="fetchValidSweepstakeInfo(Price, SweepStakesID, OpenDateTime, Prize, ClosedDateTime, collapsed)">Is Sweepstake Open??</button>
+      <template v-if="this.collapsed === true">
+         <button v-on:click="ticketBought(Points,Price,username,timeDateStamp)">Buy A Ticket and Surprise Yourself</button>
+      </template>
+    </div>
+    <div style="height: 1px;"/>
   </div>
 </template>
 <script>
@@ -28,7 +35,8 @@ export default {
       OpenDateTime: '', // the opening date of the sweepstake
       Prize: '',
       ClosedDateTime: '', // the closing date of the sweepstake
-      UserNameWinner: ''
+      UserNameWinner: '',
+      collapsed: false
     }
   },
   components: {
@@ -55,7 +63,7 @@ export default {
           }
         })
     },
-    fetchValidSweepstakeInfo: function (Price, SweepStakesID, OpenDateTime, Prize) {
+    fetchValidSweepstakeInfo: function (Price, SweepStakesID, OpenDateTime, Prize, collapsed) {
       Axios({
         // REQUEST TO GET THAT WHETHER THE SWEEPSTAKE IS OPEN
         method: 'GET',
@@ -67,6 +75,7 @@ export default {
           if (response.data === 'Sweepstake Not Open') {
             Swal('Sweepstake Not Open')
           } else {
+            this.collapsed = true
             this.Price = response.data.price
             this.SweepStakesID = response.data.sweepStakesID
             this.OpenDateTime = response.data.openDateTime

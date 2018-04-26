@@ -179,7 +179,7 @@ namespace ECS.WebAPI.Controllers.v1
                 {
                     try
                     {
-                        return Redirect(returnURI);
+                        return Redirect(returnURI + "?linkedin=success");
                     } catch (Exception)
                     {
                         return Ok("Return url was invalid though.");

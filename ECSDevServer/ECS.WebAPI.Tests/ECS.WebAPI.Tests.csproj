@@ -82,6 +82,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfigTests.cs" />
+    <Compile Include="Controllers\ForgetCredentialsControllerTests.cs" />
     <Compile Include="Controllers\HomeControllerTests.cs" />
     <Compile Include="Controllers\LoginControllerTests.cs" />
     <Compile Include="Controllers\RegistrationControllerTests.cs" />

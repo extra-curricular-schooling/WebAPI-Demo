@@ -160,12 +160,14 @@ export default {
                 // that falls out of the range of 2xx
                 if (error.response.data.message === 'SUSPENDED') {
                   Swal({
-                    type: 'error',
+                    imageUrl: 'https://i.pinimg.com/originals/7c/b5/63/7cb5630b29c78e675cfdb1bf09b555e4.png',
+                    imageHeight: '300px',
+                    imageWidth: '100px',
                     title: 'Bad News',
                     text: 'According to our records, you have been suspended. Please contact an administrator for more information'})
                 } else if (error.response.status === 400) {
                   Swal({
-                    type: 'error',
+                    imageUrl: 'http://clipart-library.com/image_gallery/14083.png',
                     title: 'Uh-Oh',
                     text: 'Invalid credentials. Please try again.'})
                 } else if (error.response.status === 500) {

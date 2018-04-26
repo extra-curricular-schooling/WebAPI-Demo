@@ -8,6 +8,8 @@ using ECS.Constants.Security;
 using ECS.DTO;
 using ECS.Models;
 using ECS.Security.Hash;
+using ECS.Constants.Data_Access;
+using System.Web.Script.Serialization;
 
 namespace ECS.BusinessLogic.ControllerLogic.Implementations
 {
@@ -18,6 +20,7 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
         private readonly SaltLogic _saltLogic;
         private readonly PartialAccountSaltLogic _partialAccountSaltLogic;
         private readonly UserProfileLogic _userProfileLogic;
+        private readonly SecurityQuestionLogic _securityQuestionLogic;
 
         public RegistrationControllerLogic()
         {
@@ -26,16 +29,19 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
             _partialAccountSaltLogic = new PartialAccountSaltLogic();
             _accountLogic = new AccountLogic();
             _partialAccountLogic = new PartialAccountLogic();
+            _securityQuestionLogic = new SecurityQuestionLogic();
         }
 
         public RegistrationControllerLogic(AccountLogic accountLogic, PartialAccountLogic partialAccountLogic, 
-            PartialAccountSaltLogic partialAccountSaltLogic, SaltLogic saltLogic, UserProfileLogic userProfileLogic)
+            PartialAccountSaltLogic partialAccountSaltLogic, SaltLogic saltLogic, UserProfileLogic userProfileLogic,
+            SecurityQuestionLogic securityQuestionLogic)
         {
             _accountLogic = accountLogic;
             _partialAccountLogic = partialAccountLogic;
             _partialAccountSaltLogic = partialAccountSaltLogic;
             _saltLogic = saltLogic;
             _userProfileLogic = userProfileLogic;
+            _securityQuestionLogic = securityQuestionLogic;
         }
 
 
@@ -146,13 +152,7 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
 
             List<ZipLocation> zipLocations = new List<ZipLocation>
             {
-                new ZipLocation
-                {
-                    ZipCode = registrationForm.ZipCode.ToString(),
-                    Address = registrationForm.Address,
-                    City = registrationForm.City,
-                    State = registrationForm.State
-                }
+                CreateZipLocationHelper(registrationForm.Address, registrationForm.City, registrationForm.State, registrationForm.ZipCode.ToString())
             };
 
             // Account model child to UserProfile
@@ -244,18 +244,19 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
                     StatusCode = HttpStatusCode.InternalServerError
                 };
             }
-            
+
 
             // Create: Temporary Objects
             List<ZipLocation> zipLocations = new List<ZipLocation>
             {
-                new ZipLocation
-                {
-                    ZipCode = registrationForm.ZipCode.ToString(),
-                    Address = registrationForm.Address,
-                    City = registrationForm.City,
-                    State = registrationForm.State
-                }
+                CreateZipLocationHelper(registrationForm.Address, registrationForm.City, registrationForm.State, registrationForm.ZipCode.ToString())
+                //new ZipLocation
+                //{
+                //    ZipCode = registrationForm.ZipCode.ToString(),
+                //    Address = registrationForm.Address,
+                //    City = registrationForm.City,
+                //    State = registrationForm.State
+                //}
             };
 
             // Create Salts
@@ -334,6 +335,11 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
                 {
                     PermissionName = ClaimValues.CanEnterRaffle,
                     Username = registrationForm.Username
+                },
+                new AccountType()
+                {
+                    PermissionName = ClaimValues.CanShareLinkedIn,
+                    Username = registrationForm.Username
                 }
             };
 
@@ -389,6 +395,84 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
                     StatusCode = HttpStatusCode.InternalServerError
                 };
             }
+        }
+
+        /// <summary>
+        /// Gets security questions
+        /// </summary>
+        /// <returns></returns>
+        public HttpResponseMessage SecurityQuestions()
+        {
+            try
+            {
+                List<SecurityQuestion> allQuestions = _securityQuestionLogic.GetAllQuestions();
+
+                // Return unavailable if no security questions in db
+                if (allQuestions.Count == 0)
+                {
+                    return new HttpResponseMessage
+                    {
+                        StatusCode = HttpStatusCode.ServiceUnavailable
+                    };
+                }
+
+                // else serialize questions and assign into String Content
+                var content = new JavaScriptSerializer().Serialize(allQuestions);
+                var stringContent = new StringContent(content);
+
+                return new HttpResponseMessage
+                {
+                    Content = stringContent,
+                    StatusCode = HttpStatusCode.OK
+                };
+
+            } catch (Exception ex)
+            {
+                return new HttpResponseMessage
+                {
+                    ReasonPhrase = ex.Message,
+                    StatusCode = HttpStatusCode.InternalServerError
+                };
+            }
+        }
+
+        /// <summary>
+        /// Helper method to check for empty values and create a new ZipLocation
+        /// </summary>
+        /// <param name="address"></param>
+        /// <param name="city"></param>
+        /// <param name="state"></param>
+        /// <param name="zipCode"></param>
+        /// <returns></returns>
+        private ZipLocation CreateZipLocationHelper(string address, string city, string state, string zipCode)
+        {
+            if (address == "")
+            {
+                address = ZipLocationProperties.Address;
+            }
+
+            if (city == "")
+            {
+                city = ZipLocationProperties.City;
+            }
+
+            if (state == "")
+            {
+                state = ZipLocationProperties.State;
+            }
+
+            if (zipCode == "0")
+            {
+                zipCode = ZipLocationProperties.ZipCode;
+            }
+
+            return new ZipLocation
+            {
+                Address = address,
+                City = city,
+                State = state,
+                ZipCode = zipCode
+            };
         }
     }
 }
