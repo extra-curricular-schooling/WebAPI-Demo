@@ -8,58 +8,147 @@ using System.Web.Http.Results;
 using System.Net.Http;
 using System.Collections.Generic;
 using ECS.WebAPI.Controllers.v1;
+using ECS.Repositories.Implementations;
 
 namespace ECS.WebAPI.Tests
 {
     public class RegistrationControllerTests
     {
-        public class GetRegistration
-        {
+        //private readonly IAccountRepository _accountRepository;
+        //private readonly ISaltRepository _saltRepository;
+        //private readonly IUserProfileRepository _userProfileRepository;
+        //private readonly ISecurityQuestionRepository _securityQuestionRepository;
 
-        }
-        public class PostRegistration
+        public class SubmitRegistration
         {
             private static RegistrationDTO account = new RegistrationDTO
             {
-                FirstName = "Scott",
-                LastName = "Roberts",
-                Username = "sroberts",
-                Email = "s.e.roberts0@gmail.com",
-                Password = "fuck",
-                Address = "34234 go away",
-                City = "Los Alamitos",
+                FirstName = "Kim",
+                LastName = "Kardashian",
+                Username = "KimKardashian1",
+                Email = "kardie@gmail.com",
+                Password = "QWERTYqwerty2!",
+                Address = "123 W Kanye St",
+                City = "Los Angeles",
                 State = "CA",
-                ZipCode = 90720,
+                ZipCode = 90214,
                 SecurityQuestions = new List<SecurityQuestionDTO>
                 {
-
+                    new SecurityQuestionDTO
+                    {
+                        Question = 1,
+                        Answer = "Yes"
+                    },
+                    new SecurityQuestionDTO
+                    {
+                        Question = 4,
+                        Answer = "No"
+                    },
+                    new SecurityQuestionDTO
+                    {
+                        Question = 6,
+                        Answer = "Maybe"
+                    }
                 }
             };
 
             [Fact]
-            public void ReturnOkResponse()
+            public void PostReturnsOkResponse()
             {
                 // Arrange
 
-                // Mock the Repository we will use in our Controller
-
-                //var mockRepository = new Mock<IProductRepository>();
-                //mockRepository.Setup(x => x.GetById(42))
-                //    .Returns(new Product { Id = 42 });
-
-                // Pass the repository into the controller to initialize it.
-                var controller = new RegistrationController
-                {
-                    Request = new HttpRequestMessage(),
-                    Configuration = new HttpConfiguration()
-                };
-
                 // Act
-                IHttpActionResult actionResult = controller.SubmitRegistration(account);
-
+                //IHttpActionResult actionResult = controller.SubmitRegistration(account)
                 // Assert
-                Assert.IsType<OkResult>(actionResult);
+                //Assert.IsType<OkResult>(actionResult);
+            }
+
+            [Fact]
+            public void PostReturnsConflictResponse()
+            {
+
+            }
+
+            [Fact]
+            public void PostReturnsInternalServerErrorResponse()
+            {
+
+            }
+        }
+
+        public class SubmitPartialRegistration
+        {
+            [Fact]
+            public void PostReturnsOkResponse()
+            {
+
+            }
+
+            [Fact]
+            public void PostReturnsConflictResponse()
+            {
+
+            }
+
+            [Fact]
+            public void PostReturnsBadRequestResponse()
+            {
+
+            }
+
+            [Fact]
+            public void PostReturnsInternalServerErrorResponse()
+            {
+
+            }
+
+            [Fact]
+            public void PostReturnsInternalServerErrorResponseIfNoPartialAccountSalt()
+            {
+
+            }
+        }
+
+        public class GetSecurityQuestions
+        {
+            [Fact]
+            public void GetReturnsServiceUnavailableResponse()
+            {
+
+            }
+
+            [Fact]
+            public void GetReturnsOkResponse()
+            {
+
+            }
+
+            [Fact]
+            public void GetReturnsInternalServerErrorResponse()
+            {
+
             }
         }
     }
 }
+
+
+//// Arrange
+
+//// Mock the Repository we will use in our Controller
+
+////var mockRepository = new Mock<IProductRepository>();
+////mockRepository.Setup(x => x.GetById(42))
+////    .Returns(new Product { Id = 42 });
+
+//// Pass the repository into the controller to initialize it.
+//var controller = new RegistrationController
+//{
+//    Request = new HttpRequestMessage(),
+//    Configuration = new HttpConfiguration()
+//};
+
+//// Act
+//IHttpActionResult actionResult = controller.SubmitRegistration(account);
+
+//// Assert
