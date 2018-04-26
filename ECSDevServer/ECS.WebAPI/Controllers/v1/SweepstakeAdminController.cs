@@ -34,7 +34,7 @@ namespace ECS.WebAPI.Controllers.v1
             // CAN MOVE THIS TO SWEEPSTAKE CONTROLLER BECAUSE IT IS SPECIFIC FOR THE SCHOLAR AND SWEEPSTAKE NOT THE ADMIN
             // using the Sweepstake Admin DTO to get data back
                     var answer = db.SweepStakes
-                       .Where(x => x.OpenDateTime <= DateTime.Now & x.ClosedDateTime >= DateTime.Now)
+                       .Where(x => x.UsernameWinner == "No Winner" & x.ClosedDateTime >= DateTime.Now)
                        .FirstOrDefault<SweepStake>();
             if (answer == null)
             {
@@ -122,7 +122,7 @@ namespace ECS.WebAPI.Controllers.v1
             else
             {
                 var wins = nameWinner.UserName;
-                SweepStake sweep = sweepStakeRepository.GetSingle(x => x.OpenDateTime <= DateTime.Now & x.ClosedDateTime >= DateTime.Now);
+                SweepStake sweep = sweepStakeRepository.GetSingle(x => x.UsernameWinner == "No Winner" & x.ClosedDateTime >= DateTime.Now);
                 sweep.UsernameWinner = wins;
                 sweepStakeRepository.Update(sweep);
                 db.Database.ExecuteSqlCommand("TRUNCATE TABLE [SweepStakeEntry]");
