@@ -18,18 +18,15 @@ namespace ECS.WebAPI.Controllers.v1
     {
         // TODO: @Scott Try to make the controller logic follow interfaces (like a transformer: fetch and send)
         private readonly RegistrationControllerLogic _controllerLogic;
-
-        private readonly ISecurityQuestionRepository _securityQuestionRepository;
+        
 
         public RegistrationController()
         {
             _controllerLogic = new RegistrationControllerLogic();
-            _securityQuestionRepository = new SecurityQuestionRepository();
         }
 
-        public RegistrationController(ISecurityQuestionRepository securityQuestionRepo, RegistrationControllerLogic controllerLogic)
+        public RegistrationController(RegistrationControllerLogic controllerLogic)
         {
-            _securityQuestionRepository = securityQuestionRepo;
             _controllerLogic = controllerLogic;
         }
 
@@ -117,42 +114,6 @@ namespace ECS.WebAPI.Controllers.v1
             IHttpActionResult actionResultResponse = ResponseMessage(response);
 
             return actionResultResponse;
-
-            //try
-            //{
-            //    List<SecurityQuestion> allQuestions;
-            //    allQuestions = (List<SecurityQuestion>)_securityQuestionRepository.GetAll();
-
-            //    if (allQuestions.Count == 0)
-            //    {
-            //        string summary = "No Content";
-
-            //        var error = new
-            //        {
-            //            summary
-            //        };
-
-            //        return Content(HttpStatusCode.ServiceUnavailable, new JavaScriptSerializer().Serialize(error));
-            //    }
-            //    return Content(HttpStatusCode.OK, new JavaScriptSerializer().Serialize(allQuestions));
-            //}
-            //catch (Exception ex)
-            //{
-            //    string summary = "Data Access Error";
-            //    string source = ex.Source;
-            //    string message = ex.Message;
-            //    string stackTrace = ex.StackTrace;
-
-            //    var error = new
-            //    {
-            //        summary,
-            //        source,
-            //        message,
-            //        stackTrace
-            //    };
-
-            //    return Content(HttpStatusCode.InternalServerError, new JavaScriptSerializer().Serialize(error));
-            //}
         }
     }
 }

@@ -75,8 +75,21 @@ export default {
         headers: this.$store.getters.getRequestHeaders
       })
         .then(response => {
-          console.log(PwnedHelper.getHits(this.passwordForPwned, response.data))
           this.$data.hits = PwnedHelper.getHits(this.passwordForPwned, response.data)
+          if (this.$data.hits > 0 && this.$data.hits < 100) {
+            Swal({
+              type: 'warning',
+              title: 'Yikes',
+              html: 'It looks like your password is associated with many publicly known breaches.  We <b>strongly advise</b> you change it.'
+            })
+          } else if (this.$data.hits >= 100) {
+            Swal({
+              type: 'error',
+              title: 'Yikes',
+              html: 'It looks like your password is associated with <b>too many</b> publicly known breaches.  We ask you to please choose a different password.'
+            })
+            this.$data.passwordForPwned = ''
+          }
         })
         .catch(error => {
           console.log(error.response)

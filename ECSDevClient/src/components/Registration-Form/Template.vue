@@ -677,11 +677,11 @@ export default {
         method: 'GET',
         url: this.$store.getters.getBaseAppUrl + 'Registration/GetSecurityQuestions',
         headers: this.$store.getters.getRequestHeaders,
-        timeout: this.$store.getters.getFormTimeout // allow 60 seconds before timeout
+        timeout: this.$store.getters.getFormTimeout // allow 90 seconds before timeout
       })
         .then(response => {
-          this.$data.questions = Shuffler.shuffleArray(JSON.parse(response.data))
-          console.log(this.$data.questions)          
+          this.$data.questions = Shuffler.shuffleArray(response.data)
+
           this.divideQuestions()
           this.loadingIsDisabled = true
         })

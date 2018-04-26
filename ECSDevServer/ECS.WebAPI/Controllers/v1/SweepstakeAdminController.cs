@@ -123,10 +123,22 @@ namespace ECS.WebAPI.Controllers.v1
             {
                 var wins = nameWinner.UserName;
                 SweepStake sweep = sweepStakeRepository.GetSingle(x => x.UsernameWinner == "No Winner" & x.ClosedDateTime >= DateTime.Now);
-                sweep.UsernameWinner = wins;
-                sweepStakeRepository.Update(sweep);
-                db.Database.ExecuteSqlCommand("TRUNCATE TABLE [SweepStakeEntry]");
-                return Ok(wins);
+                if (sweep == null)
+                {
+                    return Ok("No Winner");
+                }
+                else
+                {
+                    sweep.UsernameWinner = wins;
+                    sweepStakeRepository.Update(sweep);
+                    var entries = db.SweepStakeEntries.ToList();
+                    foreach (var del in entries)
+                    {
+                        db.SweepStakeEntries.Remove(del);
+                    };
+                    db.SaveChanges();
+                    return Ok(wins);
+                }
             }
         }
     }
