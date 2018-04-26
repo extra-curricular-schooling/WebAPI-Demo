@@ -58,7 +58,7 @@ namespace ECS.WebAPI.Controllers.v1
 
         // THIS IS FOR THE EARNING POINTS
         // NEED TO USE PUT OR WELL LETS JUST SAY UPDATE IN ORDER TO MODIFY AND POST NEW USER POINTS TO THE ACCOUNT
-        [AuthorizeRequired(ClaimValues.Scholar)]
+        [AuthorizeRequired(ClaimValues.CanEnterRaffle)]
         [HttpPost]
         [Route("UpdatePoints/{username}")]
         [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "POST")]
