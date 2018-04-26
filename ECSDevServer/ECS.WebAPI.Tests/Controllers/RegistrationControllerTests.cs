@@ -9,18 +9,16 @@ using System.Net.Http;
 using System.Collections.Generic;
 using ECS.WebAPI.Controllers.v1;
 using ECS.Repositories.Implementations;
+using ECS.BusinessLogic.ControllerLogic.Implementations;
 
 namespace ECS.WebAPI.Tests
 {
     public class RegistrationControllerTests
     {
-        //private readonly IAccountRepository _accountRepository;
-        //private readonly ISaltRepository _saltRepository;
-        //private readonly IUserProfileRepository _userProfileRepository;
-        //private readonly ISecurityQuestionRepository _securityQuestionRepository;
-
         public class SubmitRegistration
         {
+            private static RegistrationControllerLogic _controllerLogic;
+
             private static RegistrationDTO account = new RegistrationDTO
             {
                 FirstName = "Kim",
@@ -56,11 +54,15 @@ namespace ECS.WebAPI.Tests
             public void PostReturnsOkResponse()
             {
                 // Arrange
+                var controller = new RegistrationController(_controllerLogic);
+                controller.Request = new HttpRequestMessage();
+                controller.Configuration = new HttpConfiguration();
 
                 // Act
-                //IHttpActionResult actionResult = controller.SubmitRegistration(account)
+                var response = controller.SubmitRegistration(account);
+
                 // Assert
-                //Assert.IsType<OkResult>(actionResult);
+                Assert.IsType<OkResult>(response);
             }
 
             [Fact]
@@ -111,6 +113,8 @@ namespace ECS.WebAPI.Tests
 
         public class GetSecurityQuestions
         {
+            private static RegistrationControllerLogic _controllerLogic;
+
             [Fact]
             public void GetReturnsServiceUnavailableResponse()
             {
@@ -120,7 +124,16 @@ namespace ECS.WebAPI.Tests
             [Fact]
             public void GetReturnsOkResponse()
             {
+                // Arrange
+                var controller = new RegistrationController(_controllerLogic);
+                controller.Request = new HttpRequestMessage();
+                controller.Configuration = new HttpConfiguration();
 
+                // Act
+                var response = controller.GetSecurityQuestions();
+
+                // Assert
+                Assert.IsType<OkResult>(response);
             }
 
             [Fact]
