@@ -10,7 +10,6 @@ using ECS.Constants.Security;
 namespace ECS.WebAPI.Controllers.v1
 {
     [RoutePrefix("v1/Sweepstake")]
-    [AuthorizeRequired(ClaimValues.CanEnterRaffle)]
     public class SweepstakeController : ApiController
     {
         private readonly IAccountRepository accountRepository = new AccountRepository();
@@ -20,6 +19,7 @@ namespace ECS.WebAPI.Controllers.v1
         private ECSContext db = new ECSContext();
 
         // REQUEST TO GET THE POINTS ASSOCIATED WITH A SCHOLAR ACCOUNT
+        [AuthorizeRequired(ClaimValues.CanEditInformation)]
         [HttpGet]
         [Route("ScholarPoints/{username}")]
         [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "GET")]
@@ -32,6 +32,7 @@ namespace ECS.WebAPI.Controllers.v1
         
         }
         // REQUEST TO POST A TICKET FOR A SWEEPSTAKE
+        [AuthorizeRequired(ClaimValues.CanEnterRaffle)]
         [HttpPost]
         [Route("ScholarTicket/{username}")]
         [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "POST")]

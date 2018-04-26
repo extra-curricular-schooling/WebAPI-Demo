@@ -15,7 +15,6 @@ using ECS.Constants.Security;
 namespace ECS.WebAPI.Controllers.v1
 {
     [RoutePrefix("v1/SweepstakeAdmin")]
-    [AuthorizeRequired(ClaimValues.Admin)]
     public class SweepstakeAdminController : ApiController
     {
         private readonly IAccountRepository accountRepository = new AccountRepository();
@@ -26,6 +25,7 @@ namespace ECS.WebAPI.Controllers.v1
 
         // USING GET REQUEST TO GET THE VALID SWEEPSTAKES INFORMATION SO THAT A USER CAN BUY TICKETS
         // AND ENTER INTO A SWEEPSTAKE 
+        [AuthorizeRequired(ClaimValues.CanEditInformation)]
         [HttpGet]
         [Route("ValidSweepstakeInfo")]
         [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "GET")]
@@ -58,6 +58,7 @@ namespace ECS.WebAPI.Controllers.v1
 
         // THIS IS FOR THE EARNING POINTS
         // NEED TO USE PUT OR WELL LETS JUST SAY UPDATE IN ORDER TO MODIFY AND POST NEW USER POINTS TO THE ACCOUNT
+        [AuthorizeRequired(ClaimValues.Scholar)]
         [HttpPost]
         [Route("UpdatePoints/{username}")]
         [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "POST")]
@@ -76,6 +77,7 @@ namespace ECS.WebAPI.Controllers.v1
         }
 
         // USING THE POST REQUEST FOR POSTING/SETTING SWEEPSTAKES TO THE DATABASE BY ADMIN ONLY
+        [AuthorizeRequired(ClaimValues.Admin)]
         [HttpPost]
         [Route("submitSweepstake")]
         [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "POST")]
@@ -102,6 +104,7 @@ namespace ECS.WebAPI.Controllers.v1
         }
 
         // REQUEST TO CLOSE SWEEPSTAKE THAT IS SEND OVER BY THE ADMIN
+        [AuthorizeRequired(ClaimValues.Admin)]
         [HttpGet]
         [Route("CloseSweepstake")]
         [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "GET")]
