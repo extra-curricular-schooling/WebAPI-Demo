@@ -69,7 +69,7 @@ export default {
     // Check users that are admins against routes that are only allowed for scholars
     checkAdminLogin () {
       for (var path in this.scholarAuthorizationRequired) {
-        if (!this.$store.getters.isAuth && this.$store.getters.getRole === 'Admin' && this.$route.path === this.scholarAuthorizationRequired[path]) {
+        if (this.$store.getters.getRole === 'Admin' && this.$route.path === this.scholarAuthorizationRequired[path]) {
           this.$router.push('/?redirect=' + this.$route.path)
         }
       }
