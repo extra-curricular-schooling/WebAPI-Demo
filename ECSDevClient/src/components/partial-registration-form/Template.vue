@@ -548,8 +548,8 @@ export default {
         timeout: this.$store.getters.getFormTimeout
       })
         .then(response => {
-          this.$data.questions = Shuffler.shuffleArray(JSON.parse(response.data)) 
-          console.log(this.$data.questions)
+          this.$data.questions = Shuffler.shuffleArray(response.data) 
+
           this.divideQuestions()
           this.loadingIsDisabled = true
         })
