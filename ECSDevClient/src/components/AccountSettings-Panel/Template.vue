@@ -15,7 +15,7 @@
                   </p>
                   <ul class="menu-list">
                     <li><a v-on:click="currentComponent = 'edit-user-info'">General Information</a></li>
-                    <li><a v-on:click="currentComponent = 'not-implemented'">Manage Addresses</a></li>
+                    <li><a v-on:click="currentComponent = 'manage-addresses'">Manage Addresses</a></li>
                     <li><a v-on:click="currentComponent = 'change-password-panel'">Change Password</a></li>
                     <li><a v-on:click="currentComponent = 'interests'">Change Interest Tags</a></li>
                   </ul>
@@ -40,13 +40,15 @@ import ChangePasswordPanel from './elements/ChangePassword-Panel/Template'
 import EditUserInfo from './elements/edituserinfo-panel/Template'
 import EventBus from '../../assets/js/EventBus'
 import Interests from '@/components/interest-tag/Template'
+import ManageAddresses from './elements/manageaddresses-panel/Template'
 
 export default {
   name: 'AccountSettingsPanel',
   components: {
     ChangePasswordPanel,
     EditUserInfo,
-    Interests
+    Interests,
+    ManageAddresses
   },
   created () {
     EventBus.$on('showSettingsNotification', () => {

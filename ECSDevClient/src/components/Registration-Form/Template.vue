@@ -183,12 +183,12 @@
     <div class="field is-grouped is-grouped-centered form-buttons">
       <p class="control">
         <router-link to="/" tag="button" class="button is-link cancel-button">
-        Cancel
+          Cancel
         </router-link>
       </p>
       <p class="control">
         <button class="button is-primary submit-button" v-on:click.prevent="submit">
-        Submit
+          Submit
         </button>
       </p>
     </div>
