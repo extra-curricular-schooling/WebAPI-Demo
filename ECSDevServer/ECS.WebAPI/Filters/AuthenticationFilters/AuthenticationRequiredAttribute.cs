@@ -112,6 +112,7 @@ namespace ECS.WebAPI.Filters.AuthenticationFilters
 
         public void Dispose()
         {
+            _jwtRepository?.Dispose();
         }
     }
 }

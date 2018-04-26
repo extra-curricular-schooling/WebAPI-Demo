@@ -38,6 +38,7 @@
 /* eslint-diable */
 import PwnedHelper from '@/assets/js/pwnedChecker'
 import SsoMockRequest from './mockRequest'
+import Swal from 'sweetalert2'
 import Axios from 'axios'
 
 export default {
@@ -51,6 +52,7 @@ export default {
   methods: {
     submitRegistration () {
       this.$store.dispatch('updateToken', this.jwt)
+      alert()
       SsoMockRequest.submitRegistration()
     },
     submitLogin () {
@@ -60,6 +62,12 @@ export default {
     submitResetPassword () {
       this.$store.dispatch('updateToken', this.jwt)
       SsoMockRequest.submitResetPassword()
+    },
+    alert () {
+      Swal({
+        type: 'error',
+        title: 'We Apologize',
+        text: 'Fetching your information took too long.'})
     },
     testPwnd () {
       Axios({

@@ -2,6 +2,7 @@
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using ECS.BusinessLogic.ControllerLogic.Implementations;
 using ECS.Constants.Network;
 using ECS.DTO;
 using ECS.Models;
@@ -9,6 +10,7 @@ using ECS.Repositories.Implementations;
 using ECS.Security.AccessTokens.Jwt;
 using ECS.Security.Hash;
 using ECS.WebAPI.Filters.AuthorizationFilters;
+using ECS.WebAPI.Transformers;
 
 namespace ECS.WebAPI.Controllers.v1
 {
@@ -21,6 +23,7 @@ namespace ECS.WebAPI.Controllers.v1
         private readonly IAccountRepository _accountRepository = new AccountRepository();
         private readonly IJAccessTokenRepository _jwtRepository = new JAccessTokenRepository();
         private readonly ISaltRepository _saltRepository = new SaltRepository();
+        private readonly SsoControllerLogic _ssoControllerLogic = new SsoControllerLogic();
         #endregion
 
         /// <summary>
@@ -38,6 +41,14 @@ namespace ECS.WebAPI.Controllers.v1
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
+
+            if (_partialAccountRepository.Exists(d => d.UserName == credentials.Username))
+            {
+                var transformer = new SsoLoginTransformer();
+                var ssoLoginDto = transformer.Fetch(credentials);
+                var response = _ssoControllerLogic.Login(ssoLoginDto);
+                return ResponseMessage(response);
+            }
 
             // Proccess any other information.
             if (!_accountRepository.Exists(d => d.UserName == credentials.Username))

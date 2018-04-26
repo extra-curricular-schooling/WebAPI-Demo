@@ -45,6 +45,10 @@ export const auth = {
       state.isAuthenticated = false
       state.authToken = ''
       state.role = ''
+      state.username = ''
+    },
+    setAuthToken: function (state, payload) {
+      state.authToken = payload
     },
     setRole: function (state, payload) {
       state.role = payload

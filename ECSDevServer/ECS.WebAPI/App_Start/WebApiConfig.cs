@@ -67,8 +67,7 @@ namespace ECS.WebAPI
 
             // Authorization Filters
             //GlobalConfiguration.Configuration.Filters.Add(new AuthorizeRequiredAttribute());
-            // TODO: @Scott/Kris This is authenticating SSO. It cant be global.
-            //config.Filters.Add(new AuthorizeRequiredAttribute());
+
             // Action Filters
 
             // Exception Filters
