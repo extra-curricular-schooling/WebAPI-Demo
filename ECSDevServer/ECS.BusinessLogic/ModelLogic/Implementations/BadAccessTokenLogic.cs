@@ -5,6 +5,9 @@ using ECS.Repositories.Implementations;
 
 namespace ECS.BusinessLogic.ModelLogic.Implementations
 {
+    /// <summary>
+    /// BadAccessToken model business logic wrapper for repository code.
+    /// </summary>
     public class BadAccessTokenLogic : IBadAccessTokenLogic
     {
         private readonly IBadAccessTokenRepository _badAccessTokenRepository;

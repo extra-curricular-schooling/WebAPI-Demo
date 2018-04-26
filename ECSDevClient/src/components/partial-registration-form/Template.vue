@@ -52,15 +52,19 @@
         </div>
         <p id="cityControl" class="help">{{ cityMessage }}</p>
       </div>
-      <div class="is-table">
+            <div class="is-table">
         <div class="field mailing-adress state">
-          <p class="control">
-            <input v-model="state" id="state" class="input" text="text" @keyup="validateState" autocomplete="address-line2" placeholder="State">
-          </p>
-          <p id="stateControl" class="help">{{ stateMessage }}</p>
+          <div class="control left-cell">
+            <span class="select select-state">
+              <select class="select-state" v-model="state">
+                  <option disabled value="">--select--</option>
+                  <option v-for="s in states" v-bind:key="s"> {{ s }} </option>
+              </select>
+            </span>
+          </div>
         </div>
         <div class="field mailing-address zip">
-          <p class="control">
+          <p class="control right-cell">
             <input v-model="zipCode" id="zipCode" class="input" @keyup="validateZipCode" autocomplete="postal-code" placeholder="Zip Code">
           </p>
           <p id="zipCodeControl" class="help">{{ zipCodeMessage }}</p>
@@ -157,6 +161,7 @@
 import Axios from 'axios'
 import AgreementModal from '@/components/registration-form/elements/AgreementModal'
 import Shuffler from '@/assets/js/arrayShuffler'
+import States from '@/assets/js/enumerations/states'
 import Swal from 'sweetalert2'
 
 export default {
@@ -174,6 +179,7 @@ export default {
       questionSet1: [],
       questionSet2: [],
       questionSet3: [],
+      states: States,
 
       // Request Data
       firstName: '',
@@ -385,10 +391,19 @@ export default {
     },
     // APIs
     submit () {
-      if (!this.isValidForm()) { 
-        alert('It seems either your form is incomplete or some of your inputs are invalid...') 
+      // Check if form is valid
+      if (!this.isValidForm()) {
+        Swal({
+          type: 'warning',
+          title: 'Uh-Oh',
+          html: 'It seems either your form is <b>incomplete</b> or some of your inputs are <b>invalid</b>...'})
+
+      // Check if user has agreed to terms and conditions
       } else if (!this.$data.agreementIsChecked) {
-        alert('You must agree to our Terms and Conditions to continue...')
+        Swal({
+          type: 'warning',
+          title: 'Uh-Oh',
+          html: 'You must <b>read and agree</b> to our Terms and Conditions to continue...'})
       } else {
         Axios({
           method: 'POST',

@@ -53,6 +53,7 @@ import forgotPassword from '@/components/forgot-password-modal/Template'
 import forgotUsername from '@/components/Forgot-Username-Modal/Template'
 import LoadingModal from '@/components/loading-modal/Template'
 import UrlHelper from '@/assets/js/urlHelper'
+import Swal from 'sweetalert2'
 import JwtService from '@/assets/js/jwtService'
 import jwt from 'jsonwebtoken'
 
@@ -153,14 +154,48 @@ export default {
               }
             })
             .catch((error) => {
-              if (error.response.data.message === 'SUSPENDED') {
-                this.toggleLoadingModal()
-                this.toggleErrorModal('Your account has been suspended! Please contact us for assistance.')
+              this.toggleLoadingModal()
+              if (error.response) {
+                // The request was made and the server responded with a status code
+                // that falls out of the range of 2xx
+                if (error.response.data.message === 'SUSPENDED') {
+                  Swal({
+                    type: 'error',
+                    title: 'Bad News',
+                    text: 'According to our records, you have been suspended. Please contact an administrator for more information'})
+                } else if (error.response.status === 400) {
+                  Swal({
+                    type: 'error',
+                    title: 'Uh-Oh',
+                    text: 'Invalid credentials. Please try again.'})
+                } else if (error.response.status === 500) {
+                  Swal({
+                    type: 'error',
+                    title: 'We Apologize',
+                    text: 'We are unable to process your request at this time.'})
+                } else {
+                  Swal({
+                    type: 'error',
+                    title: 'Bad News',
+                    text: 'Something has gone wrong. Please try again.'})
+                }
+              } else if (error.request) {
+                console.log('problems with request')
+                Swal({
+                  type: 'error',
+                  title: 'We Apologize',
+                  text: 'Our server is currently not responding.'})
+                // The request was made but no response was received
+                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                // http.ClientRequest in node.js
+                console.log(error.request)
               } else {
-                this.toggleLoadingModal()
-                this.toggleErrorModal('An error has occurred, please try again later!')
+                // Something happened in setting up the request that triggered an Error
+                Swal({
+                  type: 'error',
+                  title: 'Bad News',
+                  text: 'Something has gone wrong. Please try again.'})
               }
-              console.log(error)
             })
         }
       }

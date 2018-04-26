@@ -18,6 +18,7 @@ namespace ECS.WebAPI.Transformers
             var hashedPassword = HashService.Instance.HashPasswordWithSalt(passwordSalt, password, true);
             var roleType = SsoJwtManager.Instance.GetClaimValue(context.Principal, ClaimNames.RoleType);
 
+            // Create Role based on Sso Input.
             IFactory factory = new RoleFactory();
             string role = (string) factory.Create(roleType);
             
@@ -30,11 +31,5 @@ namespace ECS.WebAPI.Transformers
                 RoleType = role
             };
         }
-
-        //public IHttpActionResult Send(HttpResponseMessage message)
-        //{
-        //    IHttpActionResult result = ResponseMessage(message);
-        //    return new OkResult(message);
-        //}
     }
 }
