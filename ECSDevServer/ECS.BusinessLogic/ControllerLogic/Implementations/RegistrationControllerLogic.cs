@@ -8,6 +8,7 @@ using ECS.Constants.Security;
 using ECS.DTO;
 using ECS.Models;
 using ECS.Security.Hash;
+using ECS.Constants.Data_Access;
 
 namespace ECS.BusinessLogic.ControllerLogic.Implementations
 {
@@ -146,13 +147,7 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
 
             List<ZipLocation> zipLocations = new List<ZipLocation>
             {
-                new ZipLocation
-                {
-                    ZipCode = registrationForm.ZipCode.ToString(),
-                    Address = registrationForm.Address,
-                    City = registrationForm.City,
-                    State = registrationForm.State
-                }
+                CreateZipLocationHelper(registrationForm.Address, registrationForm.City, registrationForm.State, registrationForm.ZipCode.ToString())
             };
 
             // Account model child to UserProfile
@@ -204,6 +199,11 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="registrationForm"></param>
+        /// <returns></returns>
         public HttpResponseMessage FinishRegistration(RegistrationDTO registrationForm)
         {
             // Fetch: Check if user already exists
@@ -385,6 +385,45 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
                     StatusCode = HttpStatusCode.InternalServerError
                 };
             }
+        }
+
+        /// <summary>
+        /// Helper method to check for empty values and create a new ZipLocation
+        /// </summary>
+        /// <param name="address"></param>
+        /// <param name="city"></param>
+        /// <param name="state"></param>
+        /// <param name="zipCode"></param>
+        /// <returns></returns>
+        private ZipLocation CreateZipLocationHelper(string address, string city, string state, string zipCode)
+        {
+            if (address == "")
+            {
+                address = ZipLocationProperties.Address;
+            }
+
+            if (city == "")
+            {
+                city = ZipLocationProperties.City;
+            }
+
+            if (state == "")
+            {
+                state = ZipLocationProperties.State;
+            }
+
+            if (zipCode == "0")
+            {
+                zipCode = ZipLocationProperties.ZipCode;
+            }
+
+            return new ZipLocation
+            {
+                Address = address,
+                City = city,
+                State = state,
+                ZipCode = zipCode
+            };
         }
     }
 }

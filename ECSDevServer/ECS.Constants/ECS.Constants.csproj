@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data Access\ZipLocationProperties.cs" />
     <Compile Include="ModelTypes.cs" />
     <Compile Include="Network\CorsConstants.cs" />
     <Compile Include="Network\HeaderConstants.cs" />
@@ -52,7 +53,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Business Logic\" />
-    <Folder Include="Data Access\" />
     <Folder Include="Error Messages\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

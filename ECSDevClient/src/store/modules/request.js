@@ -16,8 +16,8 @@ export const request = {
       'Authorization': 'null',
       'X-Requested-With': 'XMLHttpRequest'
     },
-    formTimeout: 60000, // 60 seconds
-    defaultTimeout: 30000 // 30 seconds
+    formTimeout: 90000, // 90 seconds
+    defaultTimeout: 40000 // 40 seconds
   },
   getters: {
     getBaseAppUrl: (state) => { return state.appBaseUrl },
