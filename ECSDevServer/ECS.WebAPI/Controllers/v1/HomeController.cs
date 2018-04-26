@@ -8,6 +8,7 @@ using System.Web.Http.Cors;
 using ECS.BusinessLogic.ControllerLogic.Implementations;
 using ECS.BusinessLogic.Services.ComplexDBQueries;
 using ECS.Constants.Network;
+using ECS.Constants.Security;
 using ECS.DTO;
 using ECS.Models;
 using ECS.WebAPI.Filters.AuthorizationFilters;
@@ -21,6 +22,7 @@ namespace ECS.WebAPI.Controllers.v1
     [RoutePrefix("v1/Home")]
     // Had to make a custom filter for RequireHttpsAttribute
     [RequireHttps]
+    [AuthorizeRequired(ClaimValues.CanEditInformation)]
     public class HomeController : ApiController
     {
         /// <summary>

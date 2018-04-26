@@ -11,10 +11,13 @@ using ECS.Constants.Network;
 using ECS.Models.Services.ComplexDBQueries;
 using System.Net.Http.Headers;
 using ECS.Security.AccessTokens.Jwt;
+using ECS.WebAPI.Filters.AuthorizationFilters;
+using ECS.Constants.Security;
 
 namespace ECS.WebAPI.Controllers.v1
 {
     [RoutePrefix("v1/Account")]
+    //[AuthorizeRequired(ClaimValues.Scholar)]
     public class AccountController : ApiController
     {
         #region Constants and fields
@@ -23,15 +26,17 @@ namespace ECS.WebAPI.Controllers.v1
         private readonly JAccessTokenLogic _jAccessTokenLogic;
         private readonly SaltLogic _saltLogic;
         private readonly UserProfileLogic _userProfileLogic;
+        private readonly ZipLocationLogic _zipLocationLogic;
         #endregion
 
-        public AccountController ()
+        public AccountController()
         {
             _accountControllerLogic = new AccountControllerLogic();
             _accountLogic = new AccountLogic();
             _jAccessTokenLogic = new JAccessTokenLogic();
             _saltLogic = new SaltLogic();
             _userProfileLogic = new UserProfileLogic();
+            _zipLocationLogic = new ZipLocationLogic();
         }
 
         // Should this encompass all of the Account related Action Methods:
@@ -40,6 +45,7 @@ namespace ECS.WebAPI.Controllers.v1
         // Change Password
         // View Points
         // See time remaining for suspension
+        [AuthorizeRequired(ClaimValues.CanEditInformation)]
         [HttpPost]
         [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "POST")]
         [Route("ChangePassword")]
@@ -99,6 +105,7 @@ namespace ECS.WebAPI.Controllers.v1
         /// Returns the interest tags from the DB to fill in the checkboxes
         /// </summary>
         /// <returns> A list of InterestTag Names</returns>
+        [AuthorizeRequired(ClaimValues.CanEditInformation)]
         [HttpGet]
         [Route("RetrieveInterestTags")]
         [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "GET")]
@@ -121,7 +128,7 @@ namespace ECS.WebAPI.Controllers.v1
         {
             Account account = _accountControllerLogic.accountRetrieval(username);
             return _accountControllerLogic.GetUserInterestTags(account);
-            
+
         }
 
 
@@ -139,7 +146,7 @@ namespace ECS.WebAPI.Controllers.v1
             var response = updateUserInterestTags.UpdateUserInterests(userInterests);
             IHttpActionResult actionResultResponse = ResponseMessage(response);
             return actionResultResponse;
-           
+
         }
 
         [HttpGet]
@@ -203,6 +210,7 @@ namespace ECS.WebAPI.Controllers.v1
             }
         }
 
+        [AuthorizeRequired(ClaimValues.CanEditInformation)]
         [HttpGet]
         [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "GET")]
         [Route("GetUserInfo")]
@@ -211,7 +219,7 @@ namespace ECS.WebAPI.Controllers.v1
             string username = _accountControllerLogic.GetUsername(Request.Headers.Authorization.ToString());
             if (username != null)
             {
-                if(_accountLogic.Exists(username))
+                if (_accountLogic.Exists(username))
                 {
                     var account = _accountLogic.GetByUsername(username);
                     string email = account.Email;
@@ -238,12 +246,13 @@ namespace ECS.WebAPI.Controllers.v1
         [HttpPost]
         [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "POST")]
         [Route("PostUserInfo")]
+        [AuthorizeRequired(ClaimValues.CanEditInformation)]
         public IHttpActionResult PostUserInfo(UserInfoDTO userInfoDTO)
         {
             string username = _accountControllerLogic.GetUsername(Request.Headers.Authorization.ToString());
             if (username != null)
             {
-                if(_accountLogic.Exists(username))
+                if (_accountLogic.Exists(username))
                 {
                     var account = _accountLogic.GetByUsername(username);
                     string email = account.Email;
@@ -256,6 +265,53 @@ namespace ECS.WebAPI.Controllers.v1
                 else
                 {
                     return Unauthorized();
+                }
+            }
+            else
+            {
+                return Unauthorized();
+            }
+        }
+
+        [HttpPost]
+        [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "POST")]
+        [Route("PostUserAddress")]
+        [AuthorizeRequired(ClaimValues.CanEditInformation)]
+        public IHttpActionResult PostUserAddress (ZipLocationDTO zipLocationDTO)
+        {
+            string username = _accountControllerLogic.GetUsername(Request.Headers.Authorization.ToString());
+            if (username != null)
+            {
+                var account = _accountLogic.GetByUsername(username);
+                string email = account.Email;
+                var user = _userProfileLogic.GetSingle(email);
+                if (zipLocationDTO.ZipCodeID >= 0)
+                {
+                    foreach (var address in user.ZipLocations)
+                    {
+                        if (address.ZipCodeId == zipLocationDTO.ZipCodeID)
+                        {
+                            address.Address = zipLocationDTO.Address;
+                            address.City = zipLocationDTO.City;
+                            address.State = zipLocationDTO.State;
+                            address.ZipCode = zipLocationDTO.ZipCode;
+                            _zipLocationLogic.Update(address);
+                            return Ok();
+                        }
+                    }
+                    return Ok("No records were updated.");
+                }
+                else
+                {
+                    ZipLocation zipLocation = new ZipLocation {
+                        Address = zipLocationDTO.Address,
+                        City = zipLocationDTO.City,
+                        State = zipLocationDTO.State,
+                        ZipCode = zipLocationDTO.ZipCode
+                    };
+                    user.ZipLocations.Add(zipLocation);
+                    _userProfileLogic.Update(user);
+                    return Ok();
                 }
             }
             else

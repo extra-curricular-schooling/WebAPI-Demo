@@ -3,7 +3,6 @@
     <section class="hero is-dark">
       <div class="hero-body">
         <div class="container is-fluid">
-
         </div>
       </div>
     </section>
@@ -42,7 +41,7 @@
         </div>
       </div>
     </section>
-    <section class="hero is-lights">
+    <section class="hero is-light">
       <div class="hero-body">
         <div class="container is-fluid">
           <div class="tile is-ancestor">
@@ -84,8 +83,11 @@
                 </blockquote>
                 <hr class="dropdown-divider">
                 <blockquote>
-                  <strong>"Insert Number Here"+</strong> Articles!
+                  <strong>200+</strong> Articles!
                 </blockquote>
+                <span>
+                    <img src="http://cliparting.com/wp-content/uploads/2016/11/Open-book-pictures-clip-art-clipart-free-to-use-resource.gif" alt="" style="height: 75px;"/>
+                  </span>
                 <hr class="dropdown-divider">
               </article>
             </div>
@@ -127,8 +129,8 @@
         </div>
       </div>
     </section>
-    <footer class="footer">
-        <div class="container">
+    <section class="hero is-light">
+        <div class="hero-body">
             <div class="content has-text-centered">
                 <p>
                     <strong>ECS</strong> by
@@ -138,7 +140,8 @@
                 </p>
             </div>
         </div>
-    </footer>
+    </section>
+    <div style="height: 1px;"/>
 </div>
 </template>
 

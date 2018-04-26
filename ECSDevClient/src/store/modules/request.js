@@ -31,6 +31,9 @@ export const request = {
     setAuthorizationHeader: function (state, token) {
       state.headers.Authorization = 'Bearer ' + token
     },
+    clearAuthorizationHeader: function (state) {
+      state.headers.Authorization = 'null'
+    },
     setAppBaseUrl: function (state, baseUrl) {
       state.appBaseUrl = baseUrl
     },

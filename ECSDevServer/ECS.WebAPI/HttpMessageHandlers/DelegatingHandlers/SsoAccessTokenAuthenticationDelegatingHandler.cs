@@ -23,6 +23,12 @@ namespace ECS.WebAPI.HttpMessageHandlers.DelegatingHandlers
             _authenticationService = new AuthenticationService();
         }
 
+        /// <summary>
+        /// Pipeline injection for Sso Authentication
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns>Task Response Message</returns>
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             var tsc = new TaskCompletionSource<HttpResponseMessage>();
@@ -36,6 +42,7 @@ namespace ECS.WebAPI.HttpMessageHandlers.DelegatingHandlers
                 return base.SendAsync(request, cancellationToken);
             }
 
+            // Token Value
             var token = authHeader.Parameter;
             if (token == null)
             {
@@ -81,6 +88,12 @@ namespace ECS.WebAPI.HttpMessageHandlers.DelegatingHandlers
             return base.SendAsync(request, cancellationToken);
         }
 
+        /// <summary>
+        /// Catches any Exceptions or Errors occurring in TokenAuthenticatingDelegatingHandler and sends unauthorized response.
+        /// </summary>
+        /// <param name="tsc"></param>
+        /// <param name="errorMessage"></param>
+        /// <returns>Error Task Message</returns>
         private Task<HttpResponseMessage> SendError(TaskCompletionSource<HttpResponseMessage> tsc, string errorMessage)
         {
             var unauthorizedResponse = new HttpResponseMessage

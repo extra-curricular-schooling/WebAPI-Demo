@@ -27,6 +27,11 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
             _interestTagLogic = new InterestTagLogic();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="authHeader"></param>
+        /// <returns></returns>
         public string GetUsername(string authHeader)
         {
             string accessTokenFromRequest = "";
@@ -57,25 +62,12 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
             }
         }
 
-        public void RegisterAccount(RegistrationDTO registrationDto)
-        {
-            // Create all other objects that need to be added when making an account.
-
-            var account = new Account
-            {
-                AccountStatus = true,
-                AccountTags = null,
-                Email = registrationDto.Email,
-                FirstTimeUser = false,
-                Password = registrationDto.Password,
-                Points = 0,
-                // SaltSecurityAnswers
-                // SecurityAnswers
-                SuspensionTime = DateTime.UtcNow,
-                UserName = registrationDto.Username
-            };
-        }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="account"></param>
+        /// <param name="salt"></param>
+        /// <param name="desiredPassword"></param>
         public void ChangePassword (Account account, Salt salt, string desiredPassword)
         {
             var pSalt = HashService.Instance.CreateSaltKey();
@@ -86,16 +78,30 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
             _accountLogic.Update(account);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
         public Account accountRetrieval(string username)
         {
             return _accountLogic.IncludeAccountTags(username);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public IList<InterestTag> RetrieveInterestTags()
         {
             return _interestTagLogic.GetAllInterestTags();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="interests"></param>
+        /// <returns></returns>
         public List<string> ListAllInterestTags(IList<InterestTag> interests) 
         {
             List<string> interestTags = new List<string>();
@@ -106,6 +112,11 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
             return interestTags;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="account"></param>
+        /// <returns></returns>
         public List<string> GetUserInterestTags(Account account)
         {
             List<string> userInterests = new List<string>();

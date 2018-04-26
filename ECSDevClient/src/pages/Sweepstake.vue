@@ -1,11 +1,14 @@
 <template>
-  <div>
-    <h1>Welcome to Sweepstake Entry. Buy A Ticket To Enter Into The Sweepstake.</h1>
-    <h1>Time Left</h1>
-    <Countdown deadline="May 25, 2018"></Countdown>
-    <button v-on:click="fetchUserInfo(username,Points)">What are your Points? Find it out, First.</button>
-    <button v-on:click="fetchValidSweepstakeInfo(Price, SweepStakesID, OpenDateTime, Prize, ClosedDateTime)">Is Sweepstake Open??</button>
-    <button v-on:click="ticketBought(Points,Price,username,timeDateStamp)">Buy A Ticket and Surprise Yourself</button>
+  <div class="container">
+    <div class="box" style="background-color: hsl(0, 0%, 96%);">
+      <h1>Welcome to Sweepstake Entry. Buy A Ticket To Enter Into The Sweepstake.</h1>
+      <h1>Time Left</h1>
+      <Countdown deadline="May 25, 2018"></Countdown>
+      <button v-on:click="fetchUserInfo(username,Points)">What are your Points? Find it out, First.</button>
+      <button v-on:click="fetchValidSweepstakeInfo(Price, SweepStakesID, OpenDateTime, Prize, ClosedDateTime)">Is Sweepstake Open??</button>
+      <button v-on:click="ticketBought(Points,Price,username,timeDateStamp)">Buy A Ticket and Surprise Yourself</button>
+    </div>
+    <div style="height: 1px;"/>
   </div>
 </template>
 <script>

@@ -42,7 +42,7 @@ export default {
       originalLast: '',
       firstNameMessage: '',
       lastNameMessage: '',
-      NAME_REGEX: /^[a-zA-Z ]{1,50}$/
+      NAME_REGEX: /^[a-zA-Z\- ]{1,50}$/
     }
   },
   created () {

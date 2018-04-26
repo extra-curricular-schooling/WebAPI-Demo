@@ -52,6 +52,7 @@
     <Compile Include="ModelLogic\Implementations\SaltSecurityAnswerLogic.cs" />
     <Compile Include="ModelLogic\Implementations\SecurityQuestionsAccountLogic.cs" />
     <Compile Include="ModelLogic\Implementations\UserProfileLogic.cs" />
+    <Compile Include="ModelLogic\Implementations\ZipLocationLogic.cs" />
     <Compile Include="Services\Implementations\AuthenticationService.cs" />
     <Compile Include="Services\Implementations\RegistrationService.cs" />
   </ItemGroup>
@@ -101,7 +102,6 @@
   <ItemGroup>
     <Folder Include="ControllerLogic\Contracts\" />
     <Folder Include="Services\Contracts\" />
-    <Folder Include="Services\RepositoryFacades\" />
     <Folder Include="Validators\DtoValidators\" />
     <Folder Include="Validators\ModelValidators\" />
   </ItemGroup>

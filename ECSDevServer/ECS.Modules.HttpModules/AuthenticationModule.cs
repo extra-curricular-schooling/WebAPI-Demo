@@ -33,7 +33,6 @@ namespace ECS.Modules.HttpModules
                 var request = app.Request;
                 var type = request.GetType();
 
-                
                 var isAcceptedRefererHeader = 
                     request.Headers[HeaderConstants.Referer] != null && 
                     _acceptedUrls.Contains(request.Headers[HeaderConstants.Referer]);

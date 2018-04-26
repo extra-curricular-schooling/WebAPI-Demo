@@ -7,6 +7,9 @@ using ECS.Models;
 
 namespace ECS.BusinessLogic.ModelLogic.Contracts
 {
+    /// <summary>
+    /// ExpiredAccessToken business logic contract
+    /// </summary>
     public interface IExpiredAccessTokenLogic
     {
         void Create(ExpiredAccessToken badAccessToken);

@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <admin-layout v-if="currentRole === 'Admin'"/>
-    <scholar-layout v-else-if="currentRole === 'Scholar'"/>
+    <admin-layout v-if="currentRole === 'Admin' && isAuth"/>
+    <scholar-layout v-else-if="currentRole === 'Scholar' && isAuth"/>
     <default-layout v-else/>
     <router-view/>
   </div>
@@ -17,6 +17,7 @@ import AdminLayout from './layouts/Admin'
 import ScholarLayout from './layouts/Scholar'
 import EventBus from '@/assets/js/EventBus.js'
 import jwt from 'jsonwebtoken'
+import Swal from 'sweetalert2'
 
 var renewal
 
@@ -25,21 +26,20 @@ export default {
   // Watch is set to watch for routing from home. User will be asked to confirm. if they leave, emit to cancel interval. close slide menu
   watch: {
     '$route' (to, from) {
+      var html = document.documentElement
       // Check if route is coming from home.
-      if (from.name === 'Home' && to.name !== 'Home') {
-        // Confirm user wants to leave home and lose points for any articles that have not passed the treshhold
-        const answer = window.confirm('Do you really want to leave? You may not earn points for the current article.')
-        // If user cancels move, stay in home
-        if (!answer) {
-          this.$router.push({
-            name: 'Home'
-          })
-          // emit cancellation for time interval and close slideout.
-        } else {
-          EventBus.$emit('cancelInterval', this.cancelInterval)
-          var html = document.documentElement
+      if (from.name === 'Home' && to.name !== 'Home' && to.name !== 'Main') {
+        // Cancel time interval and close slideout
+        EventBus.$emit('cancelInterval', this.cancelInterval)
+        html.classList.remove('slideout-open')
+      } else if (to.name === 'Main' && (from.name === 'Home' || from.name === 'Sweepstake' || from.name === 'Account')) {
+        Swal({
+          title: 'We miss you already!',
+          text: 'Come back soon!',
+          imageUrl: 'https://i.pinimg.com/736x/f0/ba/22/f0ba22c10f942fb16fae5f7850ddd70f--panda-tattoos-cute-tattoos.jpg'
+        }).then(response => {
           html.classList.remove('slideout-open')
-        }
+        })
       }
     }
   },
@@ -52,8 +52,9 @@ export default {
   data () {
     return {
       authorizationRequired: ['/Home', '/LinkedIn', '/account', '/account-admin', '/sweepstakeadmin', '/sweepstake'],
-      currentRole: '',
       adminAuthorizationRequired: ['/sweepstakeadmin', '/LinkedIn', '/account-admin'],
+      currentRole: '',
+      isAuth: false,
       scholarAuthorizationRequired: ['/sweepstake']
     }
   },
@@ -81,8 +82,9 @@ export default {
         }
       }
     },
-    checkCurrentRole () {
+    updateLocalAuthState () {
       this.currentRole = this.$store.getters.getRole
+      this.isAuth = this.$store.getters.isAuth
     },
     checkTokenLife: function () {
       var decoded = jwt.decode(this.$store.getters.getAuthToken, {complete: true})
@@ -124,7 +126,7 @@ export default {
       this.checkAdminLogin()
     } else {
       this.checkCurrentLogin()
-      this.checkCurrentRole()
+      this.updateLocalAuthState()
     }
 
     // Set interval depending on whether or not a user is logged in
@@ -145,14 +147,12 @@ export default {
   updated () {
     if (this.$store.getters.getRole === 'Scholar') {
       this.checkScholarLogin()
-      this.checkCurrentRole()
     } else if (this.$store.getters.getRole === 'Admin') {
       this.checkAdminLogin()
-      this.checkCurrentRole()
     } else {
       this.checkCurrentLogin()
-      this.checkCurrentRole()
     }
+    this.updateLocalAuthState()
   }
 }
 </script>

@@ -31,6 +31,12 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
             _linkedinLogic = linkedinLogic;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="linkedInAccessToken"></param>
+        /// <param name="linkedInPostDTO"></param>
+        /// <returns></returns>
         public Object SharePost(LinkedInAccessToken linkedInAccessToken, LinkedInPostDTO linkedInPostDTO)
         {
             var requestUrl = _defaultAccessGateway + "people/~/shares?format=json";

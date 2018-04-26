@@ -1,4 +1,6 @@
-﻿using System.Security.Claims;
+﻿using ECS.Models;
+using System.Collections.Generic;
+using System.Security.Claims;
 
 namespace ECS.Security.AccessTokens.Jwt
 {
@@ -11,7 +13,14 @@ namespace ECS.Security.AccessTokens.Jwt
         /// <param name="username"></param>
         /// <param name="expireMinutes"></param>
         /// <returns>Token String</returns>
-        string GenerateToken(string username, int expireMinutes = 15);
+        string GenerateToken(string username, int expireMinutes = 20);
+        /// <summary>
+        /// Creates a JWT from list of claims
+        /// </summary>
+        /// <param name="claims"></param>
+        /// <param name="expireMinutes"></param>
+        /// <returns></returns>
+        string GenerateToken(List<AccountType> claims, int expireMinutes = 20);
         /// <summary>
         /// Unencrypts the JWT
         /// </summary>

@@ -42,6 +42,11 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
             _expiredAccessTokenLogic = expiredAccessTokenLogic;
         }
 
+        /// <summary>
+        /// Business logic for registering accounts from Single Sign On.
+        /// </summary>
+        /// <param name="registrationDto"></param>
+        /// <returns></returns>
         public HttpResponseMessage RegisterPartialAccount(SsoRegistrationRequestDTO registrationDto)
         {
             // Validation Step
@@ -75,32 +80,35 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
             return new HttpResponseMessage(HttpStatusCode.OK);
         }
 
+        /// <summary>
+        /// Entry point for business logic related to logging in PartialAccounts and Accounts
+        /// </summary>
+        /// <param name="loginDto"></param>
+        /// <returns></returns>
         public HttpResponseMessage Login(SsoLoginRequestDTO loginDto)
         {
             // Partial Account will be null or Account will be null.
-
             var partialAccount = _partialAccountLogic.GetPartialAccount(loginDto.Username);
             var account = _accountLogic.GetSingle(loginDto.Username);
 
             // Validate
+            if (partialAccount == null && account == null)
+            {
+                return new HttpResponseMessage
+                {
+                    ReasonPhrase = "Invalid Credentials",
+                    StatusCode = HttpStatusCode.BadRequest
+                };
+            }
 
-            //if (partialAccount == null && account == null)
-            //{
-            //    return new HttpResponseMessage
-            //    {
-            //        ReasonPhrase = "Invalid Credentials",
-            //        StatusCode = HttpStatusCode.BadRequest
-            //    };
-            //}
-
-            //if (partialAccount != null && account != null)
-            //{
-            //    return new HttpResponseMessage
-            //    {
-            //        ReasonPhrase = "Database Inconsistency",
-            //        StatusCode = HttpStatusCode.InternalServerError
-            //    };
-            //}
+            if (partialAccount != null && account != null)
+            {
+                return new HttpResponseMessage
+                {
+                    ReasonPhrase = "Database Inconsistency",
+                    StatusCode = HttpStatusCode.InternalServerError
+                };
+            }
 
             if (partialAccount != null)
             {
@@ -118,6 +126,12 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
             };
         }
 
+        /// <summary>
+        /// Login for PartialAccount route.
+        /// </summary>
+        /// <param name="loginDto"></param>
+        /// <param name="partialAccount"></param>
+        /// <returns></returns>
         private HttpResponseMessage PartialAccountLoginHelper(SsoLoginRequestDTO loginDto, PartialAccount partialAccount)
         { 
             // Provide Partial Account RoleType
@@ -133,6 +147,12 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
             };
         }
 
+        /// <summary>
+        /// Login for Account route.
+        /// </summary>
+        /// <param name="loginDto"></param>
+        /// <param name="account"></param>
+        /// <returns></returns>
         private HttpResponseMessage AccountLoginHelper(SsoLoginRequestDTO loginDto, Account account)
         {
             var saltModel = _saltLogic.GetSalt(loginDto.Username);
@@ -182,15 +202,18 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
             };
         }
 
+        /// <summary>
+        /// Business logic for resetting PartialAccount or Account object passwords.
+        /// </summary>
+        /// <param name="resetPasswordDto"></param>
+        /// <returns></returns>
         public HttpResponseMessage ResetPassword(SsoResetPasswordRequestDTO resetPasswordDto)
         {
             // Partial Account will be null or Account will be null.
-
             var partialAccount = _partialAccountLogic.GetPartialAccount(resetPasswordDto.Username);
             var account = _accountLogic.GetSingle(resetPasswordDto.Username);
 
             // Validate
-
             if (partialAccount == null && account == null)
             {
                 return new HttpResponseMessage

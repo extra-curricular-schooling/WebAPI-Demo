@@ -10,6 +10,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using ECS.Constants.Network;
 using ECS.WebAPI.Filters.AuthorizationFilters;
+using ECS.Constants.Security;
 
 namespace ECS.WebAPI.Controllers.v1
 {
@@ -24,6 +25,7 @@ namespace ECS.WebAPI.Controllers.v1
 
         // USING GET REQUEST TO GET THE VALID SWEEPSTAKES INFORMATION SO THAT A USER CAN BUY TICKETS
         // AND ENTER INTO A SWEEPSTAKE 
+        [AuthorizeRequired(ClaimValues.CanEditInformation)]
         [HttpGet]
         [Route("ValidSweepstakeInfo")]
         [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "GET")]
@@ -32,7 +34,7 @@ namespace ECS.WebAPI.Controllers.v1
             // CAN MOVE THIS TO SWEEPSTAKE CONTROLLER BECAUSE IT IS SPECIFIC FOR THE SCHOLAR AND SWEEPSTAKE NOT THE ADMIN
             // using the Sweepstake Admin DTO to get data back
                     var answer = db.SweepStakes
-                       .Where(x => x.OpenDateTime <= DateTime.Now & x.ClosedDateTime >= DateTime.Now)
+                       .Where(x => x.UsernameWinner == "No Winner" & x.ClosedDateTime >= DateTime.Now)
                        .FirstOrDefault<SweepStake>();
             if (answer == null)
             {
@@ -56,6 +58,7 @@ namespace ECS.WebAPI.Controllers.v1
 
         // THIS IS FOR THE EARNING POINTS
         // NEED TO USE PUT OR WELL LETS JUST SAY UPDATE IN ORDER TO MODIFY AND POST NEW USER POINTS TO THE ACCOUNT
+        [AuthorizeRequired(ClaimValues.CanEnterRaffle)]
         [HttpPost]
         [Route("UpdatePoints/{username}")]
         [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "POST")]
@@ -74,6 +77,7 @@ namespace ECS.WebAPI.Controllers.v1
         }
 
         // USING THE POST REQUEST FOR POSTING/SETTING SWEEPSTAKES TO THE DATABASE BY ADMIN ONLY
+        [AuthorizeRequired(ClaimValues.Admin)]
         [HttpPost]
         [Route("submitSweepstake")]
         [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "POST")]
@@ -100,6 +104,7 @@ namespace ECS.WebAPI.Controllers.v1
         }
 
         // REQUEST TO CLOSE SWEEPSTAKE THAT IS SEND OVER BY THE ADMIN
+        [AuthorizeRequired(ClaimValues.Admin)]
         [HttpGet]
         [Route("CloseSweepstake")]
         [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "GET")]
@@ -117,7 +122,7 @@ namespace ECS.WebAPI.Controllers.v1
             else
             {
                 var wins = nameWinner.UserName;
-                SweepStake sweep = sweepStakeRepository.GetSingle(x => x.OpenDateTime <= DateTime.Now & x.ClosedDateTime >= DateTime.Now);
+                SweepStake sweep = sweepStakeRepository.GetSingle(x => x.UsernameWinner == "No Winner" & x.ClosedDateTime >= DateTime.Now);
                 sweep.UsernameWinner = wins;
                 sweepStakeRepository.Update(sweep);
                 db.Database.ExecuteSqlCommand("TRUNCATE TABLE [SweepStakeEntry]");

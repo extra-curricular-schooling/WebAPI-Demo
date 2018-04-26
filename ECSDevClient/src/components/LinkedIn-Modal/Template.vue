@@ -1,6 +1,6 @@
 <template>
   <div>
-    <button v-if="isButtonVisible" v-on:click="modalActions" class="button is-primary">Share on LinkedIn!</button>
+    <button :disabled="!isButtonVisible" v-on:click="modalActions" class="button is-primary">Share on LinkedIn!</button>
     <div class="modal" v-bind:class="{ 'is-active' : isActive }">
       <div v-on:click="toggleLinkedInModal" class="modal-background"></div>
       <div id="linkedin-modal" class="modal-card">
@@ -29,7 +29,7 @@
         </section>
         <section id="linkedin-preview" class="hero is-info">
           <div class="hero-body">
-            <a>Preview</a>
+            <!-- <a>Preview</a> -->
             <div class="box">
               <article class="media">
               <figure class="media-left">
@@ -47,7 +47,7 @@
                       {{postData.comment}}
                     </p>
                   </div>
-                  <div class="container is-fluid">
+                  <!-- <div class="container is-fluid">
                     <div class="card is-fluid">
                       <div class="card-image">
                         <figure class="image is-square">
@@ -64,7 +64,7 @@
                         </span>
                       </footer>
                     </div>
-                  </div>
+                  </div> -->
                   <hr class="dropdown-divider">
                   <nav class="level is-mobile">
                     <div class="level-left">

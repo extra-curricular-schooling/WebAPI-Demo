@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IdentityModel.Claims;
 using System.Net;
 using System.Net.Http;
 using System.Security.Principal;
@@ -36,7 +37,7 @@ namespace ECS.WebAPI.HttpMessageHandlers.DelegatingHandlers
                 return base.SendAsync(request, cancellationToken);
             }
 
-            // 2. The request has have a "Bearer" request to process
+            // 2. The reques has have a "Bearer" request to process
             if (authHeader == null || authHeader.Scheme != "Bearer")
             {
                 return base.SendAsync(request, cancellationToken);
@@ -45,7 +46,7 @@ namespace ECS.WebAPI.HttpMessageHandlers.DelegatingHandlers
             var token = authHeader.Parameter;
             if (token == null)
             {
-                return SendError(tsc, "Empty Token");
+                return base.SendAsync(request, cancellationToken);
             }
 
             // Check the Bad Tokens to ensure this hasn't been seen before.
@@ -97,12 +98,10 @@ namespace ECS.WebAPI.HttpMessageHandlers.DelegatingHandlers
         private bool HasAcceptedClaims(IPrincipal principal)
         {
             // Read the Request Principal (User), and grab the necessary jwt claims.
-            var usernameClaim = JwtManager.Instance.GetClaim(principal, "username");
-            var passwordClaim = JwtManager.Instance.GetClaim(principal, "password");
+            var usernameClaim = JwtManager.Instance.GetClaim(principal, ClaimTypes.Name);
             var expiredAtClaim = JwtManager.Instance.GetClaim(principal, "exp");
 
-            return usernameClaim != null && passwordClaim != null &&
-                   expiredAtClaim != null;
+            return usernameClaim != null && expiredAtClaim != null;
         }
 
         private Task<HttpResponseMessage> SendError(TaskCompletionSource<HttpResponseMessage> tsc, string errorMessage)

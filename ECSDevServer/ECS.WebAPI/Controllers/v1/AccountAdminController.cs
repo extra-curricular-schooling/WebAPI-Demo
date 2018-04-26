@@ -3,13 +3,16 @@ using System.Web.Http;
 using System.Web.Http.Cors;
 using ECS.BusinessLogic.ModelLogic.Implementations;
 using ECS.Constants.Network;
+using ECS.Constants.Security;
 using ECS.DTO;
 using ECS.Models;
+using ECS.WebAPI.Filters.AuthorizationFilters;
 
 namespace ECS.WebAPI.Controllers.v1
 {
     [RoutePrefix("v1/AccountAdmin")]
     [EnableCors(CorsConstants.BaseAcceptedOrigins, CorsConstants.BaseAcceptedHeaders, "GET, POST, PUT")]
+    [AuthorizeRequired(ClaimValues.CanDeleteUser)]
     public class AccountAdminController : ApiController
     {
         #region Fields and constants
