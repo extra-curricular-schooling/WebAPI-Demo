@@ -67,11 +67,11 @@ export default {
     },
     // Iframe gets recreated each time a new page is clicked.
     mounted () {
-      // If user barely logs in, does not start times.
+      // If user barely logs in, does not start timer.
       if (this.FirstLoad) {
         this.FirstLoad = false
       } else {
-        this.interval = setTimeout(this.earnPoints, 210000)
+        this.interval = setTimeout(this.earnPoints, 500)
         // listen for eventbus to cancel the time interval is user leaves home.
         EventBus.$on('cancelInterval', cancelInterval => {
           clearInterval(this.interval)

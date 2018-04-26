@@ -17,6 +17,7 @@ import AdminLayout from './layouts/Admin'
 import ScholarLayout from './layouts/Scholar'
 import EventBus from '@/assets/js/EventBus.js'
 import jwt from 'jsonwebtoken'
+import Swal from 'sweetalert2'
 
 var renewal
 
@@ -26,20 +27,17 @@ export default {
   watch: {
     '$route' (to, from) {
       // Check if route is coming from home.
-      if (from.name === 'Home' && to.name !== 'Home') {
-        // Confirm user wants to leave home and lose points for any articles that have not passed the treshhold
-        const answer = window.confirm('Do you really want to leave? You may not earn points for the current article.')
-        // If user cancels move, stay in home
-        if (!answer) {
-          this.$router.push({
-            name: 'Home'
-          })
-          // emit cancellation for time interval and close slideout.
-        } else {
-          EventBus.$emit('cancelInterval', this.cancelInterval)
-          var html = document.documentElement
-          html.classList.remove('slideout-open')
-        }
+      if (from.name === 'Home' && to.name !== 'Home' && to.name !== 'Main') {
+        // Cancel time interval and close slideout
+        EventBus.$emit('cancelInterval', this.cancelInterval)
+        var html = document.documentElement
+        html.classList.remove('slideout-open')
+      } else if (to.name === 'Main' && (from.name === 'Home' || from.name === 'Sweepstake' || from.name === 'Account')) {
+        Swal({
+          title: 'We miss you already!',
+          text: 'Come back soon!',
+          type: 'info'
+        })
       }
     }
   },
