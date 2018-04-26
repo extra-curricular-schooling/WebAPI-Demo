@@ -25,7 +25,7 @@ namespace ECS.WebAPI.Controllers.v1
 
         // USING GET REQUEST TO GET THE VALID SWEEPSTAKES INFORMATION SO THAT A USER CAN BUY TICKETS
         // AND ENTER INTO A SWEEPSTAKE 
-        [AuthorizeRequired(ClaimValues.CanEditInformation)]
+        [AuthorizeRequired(ClaimValues.CanEnterRaffle)]
         [HttpGet]
         [Route("ValidSweepstakeInfo")]
         [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "GET")]
