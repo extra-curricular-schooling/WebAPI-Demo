@@ -84,8 +84,11 @@
                 </blockquote>
                 <hr class="dropdown-divider">
                 <blockquote>
-                  <strong>"Insert Number Here"+</strong> Articles!
+                  <strong>200+</strong> Articles!
                 </blockquote>
+                <span>
+                    <img src="http://cliparting.com/wp-content/uploads/2016/11/Open-book-pictures-clip-art-clipart-free-to-use-resource.gif" alt="" style="height: 75px;"/>
+                  </span>
                 <hr class="dropdown-divider">
               </article>
             </div>

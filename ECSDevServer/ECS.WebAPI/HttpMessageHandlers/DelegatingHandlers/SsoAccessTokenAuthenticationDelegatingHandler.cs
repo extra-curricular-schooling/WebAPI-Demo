@@ -46,7 +46,7 @@ namespace ECS.WebAPI.HttpMessageHandlers.DelegatingHandlers
             try
             {
                 _authenticationService.CheckBadAccessTokens(token);
-                _authenticationService.CheckExpiredAccessTokens(token, 2);
+                _authenticationService.CheckExpiredAccessTokens(token, 3);
             }
             catch (Exception e)
             {
@@ -59,7 +59,7 @@ namespace ECS.WebAPI.HttpMessageHandlers.DelegatingHandlers
                 IPrincipal principal = SsoJwtManager.Instance.GetPrincipal(token);
 
                 // Check if Claims exist
-                if (!HasAcceptedClaims(principal))
+                if (!SsoJwtManager.Instance.HasAcceptedClaims(principal))
                 {
                     return SendError(tsc, "Required claims not present.");
                 }
@@ -79,20 +79,6 @@ namespace ECS.WebAPI.HttpMessageHandlers.DelegatingHandlers
             }
 
             return base.SendAsync(request, cancellationToken);
-        }
-
-        private bool HasAcceptedClaims(IPrincipal principal)
-        {
-            // Read the Request Principal (User), and grab the necessary jwt claims.
-            var usernameClaim = SsoJwtManager.Instance.GetClaim(principal, "username");
-            var passwordClaim = SsoJwtManager.Instance.GetClaim(principal, "password");
-            var issuedAtClaim = SsoJwtManager.Instance.GetClaim(principal, "iat");
-            var applicationClaim = SsoJwtManager.Instance.GetClaim(principal, "application");
-            var applicationClaimValue = applicationClaim.Value.ToLower();
-            var isCorrectApp = applicationClaimValue.Equals(ClaimValues.Ecs);
-
-            return usernameClaim != null && passwordClaim != null &&
-                   issuedAtClaim != null && isCorrectApp;
         }
 
         private Task<HttpResponseMessage> SendError(TaskCompletionSource<HttpResponseMessage> tsc, string errorMessage)

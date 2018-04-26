@@ -11,10 +11,13 @@ using ECS.Constants.Network;
 using ECS.Models.Services.ComplexDBQueries;
 using System.Net.Http.Headers;
 using ECS.Security.AccessTokens.Jwt;
+using ECS.WebAPI.Filters.AuthorizationFilters;
+using ECS.Constants.Security;
 
 namespace ECS.WebAPI.Controllers.v1
 {
     [RoutePrefix("v1/Account")]
+    //[AuthorizeRequired(ClaimValues.Scholar)]
     public class AccountController : ApiController
     {
         #region Constants and fields
@@ -42,6 +45,7 @@ namespace ECS.WebAPI.Controllers.v1
         // Change Password
         // View Points
         // See time remaining for suspension
+        [AuthorizeRequired(ClaimValues.CanEditInformation)]
         [HttpPost]
         [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "POST")]
         [Route("ChangePassword")]
@@ -101,6 +105,7 @@ namespace ECS.WebAPI.Controllers.v1
         /// Returns the interest tags from the DB to fill in the checkboxes
         /// </summary>
         /// <returns> A list of InterestTag Names</returns>
+        [AuthorizeRequired(ClaimValues.CanEditInformation)]
         [HttpGet]
         [Route("RetrieveInterestTags")]
         [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "GET")]
@@ -205,6 +210,7 @@ namespace ECS.WebAPI.Controllers.v1
             }
         }
 
+        [AuthorizeRequired(ClaimValues.CanEditInformation)]
         [HttpGet]
         [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "GET")]
         [Route("GetUserInfo")]

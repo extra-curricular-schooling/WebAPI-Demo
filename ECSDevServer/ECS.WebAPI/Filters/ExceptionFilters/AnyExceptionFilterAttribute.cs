@@ -25,9 +25,14 @@ namespace ECS.WebAPI.Filters.ExceptionFilters
                         response = new HttpResponseMessage(HttpStatusCode.Unauthorized);
                         break;
                     default:
-                        response = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+                        response = new HttpResponseMessage
+                        {
+                            StatusCode = HttpStatusCode.InternalServerError,
+                            Content = new StringContent(actionExecutedContext.Exception.Message)
+                        };
                         break;
                 }
+                actionExecutedContext.Exception = null;
             }
         }
     }

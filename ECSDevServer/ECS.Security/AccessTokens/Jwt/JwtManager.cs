@@ -8,6 +8,7 @@ using System.ServiceModel.Security.Tokens;
 using System.Threading.Tasks;
 using ECS.Constants.Security;
 using ECS.DTO.Sso;
+using ECS.Models;
 using ECS.Repositories;
 using ECS.Repositories.Implementations;
 using Microsoft.IdentityModel.Tokens;
@@ -42,9 +43,46 @@ namespace ECS.Security.AccessTokens.Jwt
             }
         }
 
+        public string GenerateToken(List<AccountType> claims, int expireMinutes = 20)
+        {
+            var symmetricKey = Convert.FromBase64String(Secrets.AppAccessTokenSecret);
+            var tokenHandler = new JwtSecurityTokenHandler();
+
+            var _claims = new List<Claim>();
+            var userName = claims[0].Username;
+            foreach (var claim in claims)
+            {
+                if (claim.PermissionName.Equals(ClaimValues.Scholar) || claim.PermissionName.Equals(ClaimValues.Admin))
+                {
+                    _claims.Add(new Claim(ClaimTypes.Role, claim.PermissionName));
+                }
+                else
+                {
+                    _claims.Add(new Claim("PermissionName", claim.PermissionName));
+                }
+            }
+            _claims.Add(new Claim(ClaimTypes.Name, userName));
+
+            var now = DateTime.UtcNow;
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Issuer = "https://localhost:44311/",
+                Subject = new ClaimsIdentity(_claims),
+                IssuedAt = now,
+                Expires = now.AddMinutes(Convert.ToInt32(expireMinutes)),
+                NotBefore = now,
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(symmetricKey), SecurityAlgorithms.HmacSha256Signature),
+            };
+
+            var stoken = tokenHandler.CreateToken(tokenDescriptor);
+            var token = tokenHandler.WriteToken(stoken);
+
+            return token;
+        }
+
         public string GenerateToken(string username, int expireMinutes = 20)
         {
-            var symmetricKey = Convert.FromBase64String(Secrets.AppSecret);
+            var symmetricKey = Convert.FromBase64String(Secrets.AppAccessTokenSecret);
             var tokenHandler = new JwtSecurityTokenHandler();
 
             var now = DateTime.UtcNow;
@@ -56,16 +94,17 @@ namespace ECS.Security.AccessTokens.Jwt
                             new Claim(ClaimTypes.Name, username),
                             // TODO: @Kris Why is this hardcoded to be scholar only?
                             new Claim(ClaimTypes.Role, "Scholar")
+
                         }),
                 IssuedAt = now,
                 Expires = now.AddMinutes(Convert.ToInt32(expireMinutes)),
                 NotBefore = now,
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(symmetricKey), SecurityAlgorithms.HmacSha256Signature),
             };
-            
+
             var stoken = tokenHandler.CreateToken(tokenDescriptor);
             var token = tokenHandler.WriteToken(stoken);
- 
+
             return token;
         }
 
@@ -79,7 +118,7 @@ namespace ECS.Security.AccessTokens.Jwt
                 if (jwtToken == null)
                     return null;
 
-                var symmetricKey = Convert.FromBase64String(Secrets.AppSecret);
+                var symmetricKey = Convert.FromBase64String(Secrets.AppAccessTokenSecret);
 
                 var validationParameters = new TokenValidationParameters()
                 {
@@ -113,7 +152,7 @@ namespace ECS.Security.AccessTokens.Jwt
                 if (jwtToken == null)
                     return null;
 
-                var symmetricKey = Convert.FromBase64String(Secrets.AppSecret);
+                var symmetricKey = Convert.FromBase64String(Secrets.AppAccessTokenSecret);
 
                 var validationParameters = new TokenValidationParameters()
                 {
@@ -191,7 +230,8 @@ namespace ECS.Security.AccessTokens.Jwt
             try
             {
                 identity = simplePrinciple.Identity as ClaimsIdentity;
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 Debug.WriteLine(ex.Source + "\n" + ex.Message + "\n" + ex.StackTrace);
                 return false;
@@ -219,7 +259,7 @@ namespace ECS.Security.AccessTokens.Jwt
             string tempUsername = string.Copy(username);
 
             // More validation to check whether username exists in system
-            if(!_accountRepository.Exists(d => d.UserName == tempUsername))
+            if (!_accountRepository.Exists(d => d.UserName == tempUsername))
             {
                 return false;
             }

@@ -7,17 +7,20 @@ import router from './router'
 import store from './store'
 import { sync } from 'vuex-router-sync'
 import Bulma from 'bulma'
-
-// require('./assets/sass/main.scss');
+import './plugins/vueGoodTable'
 
 sync(store, router)
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
+
 new Vue({
   el: '#app',
   router,
   store,
-  components: { App, Bulma },
+  components: {
+    App,
+    Bulma
+  },
   template: '<App/>'
 })

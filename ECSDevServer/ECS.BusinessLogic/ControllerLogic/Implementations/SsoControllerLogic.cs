@@ -3,6 +3,7 @@ using System.Data;
 using System.Net;
 using System.Net.Http;
 using ECS.BusinessLogic.ModelLogic.Implementations;
+using ECS.Constants.Network;
 using ECS.DTO.Sso;
 using ECS.Models;
 using ECS.Security.AccessTokens.Jwt;
@@ -12,9 +13,6 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
 {
     public class  SsoControllerLogic
     {
-        // TODO: @Scott Remove constant
-        private const string BaseClientUrl = "http://localhost:8080/";
-
         private readonly AccountLogic _accountLogic;
         private readonly PartialAccountLogic _partialAccountLogic;
         private readonly SaltLogic _saltLogic;
@@ -128,14 +126,9 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
             // Generate our token for them.
             var partialAccountToken = SsoJwtManager.Instance.GenerateToken(loginDto);
 
-            // TODO @Scott The Ok response should be a 301 response to redirect the SSO to our client.
             return new HttpResponseMessage
             {
-                Content = new StringContent(BaseClientUrl + "partial-registration?jwt=" + partialAccountToken),
-                //Headers =
-                //{
-                //    Location = new Uri(BaseClientUrl + "partial-registration?jwt=" + partialAccountToken)
-                //},
+                Content = new StringContent(UrlConstants.BaseAppClient + "partial-registration?jwt=" + partialAccountToken),
                 StatusCode = HttpStatusCode.OK
             };
         }
@@ -181,10 +174,9 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
             }
 
             // Redirect them to our Home page with their credentials logged.
-            // TODO @Scott The Ok response should be a 301 response to redirect the SSO to our client.
             return new HttpResponseMessage
             {
-                Content = new StringContent(BaseClientUrl + "home?jwt=" + token),
+                Content = new StringContent(UrlConstants.BaseAppClient + "home?jwt=" + token),
                 ReasonPhrase = "Redirected",
                 StatusCode = HttpStatusCode.OK
             };

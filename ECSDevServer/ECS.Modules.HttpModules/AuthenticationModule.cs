@@ -33,13 +33,14 @@ namespace ECS.Modules.HttpModules
                 var request = app.Request;
                 var type = request.GetType();
 
+                
                 var isAcceptedRefererHeader = 
-                    request.Headers[HeaderConstants.Origin] != null && 
-                    _acceptedUrls.Contains(request.Headers[HeaderConstants.Origin]);
+                    request.Headers[HeaderConstants.Referer] != null && 
+                    _acceptedUrls.Contains(request.Headers[HeaderConstants.Referer]);
 
                 var isAcceptedOriginHeader = 
-                    request.Headers[HeaderConstants.Referer] != null && 
-                    _acceptedOrigins.Contains(request.Headers[HeaderConstants.Referer]);
+                    request.Headers[HeaderConstants.Origin] != null && 
+                    _acceptedOrigins.Contains(request.Headers[HeaderConstants.Origin]);
 
                 var isAcceptedUrlAuthorityHeader = _acceptedAuthorities.Contains(request.Url.Authority);
 

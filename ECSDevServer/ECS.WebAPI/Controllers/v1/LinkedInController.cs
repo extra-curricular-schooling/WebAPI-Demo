@@ -5,6 +5,7 @@ using ECS.BusinessLogic.ControllerLogic.Implementations;
 using ECS.BusinessLogic.ModelLogic.Contracts;
 using ECS.BusinessLogic.ModelLogic.Implementations;
 using ECS.Constants.Network;
+using ECS.Constants.Security;
 using ECS.DTO;
 using ECS.Models;
 using ECS.Security.AccessTokens.Jwt;
@@ -16,7 +17,7 @@ namespace ECS.WebAPI.Controllers.v1
     // Had to make a custom filter for RequireHttpsAttribute
     [RequireHttps]
     [RoutePrefix("v1/LinkedIn")]
-    //[AuthorizeRequired("canShareLinkedIn", Roles = "Scholar")]
+    [AuthorizeRequired(ClaimValues.Scholar)]
     public class LinkedInController : ApiController
     {
 

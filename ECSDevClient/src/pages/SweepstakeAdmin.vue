@@ -16,13 +16,14 @@
       <p>Admin Selected Ticket Price: {{ Price }}</p>
       <input type="text" v-model.lazy="Prize" placeholder="Prize Sweepstake">
       <p>Admin Selected Prize: {{ Prize }}</p>
-      <!-- <input type="number" v-model.lazy="SweepStakesID" placeholder="Enter Sweepstake ID">
-      <p>Admin Selected Sweepstakes ID: {{ SweepStakesID }}</p> -->
+      <button v-on:click.prevent="submitSweepstake(OpenDateTime,ClosedDateTime,Prize,UsernameWinner,SweepStakesID,Price)">Submit Sweepstake</button>
     </div>
-    <!-- button to POST everything to the database -->
-    <button v-on:click.prevent="submitSweepstake(OpenDateTime,ClosedDateTime,Prize,UsernameWinner,SweepStakesID,Price)">Submit Sweepstake</button>
-    <!-- put in username winner -->
-    <button v-on:click="randomNumberGenerator(totalNumberTickets, winningTicket)">Select the Winner</button>
+    <!-- button to POST SWEEPSTAKE to the database -->
+    <div class ="submission">
+      <!-- <input type="number" v-model.lazy="SweepStakesID" placeholder="Enter Sweepstake ID To Close">
+      <p>Admin Selected Sweepstakes ID To Close: {{ SweepStakesID }}</p> -->
+      <button v-on:click="CloseSweepstake(winningTicket)">Close Sweepstake/Select the Winner</button>
+    </div>
     <!-- fire the random number generator event at time expiration or when it goes to zero -->
     <!-- <p>The winning ticket is: {{winningTicket}}</p> -->
 </div>
@@ -34,7 +35,7 @@ import V2Datepicker from 'v2-datepicker'
 import 'v2-datepicker/lib/index.css'
 import Axios from 'axios'
 import Store from '@/store/index'
-
+import Swal from 'sweetalert2'
 Vue.use(V2Datepicker)
 
 export default {
@@ -47,9 +48,7 @@ export default {
       UsernameWinner: 'No Winner',
       SweepStakesID: '',
       winningTicket: '',
-      Price: '',
-      totalNumberTickets: 100
-      // remove the total ticket number (100) when connect to database
+      Price: ''
     }
   },
   methods: {
@@ -69,9 +68,9 @@ export default {
       })
         .then(response => {
           console.log(response)
-          if (response.data === 'Wromg Sweepstakes Dates') {
-            alert('Wromg Sweepstakes Dates')
-          } else { alert('Sweepstake Set') }
+          if (response.data === 'Wrong Sweepstakes Dates') {
+            Swal('Wrong Sweepstakes Dates')
+          } else { Swal('Sweepstake Set') }
           this.$router.push({
             name: 'SweepstakeAdmin'
           })
@@ -80,16 +79,33 @@ export default {
           console.log(error.response)
           this.$data.error = JSON.parse(error.response.data)
           if (error.response.status === 500) {
-            alert('We apologize.  We are unable to process your request at this time.')
+            Swal('We apologize.  We are unable to process your request at this time.')
           }
         })
     },
-    randomNumberGenerator: function (totalNumberTickets, winningTicket) {
-      winningTicket = Math.floor(Math.random() * Math.floor(totalNumberTickets))
-      alert(winningTicket)
-      return winningTicket
-      // generate the random number which is total number of tickets = sweepstakes id.
-      // look at the corresponding username and notify that user and post it to the sweepstake table
+    CloseSweepstake: function () {
+      // look at the corresponding username and notify that user
+      Axios({
+        method: 'GET',
+        url: Store.getters.getBaseAppUrl + 'SweepstakeAdmin/CloseSweepstake',
+        headers: Store.getters.getRequestHeaders
+      })
+        .then(response => {
+          console.log(response)
+          if (response.data === 'No Winner') {
+            Swal('No Winner.')
+          } else { Swal('Winner: ' + response.data + '! Sweepstake Closed') }
+          this.$router.push({
+            name: 'SweepstakeAdmin'
+          })
+        })
+        .catch(error => {
+          console.log(error.response)
+          this.$data.error = JSON.parse(error.response.data)
+          if (error.response.status === 500) {
+            Swal('We apologize.  We are unable to process your request at this time.')
+          }
+        })
     }
   }
 }
@@ -136,5 +152,16 @@ v2-datepicker {
 .prize:before {
   content: "\A";
   white-space: pre;
+}
+.submission:after {
+  content: "\A";
+  white-space: pre;
+  size: 30cm;
+}
+
+.submission:before {
+  content: "\A";
+  white-space: pre;
+  size: 30cm;
 }
 </style>

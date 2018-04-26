@@ -39,6 +39,7 @@ namespace ECS.WebAPI.Controllers.v1
         [HttpPost]
         [Route("SubmitRegistration")]
         [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "POST")]
+        [AllowAnonymous]
         public IHttpActionResult SubmitRegistration(RegistrationDTO registrationForm)
         {
             Validate(registrationForm);
@@ -70,6 +71,7 @@ namespace ECS.WebAPI.Controllers.v1
         [HttpPost]
         [Route("SubmitPartialRegistration")]
         [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "POST")]
+        [AllowAnonymous]
         public IHttpActionResult SubmitPartialRegistration(RegistrationDTO registrationForm)
         {
             Validate(registrationForm);
@@ -103,6 +105,7 @@ namespace ECS.WebAPI.Controllers.v1
         [HttpGet]
         [Route("GetSecurityQuestions")]
         [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "GET")]
+        [AllowAnonymous]
         public IHttpActionResult GetSecurityQuestions()
         {
             try

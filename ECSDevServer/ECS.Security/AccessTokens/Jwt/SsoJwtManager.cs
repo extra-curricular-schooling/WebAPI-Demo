@@ -62,7 +62,7 @@ namespace ECS.Security.AccessTokens.Jwt
 
             var now = DateTime.UtcNow;
 
-            var symmetricKey = Encoding.UTF8.GetBytes(Secrets.SsoSecret);
+            var symmetricKey = Encoding.UTF8.GetBytes(Secrets.SsoAccessTokenSecret);
             
             var tokenDescriptor = new SecurityTokenDescriptor
             {
@@ -90,7 +90,7 @@ namespace ECS.Security.AccessTokens.Jwt
             if (!(tokenHandler.ReadToken(token) is JwtSecurityToken))
                 throw new Exception("Token is not a compatible JwtSecurityToken type");
 
-            var symmetricKey = Encoding.UTF8.GetBytes(Secrets.SsoSecret);   
+            var symmetricKey = Encoding.UTF8.GetBytes(Secrets.SsoAccessTokenSecret);   
 
             // The checks that occur during validation of the JWT.
             var validationParameters = new TokenValidationParameters()
@@ -147,6 +147,20 @@ namespace ECS.Security.AccessTokens.Jwt
             // This line is called multiple times during execution... Figure out a way to get it out.
             var claimsPrincipal = (ClaimsPrincipal) principal;
             return claimsPrincipal.FindFirst(claimType).Value;
+        }
+
+        public bool HasAcceptedClaims(IPrincipal principal)
+        {
+            // Read the Request Principal (User), and grab the necessary jwt claims.
+            var usernameClaim = GetClaim(principal, "username");
+            var passwordClaim = GetClaim(principal, "password");
+            var issuedAtClaim = GetClaim(principal, "iat");
+            var applicationClaim = GetClaim(principal, "application");
+            var applicationClaimValue = applicationClaim.Value.ToLower();
+            var isCorrectApp = applicationClaimValue.Equals(ClaimValues.Ecs);
+
+            return usernameClaim != null && passwordClaim != null &&
+                   issuedAtClaim != null && isCorrectApp;
         }
     }
 }

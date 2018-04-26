@@ -9,9 +9,6 @@
         <span class="icon is-small is-left">
           <i class="fas fa-user"></i>
         </span>
-        <span class="icon is-small is-right">
-          <i class="fas fa-check"></i>
-        </span>
       </div>
     </div>
     <div class="field password">
@@ -55,6 +52,8 @@ import EventBus from '@/assets/js/EventBus.js'
 import forgotPassword from '@/components/forgot-password-modal/Template'
 import forgotUsername from '@/components/Forgot-Username-Modal/Template'
 import LoadingModal from '@/components/loading-modal/Template'
+import UrlHelper from '@/assets/js/urlHelper'
+import JwtService from '@/assets/js/jwtService'
 import jwt from 'jsonwebtoken'
 
 export default {
@@ -87,6 +86,9 @@ export default {
     },
     changePassword () {
       this.$refs.password.toggle()
+      EventBus.$on('forgetUsername', () => {
+        this.rememberUsername()
+      })
     },
     rememberUsername () {
       this.$refs.username.toggle()
@@ -112,30 +114,40 @@ export default {
             }
           })
             .then((response) => {
-              var decoded = jwt.decode(response.data.AuthToken, {complete: true})
-              if (decoded.payload.iss !== '') {
-                var validIssuers = this.$store.getters.getValidIssuers
-                var trustworthy = false
-                for (var x in validIssuers) {
-                  if (validIssuers[x] === decoded.payload.iss) {
-                    trustworthy = true
+              if (response.status === 200) {
+                let url = response.data
+                let parsedQuery = UrlHelper.parseUrlQuery(url)
+                let token = parsedQuery['jwt']
+                console.log(token)
+                if (token !== undefined) {
+                  this.handlePartialAccount(url, token)
+                } else {
+                  var decoded = jwt.decode(response.data.AuthToken, {complete: true})
+                  if (decoded.payload.iss !== '') {
+                    var validIssuers = this.$store.getters.getValidIssuers
+                    var trustworthy = false
+                    for (var x in validIssuers) {
+                      if (validIssuers[x] === decoded.payload.iss) {
+                        trustworthy = true
+                      }
+                    }
+                    if (!trustworthy) {
+                      this.toggleLoadingModal()
+                      this.toggleErrorModal('An error has occurred, please try again later!')
+                    } else {
+                      this.$store.dispatch('updateRole', decoded.payload.role)
+                      this.$store.dispatch('updateUsername', this.username)
+                      this.$store.dispatch('signIn', response.data.AuthToken)
+                      this.$store.dispatch('updateToken', response.data.AuthToken)
+                      this.toggleLoadingModal()
+                      EventBus.$emit('loggedIn')
+                      this.$router.push('/Home')
+                    }
+                  } else {
+                    this.toggleLoadingModal()
+                    this.toggleErrorModal('An error has occurred, please try again later!')
                   }
                 }
-                if (!trustworthy) {
-                  this.toggleLoadingModal()
-                  this.toggleErrorModal('An error has occurred, please try again later!')
-                } else {
-                  this.$store.dispatch('updateRole', decoded.payload.role)
-                  this.$store.dispatch('updateUsername', this.username)
-                  this.$store.dispatch('signIn', response.data.AuthToken)
-                  this.$store.dispatch('updateToken', response.data.AuthToken)
-                  this.toggleLoadingModal()
-                  EventBus.$emit('loggedIn')
-                  this.$router.push('/Home')
-                }
-              } else {
-                this.toggleLoadingModal()
-                this.toggleErrorModal('An error has occurred, please try again later!')
               }
             })
             .catch((error) => {
@@ -149,6 +161,28 @@ export default {
               console.log(error)
             })
         }
+      }
+    },
+    handlePartialAccount (url, token) {
+      let claims = JwtService.myDecode(token)
+      if (UrlHelper.getUrlPath(url) === 'partial-registration') {
+        this.$store.dispatch('updateRole', claims['roleType'])
+        this.$store.dispatch('updateUsername', claims['username'])
+        this.$store.commit('setAuthToken', token)
+        this.$router.push({
+          name: 'PartialRegistration',
+          params: {
+            jwt: token
+          }
+        })
+      }
+      if (UrlHelper.getUrlPath(url) === 'home') {
+        this.$store.dispatch('updateRole', claims['role'])
+        this.$store.dispatch('updateUsername', claims['unique_name'])
+        this.$store.commit('signIn', token)
+        this.$router.push({
+          name: 'Home'
+        })
       }
     }
   },

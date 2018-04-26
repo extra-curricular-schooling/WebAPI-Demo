@@ -39,7 +39,7 @@ namespace ECS.WebAPI
 
             // If we want a global accesstoken delegating handler do it here
             // Global DelegatingHandler
-            // config.MessageHandlers.Add(new AccessTokenAuthenticationDelegatingHandler());
+            config.MessageHandlers.Add(new AccessTokenAuthenticationDelegatingHandler());
 
             // Non-default Controller Routes
             config.Routes.MapHttpRoute(
@@ -66,9 +66,7 @@ namespace ECS.WebAPI
             );
 
             // Authorization Filters
-            //GlobalConfiguration.Configuration.Filters.Add(new AuthorizeRequiredAttribute());
-            // TODO: @Scott/Kris This is authenticating SSO. It cant be global.
-            //config.Filters.Add(new AuthorizeRequiredAttribute());
+
             // Action Filters
 
             // Exception Filters

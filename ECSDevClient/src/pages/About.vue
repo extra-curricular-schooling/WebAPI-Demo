@@ -39,12 +39,11 @@
                     </div>
                     <div class="container is-fluid" align="left">
                         <h3 class="subtitle">
-                            <span class="left-align-tab">Scott Roberts:</span> s.e.roberts0@gmail.com <br>
-                            <span class="left-align-tab">Luis Pedroza-Soto:</span> example@gmail.com <br>
-                            <span class="left-align-tab">Kris Cubie:</span> example@gmail.com <br>
-                            <span class="left-align-tab">Hugo Garcia:</span> example@gmail.com <br>
-                            <span class="left-align-tab">Patricia Echual:</span> example@gmail.com <br>
-                            <span class="left-align-tab">Furkan Arif:</span> example@gmail.com <br>
+                            <vue-good-table
+                              :columns="columns"
+                              :rows="rows"
+                              @on-row-click='onRowClick'>
+                            </vue-good-table>
                         </h3>
                     </div>
                 </div>
@@ -55,9 +54,34 @@
   </div>
 </template>
 
-<style>
-.left-align-tab {
-       display:inline-block;
-       width: 10em;
+<script>
+export default {
+  data () {
+    return {
+      columns: [
+        {
+          label: 'Name',
+          field: 'name'
+        },
+        {
+          label: 'Email',
+          field: 'email'
+        }
+      ],
+      rows: [
+        { name: 'Luis Pedroza-Soto', email: 'example' },
+        { name: 'Scott Roberts', email: 's.e.roberts0@gmail.com' },
+        { name: 'Hugo Garcia', email: 'example' },
+        { name: 'Kris Cubie', email: 'example' },
+        { name: 'Trisha Eschual', email: 'example' },
+        { name: 'Furkan Arif', email: 'example' }
+      ]
+    }
+  },
+  methods: {
+    onRowClick (params) {
+      console.log(params.row)
+    }
+  }
 }
-</style>
+</script>

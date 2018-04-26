@@ -3,7 +3,6 @@ import Store from '@/store/index'
 import Router from '@/router/index'
 import UrlHelper from '@/assets/js/urlHelper'
 import JwtService from '@/assets/js/jwtService'
-import urlHelper from '../../assets/js/urlHelper'
 
 export default {
   submitRegistration: function () {
@@ -45,10 +44,9 @@ export default {
       headers: Store.getters.getRequestHeaders
     })
       .then(response => {
-        let url = response.data
-        console.log(url)
         // Testing with a 200 response to make sure the Partial Registration is working.
         if (response.status === 200) {
+          let url = response.data
           let parsedQuery = UrlHelper.parseUrlQuery(response.data)
           let token = parsedQuery['jwt']
           let claims = JwtService.myDecode(token)
@@ -56,7 +54,7 @@ export default {
           if (UrlHelper.getUrlPath(url) === 'partial-registration') {
             Store.dispatch('updateRole', claims['roleType'])
             Store.dispatch('updateUsername', claims['username'])
-            Store.commit('signIn', token)
+            // Store.commit('signIn', token)
             Router.push({
               name: 'PartialRegistration',
               params: {
@@ -64,7 +62,7 @@ export default {
               }
             })
           }
-          if (urlHelper.getUrlPath(url) === 'home') {
+          if (UrlHelper.getUrlPath(url) === 'home') {
             Store.dispatch('updateRole', claims['role'])
             Store.dispatch('updateUsername', claims['unique_name'])
             Store.commit('signIn', token)
@@ -97,6 +95,7 @@ export default {
           // Something happened in setting up the request that triggered an Error
           console.log('Error', error.message)
         }
+        Router.push({name: 'Main'})
         console.log(error.config)
       })
   },
@@ -108,11 +107,26 @@ export default {
       headers: Store.getters.getRequestHeaders
     })
       .then(function (response) {
-        return response.data
       })
       .catch(function (error) {
-        console.log(error)
-        return error
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          console.log('An error occured')
+          console.log(error.response.data)
+          console.log(error.response.status)
+          console.log(error.response.headers)
+        } else if (error.request) {
+          // The request was made but no response was received
+          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+          // http.ClientRequest in node.js
+          console.log(error.request)
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.log('Error', error.message)
+        }
+        Router.push({name: 'Main'})
+        console.log(error.config)
       })
   }
 }

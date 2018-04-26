@@ -199,6 +199,7 @@
 <script>
 /* eslint-disable */
 import Axios from 'axios'
+import Swal from 'sweetalert2'
 import AgreementModal from '@/components/registration-form/elements/AgreementModal'
 import BadPassword from '@/components/bad-password-alert/Template'
 import Shuffler from '@/assets/js/arrayShuffler'
@@ -254,13 +255,13 @@ export default {
       answersMessage: '',
 
       // Regular Expressions
-      NAME_REGEX: /^[a-zA-Z ]{1,50}$/,
-      USERNAME_REGEX: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]{8,120}$/,
-      PASSWORD_REGEX: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_])[a-zA-Z0-9!@#$%^&*()_]{8,64}$/,
-      EMAIL_REGEX: /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-      ADDRESS_REGEX: /^[a-zA-Z0-9#.,-/ ]{0,}$/,
-      CITY_REGEX: /^[a-zA-Z ]{0,}$/,
-      ZIPCODE_REGEX: /^\d{5}(?:[-\s]\d{4})?$/,
+      NAME_REGEX: this.$store.getters.getNameRegex,
+      USERNAME_REGEX: this.$store.getters.getUsernameRegex,
+      PASSWORD_REGEX: this.$store.getters.getPasswordRegex,
+      EMAIL_REGEX: this.$store.getters.getEmailRegex,
+      ADDRESS_REGEX: this.$store.getters.getAddressRegex,
+      CITY_REGEX: this.$store.getters.getCityRegex,
+      ZIPCODE_REGEX: this.$store.getters.getZipCodeRegex
     }
   },
   created () {
@@ -319,7 +320,7 @@ export default {
       if (!this.$data.NAME_REGEX.test(this.$data.firstName) && this.$data.firstName != '') {
         document.getElementById('firstName').className = 'input';
         document.getElementById('firstNameControl').className = 'help is-info';
-        this.$data.firstNameMessage = 'Sorry, the name you entered either contains invalid characters or is too long.';
+        this.$data.firstNameMessage = this.$store.getters.getNameMessage;
       } else if (this.$data.firstName == '') {
         document.getElementById('firstName').className = 'input';
         document.getElementById('firstNameControl').className = 'help';
@@ -340,7 +341,7 @@ export default {
       if (!this.$data.NAME_REGEX.test(this.$data.lastName) && this.$data.lastName != '') {
         document.getElementById('lastName').className = 'input';
         document.getElementById('lastNameControl').className = 'help is-info';
-        this.$data.lastNameMessage = 'Sorry, the name you entered either contains invalid characters or is too long.';
+        this.$data.lastNameMessage = this.$store.getters.getNameMessage;
       } else if (this.$data.lastName == '') {
         document.getElementById('lastName').className = 'input';
         document.getElementById('lastNameControl').className = 'help';
@@ -382,7 +383,7 @@ export default {
       if (!this.$data.EMAIL_REGEX.test(this.$data.email) && this.$data.email != '') {
         document.getElementById('email').className = 'input';
         document.getElementById('emailControl').className = 'help is-info';
-        this.$data.emailMessage = 'Email is not a valid email.';
+        this.$data.emailMessage = this.$store.getters.getEmailMessage;
       } else if (this.$data.email == '') {
         document.getElementById('email').className = 'input';
         document.getElementById('emailControl').className = 'help';
@@ -403,7 +404,7 @@ export default {
       if (!this.$data.PASSWORD_REGEX.test(document.getElementById('password').value) && document.getElementById('password').value != '') {
         document.getElementById('password').className = 'input';
         document.getElementById('passwordControl').className = 'help is-info';
-        this.$data.passwordMessage = 'Password must be 8-64 characters long, must not contain any spaces, and must contain at least 1 lowercase letter, 1 uppercase letter, 1 number, and 1 special character.';
+        this.$data.passwordMessage = this.$store.getters.getPasswordMessage;
       } else if (document.getElementById('password').value == '') {
         document.getElementById('password').className = 'input';
         document.getElementById('passwordControl').className = 'help';
@@ -422,7 +423,7 @@ export default {
       if (document.getElementById('password').value != document.getElementById('confirmPassword').value && document.getElementById('confirmPassword').value != '') {
         document.getElementById('confirmPassword').className = 'input';
         document.getElementById('confirmPasswordControl').className = 'help is-info';
-        this.$data.confirmPasswordMessage = 'Retype Password';
+        this.$data.confirmPasswordMessage = this.$store.getters.getConfirmPasswordMessage;
       } else if (document.getElementById('confirmPassword').value == '') {
         document.getElementById('confirmPassword').className = 'input';
         document.getElementById('confirmPasswordControl').className = 'help';
@@ -443,7 +444,7 @@ export default {
       if (!this.$data.ADDRESS_REGEX.test(this.$data.address) && this.$data.address != '') {
         document.getElementById('address').className = 'input';
         document.getElementById('addressControl').className = 'help is-info';
-        this.$data.addressMessage = 'The address you entered contains invalid characters.';
+        this.$data.addressMessage = this.$store.getters.getAddressMessage;
       } else if (this.$data.address == '') {
         document.getElementById('address').className = 'input';
         document.getElementById('addressControl').className = 'help';
@@ -464,7 +465,7 @@ export default {
       if (!this.$data.CITY_REGEX.test(this.$data.city) && this.$data.city != '') {
         document.getElementById('city').className = 'input';
         document.getElementById('cityControl').className = 'help is-info';
-        this.$data.cityMessage = 'The city you entered contains invalid characters.';
+        this.$data.cityMessage = this.$store.getters.getCityMessage;
       } else if (this.$data.city == '') {
         document.getElementById('city').className = 'input';
         document.getElementById('cityControl').className = 'help';
@@ -485,7 +486,7 @@ export default {
       if (!this.$data.ZIPCODE_REGEX.test(this.$data.zipCode) && this.$data.zipCode != '') {
         document.getElementById('zipCode').className = 'input';
         document.getElementById('zipCodeControl').className = 'help is-info';
-        this.$data.zipCodeMessage = 'ZIP Code must be a valid ZIP Code';
+        this.$data.zipCodeMessage = this.$store.getters.getZipCodeMessage;
       } else if (this.$data.zipCode == '') {
         document.getElementById('zipCode').className = 'input';
         document.getElementById('zipCodeControl').className = 'help';
@@ -518,7 +519,7 @@ export default {
         document.getElementById('answer2').className = 'input';
         document.getElementById('answer3').className = 'input';
         document.getElementById('answersControl').className = 'help is-info';
-        this.$data.answersMessage = 'Please provide answers to all questions.';
+        this.$data.answersMessage = this.$store.getters.getAnswersMessage;
       }
     },
     /**
@@ -587,10 +588,21 @@ export default {
      * @throws {InternalServerError} Throws exception if request cannot be processed
      */
     submit () {
-      if (!this.isValidForm()) { 
-        alert('It seems either your form is incomplete or some of your inputs are invalid...') 
+      // Check if form is valid
+      if (!this.isValidForm()) {
+        Swal({
+          type: 'warning',
+          title: 'Uh-Oh',
+          html: 'It seems either your form is <b>incomplete</b> or some of your inputs are <b>invalid</b>...'})
+
+      // Check if user has agreed to terms and conditions
       } else if (!this.$data.agreementIsChecked) {
-        alert('You must agree to our Terms and Conditions to continue...')
+        Swal({
+          type: 'warning',
+          title: 'Uh-Oh',
+          html: 'You must <b>read and agree</b> to our Terms and Conditions to continue...'})
+
+      // Submit form
       } else {
         Axios({
           method: 'POST',
@@ -627,22 +639,27 @@ export default {
             if (response.status === 200) {
               this.$router.push({
                 name: 'Main',
-                params: { isSuccess: true } 
+                params: { isSuccess: true }
               })
             }
           })
           .catch(error => {
-            console.log(error.response)
-            //this.$data.error = JSON.parse(error.response.data)
+            console.log(error)
 
             // HTTP Status 409
             if (error.response.status === 409) {
-              alert('Good news!  According to our records, you already have an account with us!')
+              Swal({
+              title: 'Good News',
+              text: 'According to our records, you already have an account with us!',
+              footer: '<a href="/">Take me to the home page</a>'})
             }
 
             // HTTP Status 500
             if (error.response.status === 500) {
-              alert('We apologize.  We are unable to process your request at this time.')
+              Swal({
+              type: 'error',
+              title: 'We Apologize',
+              text: 'We are unable to process your request at this time.'})
             }
           })
       }
@@ -650,13 +667,16 @@ export default {
     /**
      * @description
      * GET request to get security questions from database
+     * @throws {ECONNABORTED} If request/response timed out
+     * @throws {ServiceUnavailable} Throws exception if resource requested is not available
      * @throws {InternalServerError} Throws exception if request cannot be processed
      */
     fetchSecurityQuestions () {
       Axios({
         method: 'GET',
         url: this.$store.getters.getBaseAppUrl + 'Registration/GetSecurityQuestions',
-        headers: this.$store.getters.getRequestHeaders
+        headers: this.$store.getters.getRequestHeaders,
+        timeout: this.$store.getters.getFormTimeout // allow 60 seconds before timeout
       })
         .then(response => {
           this.$data.questions = Shuffler.shuffleArray(JSON.parse(response.data))
@@ -664,13 +684,30 @@ export default {
           this.loadingIsDisabled = true
         })
         .catch(error => {
-          console.log(error.response)
+          console.log(error)
 
-          // HTTP Status 503 - No questions in resource
-          
+          // Connection Timeout
+          if (error.code == 'ECONNABORTED') {
+            Swal({
+              type: 'error',
+              title: 'We Apologize',
+              text: 'Fetching your security questions took too long.'})
+          }
+
+          // HTTP Status 503
+          if (error.response.status === 503) {
+            Swal({
+              type: 'error',
+              title: 'We Apologize',
+              text: 'The resource your are requesting is not available.'})
+          }
+
           // HTTP Status 500
           if (error.response.status === 500) {
-            alert('We apologize.  We are unable to process your request at this time.')
+            Swal({
+              type: 'error',
+              title: 'We Apologize',
+              text: 'We are unable to process your request at this time.'})
           }
         })
     },

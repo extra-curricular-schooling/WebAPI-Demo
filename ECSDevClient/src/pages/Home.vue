@@ -23,6 +23,7 @@ import LinkedInPostModal from '@/components/linkedin-modal/Template'
 import RedirectModal from '@/components/redirect-modal/Template'
 import SideBar from '@/components/sidebar-menu/Template'
 import Axios from 'axios'
+import Swal from 'sweetalert2'
 import EventBus from '@/assets/js/EventBus.js'
 export default {
   name: 'home',
@@ -54,7 +55,15 @@ export default {
         }
       }) // Alert user they earned points if server responds with ok
         .then(response => {
-          alert('You earned ' + this.Points + ' points')
+          Swal({
+            title: 'WooHoo!',
+            text: 'You earned ' + this.points + ' points!',
+            type: 'success',
+            toast: true,
+            imageUrl: 'http://cliparting.com/wp-content/uploads/2016/08/Great-job-excellent-job-clipart-clipart-kid.png',
+            imageHeight: '50px',
+            imageWidth: '50px'
+          })
         })
         .catch(error => {
           console.log(error.response)
@@ -67,11 +76,11 @@ export default {
     },
     // Iframe gets recreated each time a new page is clicked.
     mounted () {
-      // If user barely logs in, does not start times.
+      // If user barely logs in, does not start timer.
       if (this.FirstLoad) {
         this.FirstLoad = false
       } else {
-        this.interval = setTimeout(this.earnPoints, 210000)
+        this.interval = setTimeout(this.earnPoints, 1000)
         // listen for eventbus to cancel the time interval is user leaves home.
         EventBus.$on('cancelInterval', cancelInterval => {
           clearInterval(this.interval)
