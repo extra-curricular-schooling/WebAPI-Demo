@@ -32,7 +32,7 @@ export default {
         // Cancel time interval and close slideout
         EventBus.$emit('cancelInterval', this.cancelInterval)
         html.classList.remove('slideout-open')
-      } else if (to.name === 'Main' && (from.name === 'Home' || from.name === 'Sweepstake' || from.name === 'Account')) {
+      } else if (to.name === 'Main' && (from.name === 'Home' || from.name === 'Sweepstake' || from.name === 'Account') && this.currentRole !== 'Admin') {
         Swal({
           title: 'We miss you already!',
           text: 'Come back soon!',
