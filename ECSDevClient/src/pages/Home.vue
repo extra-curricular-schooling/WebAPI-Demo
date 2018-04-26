@@ -60,7 +60,9 @@ export default {
             text: 'You earned ' + this.points + ' points!',
             type: 'success',
             toast: true,
-            imageUrl: 'http://cliparting.com/wp-content/uploads/2016/08/Great-job-excellent-job-clipart-clipart-kid.png'
+            imageUrl: 'http://cliparting.com/wp-content/uploads/2016/08/Great-job-excellent-job-clipart-clipart-kid.png',
+            imageHeight: '50px',
+            imageWidth: '50px'
           })
         })
         .catch(error => {
@@ -78,7 +80,7 @@ export default {
       if (this.FirstLoad) {
         this.FirstLoad = false
       } else {
-        this.interval = setTimeout(this.earnPoints, 500)
+        this.interval = setTimeout(this.earnPoints, 1000)
         // listen for eventbus to cancel the time interval is user leaves home.
         EventBus.$on('cancelInterval', cancelInterval => {
           clearInterval(this.interval)

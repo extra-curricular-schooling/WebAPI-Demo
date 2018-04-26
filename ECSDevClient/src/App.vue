@@ -26,17 +26,19 @@ export default {
   // Watch is set to watch for routing from home. User will be asked to confirm. if they leave, emit to cancel interval. close slide menu
   watch: {
     '$route' (to, from) {
+      var html = document.documentElement
       // Check if route is coming from home.
       if (from.name === 'Home' && to.name !== 'Home' && to.name !== 'Main') {
         // Cancel time interval and close slideout
         EventBus.$emit('cancelInterval', this.cancelInterval)
-        var html = document.documentElement
         html.classList.remove('slideout-open')
       } else if (to.name === 'Main' && (from.name === 'Home' || from.name === 'Sweepstake' || from.name === 'Account')) {
         Swal({
           title: 'We miss you already!',
           text: 'Come back soon!',
           type: 'info'
+        }).then(response => {
+          html.classList.remove('slideout-open')
         })
       }
     }
