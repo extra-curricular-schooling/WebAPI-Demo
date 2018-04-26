@@ -12,7 +12,6 @@
       <template v-else>
         <h1> We seem to have an issue retreiving your points. </h1>
       </template>
-      <button v-on:click="fetchUserInfo(username,Points)">What are your Points? Find it out, First.</button>
       <button v-on:click="fetchValidSweepstakeInfo(Price, SweepStakesID, OpenDateTime, Prize, ClosedDateTime, collapsed)">Is Sweepstake Open??</button>
       <template v-if="this.collapsed === true">
          <button v-on:click="ticketBought(Points,Price,username,timeDateStamp)">Buy A Ticket and Surprise Yourself</button>
