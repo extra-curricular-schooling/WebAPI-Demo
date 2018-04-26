@@ -58,6 +58,7 @@
     <Compile Include="SweepStakeEntryDTO.cs" />
     <Compile Include="UserInfoDTO.cs" />
     <Compile Include="UsernameDTO.cs" />
+    <Compile Include="ZipLocationDTO.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

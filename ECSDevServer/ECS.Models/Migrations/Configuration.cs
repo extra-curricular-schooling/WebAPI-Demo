@@ -413,7 +413,7 @@ namespace ECS.Models.Migrations
                     new Account
                     {
                         UserName = "test3",
-                        Password = "aaaaaaaaa",
+                        Password = "RdjQs93acMhCQatY1yqoaR3iQujrsA+Pi/edbWg9ESQ=a",
                         Email = users.Single(s => s.Email == "test3@gmail.com").Email,
                         AccountStatus = true,
                         Points = 0,
@@ -3898,6 +3898,11 @@ namespace ECS.Models.Migrations
                 {
                     PasswordSalt = "ASOBBAOSUVNOIDVKSNLKPPPPPPPPAN",
                     UserName = accounts.Single(i => i.UserName == "test2").UserName
+                },
+                new Salt
+                {
+                    PasswordSalt = "ASOBBAOSUVNOIDVKSNLKPPPPPPPPAN",
+                    UserName = accounts.Single(i => i.UserName == "test3").UserName
                 }
             };
             salts.ForEach(s => context.Salts.AddOrUpdate(p => p.SaltId, s));
