@@ -18,6 +18,8 @@
 
 <script>
 import Axios from 'axios'
+import Swal from 'sweetalert2'
+
 export default {
   name: 'interestTags',
   // On vue creation, retrieve interest tags and fill with user info.
@@ -71,7 +73,11 @@ export default {
     // Verify the user has selected at least one interest tag. If so, update in the database else notify user to select an interest tag.
     submit: function () {
       if (!this.isInterestChecked()) {
-        alert('You must select at least one interest.')
+        Swal({
+          title: 'Hold on there buddy!',
+          text: 'You must select at least one interest.',
+          type: 'warning'
+        })
       } else {
         this.updateInterestTags()
       }
@@ -103,7 +109,11 @@ export default {
         }
       })
         .then((response) => {
-          alert('Successfully updated Interest Tags')
+          Swal({
+            title: 'Success!',
+            text: 'Updated Interest Tags!\nNow go Read!',
+            type: 'success'
+          })
         })
         .catch(e => {
           alert(e)

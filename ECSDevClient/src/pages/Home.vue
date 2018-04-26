@@ -23,6 +23,7 @@ import LinkedInPostModal from '@/components/linkedin-modal/Template'
 import RedirectModal from '@/components/redirect-modal/Template'
 import SideBar from '@/components/sidebar-menu/Template'
 import Axios from 'axios'
+import Swal from 'sweetalert2'
 import EventBus from '@/assets/js/EventBus.js'
 export default {
   name: 'home',
@@ -54,7 +55,13 @@ export default {
         }
       }) // Alert user they earned points if server responds with ok
         .then(response => {
-          alert('You earned ' + this.Points + ' points')
+          Swal({
+            title: 'WooHoo!',
+            text: 'You earned ' + this.points + ' points!',
+            type: 'success',
+            toast: true,
+            imageUrl: 'http://cliparting.com/wp-content/uploads/2016/08/Great-job-excellent-job-clipart-clipart-kid.png'
+          })
         })
         .catch(error => {
           console.log(error.response)
