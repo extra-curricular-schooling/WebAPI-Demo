@@ -121,7 +121,7 @@ export default {
                 let url = response.data
                 let parsedQuery = UrlHelper.parseUrlQuery(url)
                 let token = parsedQuery['jwt']
-                console.log(token)
+                // console.log(token)
                 if (token !== undefined) {
                   this.handlePartialAccount(url, token)
                 } else {
