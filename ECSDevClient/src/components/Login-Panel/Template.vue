@@ -104,6 +104,8 @@ export default {
       EventBus.$emit('loading')
     },
     postCredentials: function () {
+      this.$store.dispatch('signOut')
+      this.$store.commit('clearAuthorizationHeader')
       if (this.username != null) {
         if (this.password != null) {
           this.toggleLoadingModal()

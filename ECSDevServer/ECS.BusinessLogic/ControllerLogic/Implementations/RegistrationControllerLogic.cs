@@ -10,6 +10,7 @@ using ECS.Models;
 using ECS.Security.Hash;
 using ECS.Constants.Data_Access;
 using System.Web.Script.Serialization;
+using ECS.Security.AccessTokens.Jwt;
 
 namespace ECS.BusinessLogic.ControllerLogic.Implementations
 {
@@ -384,7 +385,15 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
 
                 // Delete old Partial Account
                 _partialAccountLogic.Delete(partialAccountModel);
-                return new HttpResponseMessage(HttpStatusCode.OK);
+
+                // TODO: @Scott Might need a hot fix here for tokens in partial registration.
+                var token = JwtManager.Instance.GenerateToken(accountTypes);
+
+                return new HttpResponseMessage
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Content = new StringContent(token)
+                };
 
             }
             catch (Exception ex)

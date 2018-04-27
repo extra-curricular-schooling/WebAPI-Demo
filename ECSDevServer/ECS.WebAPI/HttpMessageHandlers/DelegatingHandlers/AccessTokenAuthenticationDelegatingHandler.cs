@@ -97,6 +97,9 @@ namespace ECS.WebAPI.HttpMessageHandlers.DelegatingHandlers
 
         private bool HasAcceptedClaims(IPrincipal principal)
         {
+            // Hot Fix
+
+
             // Read the Request Principal (User), and grab the necessary jwt claims.
             var usernameClaim = JwtManager.Instance.GetClaim(principal, ClaimTypes.Name);
             var expiredAtClaim = JwtManager.Instance.GetClaim(principal, "exp");

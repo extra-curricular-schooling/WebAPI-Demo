@@ -498,25 +498,28 @@ export default {
           }
         })
           .then(response => {
-            this.$store.dispatch('signIn', this.$store.getters.getAuthToken)
-            this.$store.dispatch('updateToken', this.$store.getters.getAuthToken)
+            console.log(response)
+            this.$store.dispatch('signIn', response.data)
+            this.$store.dispatch('updateToken', response.data)
             this.$router.push({
               name: 'Home',
             })
           })
           .catch(error => {
             // Error
+
             if (error.response) {
               // The request was made and the server responded with a status code
               // that falls out of the range of 2xx
               if (error.response.status === 400) {
-                this.$store.dispatch('signOut')
+                
                 Swal({
                   title: 'Bad News',
                   text: 'According to our records, you are not in our database',
                   footer: '<a href="/">Take me to the main page</a>'})
               }
               if (error.response.status === 409) {
+                this.$store.dispatch('signOut')
                 Swal({
                   title: 'Good News',
                   text: 'According to our records, you already have an account with us!',
@@ -554,7 +557,6 @@ export default {
           this.loadingIsDisabled = true
         })
         .catch(error => {
-
           // Connection Timeout
           if (error.code == 'ECONNABORTED') {
             Swal({
