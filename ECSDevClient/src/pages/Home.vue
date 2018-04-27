@@ -76,7 +76,13 @@ export default {
             toast: true,
             imageUrl: 'http://cliparting.com/wp-content/uploads/2016/08/Great-job-excellent-job-clipart-clipart-kid.png',
             imageHeight: '50px',
-            imageWidth: '50px'
+            imageWidth: '50px',
+            timer: 2000,
+            showConfirmButton: false
+          }).then(result => {
+            if (result.dismiss === Swal.DismissReason.timer) {
+
+            }
           })
         })
         .catch(error => {
