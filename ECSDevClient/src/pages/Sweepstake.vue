@@ -6,7 +6,12 @@
       <Countdown deadline="May 25, 2018"></Countdown>
       <h2> Just Follow The Three Steps To Enter Sweepstake</h2>
       <h2> * Get your Points * Check Whether Sweepstake Open * Buy Your Ticket</h2>
-      <button v-on:click="fetchUserInfo(username,Points)">What are your Points? Find it out, First.</button>
+      <template v-if="this.Points !== null">
+        <h1> You have <b>{{this.Points}}</b> points!</h1>
+      </template>
+      <template v-else>
+        <h1> We seem to have an issue retreiving your points. </h1>
+      </template>
       <button v-on:click="fetchValidSweepstakeInfo(Price, SweepStakesID, OpenDateTime, Prize, ClosedDateTime, collapsed)">Is Sweepstake Open??</button>
       <template v-if="this.collapsed === true">
          <button v-on:click="ticketBought(Points,Price,username,timeDateStamp)">Buy A Ticket and Surprise Yourself</button>
@@ -27,7 +32,7 @@ export default {
   name: 'prizes',
   data () {
     return {
-      Points: '', // Points from the scholar account
+      Points: null, // Points from the scholar account
       Price: '', // it is the Price of ticket for sweepstake that is set by admin
       username: this.$store.getters.getUsername,
       timeDateStamp: moment().utc('dddd, MMMM Do YYYY , hh:mm:ss').format(), // the time date stamp is right in utc format
@@ -42,6 +47,9 @@ export default {
   components: {
     Countdown
   },
+  created () {
+    this.fetchUserInfo(this.username, this.Points)
+  },
   methods: {
     fetchUserInfo: function (username, Points) {
       Axios({
@@ -51,9 +59,7 @@ export default {
         headers: Store.getters.getRequestHeaders
       })
         .then(response => {
-          console.log(response.data)
           this.Points = response.data
-          Swal('Points are ' + this.Points)
         })
         .catch(error => {
           console.log(error.response)

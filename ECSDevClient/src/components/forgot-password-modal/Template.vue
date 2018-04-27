@@ -521,10 +521,18 @@ export default {
                 document.getElementById('answer2').value = ''
                 document.getElementById('answer3').value = ''
 
-                Swal({
-                  type: 'error',
-                  title: 'Hmm...',
-                  text: 'The answers you submitted are not correct'})
+                if (this.$store.getters.getWrongAnswersCount <= this.$store.getters.getMaxWrong) {
+                  this.$store.dispatch('incrementWrongAnswersCount')
+                  Swal({
+                    type: 'error',
+                    title: 'Hmm...',
+                    text: 'The answers you submitted are not correct'})
+                } else {
+                  Swal({
+                    type: 'error',
+                    title: 'Uh-Oh',
+                    text: 'You have entered too many wrong answers.  Please contact us for assistance.'})
+                }
               }
 
               // HTTP Status 500

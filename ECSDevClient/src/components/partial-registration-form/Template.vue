@@ -134,10 +134,10 @@
     <!-- END security questions -->
 
     <div class="field form-agreements">
-      <label class="checkbox">
+      <!-- <label class="checkbox">
         <input type="checkbox" checked="checked">
         Remember me
-      </label><br>
+      </label><br> -->
       <label class="checkbox">
         <agreement-modal ref="modal"></agreement-modal>
         <input type="checkbox" @click="checkBox" v-bind:class="{ 'checked' : agreementIsChecked }">

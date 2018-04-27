@@ -11,7 +11,7 @@
                       <a id="groupName" v-text="group.name"  @click="collapse(group)" ></a>
                       <!-- Collapsable menus when interest tag is clicked. -->
                       <ul v-if="group.open">
-                          <ul class="button is-link" id="articles" v-for="article in group.articles" :key="article.title" v-text="article.title" v-on:click="target(group.name, article.title, article.url)">
+                          <ul class="button" id="articles" v-for="article in group.articles" :key="article.title" v-text="article.title" v-on:click="target(group.name, article.title, article.url)">
                           </ul>
                       </ul>
                   </div>
@@ -97,15 +97,17 @@ export default {
 </script>
 <style scoped>
    .slideout-menu {
-    position: fixed;
-    top: 0;
+    position: absolute;
+    top:0;
     bottom: 0;
     width: 276px;
-    height: 100vh;
+    height: 850px;
     z-index: 0;
     display: none;
-    background-color: #1D1F20;
     color: white;
+    background-image: url('https://c.pxhere.com/photos/31/57/structure_texture_concrete_wall_concrete_wall_grain_background_grey-959987.jpg!d');
+    overflow: hidden;
+    box-shadow: 0px 0px 5px #fff;
   }
   /* display slide menu when slideout-open is true */
   .slideout-open .slideout-menu {
@@ -119,10 +121,10 @@ export default {
   #articles{
     display: block;
     border: .3px solid;
-    font-size:8pt
+    font-size:8pt;
   }
   #articles:active{
-    color:white;
+    color:brown;
   }
 
   #groups{
@@ -133,13 +135,13 @@ export default {
     color: white;
   }
   #groups:active{
-    color: blue;
+    color: #FFD1AA;
     box-shadow: 0 0 5px -1px rgba(0,0,0,0.6);
   }
   #groupName{
     color:white;
   }
   #groupName:active{
-    color:blue;
+    color: #FFD1AA;
   }
 </style>
