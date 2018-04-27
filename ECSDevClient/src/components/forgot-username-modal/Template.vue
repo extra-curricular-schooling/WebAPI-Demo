@@ -103,6 +103,9 @@ export default {
      * toggles/activates and deactivates forgot username modal
      */
     toggle () {
+      if (this.body == 'firstStep') {
+        document.getElementById('email').className = 'input'
+      }
       this.isActive = !this.isActive
     },
     /**
@@ -124,7 +127,6 @@ export default {
      * closes modal if modal is closed
      */
     close () {
-      document.getElementById('email').className = 'input'
       this.toggle()
       this.body = 'firstStep'
       this.email = ''
