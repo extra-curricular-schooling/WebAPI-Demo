@@ -109,12 +109,25 @@ namespace ECS.WebAPI.Controllers.v1
         [Route("CloseSweepstake")]
         [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "GET")]
         public IHttpActionResult CloseSweepstake()
-        {   
-            //IF SENDING DATA OVER THAT IS A POST.
-            //IF YOU ARE NOT SENDING DATA OVER THAT IS A GET REQUEST
+        {
+            List<string> sweepstakeEntries = new List<string>();
             var everything = this.sweepStakeEntryRepository.GetAll();
-            var winner = everything.Select(x => x.Cost).DefaultIfEmpty(0).Max();
-            var nameWinner = sweepStakeEntryRepository.GetSingle(x => x.Cost == winner);
+            var sweepstake = db.SweepStakes
+                       .Where(x => x.UsernameWinner == "No Winner" & x.ClosedDateTime >= DateTime.Now)
+                       .FirstOrDefault<SweepStake>();
+            foreach (var entry in everything)
+            {
+                var entries = (entry.Cost / sweepstake.Price);
+                for(int i = 0; i < entries; i++)
+                {
+                    sweepstakeEntries.Add(entry.Account.UserName);
+                }
+
+            }
+            Random rnd = new Random();
+            int r = rnd.Next(sweepstakeEntries.Count);
+            var winner = (string)sweepstakeEntries[r];
+            var nameWinner = sweepStakeEntryRepository.GetSingle(x => x.UserName == winner);
             if (nameWinner == null)
             {
                 return Ok("No Winner");
