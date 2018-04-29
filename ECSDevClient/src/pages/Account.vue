@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <account-settings-panel/>
+  <div style="height: 650px;">
+    <account-settings-panel style="position:relative; top:10%;"/>
   </div>
 </template>
 

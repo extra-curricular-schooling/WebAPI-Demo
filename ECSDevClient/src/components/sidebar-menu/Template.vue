@@ -105,9 +105,13 @@ export default {
     z-index: 0;
     display: none;
     color: white;
-    background-image: url('https://c.pxhere.com/photos/31/57/structure_texture_concrete_wall_concrete_wall_grain_background_grey-959987.jpg!d');
+    /* background-image: url('https://c.pxhere.com/photos/31/57/structure_texture_concrete_wall_concrete_wall_grain_background_grey-959987.jpg!d'); */
     overflow: hidden;
     box-shadow: 0px 0px 5px #fff;
+    opacity: .8;
+  }
+  .slideout-menu:hover {
+    opacity: 1;
   }
   /* display slide menu when slideout-open is true */
   .slideout-open .slideout-menu {
@@ -124,7 +128,7 @@ export default {
     font-size:8pt;
   }
   #articles:active{
-    color:brown;
+    color:brown ;
   }
 
   #groups{

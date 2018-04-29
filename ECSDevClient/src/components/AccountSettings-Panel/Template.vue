@@ -4,7 +4,7 @@
       <button v-on:click="isVisibleNotification = false" class="delete"></button>
       {{notificationMessage}}
     </div>
-    <section class="hero is-info">
+    <section class="hero">
       <div class="hero-body">
         <section class="columns is-gapless is-multiline is-mobile">
             <div class="column is-one-quarter">

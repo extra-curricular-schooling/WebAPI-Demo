@@ -1,23 +1,29 @@
 <template>
-  <div class="container">
-    <div class="box" style="background-color: hsl(0, 0%, 96%);">
-      <h1>Welcome to Sweepstake Entry. Buy A Ticket To Enter Into The Sweepstake.</h1>
-      <h1>Time Left For The Big Surprise</h1>
-      <Countdown deadline="May 25, 2018"></Countdown>
-      <h2> Just Follow The Three Steps To Enter Sweepstake</h2>
-      <h2> * Get your Points * Check Whether Sweepstake Open * Buy Your Ticket</h2>
+  <div class="container" style="height: 650px;">
+    <div class="box" style="background-color: hsl(0, 0%, 96%); position: relative; top: 10%">
+      <h1>Welcome to Sweepstake Entry.</h1>
+      <h1> Buy A Ticket To Enter Into The Sweepstake.</h1>
+      <h2> Just Follow These Steps To Enter Sweepstake</h2>
+      <h2> * Check Whether a Sweepstake is Open *<br> * Buy Your Ticket *</h2>
+      <h3> The more tickets you buy, the more chances you have to <b>WIN!</b> </h3>
       <template v-if="this.Points !== null">
         <h1> You have <b>{{this.Points}}</b> points!</h1>
       </template>
       <template v-else>
         <h1> We seem to have an issue retreiving your points. </h1>
       </template>
-      <button v-on:click="fetchValidSweepstakeInfo(Price, SweepStakesID, OpenDateTime, Prize, ClosedDateTime, collapsed)">Is Sweepstake Open??</button>
+      <button v-if="this.collapsed === false" v-on:click="fetchValidSweepstakeInfo(Price, SweepStakesID, OpenDateTime, Prize, ClosedDateTime, collapsed)">Check SweepStake Availability</button>
       <template v-if="this.collapsed === true">
-         <button v-on:click="ticketBought(Points,Price,username,timeDateStamp)">Buy A Ticket and Surprise Yourself</button>
+        <div>
+          <h2>Current Sweepstake:</h2>
+          <h3>Prize: {{this.Prize}} </h3>
+          <h3>Closes: {{this.ClosedDateTime}} </h3>
+          <h3>Points to Enter: {{this.Price}} </h3>
+        </div>
+         <button v-on:click="ticketBought(Points,Price,username,timeDateStamp)">Buy A Ticket for a Chance to Win!</button>
       </template>
     </div>
-    <div style="height: 1px;"/>
+    <div style="height: 1px ;"/>
   </div>
 </template>
 <script>
@@ -35,7 +41,7 @@ export default {
       Points: null, // Points from the scholar account
       Price: '', // it is the Price of ticket for sweepstake that is set by admin
       username: this.$store.getters.getUsername,
-      timeDateStamp: moment().utc('dddd, MMMM Do YYYY , hh:mm:ss').format(), // the time date stamp is right in utc format
+      timeDateStamp: '', // the time date stamp is right in utc format
       SweepStakesID: '', // the ID of the sweepstake that is open
       OpenDateTime: '', // the opening date of the sweepstake
       Prize: '',
@@ -79,19 +85,17 @@ export default {
         .then(response => {
           console.log(response.data)
           if (response.data === 'Sweepstake Not Open') {
-            Swal('Sweepstake Not Open')
+            Swal({
+              text: 'No Sweepstakes are currently running. Check back later!',
+              imageUrl: 'http://lasalleyachtclub.com/wp-content/uploads/2015/02/Please-Check-Back-Later.jpg'
+            })
           } else {
             this.collapsed = true
             this.Price = response.data.price
             this.SweepStakesID = response.data.sweepStakesID
-            this.OpenDateTime = response.data.openDateTime
+            this.OpenDateTime = moment(new Date(response.data.openDateTime)).utc().format('MM-DD-YYYY HH:mm')
             this.Prize = response.data.prize
-            this.ClosedDateTime = response.data.closedDateTime
-            Swal('SweepStake Information: Price To Enter: ' + this.Price +
-            '\nSweepStakesID: ' + this.SweepStakesID +
-            '\nSweepStake Open Date: ' + this.OpenDateTime +
-            '\nPrize: ' + this.Prize +
-            '\nClosing Date: ' + this.ClosedDateTime)
+            this.ClosedDateTime = moment(new Date(response.data.closedDateTime)).utc().format('MMMM DD, YYYY')
           }
         })
         .catch(error => {
@@ -124,10 +128,10 @@ export default {
             console.log(response)
             if (response.data === 'Another Ticket Added') {
               Swal('Another Milestone Added Towards Your Win')
-              Swal('Congragulations! One ticket bought for ' + this.Price + ' points! Your Points are ' + this.Points)
+              Swal('Congragulations! \nOne ticket bought for ' + this.Price + ' points!\n You have ' + this.Points + ' Points remaining!')
             } else {
               Swal('Successfully Bought First Ticket')
-              Swal('Congragulations! One ticket bought for ' + this.Price + ' points! Your Points are ' + this.Points)
+              Swal('Congragulations! \nOne ticket bought for ' + this.Price + ' points!\n You have ' + this.Points + ' Points remaining!')
             }
           })
           .catch(error => {
@@ -138,7 +142,10 @@ export default {
             }
           })
       } else {
-        Swal('Sorry! You have Insufficient Points!')
+        Swal({
+          title: 'Sorry! You have Insufficient Points!',
+          type: 'info'
+        })
       }
     }
   }
