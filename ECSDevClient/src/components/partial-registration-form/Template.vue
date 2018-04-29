@@ -216,7 +216,7 @@ export default {
       NAME_REGEX: this.$store.getters.getNameRegex,
       EMAIL_REGEX: this.$store.getters.getEmailRegex,
       ADDRESS_REGEX: this.$store.getters.getAddressRegex,
-      CITY_REGEX: this.getCityRegex,
+      CITY_REGEX: this.$store.getters.getCityRegex,
       ZIPCODE_REGEX: this.$store.getters.getZipCodeRegex,
     }
   },

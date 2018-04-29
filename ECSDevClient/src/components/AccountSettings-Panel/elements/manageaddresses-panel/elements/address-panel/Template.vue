@@ -87,9 +87,9 @@ export default {
       addressMessage: '',
       cityMessage: '',
       zipCodeMessage: '',
-      ADDRESS_REGEX: /^[a-zA-Z0-9#.,-/ ]{0,}$/,
-      CITY_REGEX: /^[a-zA-Z ]{0,}$/,
-      ZIPCODE_REGEX: /^\d{5}(?:[-\s]\d{4})?$/
+      ADDRESS_REGEX: this.$store.getters.getAddressRegex,
+      CITY_REGEX: this.$store.getters.getCityRegex,
+      ZIPCODE_REGEX: this.$store.getters.getZipCodeRegex
     }
   },
   computed: {
