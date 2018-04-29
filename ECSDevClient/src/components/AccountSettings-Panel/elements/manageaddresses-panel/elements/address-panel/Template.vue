@@ -65,7 +65,6 @@
 <script>
 import Axios from 'axios'
 import EventBus from '../../../../../../assets/js/EventBus'
-import States from '@/assets/js/enumerations/states'
 
 export default {
   name: 'AddressPanel',
@@ -80,7 +79,7 @@ export default {
       isActive: false,
       fromSubmitted: false,
       zipCodeId: this.$store.getters.getZipCodeId,
-      states: States,
+      states: this.$store.getters.getUnitedStatesAbbrevs,
       address: this.$store.getters.getAddress,
       city: this.$store.getters.getCity,
       state: this.$store.getters.getState,

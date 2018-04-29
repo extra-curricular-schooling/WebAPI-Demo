@@ -149,6 +149,11 @@ namespace ECS.Security.AccessTokens.Jwt
             return claimsPrincipal.FindFirst(claimType).Value;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="principal"></param>
+        /// <returns></returns>
         public bool HasAcceptedClaims(IPrincipal principal)
         {
             // Read the Request Principal (User), and grab the necessary jwt claims.

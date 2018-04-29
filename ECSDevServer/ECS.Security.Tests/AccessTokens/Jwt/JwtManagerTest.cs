@@ -8,28 +8,29 @@ namespace ECS.Security.Tests.AccessTokens.Jwt
 {
     public class JwtManagerTest
     {
-        private readonly ITestOutputHelper output;
+        private readonly ITestOutputHelper _output;
 
         public JwtManagerTest(ITestOutputHelper output)
         {
-            this.output = output;
+            _output = output;
         }
+
         public class GenerateTokenTest
         {
-            private readonly ITestOutputHelper output;
+            private readonly JwtManagerTest _instance;
 
-            public GenerateTokenTest(ITestOutputHelper output)
+            public GenerateTokenTest(JwtManagerTest instance)
             {
-                this.output = output;
+                _instance = instance;
             }
 
             [Fact]
             public void ShouldBeSameToken()
             {
                 string token1 = JwtManager.Instance.GenerateToken("scott");
-                output.WriteLine(token1);
+                _instance._output.WriteLine(token1);
                 string token2 = JwtManager.Instance.GenerateToken("scott");
-                output.WriteLine(token2);
+                _instance._output.WriteLine(token2);
                 Assert.Equal(token1, token2);
             }
 
@@ -57,7 +58,7 @@ namespace ECS.Security.Tests.AccessTokens.Jwt
                     RoleType = roleType,
                     Username = username
                 };
-                output.WriteLine(SsoJwtManager.Instance.GenerateToken(loginDto));
+                _instance._output.WriteLine(SsoJwtManager.Instance.GenerateToken(loginDto));
             }
         }
     }
