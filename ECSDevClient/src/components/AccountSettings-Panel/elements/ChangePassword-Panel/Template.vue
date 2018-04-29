@@ -38,7 +38,7 @@ export default {
   name: 'ChangePasswordPanel',
   data () {
     return {
-      PASSWORD_REGEX: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_])[a-zA-Z0-9!@#$%^&*()_]{8,64}$/,
+      PASSWORD_REGEX: this.$store.getters.getPasswordRegex,
       currentPassword: '',
       confirmCurrentPassword: '',
       newPassword: '',
