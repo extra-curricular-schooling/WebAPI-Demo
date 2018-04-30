@@ -670,6 +670,14 @@ button {
   width: 175px;
 }
 
+form {
+  background-color: white;
+  padding-top: 15px;
+  padding-left: 50px;
+  padding-right: 50px;
+  padding-bottom: 15px;
+}
+
 select.pull-down {
   width: 400px;
 }

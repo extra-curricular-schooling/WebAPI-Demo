@@ -21,4 +21,14 @@ export default {
   padding-right: 90px;
   padding-bottom: 50px;
 }
+
+p {
+  background-color: #363636;
+  color: white;
+  font-weight: bold;
+  padding-top: 10px;
+  padding-left: 50px;
+  padding-right: 50px;
+  padding-bottom: 10px;
+}
 </style>
