@@ -14,7 +14,6 @@
           <div class="field username">
             <label class="label field-element is-required">Username</label>
             <div class="control has-icons-left has-icons-right">
-              <!-- <input v-model="username" id="username" class="input" type="text" @keyup="validateUsername" autocomplete="username" placeholder="Username" required> -->
               <input v-model="username" class="input" type="text" placeholder="Username">
               <span class="icon is-small is-left">
                 <i class="fas fa-user"></i>
@@ -33,39 +32,33 @@
             <div class="field security-questions">
               <label class="label field-element is-required">Security Questions</label>
               <div class="control">
-                <!-- <input v-model="question1" class="input" type="number" placeholder="Question 1" required> -->
                 <p>{{ questions[0].SecQuestion }}</p>
               </div>
             </div>
             <div class="field security-questions-answers">
               <div class="control">
-                <!-- <input id="answer1" class="input" type="text" @keyup="validateAnswers" placeholder="Answer 1" required> -->
                 <input id="answer1" class="input" type="text" placeholder="Answer 1" required>
               </div>
             </div>
 
             <div class="field security-questions">
               <div class="control">
-                <!-- <input v-model="question2" class="input" type="number" placeholder="Question 2" required> -->
                 <p>{{ questions[1].SecQuestion }}</p>
               </div>
             </div>
             <div class="field security-questions-answers">
               <div class="control">
-                <!-- <input id="answer2" class="input" type="text" @keyup="validateAnswers" placeholder="Answer 2" required> -->
                 <input id="answer2" class="input" type="text" placeholder="Answer 2" required>
               </div>
             </div>
 
             <div class="field security-questions">
               <div class="control">
-                <!-- <input v-model="question3" class="input" type="number" placeholder="Question 1" required> -->
                 <p>{{ questions[2].SecQuestion }}</p>
               </div>
             </div>
             <div class="field security-questions-answers">
               <div class="control">
-                <!-- <input id="answer3" class="input" type="text" @keyup="validateAnswers" placeholder="Answer 3" required> -->
                 <input id="answer3" class="input" type="text" placeholder="Answer 3" required>
               </div>
             </div>
@@ -78,9 +71,20 @@
         <div class="body" v-if="body==='thirdStep'">
           <p>Please enter a <strong>new password</strong><p>
           <div class="field password">
-            <label class="label field-element is-required">New Password</label>
+            <div class="field is-horizontal" style="height:24px;margin-bottom:0.5em">
+              <div class="field-body">
+                <label class="label field is-required" style="text-align:left;">New Password</label>
+                <span title="What are special characters?" class="icon has-text-info" @click.prevent="toggleSpecialCharInfo" style="float:right;">
+                  <i class="fas fa-info-circle"></i>
+                </span>
+              </div>
+            </div>
+            <div class="notification is-warning" v-bind:class="{ 'is-hidden' : isHidden }">
+              <button class="delete" @click.prevent="toggleSpecialCharInfo"></button>
+              <p>Special characters are non-alphabetic and non-numeric characters.</p>
+              <p>For passwords, these are the special characters allowed: <strong>{{ specialCharInfo }}</strong></p>
+            </div>
             <div class="control has-icons-left">
-              <!-- <input id="password" class="input" type="password"  @keyup="validatePassword" autocomplete="new-password" placeholder="************" required> -->
               <input id="password" class="input" type="password" @keyup="validatePassword" placeholder="************" required>
               <span class="icon is-small is-left">
                 <i class="fas fa-lock"></i>
@@ -92,7 +96,6 @@
           <div class="field confirm-password">
             <label class="label field-element is-required">Confirm New Password</label>
             <div class="control has-icons-left">
-              <!-- <input id="confirmPassword" class="input" type="password" @keyup="validateConfirmPassword" autocomplete="new-password" placeholder="************" required> -->
               <input id="confirmPassword" class="input" type="password" @keyup="passwordEventHelper(getPassword())" placeholder="************" required>
               <span class="icon is-small is-left">
                 <i class="fas fa-lock"></i>
@@ -179,13 +182,15 @@ export default {
       // Validation Messages
       passwordMessage: '',
       confirmPasswordMessage: '',
+      specialCharInfo: this.$store.getters.getSpecialCharacters,
 
       // Regular Expressions
       PASSWORD_REGEX: this.$store.getters.getPasswordRegex,
 
       // Event Properties
       isActive: false,
-      body: 'firstStep'
+      body: 'firstStep',
+      isHidden: true
     }
   },
   methods: {
@@ -356,6 +361,9 @@ export default {
     toggleForgetUsername () {
       this.close()
       EventBus.$emit('forgetUsername')
+    },
+    toggleSpecialCharInfo () {
+      this.isHidden = !this.isHidden
     },
     // ************************* Helpers *************************
     /**
@@ -626,5 +634,11 @@ export default {
 
 .no-username {
   float: left;
+}
+
+div.notification {
+  padding: 10px 10px 10px 10px;
+  text-align: left;
+  font-size: 10pt;
 }
 </style>
