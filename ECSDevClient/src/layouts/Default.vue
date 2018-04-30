@@ -13,10 +13,10 @@
     </div>
     <h1 class="level-item has-text-centered">Extra Curricular Schooling</h1>
     <p class="level-item has-text-centered">
-      <router-link to="About" class="link is-info">About Us</router-link>
+      <router-link to="/about" class="link is-info">About Us</router-link>
     </p>
     <p class="level-item has-text-centered">
-      <router-link to="Registration" tag="button" class="registration-button">Get Started</router-link>
+      <router-link to="/registration" tag="button" class="registration-button">Get Started</router-link>
     </p>
   </nav>
 </template>

@@ -86,7 +86,7 @@
                   <strong>200+</strong> Articles!
                 </blockquote>
                 <span>
-                    <img src="http://cliparting.com/wp-content/uploads/2016/11/Open-book-pictures-clip-art-clipart-free-to-use-resource.gif" alt="" style="height: 75px;"/>
+                    <img src="../../static/images/open-book.gif" alt="" style="height: 75px;"/>
                   </span>
                 <hr class="dropdown-divider">
               </article>
@@ -95,7 +95,7 @@
               <div class="tile is-child box">
                 <div class="container is-fluid">
                   <span>
-                    <img src="http://cliparting.com/wp-content/uploads/2016/05/Star-clip-art-free-clipart-images.png" alt="" style="height: 75px;"/>
+                    <img src="../../static/images/star-clip-art.png" alt="" style="height: 75px;"/>
                   </span>
                   <span>
                     <p>
@@ -113,7 +113,7 @@
                 <p>Share your favorite articles on</p>
                 <figure class="image">
                   <a href="https://www.linkedin.com/" target="_blank">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/LinkedIn_Logo.svg/2000px-LinkedIn_Logo.svg.png" alt=""/>
+                    <img src="../../static/images/linkedin-logo.png" alt=""/>
                   </a>
                 </figure>
               </div>

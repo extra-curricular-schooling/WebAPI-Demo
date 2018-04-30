@@ -13,9 +13,7 @@ export const geography = {
     }
   },
   mutations: {
-
   },
   actions: {
-
   }
 }

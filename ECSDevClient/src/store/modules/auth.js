@@ -4,17 +4,17 @@ export const auth = {
     isAuthenticated: false,
     role: '',
     username: '',
-    validClaimNames: [
+    validClaimNames: Object.freeze([
       'iat',
       'nbf',
       'exp',
       'role',
       'unique_name'
-    ],
-    validIssuers: [
+    ]),
+    validIssuers: Object.freeze([
       'https://localhost:44311/',
       'https://sso.com/'
-    ]
+    ])
   },
   getters: {
     getAuthToken: function (state) {

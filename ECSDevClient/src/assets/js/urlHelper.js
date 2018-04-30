@@ -1,11 +1,13 @@
 export default {
-  // Takes a full URL and returns a tokenized dictionary of parameter names and their values.
-  // Did not test if it can take query strings only as the function param 'str'.
-  parseUrlQuery: function (str) {
-    if (typeof str !== 'string' || str.length === 0) {
+  /**
+   * Takes a URL and returns a tokenized dictionary of parameter names and their values.
+   * @param {string} url Complete url
+   */
+  parseUrlQuery: function (url) {
+    if (typeof url !== 'string' || url.length === 0) {
       return {}
     }
-    let parsedUrl = str.split('?')
+    let parsedUrl = url.split('?')
     let parsedParams = parsedUrl[1].split('&')
     let parsedParamsLength = parsedParams.length
     let bit = null
@@ -27,22 +29,39 @@ export default {
     }
     return query
   },
-  parseUrl: function (str) {
-    if (typeof str !== 'string' || str.length === 0) {
+  /**
+   * Seperates a url into discrete parts.
+   * @param {string} url Complete URL
+   * @returns tokenized list
+   */
+  parseUrl: function (url) {
+    if (typeof url !== 'string' || url.length === 0) {
       return {}
     }
-    let parsedUrl = str.split('?')
+    let parsedUrl = url.split('?')
     let moreParsedUrl = parsedUrl[0].split('/')
     return moreParsedUrl
   },
+  /**
+   * @param {string} url Complete URL
+   * @returns URL scheme
+   */
   getUrlScheme: function (url) {
     let parsedUrl = this.parseUrl(url)
     return parsedUrl[0]
   },
+  /**
+   * @param {string} url Complete URL
+   * @returns URL Host
+   */
   getUrlHost: function (url) {
     let parsedUrl = this.parseUrl(url)
     return parsedUrl[2]
   },
+  /**
+   * @param {string} url Complete URL
+   * @returns URL Path
+   */
   getUrlPath: function (url) {
     let parsedUrl = this.parseUrl(url)
     return parsedUrl[3]
