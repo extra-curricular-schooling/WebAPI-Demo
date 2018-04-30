@@ -405,6 +405,7 @@ export default {
      * @throws {Conflict} Throws an exception if username is not found in resource
      */
     getSecurityQuestions () {
+      this.$store.commit('clearAuthorizationHeader')
       if (this.username != null) {
         // Temporarily hide modal
         this.toggle()

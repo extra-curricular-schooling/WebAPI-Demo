@@ -176,6 +176,7 @@ export default {
      * @throws {InteralServerError} Throws general exception if exception thrown in server
      */
     submitEmail () {
+      this.$store.commit('clearAuthorizationHeader')
       if (this.isValid()) {
 
         // Hide modal
