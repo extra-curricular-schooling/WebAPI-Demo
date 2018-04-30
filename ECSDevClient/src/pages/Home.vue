@@ -75,7 +75,7 @@ export default {
             text: 'You earned ' + this.Points + ' points!',
             type: 'success',
             toast: true,
-            imageUrl: 'http://cliparting.com/wp-content/uploads/2016/08/Great-job-excellent-job-clipart-clipart-kid.png',
+            imageUrl: '../../static/images/good-work.png',
             imageHeight: '50px',
             imageWidth: '50px',
             timer: 2000,

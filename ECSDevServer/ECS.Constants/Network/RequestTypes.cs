@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace ECS.Constants.Network
 {
+    /// <summary>
+    /// Accepted request types in this web application.
+    /// </summary>
     public static class RequestTypes
     {
         public const string HttpRequest = "HttpRequest";

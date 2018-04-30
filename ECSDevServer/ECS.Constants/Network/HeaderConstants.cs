@@ -8,6 +8,9 @@ namespace ECS.Constants.Network
 {
     public static class HeaderConstants
     {
+        /// <summary>
+        /// Comma Separated List of accepted headers
+        /// </summary>
         public const string AcceptedHeaders =
             "Access-Control-Allow-Headers," +
             "Access-Control-Allow-Origin," +
@@ -17,7 +20,9 @@ namespace ECS.Constants.Network
             "accept," +
             "content-type," +
             "referer," +
-            "X-Requested-With";
+            "X-Requested-With," +
+            "xsrfCookieName," +
+            "xsrfHeaderName";
 
         public const string Origin = "Origin";
 

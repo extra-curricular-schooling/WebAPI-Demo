@@ -13,6 +13,9 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
 {
     public class  SsoControllerLogic
     {
+        /// <summary>
+        /// Controller Logic is an aggregation of model logic. "They play nice together".
+        /// </summary>
         private readonly AccountLogic _accountLogic;
         private readonly PartialAccountLogic _partialAccountLogic;
         private readonly SaltLogic _saltLogic;

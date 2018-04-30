@@ -15,7 +15,6 @@ using ECS.WebAPI.Filters.AuthorizationFilters;
 
 namespace ECS.WebAPI.Controllers.v1
 {
-
     /// <summary>
     /// Controller for home page
     /// </summary>

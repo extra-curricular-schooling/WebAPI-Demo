@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace ECS.DTO.Sso
 {
+    /// <summary>
+    /// Login Data Transfer Object for traversing multiple application layers.
+    /// </summary>
     public class SsoLoginRequestDTO
     {
         public string Username { get; set; }

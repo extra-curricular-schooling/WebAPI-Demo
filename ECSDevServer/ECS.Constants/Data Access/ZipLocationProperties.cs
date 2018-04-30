@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace ECS.Constants.Data_Access
 {
+    /// <summary>
+    /// Default constants for empty address submissions during registration.
+    /// </summary>
     public static class ZipLocationProperties
     {
         public const string Address = "Mock";

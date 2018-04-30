@@ -23,7 +23,7 @@ namespace ECS.WebAPI.Controllers.v1
         {
             _controllerLogic = new RegistrationControllerLogic();
         }
-
+        
         public RegistrationController(RegistrationControllerLogic registrationLogic)
         {
             _controllerLogic = registrationLogic;
@@ -32,6 +32,8 @@ namespace ECS.WebAPI.Controllers.v1
         /// <summary>
         /// Method accepts request to submit form using the POST method over HTTP
         /// </summary>
+        /// <param name="registrationForm"></param>
+        /// <returns>Appropriate Action Response</returns>
         [HttpPost]
         [Route("SubmitRegistration")]
         [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "POST")]
@@ -62,8 +64,10 @@ namespace ECS.WebAPI.Controllers.v1
         }
 
         /// <summary>
-        /// Method accepts request to submit incomplete form using the POST method over HTTP
+        /// Method accepts request to submit a partial registration form using the POST method over HTTP
         /// </summary>
+        /// <param name="registrationForm"></param>
+        /// <returns>Appropriate Action Response</returns>
         [HttpPost]
         [Route("SubmitPartialRegistration")]
         [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "POST")]
@@ -94,10 +98,10 @@ namespace ECS.WebAPI.Controllers.v1
             return actionResultResponse;
         }
 
-
         /// <summary>
         /// Method accepts request to fetch security questions using the GET method over HTTP
         /// </summary>
+        /// <returns>Action Response containing a list of security questions.</returns>
         [HttpGet]
         [Route("GetSecurityQuestions")]
         [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "GET")]

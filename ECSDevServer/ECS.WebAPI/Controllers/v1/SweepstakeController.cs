@@ -18,7 +18,11 @@ namespace ECS.WebAPI.Controllers.v1
 
         private ECSContext db = new ECSContext();
 
-        // REQUEST TO GET THE POINTS ASSOCIATED WITH A SCHOLAR ACCOUNT
+        /// <summary>
+        /// GET request for points associated with a single scholar account.
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
         [AuthorizeRequired(ClaimValues.CanEnterRaffle)]
         [HttpGet]
         [Route("ScholarPoints/{username}")]
@@ -31,7 +35,12 @@ namespace ECS.WebAPI.Controllers.v1
             return Ok(points);
         
         }
-        // REQUEST TO POST A TICKET FOR A SWEEPSTAKE
+
+        /// <summary>
+        /// POST request for a single purchased ticket in a given sweepstake.
+        /// </summary>
+        /// <param name="sweepstakeUser"></param>
+        /// <returns></returns>
         [AuthorizeRequired(ClaimValues.CanEnterRaffle)]
         [HttpPost]
         [Route("ScholarTicket/{username}")]

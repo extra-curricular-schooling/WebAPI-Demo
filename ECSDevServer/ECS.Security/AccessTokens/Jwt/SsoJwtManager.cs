@@ -150,7 +150,7 @@ namespace ECS.Security.AccessTokens.Jwt
         }
 
         /// <summary>
-        /// 
+        /// Minimum requirements for Sso token authentication.
         /// </summary>
         /// <param name="principal"></param>
         /// <returns></returns>

@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace ECS.Constants.Network
 {
+    /// <summary>
+    /// Application URL constants.
+    /// </summary>
     public static class UrlConstants
     {
         public const string BaseAppClient = "http://localhost:8080/";

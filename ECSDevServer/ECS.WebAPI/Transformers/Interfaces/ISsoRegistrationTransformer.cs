@@ -3,7 +3,10 @@ using ECS.DTO.Sso;
 
 namespace ECS.WebAPI.Transformers.Interfaces
 {
-    interface ISsoRegistrationTransformer
+    /// <summary>
+    /// Content Transformer for SSO Registration
+    /// </summary>
+    public interface ISsoRegistrationTransformer
     {
         SsoRegistrationRequestDTO Fetch(HttpRequestContext context);
     }

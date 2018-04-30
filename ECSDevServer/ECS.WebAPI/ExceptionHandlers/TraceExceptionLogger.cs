@@ -5,7 +5,10 @@ namespace ECS.WebAPI.ExceptionHandlers
 {
     public class TraceExceptionLogger : ExceptionLogger
     {
-        // Logging if we ever need it.
+        /// <summary>
+        /// Logs exceptions that are not handled.
+        /// </summary>
+        /// <param name="context"></param>
         public override void Log(ExceptionLoggerContext context)
         {
             Trace.TraceError(context.ExceptionContext.Exception.ToString());

@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace ECS.Constants.Security
 {
+    /// <summary>
+    /// Application accepted claim values.
+    /// </summary>
     public static class ClaimValues
     {
         // Actionable Permissions

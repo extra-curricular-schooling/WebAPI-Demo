@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace ECS.Constants.Security
 {
+    /// <summary>
+    /// Application Claim Names
+    /// </summary>
     public static class ClaimNames
     {
         public const string Username = "username";

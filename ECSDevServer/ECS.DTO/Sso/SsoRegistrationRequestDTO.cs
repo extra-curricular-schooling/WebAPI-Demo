@@ -1,5 +1,8 @@
 ﻿namespace ECS.DTO.Sso
 {
+    /// <summary>
+    /// Registration Data Transfer Object for traversing multiple application layers.
+    /// </summary>
     public class SsoRegistrationRequestDTO
     {
         public string Username { get; set; }

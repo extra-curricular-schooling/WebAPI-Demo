@@ -2,6 +2,9 @@
 {
     public static class CorsConstants
     {
+        /// <summary>
+        /// Comma separated list of accepted origins.
+        /// </summary>
         public const string BaseAcceptedOrigins = 
             "http://localhost:8080, " +
             "http://localhost:8081, " +
@@ -10,6 +13,20 @@
             "https://sso.com, " +
             "https://fannbrian.github.io";
 
-        public const string BaseAcceptedHeaders = "*";
+        /// <summary>
+        /// Comma separated list of accepted headers.
+        /// </summary>
+        public const string BaseAcceptedHeaders =
+            "Access-Control-Allow-Headers," +
+            "Access-Control-Allow-Origin," +
+            "Access-Control-Allow-Credentials," +
+            "Authorization," +
+            "origin," +
+            "accept," +
+            "content-type," +
+            "referer," +
+            "X-Requested-With," +
+            "xsrfCookieName," +
+            "xsrfHeaderName";
     }
 }

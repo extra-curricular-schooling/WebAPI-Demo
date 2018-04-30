@@ -13,7 +13,7 @@ namespace ECS.WebAPI.Transformers
 {
     public class SsoLoginTransformer : ISsoLoginTransformer
     {
-        private PartialAccountLogic _partialAccountLogic = new PartialAccountLogic();
+        private readonly PartialAccountLogic _partialAccountLogic = new PartialAccountLogic();
 
         public SsoLoginRequestDTO Fetch(HttpRequestContext context)
         {
@@ -35,15 +35,6 @@ namespace ECS.WebAPI.Transformers
                 RoleType = _partialAccountLogic.GetPartialAccount(credentials.Username).AccountType
             };
             return loginDto;
-        }
-
-        public IHttpActionResult Send(HttpResponseMessage response)
-        {
-            //switch (response.StatusCode)
-            //{
-
-            //}
-            return new OkResult(new HttpRequestMessage());
         }
     }
 }

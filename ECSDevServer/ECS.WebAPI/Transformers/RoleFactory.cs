@@ -6,9 +6,9 @@ namespace ECS.WebAPI.Transformers
 {
     public class RoleFactory : IFactory
     {
-        public Object Create(string roleType)
+        public Object Create(Object type)
         {
-            roleType = roleType.ToLower();
+            var roleType = type.ToString().ToLower();
             switch (roleType)
             {
                 case "public":

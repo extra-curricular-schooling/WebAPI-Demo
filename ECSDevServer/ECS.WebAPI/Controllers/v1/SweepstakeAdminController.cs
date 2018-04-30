@@ -23,8 +23,11 @@ namespace ECS.WebAPI.Controllers.v1
 
         private ECSContext db = new ECSContext();
 
-        // USING GET REQUEST TO GET THE VALID SWEEPSTAKES INFORMATION SO THAT A USER CAN BUY TICKETS
-        // AND ENTER INTO A SWEEPSTAKE 
+        /// <summary>
+        /// Using get request to get the valid sweepstakes information so that a user can buy tickets and enter into a sweepstake.
+        /// </summary>
+        /// <param name="sweepstakeValid"></param>
+        /// <returns></returns>
         [AuthorizeRequired(ClaimValues.CanEnterRaffle)]
         [HttpGet]
         [Route("ValidSweepstakeInfo")]
@@ -56,8 +59,11 @@ namespace ECS.WebAPI.Controllers.v1
             }
          }
 
-        // THIS IS FOR THE EARNING POINTS
-        // NEED TO USE PUT OR WELL LETS JUST SAY UPDATE IN ORDER TO MODIFY AND POST NEW USER POINTS TO THE ACCOUNT
+        /// <summary>
+        /// This is for the earning points. Need to use PUT to update and POST new user points to the account.
+        /// </summary>
+        /// <param name="scholarPoints"></param>
+        /// <returns></returns>
         [AuthorizeRequired(ClaimValues.CanEnterRaffle)]
         [HttpPost]
         [Route("UpdatePoints/{username}")]
@@ -76,7 +82,11 @@ namespace ECS.WebAPI.Controllers.v1
             return Ok("Post Scholar Updated Points");
         }
 
-        // USING THE POST REQUEST FOR POSTING/SETTING SWEEPSTAKES TO THE DATABASE BY ADMIN ONLY
+        /// <summary>
+        /// Using the POST request for setting sweepstakes in the database. Admin only permissible.
+        /// </summary>
+        /// <param name="sweepstakeSet"></param>
+        /// <returns></returns>
         [AuthorizeRequired(ClaimValues.CanDeleteUser)]
         [HttpPost]
         [Route("SubmitSweepstake/{username}")]
@@ -103,7 +113,10 @@ namespace ECS.WebAPI.Controllers.v1
             }
         }
 
-        // REQUEST TO CLOSE SWEEPSTAKE THAT IS SEND OVER BY THE ADMIN
+        /// <summary>
+        /// Request to close sweepstake that is sent over by an Admin.
+        /// </summary>
+        /// <returns></returns>
         [AuthorizeRequired(ClaimValues.CanDeleteUser)]
         [HttpGet]
         [Route("CloseSweepstake")]

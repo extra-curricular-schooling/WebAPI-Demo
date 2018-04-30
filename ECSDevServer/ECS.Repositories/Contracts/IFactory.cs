@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ECS.WebAPI.Services.Factories.Contracts
+namespace ECS.Repositories.Contracts
 {
     /// <summary>
     /// Defines the interface for the Factory object

@@ -3,7 +3,10 @@ using ECS.DTO.Sso;
 
 namespace ECS.WebAPI.Transformers.Interfaces
 {
-    interface ISsoResetPasswordTransformer
+    /// <summary>
+    /// Content Transformer for SSO Reset Password
+    /// </summary>
+    public interface ISsoResetPasswordTransformer
     {
         SsoResetPasswordRequestDTO Fetch(HttpRequestContext context);
     }

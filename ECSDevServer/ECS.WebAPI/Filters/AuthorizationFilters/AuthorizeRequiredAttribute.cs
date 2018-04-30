@@ -12,82 +12,60 @@ namespace ECS.WebAPI.Filters.AuthorizationFilters
     public class AuthorizeRequiredAttribute : AuthorizeAttribute, IDisposable
     {
         #region Constants and fields
-        private string _claim;
-        private readonly string[] _claims;
-        private bool _isSingleClaim;
+        private readonly string[] _claimValues;
         #endregion
-        // Single Claim probably won't need
-        public AuthorizeRequiredAttribute(string claim)
-        {
-            _claim = claim;
-            _isSingleClaim = true;
-        }
 
-        public AuthorizeRequiredAttribute(string[] claims)
+        public AuthorizeRequiredAttribute(params string[] claimValues)
         {
-            _claims = claims;
-            _isSingleClaim = false;
+            _claimValues = claimValues;
         }
-        public AuthorizeRequiredAttribute()
-        {
-
-        }
+        
+        /// <summary>
+        /// Method to determine if the incoming request is authorized. 
+        /// </summary>
+        /// <param name="actionContext"></param>
+        /// <returns>Boolean</returns>
         protected override bool IsAuthorized(HttpActionContext actionContext)
         {
-            // get the access token
-            var accessTokenFromRequest = actionContext.Request.Headers.Authorization.Parameter.ToString();
-
-            // TODO: @Scott/Kris This is authorizing the SSO request with the AppManager... problems.
-            ClaimsPrincipal principal = JwtManager.Instance.GetPrincipal(accessTokenFromRequest);
-            if (principal != null)
+            // Get the claims principal.
+            var principal = (ClaimsPrincipal) actionContext.RequestContext.Principal;
+            if (principal == null)
             {
-                if (_isSingleClaim)
+                // Get the Principal from the authorization header (Authentication was disabled).
+                var accessTokenFromRequest = actionContext.Request.Headers.Authorization.Parameter;
+                principal = JwtManager.Instance.GetPrincipal(accessTokenFromRequest);
+                if (principal == null)
                 {
-                    if (principal.HasClaim(ClaimTypes.Role, ClaimValues.Scholar))
+                    return false;
+                }
+            }
+
+            // Check PermissionName claims. Currently only works for single permissions.
+            foreach (var value in _claimValues)
+            {
+                if (principal.HasClaim(ClaimTypes.Role, ClaimValues.Scholar))
+                {
+                    if (principal.HasClaim("PermissionName", value))
                     {
-                        if (principal.HasClaim("PermissionName", _claim))
-                        {
-                            return true;
-                        }
-                    }
-                    else if (principal.HasClaim(ClaimTypes.Role, ClaimValues.Admin))
-                    {
-                        if (principal.HasClaim("PermissionName", _claim))
-                        {
-                            return true;
-                        }
-                    }
-                    else
-                    {
-                        return false;
+                        return true;
                     }
                 }
-                //foreach (var claim in _claims)
-                //{
-                //    if (principal.HasClaim(ClaimTypes.Role, ClaimValues.Scholar))
-                //    {
-                //        if (principal.HasClaim("PermissionName", claim))
-                //        {
-                //            return true;
-                //        }
-                //    }
-                //    else if (principal.HasClaim(ClaimTypes.Role, ClaimValues.Admin))
-                //    {
-                //        if (principal.HasClaim("PermissionName", claim))
-                //        {
-                //            return true;
-                //        }
-                //    }
-                //    else
-                //    {
-                //        return false;
-                //    }
-                //}
-
+                if (principal.HasClaim(ClaimTypes.Role, ClaimValues.Admin))
+                {
+                    if (principal.HasClaim("PermissionName", value))
+                    {
+                        return true;
+                    }
+                }
             }
+
             return false;
         }
 
+        /// <summary>
+        /// Calls base AuthorizeAttribute method to deal with unauthorized requests.
+        /// </summary>
+        /// <param name="actionContext"></param>
         protected override void HandleUnauthorizedRequest(HttpActionContext actionContext)
         {
             Debug.WriteLine("Running HandleUnauthorizedRequest in CustomAuthorizationFilterAttribute as principal is not authorized.");

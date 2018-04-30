@@ -1,12 +1,13 @@
 ﻿using System;
-using System.Net.Http;
-using System.Web.Http.Controllers;
 
 namespace ECS.WebAPI.Transformers.Interfaces
 {
-    interface ITransformer
+    /// <summary>
+    /// Standard Content Transformer.
+    /// </summary>
+    public interface ITransformer
     {
-        Object Fetch(HttpRequestContext context);
-        HttpResponseMessage Send(Object dto);
+        Object Fetch(Object context);
+        Object Send(Object dto);
     }
 }

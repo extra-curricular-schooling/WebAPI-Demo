@@ -45,8 +45,6 @@ namespace ECS.WebAPI.Controllers.v1
             IHttpActionResult actionResultResponse = ResponseMessage(response);
 
             return actionResultResponse;
-
-            // return transformer.Send(response);
          }
 
         /// <summary>
@@ -64,8 +62,6 @@ namespace ECS.WebAPI.Controllers.v1
             IHttpActionResult actionResultResponse = ResponseMessage(response);
 
             return actionResultResponse;
-
-            // return transformer.Send(response);
         }
 
         /// <summary>

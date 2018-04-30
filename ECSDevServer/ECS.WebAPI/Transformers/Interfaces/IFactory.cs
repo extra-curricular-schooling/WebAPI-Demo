@@ -6,8 +6,11 @@ using System.Threading.Tasks;
 
 namespace ECS.WebAPI.Transformers.Interfaces
 {
-    interface IFactory
+    /// <summary>
+    /// Standard Factory Interface
+    /// </summary>
+    public interface IFactory
     {
-        Object Create(string roleType);
+        object Create(object type);
     }
 }

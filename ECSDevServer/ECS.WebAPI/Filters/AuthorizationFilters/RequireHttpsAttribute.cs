@@ -28,15 +28,14 @@ namespace ECS.WebAPI.Filters.AuthorizationFilters
                     response.Headers.Location = uri.Uri;
                     if (request.Method.Equals(HttpMethod.Get))
                     {
-                        response.Content = new StringContent(body, Encoding.UTF8, "application/json");
+                        response.Content = new StringContent(body);
                     }
                 }
                 else
                 {
                     response = request.CreateResponse(HttpStatusCode.NotFound);
-                    response.Content = new StringContent(body, Encoding.UTF8, "application/json");
+                    response.Content = new StringContent(body);
                 }
-
                 actionContext.Response = response;
             }
         }
