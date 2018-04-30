@@ -17,18 +17,18 @@ export default {
         if (error.response) {
           // The request was made and the server responded with a status code
           // that falls out of the range of 2xx
-          console.log('An error occured')
-          console.log('Data:', error.response.data)
-          console.log('Status:', error.response.status)
-          console.log('Headers:', error.response.headers)
+          // console.log('An error occured')
+          // console.log('Data:', error.response.data)
+          // console.log('Status:', error.response.status)
+          // console.log('Headers:', error.response.headers)
         } else if (error.request) {
           // The request was made but no response was received
           // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
           // http.ClientRequest in node.js
-          console.log(error.request)
+          // console.log(error.request)
         } else {
           // Something happened in setting up the request that triggered an Error
-          console.log('Error', error.message)
+          // console.log('Error', error.message)
         }
         Swal({
           type: 'error',
@@ -62,10 +62,7 @@ export default {
         }
       })
       .then((loginInfo) => {
-        console.log(loginInfo)
-        console.log(loginInfo.url)
         let claims = JwtService.myDecode(loginInfo.token)
-        console.log(loginInfo.claims)
         if (UrlHelper.getUrlPath(loginInfo.url) === 'partial-registration') {
           Store.dispatch('updateRole', claims['roleType'])
           Store.dispatch('updateUsername', claims['username'])

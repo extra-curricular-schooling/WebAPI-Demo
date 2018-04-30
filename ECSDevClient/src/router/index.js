@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import jsonwebtoken from 'jsonwebtoken'
-import Store from '@/store/index'
+// import Store from '@/store/index'
 
 Vue.use(Router)
 
@@ -105,6 +105,10 @@ export default new Router({
         next()
       }
     },
+    /**
+     * Requires Decodable JWT Token to enter
+     * Example: https://localhost/partial-registration/evnskqwovu992818j.wlwnvwe...
+     */
     {
       path: '/partial-registration/:jwt',
       name: 'PartialRegistration',
@@ -113,16 +117,12 @@ export default new Router({
       },
       component: () => import('@/pages/PartialRegistration'),
       beforeEnter: function (to, from, next) {
-        if (to.params.jwt) {
-          console.log('Store var: ', Store.getters.getUnitedStatesAbbrevs)
-          let jwt = to.params.jwt
-          // Check if the parameter is a decodable jwt.
-          if (jsonwebtoken.decode(jwt)) {
-            document.title = to.meta.title
-            next()
-          } else {
-            next(from.fullPath)
-          }
+        let jwt = to.params.jwt
+        if (jsonwebtoken.decode(jwt)) {
+          document.title = to.meta.title
+          next()
+        } else {
+          next(from.fullPath)
         }
       }
     },
@@ -138,6 +138,10 @@ export default new Router({
         next()
       }
     },
+    /**
+     * Requires Decodable JWT Token to enter
+     * Example: https://localhost/singlesignon/?jwt=evnskqwovu992818j.wlwnvwe...
+     */
     {
       path: '/singlesignon',
       name: 'SingleSignOn',
@@ -146,8 +150,13 @@ export default new Router({
       },
       component: () => import('@/pages/SingleSignOn'),
       beforeEnter: function (to, from, next) {
-        document.title = to.meta.title
-        next()
+        let jwt = to.query.jwt
+        if (jsonwebtoken.decode(jwt)) {
+          document.title = to.meta.title
+          next()
+        } else {
+          next(from.fullPath)
+        }
       }
     },
     {

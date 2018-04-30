@@ -100,7 +100,7 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
                 return new HttpResponseMessage
                 {
                     ReasonPhrase = "Invalid Credentials",
-                    StatusCode = HttpStatusCode.BadRequest
+                    StatusCode = HttpStatusCode.Unauthorized
                 };
             }
 
