@@ -1,7 +1,6 @@
-// Axios call is better left in the component that implements it
-// By the time the developer inserts all of the fields for a call,
-// they might as well use it in their component.
-
+/**
+ * Base Ajax request module.
+ */
 export const request = {
   state: {
     // Since we are a web application, we will target the latest version in our api calls.

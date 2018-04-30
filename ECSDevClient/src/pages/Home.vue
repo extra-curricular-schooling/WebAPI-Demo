@@ -49,7 +49,7 @@ export default {
           text: 'You have now been linked to your LinkedIn profile!',
           type: 'success',
           toast: true,
-          imageUrl: 'http://cliparting.com/wp-content/uploads/2016/08/Great-job-excellent-job-clipart-clipart-kid.png',
+          imageUrl: '../../static/images/good-work.png',
           imageHeight: '50px',
           imageWidth: '50px'
         })
@@ -71,6 +71,7 @@ export default {
         .then(response => {
           Swal({
             title: 'WooHoo!',
+            position: 'top-end',
             text: 'You earned ' + this.Points + ' points!',
             type: 'success',
             toast: true,
@@ -78,12 +79,12 @@ export default {
             imageHeight: '50px',
             imageWidth: '50px',
             timer: 2000,
-            showConfirmButton: false
-          }).then(result => {
-            if (result.dismiss === Swal.DismissReason.timer) {
+            showConfirmButton: false})
+            .then(result => {
+              if (result.dismiss === Swal.DismissReason.timer) {
 
-            }
-          })
+              }
+            })
         })
         .catch(error => {
           console.log(error.response)

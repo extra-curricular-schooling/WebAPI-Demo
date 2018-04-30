@@ -87,7 +87,7 @@ export default {
           if (response.data === 'Sweepstake Not Open') {
             Swal({
               text: 'No Sweepstakes are currently running. Check back later!',
-              imageUrl: 'http://lasalleyachtclub.com/wp-content/uploads/2015/02/Please-Check-Back-Later.jpg'
+              imageUrl: '../../static/images/please-check-back-later.jpg'
             })
           } else {
             this.collapsed = true

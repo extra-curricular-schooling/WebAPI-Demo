@@ -216,7 +216,6 @@ import AgreementModal from '@/components/registration-form/elements/AgreementMod
 import BadPassword from '@/components/bad-password-alert/Template'
 import Shuffler from '@/assets/js/arrayShuffler'
 import EventBus from '@/assets/js/EventBus'
-import States from '@/assets/js/enumerations/states'
 
 export default {
   name: 'RegistrationForm',
@@ -233,7 +232,7 @@ export default {
       questionSet1: [],
       questionSet2: [],
       questionSet3: [],
-      states: States,
+      states: this.$store.getters.getUnitedStatesAbbrevs,
 
       // Event Properties
       agreementIsChecked: false,
@@ -707,8 +706,6 @@ export default {
           this.loadingIsDisabled = true
         })
         .catch(error => {
-          console.log(error)
-
           // Connection Timeout
           if (error.code == 'ECONNABORTED') {
             Swal({
@@ -716,22 +713,31 @@ export default {
               title: 'We Apologize',
               text: 'Fetching your security questions took too long.'})
           }
-
-          // HTTP Status 503
-          if (error.response.status === 503) {
-            Swal({
-              type: 'error',
-              title: 'We Apologize',
-              text: 'The resource your are requesting is not available.'})
-          }
-
-          // HTTP Status 500
-          if (error.response.status === 500) {
+          if (error.response) {
+            // HTTP Status 503
+            if (error.response.status === 503) {
+              Swal({
+                type: 'error',
+                title: 'We Apologize',
+                text: 'The resource your are requesting is not available.'})
+            }
+            // HTTP Status 500
+            if (error.response.status === 500) {
+              Swal({
+                type: 'error',
+                title: 'We Apologize',
+                text: 'We are unable to process your request at this time.'})
+            }
+          } else if (error.request) {
             Swal({
               type: 'error',
               title: 'We Apologize',
               text: 'We are unable to process your request at this time.'})
+          } else {
+            // General Error handling for promise.
           }
+          // Show the configuration.
+          console.log(error.config)
         })
     },
     // ************************* Helpers *************************

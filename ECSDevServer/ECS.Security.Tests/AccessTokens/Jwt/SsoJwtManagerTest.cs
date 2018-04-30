@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Security.Claims;
+using System.Security.Principal;
 using System.Threading;
 using ECS.DTO.Sso;
 using ECS.Security.AccessTokens.Jwt;
@@ -12,18 +13,25 @@ namespace ECS.Security.Tests.AccessTokens.Jwt
 {
     public class SsoJwtManagerTest
     {
+        private readonly ITestOutputHelper _output;
+
+        public SsoJwtManagerTest(ITestOutputHelper output)
+        {
+            _output = output;
+        }
+
         public class GenerateToken
         {
-            private readonly ITestOutputHelper _output;
+            private readonly SsoJwtManagerTest _class;
 
-            public GenerateToken(ITestOutputHelper output)
+            public GenerateToken(SsoJwtManagerTest parentClass)
             {
-                _output = output;
+                _class = parentClass;
             }
 
             [Theory]
-            [InlineData("a", "Scholar", "a")]
-            public void ShouldBeSameToken(string password, string roleType, string username)
+            [InlineData("a", "a", "public")]
+            public void ShouldBeSameToken(string username, string password, string roleType)
             {
                 SsoLoginRequestDTO loginDto = new SsoLoginRequestDTO
                 {
@@ -32,9 +40,7 @@ namespace ECS.Security.Tests.AccessTokens.Jwt
                     Username = username
                 };
                 string token1 = SsoJwtManager.Instance.GenerateToken(loginDto);
-                _output.WriteLine(token1);
                 string token2 = SsoJwtManager.Instance.GenerateToken(loginDto);
-                _output.WriteLine(token2);
                 Assert.Equal(token1, token2);
             }
 
@@ -68,7 +74,7 @@ namespace ECS.Security.Tests.AccessTokens.Jwt
                     RoleType = roleType,
                     Username = username
                 };
-                _output.WriteLine(SsoJwtManager.Instance.GenerateToken(loginDto));
+                _class._output.WriteLine(SsoJwtManager.Instance.GenerateToken(loginDto));
             }
         }
 
@@ -78,11 +84,6 @@ namespace ECS.Security.Tests.AccessTokens.Jwt
         }
 
         public class ValidateToken
-        {
-
-        }
-
-        public class AuthenticateJwtToken
         {
 
         }
@@ -97,9 +98,15 @@ namespace ECS.Security.Tests.AccessTokens.Jwt
             // Mock the HttpRequestMessage
         }
 
+        
         public class GetClaim
         {
-            
+            [Theory]
+            [InlineData("username")]
+            public void FindsClaim(string username)
+            {
+                var mockPrincipal = new Mock<IPrincipal>();
+            }
         }
 
         public class GetClaimValue

@@ -4,6 +4,7 @@ import Vuex from 'vuex'
 import { redirect } from '@/components/redirect-modal/store'
 import { request } from './modules/request'
 import { auth } from './modules/auth'
+import { geography } from './modules/geography'
 import { home } from './modules/home'
 import { validation } from './modules/validation'
 import { linkedin } from '../components/LinkedIn-Modal/store'
@@ -35,6 +36,7 @@ export default new Vuex.Store({
   // we could use modules to organize them.
   modules: {
     auth,
+    geography,
     home,
     request,
     validation,

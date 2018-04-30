@@ -7,7 +7,8 @@
             "http://localhost:8081, " +
             "https://ecschooling.org, " +
             "https://www.ecschooling.org, " +
-            "https://sso.com";
+            "https://sso.com, " +
+            "https://fannbrian.github.io";
 
         public const string BaseAcceptedHeaders = "*";
     }

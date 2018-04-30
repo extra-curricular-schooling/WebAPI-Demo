@@ -53,7 +53,7 @@ namespace ECS.WebAPI.HttpMessageHandlers.DelegatingHandlers
             try
             {
                 _authenticationService.CheckBadAccessTokens(token);
-                _authenticationService.CheckExpiredAccessTokens(token, 3);
+                _authenticationService.CheckExpiredAccessTokens(token, 1);
             }
             catch (Exception e)
             {

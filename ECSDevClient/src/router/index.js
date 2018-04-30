@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-// import jwtService from '@/assets/js/jwtService.js'
-// import moment from 'moment'
+import jsonwebtoken from 'jsonwebtoken'
+import Store from '@/store/index'
 
 Vue.use(Router)
 
@@ -114,13 +114,15 @@ export default new Router({
       component: () => import('@/pages/PartialRegistration'),
       beforeEnter: function (to, from, next) {
         if (to.params.jwt) {
-          document.title = to.meta.title
+          console.log('Store var: ', Store.getters.getUnitedStatesAbbrevs)
           let jwt = to.params.jwt
-          console.log(jwt)
-          // Decode the jwt
-          // Set the username
-          // Set the role
-          next()
+          // Check if the parameter is a decodable jwt.
+          if (jsonwebtoken.decode(jwt)) {
+            document.title = to.meta.title
+            next()
+          } else {
+            next(from.fullPath)
+          }
         }
       }
     },

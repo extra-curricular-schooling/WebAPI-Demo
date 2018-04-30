@@ -167,7 +167,6 @@
 import Axios from 'axios'
 import AgreementModal from '@/components/registration-form/elements/AgreementModal'
 import Shuffler from '@/assets/js/arrayShuffler'
-import States from '@/assets/js/enumerations/states'
 import Swal from 'sweetalert2'
 
 export default {
@@ -184,7 +183,7 @@ export default {
       questionSet1: [],
       questionSet2: [],
       questionSet3: [],
-      states: States,
+      states: this.$store.getters.getUnitedStatesAbbrevs,
 
       // Event Properties
       agreementIsChecked: false,
@@ -222,14 +221,16 @@ export default {
     }
   },
   created () {
+    // Ensure that the Axios authorization header is empty for anonymous access.
     this.$store.dispatch('updateToken', '')
+
+    // Send Request to Server for updated security questions.
     this.fetchSecurityQuestions()
   },
   methods: {
     // ************************* Getters *************************
     /**
-     * @description
-     * gets a particular security answer
+     * Gets a particular security answer
      * @param {number} i - The label of a security answer
      * @returns {string} Security answer
      */
@@ -245,8 +246,7 @@ export default {
       return document.getElementById(answer).value;
     },
     /**
-     * @description
-     * gets ID of a selected security question
+     * Gets ID of a selected security question
      * @param {number} i - Index of a question ID
      * @param {string} selected - The selected security question
      */
@@ -261,10 +261,9 @@ export default {
     },
     // ************************* Data Validators *************************
     /**
-     * @description
-     * validates the first name of a user as defined by the constraint of the 
+     * Validates the first name of a user as defined by the constraint of the 
      * name regular expression
-     * regex: NAME_REGEX
+     * @constant {regex} NAME_REGEX
      */
     validateFirstName () {
       if (!this.$data.NAME_REGEX.test(this.$data.firstName) && this.$data.firstName != '') {
@@ -282,10 +281,9 @@ export default {
       }
     },
     /**
-     * @description
-     * validates the last name of a user as defined by the constraint of the 
-     * name regular expression
-     * regex: NAME_REGEX
+     * Validates the last name of a user as defined by the constraint of the 
+     * name regular expression.
+     * @constant {regex} NAME_REGEX
      */
     validateLastName () {
       if (!this.$data.NAME_REGEX.test(this.$data.lastName) && this.$data.lastName != '') {
@@ -303,10 +301,9 @@ export default {
       }
     },
     /**
-     * @description
-     * validates the email of a user as defined by the constraint of the 
-     * email regular expression
-     * regex: EMAIL_REGEX
+     * Validates the email of a user as defined by the constraint of the 
+     * email regular expression.
+     * @constant {regex} EMAIL_REGEX
      */
     validateEmail () {
       if (!this.$data.EMAIL_REGEX.test(this.$data.email) && this.$data.email != '') {
@@ -324,10 +321,9 @@ export default {
       }
     },
     /**
-     * @description
-     * validates the address of a user as defined by the constraint of the 
+     * Validates the address of a user as defined by the constraint of the 
      * address regular expression
-     * regex: ADDRESS_REGEX
+     * @constant {regex} ADDRESS_REGEX
      */
     validateAddress () {
       if (!this.$data.ADDRESS_REGEX.test(this.$data.address) && this.$data.address != '') {
@@ -345,10 +341,9 @@ export default {
       }
     },
     /**
-     * @description
-     * validates the city of a user as defined by the constraint of the 
+     * Validates the city of a user as defined by the constraint of the 
      * city regular expression
-     * regex: CITY_REGEX
+     * @constant {regex} CITY_REGEX
      */
     validateCity () {
       if (!this.$data.CITY_REGEX.test(this.$data.city) && this.$data.city != '') {
@@ -366,10 +361,9 @@ export default {
       }
     },
     /**
-     * @description
-     * validates the zip code of a user as defined by the constraint of the 
-     * zip code regular expression
-     * regex: ZIPCODE_REGEX
+     * Validates the zip code of a user as defined by the constraint of the 
+     * zip code regular expression.
+     * @param {regex} ZIPCODE_REGEX
      */
     validateZipCode () {
       if (!this.$data.ZIPCODE_REGEX.test(this.$data.zipCode) && this.$data.zipCode != '') {
@@ -387,8 +381,7 @@ export default {
       }
     },
     /**
-     * @description
-     * validates if all three answers have been provided
+     * Validates if all three security answers have been provided.
      */
     validateAnswers () {
       if (document.getElementById('answer1').value == '' && document.getElementById('answer2').value == '' && document.getElementById('answer3').value == '') {
@@ -412,8 +405,7 @@ export default {
       }
     },
     /**
-     * @description
-     * validates if all information has been successfully filled and validated
+     * Validates if all information has been successfully filled and validated
      * @returns {boolean} true - If the form is valid
      * @returns {boolean} false - If the form is not valid
      */
@@ -434,40 +426,37 @@ export default {
     },
     // ************************* Togglers *************************
     /**
-     * @description
-     * toggles/activates and deactivates the agreement modal that contains
+     * Toggles/activates and deactivates the agreement modal that contains
      * the site's terms and conditions
      */
     toggleModal () {
       this.$refs.modal.toggle()
     },
     /**
-     * @description
-     * toggles the checkbox of the form if clicked/selected
+     * Toggles the checkbox of the form if clicked/selected
      */
     checkBox () {
       this.agreementIsChecked = !this.agreementIsChecked
     },
     // ************************* APIs *************************
     /**
-     * @description
      * POST request to server to submit form to register a new user
      */
     submit () {
-      // Check if form is valid
+      // Check if form is not valid.
       if (!this.isValidForm()) {
         Swal({
           type: 'warning',
           title: 'Uh-Oh',
           html: 'It seems either your form is <b>incomplete</b> or some of your inputs are <b>invalid</b>...'})
-
-      // Check if user has agreed to terms and conditions
-      } else if (!this.$data.agreementIsChecked) {
+      } // Check if user has agreed to terms and conditions.
+      else if (!this.$data.agreementIsChecked) {
         Swal({
           type: 'warning',
           title: 'Uh-Oh',
           html: 'You must <b>read and agree</b> to our Terms and Conditions to continue...'})
-      } else {
+      } // Form is Valid.
+      else {
         Axios({
           method: 'POST',
           url: this.$store.getters.getBaseAppUrl + 'Registration/SubmitPartialRegistration',
@@ -506,18 +495,15 @@ export default {
             })
           })
           .catch(error => {
-            // Error
-
             if (error.response) {
-              // The request was made and the server responded with a status code
-              // that falls out of the range of 2xx
+              // General client errors.
               if (error.response.status === 400) {
-                
                 Swal({
                   title: 'Bad News',
                   text: 'According to our records, you are not in our database',
                   footer: '<a href="/">Take me to the main page</a>'})
               }
+              // Duplicate entry in account or user data tables.
               if (error.response.status === 409) {
                 this.$store.dispatch('signOut')
                 Swal({
@@ -526,22 +512,19 @@ export default {
                   footer: '<a href="/">Take me to the home page</a>'})
               }
             } else if (error.request) {
-              // Server
               Swal({
                 type: 'error',
                 title: 'We Apologize',
                 text: 'We are unable to process your request at this time.'})
             } else {
-              console.log('hello')
+              // General Error handling for promise.
             }
-            // Show the configuration.
-            console.log(error.config)
+            console.log('Error: ', error.config)
           })
         }
     },
     /**
-     * @description
-     * GET request to get security questions from database
+     * GET request to get security questions from database.
      */
     fetchSecurityQuestions () {
       Axios({
@@ -552,53 +535,51 @@ export default {
       })
         .then(response => {
           this.$data.questions = Shuffler.shuffleArray(response.data) 
-
           this.divideQuestions()
           this.loadingIsDisabled = true
         })
         .catch(error => {
-          // Connection Timeout
-          if (error.code == 'ECONNABORTED') {
-            Swal({
-              type: 'error',
-              title: 'We Apologize',
-              text: 'Fetching your security questions took too long.'})
-          }
-          // HTTP Status 503 - No questions in resource
-          
-          // HTTP Status 500
-          // Error
-            if (error.response) {
-              // The request was made and the server responded with a status code
-              // that falls out of the range of 2xx
-            } else if (error.request) {
-              // Server
+          if (error.response) {
+            // HTTP Status 503
+            if (error.response.status === 503) {
+              Swal({
+                type: 'error',
+                title: 'We Apologize',
+                text: 'The resource your are requesting is not available.'})
+            }
+            // HTTP Status 500
+            if (error.response.status === 500) {
               Swal({
                 type: 'error',
                 title: 'We Apologize',
                 text: 'We are unable to process your request at this time.'})
-            } else {
-              console.log('hello')
             }
-            // Show the configuration.
-            console.log(error.config)
-          })
+          } else if (error.request) {
+            Swal({
+              type: 'error',
+              title: 'We Apologize',
+              text: 'We are unable to process your request at this time.'})
+          } else {
+            // General Error handling for promise.
+          }
+          // Show the configuration.
+          console.log(error.config)
+        })
     },
     // ************************* Helpers *************************
     /**
-     * @description
-     * divides security questions GET response from server into 3 groups to populate
+     * Divides security questions GET response from server into 3 groups to populate
      * form upon component creation
      */
     divideQuestions () {
       let partSize = this.$data.questions.length/3 
  
       for (let i = 0; i < this.$data.questions.length; i+=partSize) { 
-        if (i == 0) { 
+        if (i === 0) { 
           this.$data.questionSet1 = this.$data.questions.slice(i,i+partSize) 
-        } else if (i == partSize) { 
+        } else if (i === partSize) { 
           this.$data.questionSet2 = this.$data.questions.slice(i,i+partSize) 
-        } else if (i == partSize*2) { 
+        } else if (i === partSize*2) { 
           this.$data.questionSet3 = this.$data.questions.slice(i,i+partSize) 
         } 
       }
@@ -690,4 +671,3 @@ span.select-state {
   width: 100%;
 }
 </style>
-
