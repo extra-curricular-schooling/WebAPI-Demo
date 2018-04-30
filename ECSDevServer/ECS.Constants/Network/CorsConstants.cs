@@ -8,9 +8,10 @@
         public const string BaseAcceptedOrigins = 
             "http://localhost:8080, " +
             "http://localhost:8081, " +
+            "http://localhost:8085, " +
+            "https://localhost:8085, " +
             "https://ecschooling.org, " +
             "https://www.ecschooling.org, " +
-            "https://sso.com, " +
             "https://fannbrian.github.io";
 
         /// <summary>
