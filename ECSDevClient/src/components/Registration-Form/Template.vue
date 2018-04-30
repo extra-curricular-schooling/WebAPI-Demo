@@ -45,7 +45,19 @@
 
       <bad-password ref="alert"></bad-password>
       <div class="field password">
-        <label class="label field-element is-required">Password</label>
+        <div class="field is-horizontal" style="height:24px;margin-bottom:0.5em;">
+          <div class="field-body">
+            <label class="label field is-required" style="text-align:left;">Password</label>
+            <span title="What are special characters?" class="icon has-text-info" @click.prevent="toggleSpecialCharInfo" style="float:right;">
+              <i class="fas fa-info-circle"></i>
+            </span>
+          </div>
+        </div>
+        <div class="notification is-warning" v-bind:class="{ 'is-hidden' : isHidden }">
+          <button class="delete" @click.prevent="toggleSpecialCharInfo"></button>
+          <p>Special characters are non-alphabetic and non-numeric characters.</p>
+          <p>For passwords, these are the special characters allowed: <strong>{{ specialCharInfo }}</strong></p>
+        </div>
         <div class="control has-icons-left">
           <input id="password" class="input" type="password"  @keyup="validatePassword" autocomplete="new-password" placeholder="************" required>
           <span class="icon is-small is-left">
@@ -225,6 +237,7 @@ export default {
       // Event Properties
       agreementIsChecked: false,
       loadingIsDisabled: false,
+      isHidden: true,
 
       // Request Data
       firstName: '',
@@ -252,6 +265,7 @@ export default {
       cityMessage: '',
       zipCodeMessage: '',
       answersMessage: '',
+      specialCharInfo: this.$store.getters.getSpecialCharacters,
 
       // Regular Expressions
       NAME_REGEX: this.$store.getters.getNameRegex,
@@ -580,6 +594,13 @@ export default {
     checkBox () {
       this.agreementIsChecked = !this.agreementIsChecked
     },
+    /**
+     * @description
+     * toggles the info box displaying allowed special characters
+     */
+    toggleSpecialCharInfo () {
+      this.isHidden = !this.isHidden
+    },
     // ************************* APIs *************************
     /**
      * @description
@@ -815,6 +836,20 @@ export default {
 
 button {
   width: 175px;
+}
+
+div.notification {
+  padding: 10px 10px 10px 10px;
+  text-align: left;
+  font-size: 10pt;
+}
+
+form {
+  background-color: white;
+  padding-top: 15px;
+  padding-left: 50px;
+  padding-right: 50px;
+  padding-bottom: 15px;
 }
 
 select.pull-down {
