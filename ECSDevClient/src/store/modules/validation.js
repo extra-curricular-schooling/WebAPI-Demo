@@ -24,7 +24,8 @@ export const validation = {
     addressMessage: Object.freeze('The address you entered contains invalid characters.'),
     cityMessage: Object.freeze('The city you entered contains invalid characters.'),
     zipCodeMessage: Object.freeze('ZIP Code must be a valid ZIP Code'),
-    answersMessage: Object.freeze('Please provide answers to all questions.')
+    answersMessage: Object.freeze('Please provide answers to all questions.'),
+    specialCharacters: Object.freeze('~ ! @ # $ % ^ & * ( ) _')
   },
   getters: {
     // Get regular expressions

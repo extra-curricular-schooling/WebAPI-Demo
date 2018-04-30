@@ -56,7 +56,7 @@
         <div class="notification is-warning" v-bind:class="{ 'is-hidden' : isHidden }">
           <button class="delete" @click.prevent="toggleSpecialCharInfo"></button>
           <p>Special characters are non-alphabetic and non-numeric characters.</p>
-          <p>For passwords, these are the special characters allowed: {{ specialCharInfo }}</p>
+          <p>For passwords, these are the special characters allowed: <strong>{{ specialCharInfo }}</strong></p>
         </div>
         <div class="control has-icons-left">
           <input id="password" class="input" type="password"  @keyup="validatePassword" autocomplete="new-password" placeholder="************" required>
