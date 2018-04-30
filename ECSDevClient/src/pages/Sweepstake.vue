@@ -41,7 +41,7 @@ export default {
       Points: null, // Points from the scholar account
       Price: '', // it is the Price of ticket for sweepstake that is set by admin
       username: this.$store.getters.getUsername,
-      timeDateStamp: '', // the time date stamp is right in utc format
+      timeDateStamp: moment().utc('dddd, MMMM Do YYYY , hh:mm:ss').format(), // the time date stamp is right in utc format
       SweepStakesID: '', // the ID of the sweepstake that is open
       OpenDateTime: '', // the opening date of the sweepstake
       Prize: '',

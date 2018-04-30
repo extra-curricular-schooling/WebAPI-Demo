@@ -63,8 +63,7 @@ export default {
     toggle (userPassword) {
       Axios({
         method: 'GET',
-        url: this.$store.getters.getBasePwnedUrl + PwnedHelper.getHashedPrefix(userPassword), //use string 'password' for test
-        headers: this.$store.getters.getRequestHeaders
+        url: this.$store.getters.getBasePwnedUrl + PwnedHelper.getHashedPrefix(userPassword) //use string 'password' for test
       })
         .then(response => {
           let hits = PwnedHelper.getHits(userPassword, response.data) //use string 'password' for test
