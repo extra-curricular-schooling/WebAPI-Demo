@@ -68,12 +68,12 @@ export default {
         }
       ],
       rows: [
-        { name: 'Luis Pedroza-Soto', email: 'example' },
+        { name: 'Luis Pedroza-Soto', email: 'luis.g.pedrozasoto@gmail.com' },
         { name: 'Scott Roberts', email: 's.e.roberts0@gmail.com' },
-        { name: 'Hugo Garcia', email: 'example' },
-        { name: 'Kris Cubie', email: 'example' },
-        { name: 'Trisha Eschual', email: 'example' },
-        { name: 'Furkan Arif', email: 'example' }
+        { name: 'Hugo Garcia', email: 'hugogarcia354' },
+        { name: 'Kris Cubie', email: 'kaycubie@gmail.com' },
+        { name: 'Trisha Eschual', email: 'piechual@gmail.com' },
+        { name: 'Furkan Arif', email: 'furkanarif@hotmail.com' }
       ]
     }
   },
