@@ -27,6 +27,15 @@ namespace ECS.WebAPI.Controllers.v1
         private readonly ILinkedInAccessTokenRepository _linkedInAccessTokenRepository = new LinkedInAccessTokenRepository();
         #endregion
 
+        /// <summary>
+        /// This callback is triggered when the user cancels the OAuth2 process
+        /// </summary>
+        /// <param name="error">Error code provided by LinkedIn</param>
+        /// <param name="error_description">Description of error provided by LinkedIn</param>
+        /// <param name="state">Returns the state we provided LinkedIn when we redirected the user to their website</param>
+        /// <returns>
+        /// Redirects to the provided return uri or the default home page of our web app
+        /// </returns>
         [AllowAnonymous]
         [HttpGet]
         [Route("ExternalLoginCallback")]
@@ -34,27 +43,37 @@ namespace ECS.WebAPI.Controllers.v1
         {
             var nvs = Request.GetQueryNameValuePairs();
             string stateParam = nvs.LastOrDefault(d => d.Key == "state").Value;
-            string returnURI = "https://localhost:8080/#/Home";
+            // Default return uri
+            string returnURI = "https://localhost:8080/Home";
+            // If the query string for state is not empty
             if (state != null)
             {
                 // We need some variables from our state parameter.
-                    NameValueCollection provideritem = HttpUtility.ParseQueryString(stateParam);
-                    if (provideritem["returnURI"] != null)
-                    {
+                NameValueCollection provideritem = HttpUtility.ParseQueryString(stateParam);
+                // Check for a return uri query string parameter
+                if (provideritem["returnURI"] != null)
+                {
                     returnURI = provideritem["returnURI"];
                 }
             }
 
+            // Try to redirect to the provided return uri
             try
             {
                 return Redirect(returnURI);
             }
             catch (Exception)
             {
-                return BadRequest("Invalid return url.");
+                return Redirect("https://localhost:8080/Home");
             }
         }
 
+        /// <summary>
+        /// Callback LinkedIn sends the user to after successfully logging in
+        /// </summary>
+        /// <param name="code"></param>
+        /// <param name="state">Returns the state we provided LinkedIn when we redirected the user to their website</param>
+        /// <returns></returns>
         [AllowAnonymous]
         [HttpGet]
         [Route("ExternalLoginCallback")]
@@ -64,6 +83,7 @@ namespace ECS.WebAPI.Controllers.v1
 
             string username = "";
             string returnURI = "";
+            // For future user when we integrate with other oauth2 applications
             if (ProviderName == null || ProviderName == "")
             {
                 var nvs = Request.GetQueryNameValuePairs();
@@ -102,13 +122,52 @@ namespace ECS.WebAPI.Controllers.v1
                     return BadRequest();
                 }
             }
+            else
+            {
+                var nvs = Request.GetQueryNameValuePairs();
+                string stateParam = nvs.LastOrDefault(d => d.Key == "state").Value;
+                if (state != null)
+                {
+                    // We need some variables from our state parameter.
+                    NameValueCollection provideritem = HttpUtility.ParseQueryString(stateParam);
 
+                    if (provideritem["username"] != null)
+                    {
+                        username = provideritem["username"];
+                        // Check to make sure username exists in database.
+                        if (!_accountRepository.Exists(d => d.UserName == username))
+                        {
+                            return Unauthorized();
+                        }
+                    }
+                    // No username was provided.
+                    else
+                    {
+                        return Unauthorized();
+                    }
+
+                    if (provideritem["returnURI"] != null)
+                    {
+                        returnURI = provideritem["returnURI"];
+                    }
+                }
+                else
+                {
+                    return BadRequest();
+                }
+            }
+
+            // Rewrite the request to include the requested headers and info for exchanging
+            // the authorization code for a LinkedIn access token
             LinkedInOAuth2Client.RewriteRequest();
             
+            // Now that the request has been rewritten, make the call and include the same callback uri provided earlier
             var authResult = OpenAuth.VerifyAuthentication(_externalCallBack);
 
+            // For future user when we integrate with other oauth2 applications
             string providerDisplayName = OpenAuth.GetProviderDisplayName(ProviderName);
 
+            //If the verification process failed
             if (!authResult.IsSuccessful)
             {
                 return Unauthorized();
@@ -152,6 +211,7 @@ namespace ECS.WebAPI.Controllers.v1
 
                 try
                 {
+                    // If the given user already has a LinkedIn access token
                     if (_linkedInAccessTokenRepository.Exists(d => d.UserName == username, d => d.Account))
                     {
                         LinkedInAccessToken token = _linkedInAccessTokenRepository.GetSingle(d => d.UserName == username, d => d.Account);
@@ -177,20 +237,42 @@ namespace ECS.WebAPI.Controllers.v1
 
                 if(returnURI != "null")
                 {
+                    // Try the given redirectUri
                     try
                     {
                         return Redirect(returnURI + "?linkedin=success");
-                    } catch (Exception)
+                    }
+                    // If it fails, go with the default
+                    catch (Exception)
                     {
-                        return Ok("Return url was invalid though.");
+                        return Redirect("http://localhost:8080/Home?linkedin=success");
                     }
                     
                 }
 
-                return Ok();
+                return Redirect("http://localhost:8080/Home?linkedin=success");
             }
         }
 
+        /// <summary>
+        /// Redirects the user to LinkedIn's OAuth2 portal
+        /// </summary>
+        /// <param name="authtoken">
+        /// This call cannot be an AJAX call due to the CORS issues with LinkedIn, the Jwt
+        /// token of the user must be passed through this query string
+        /// </param>
+        /// <param name="returnURI">
+        /// Where to redirect the user after either finishing the process or aborting it
+        /// halfway through it
+        /// </param>
+        /// <returns>
+        /// - Success: (Valid Jwt)
+        ///     302 status code
+        ///         Redirects the client to the start of LinkedIn's OAuth2 process
+        /// - Failure:
+        ///     401 status code
+        ///         Invalid or missing Jwt
+        /// </returns>
         [AllowAnonymous]
         [HttpGet]
         [Route("RedirectToLinkedIn")]
@@ -198,14 +280,17 @@ namespace ECS.WebAPI.Controllers.v1
         public IHttpActionResult RedirectToLinkedIn(string authtoken, string returnURI)
         {
             string username;
-            
+            // Username is passed by reference, thus it is assigned inside validateToken
+            // Validate Jwt to ensure maximum 
             if (JwtManager.Instance.ValidateToken(authtoken, out username))
             {
                 string provider = "linkedin";
                 var redirectUrl = _externalCallBack + "?username=" + username + "&returnURI=" + HttpUtility.UrlEncode(returnURI);
                 OpenAuth.RequestAuthentication(provider, redirectUrl);
+                // Here to satisfy compiler, have no idea how you would trigger this.
                 return Ok();
             }
+            // Invalid or missing Jwt
             else
             {
                 return Unauthorized();

@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
 using ECS.BusinessLogic.ModelLogic.Implementations;
-using ECS.DTO;
 using ECS.Models;
 using ECS.Security.AccessTokens.Jwt;
 using ECS.Security.Hash;
@@ -28,10 +24,19 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
         }
 
         /// <summary>
-        /// 
+        /// Retrieves username from the Jwt provided in the authorization header
         /// </summary>
-        /// <param name="authHeader"></param>
-        /// <returns></returns>
+        /// <param name="authHeader">
+        /// Contents of the authorization header
+        /// </param>
+        /// <returns>
+        /// One of the following:
+        /// - Success: (Valid jwt)
+        ///     string containing the username
+        /// - Failure:
+        ///     null
+        /// </returns>
+        /// <remarks>Author: Luis Guillermo Pedroza-Soto</remarks>
         public string GetUsername(string authHeader)
         {
             string accessTokenFromRequest = "";
@@ -47,9 +52,10 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
                     accessTokenFromRequest = authHeaderVal.Parameter;
                 }
             }
-
-            // get the access token
-            // accessTokenFromRequest = actionContext.Request.Headers.Authorization.ToString();
+            else
+            {
+                return null;
+            }
 
             string username = "";
             if (JwtManager.Instance.ValidateToken(accessTokenFromRequest, out username))
@@ -63,11 +69,12 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
         }
 
         /// <summary>
-        /// 
+        /// Logic for changing a user's current password
         /// </summary>
-        /// <param name="account"></param>
-        /// <param name="salt"></param>
-        /// <param name="desiredPassword"></param>
+        /// <param name="account">Account object target for the new password</param>
+        /// <param name="salt">Salt for the current account</param>
+        /// <param name="desiredPassword">New password to be applied to given account</param>
+        /// <remarks>Author: Luis Guillermo Pedroza-Soto</remarks>
         public void ChangePassword (Account account, Salt salt, string desiredPassword)
         {
             var pSalt = HashService.Instance.CreateSaltKey();

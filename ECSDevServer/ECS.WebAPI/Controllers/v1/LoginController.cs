@@ -28,8 +28,24 @@ namespace ECS.WebAPI.Controllers.v1
         #endregion
 
         /// <summary>
-        /// 
+        /// Authenticates a user based on the given username and password.
         /// </summary>
+        /// <param name="credentials">
+        /// Data transfer object containing the provided username and password of an individual.
+        /// </param>
+        /// <returns>
+        /// A response containing one of the following:
+        /// - Success: (Valid credentials)
+        ///     200 status code 
+        ///         Body contains a Json Web Token (JWT)
+        ///         containing the user's requested user info.
+        /// - Failure: 
+        ///     400 status code 
+        ///         Upon suspended account with 'SUSPENDED' message
+        ///         Data provided is invalid
+        ///     401 status code
+        ///         Upon invalid credentials.
+        /// </returns>
         /// <remarks>Author: Luis Pedroza-Soto</remarks>
         [HttpPost]
         [AllowAnonymous]
@@ -40,9 +56,11 @@ namespace ECS.WebAPI.Controllers.v1
             // Credentials is already read and deserialized into a DTO. Validate it.
             Validate(credentials);
 
+            // Checks for valid model state
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
+            // Check to make they are not a new SSO user
             if (_partialAccountRepository.Exists(d => d.UserName == credentials.Username))
             {
                 var transformer = new SsoLoginTransformer();
@@ -54,12 +72,12 @@ namespace ECS.WebAPI.Controllers.v1
             // Proccess any other information.
             if (!_accountRepository.Exists(d => d.UserName == credentials.Username))
             {
-                return BadRequest("Invalid credentials.");
+                return Unauthorized();
             }
 
             if (!_saltRepository.Exists(d => d.UserName == credentials.Username, d => d.Account))
             {
-                return BadRequest("Invalid credentials.");
+                return Unauthorized();
             }
 
             Salt salt;
@@ -69,7 +87,7 @@ namespace ECS.WebAPI.Controllers.v1
             }
             catch (Exception)
             {
-                return BadRequest("Invalid credentials.");
+                return Unauthorized();
             }
 
             // Check app DB for user.
@@ -80,7 +98,7 @@ namespace ECS.WebAPI.Controllers.v1
             }
             catch (Exception)
             {
-                return BadRequest("Invalid credentials.");
+                return Unauthorized();
             }
 
             if (!account.AccountStatus)
@@ -116,16 +134,11 @@ namespace ECS.WebAPI.Controllers.v1
 
                 return Json(new { AuthToken = token.Value });
             }
+            // Given password does no match the stored hashed password after being hashed
             else
             {
-                return BadRequest("Invalid credentials.");
+                return Unauthorized();
             }
-
-            // Return successful response with a "redirect" to where the token will be given
-            // Post methods should not return data, but should return responses and location headers of 
-            // what was created in the post.
-
-            //return CreatedAtRoute("DefaultApi", new { id = product.Id }, product);
         }
     }
 }

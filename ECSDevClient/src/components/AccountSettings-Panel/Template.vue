@@ -58,7 +58,7 @@ export default {
   },
   data () {
     return {
-      currentComponent: 'not-implemented',
+      currentComponent: '',
       notificationMessage: '',
       isVisibleNotification: false
     }

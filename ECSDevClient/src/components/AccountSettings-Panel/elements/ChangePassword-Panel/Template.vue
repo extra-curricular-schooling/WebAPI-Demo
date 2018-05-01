@@ -51,6 +51,7 @@ export default {
     }
   },
   computed: {
+    // Check to make sure all fields are valid before allowing submission
     validEntries: function () {
       if (this.validPassword && this.validConfirmPassword && this.validNewPassword && this.validConfirmNewPassword) {
         return true
@@ -88,6 +89,7 @@ export default {
     }
   },
   methods: {
+    // Check to make sure the user's password is within a certain safety threshold
     checkForPwnedPassword: function () {
       Axios({
         method: 'GET',
