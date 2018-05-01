@@ -71,8 +71,7 @@ export default {
     testPwnd () {
       Axios({
         method: 'GET',
-        url: this.$store.getters.getBasePwnedUrl + PwnedHelper.getHashedPrefix(this.passwordForPwned),
-        headers: this.$store.getters.getRequestHeaders
+        url: this.$store.getters.getBasePwnedUrl + PwnedHelper.getHashedPrefix(this.passwordForPwned)
       })
         .then(response => {
           this.$data.hits = PwnedHelper.getHits(this.passwordForPwned, response.data)

@@ -2,6 +2,7 @@
 using System.Data;
 using System.Net;
 using System.Net.Http;
+using System.Runtime.InteropServices;
 using ECS.BusinessLogic.ModelLogic.Implementations;
 using ECS.Constants.Network;
 using ECS.DTO.Sso;
@@ -56,11 +57,7 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
             if (_partialAccountLogic.Exists(registrationDto.Username) ||
                 _accountLogic.Exists(registrationDto.Username))
             {
-                return new HttpResponseMessage
-                {
-                    Content = new StringContent("Account already exists"),
-                    StatusCode = HttpStatusCode.Conflict
-                };
+                return new HttpResponseMessage(HttpStatusCode.Conflict);
             }
 
             // Add new PartialAccount to the database
@@ -97,20 +94,12 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
             // Validate
             if (partialAccount == null && account == null)
             {
-                return new HttpResponseMessage
-                {
-                    ReasonPhrase = "Invalid Credentials",
-                    StatusCode = HttpStatusCode.Unauthorized
-                };
+                return new HttpResponseMessage(HttpStatusCode.Unauthorized);
             }
 
             if (partialAccount != null && account != null)
             {
-                return new HttpResponseMessage
-                {
-                    ReasonPhrase = "Database Inconsistency",
-                    StatusCode = HttpStatusCode.InternalServerError
-                };
+                return new HttpResponseMessage(HttpStatusCode.InternalServerError);
             }
 
             if (partialAccount != null)
@@ -123,10 +112,7 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
                 return AccountLoginHelper(loginDto, account);
             }
 
-            return new HttpResponseMessage
-            {
-                StatusCode = HttpStatusCode.InternalServerError
-            };
+            return new HttpResponseMessage(HttpStatusCode.InternalServerError);
         }
 
         /// <summary>
@@ -159,14 +145,9 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
         private HttpResponseMessage AccountLoginHelper(SsoLoginRequestDTO loginDto, Account account)
         {
             var saltModel = _saltLogic.GetSalt(loginDto.Username);
-            // TODO: @Scott Check if the Saltmodel.Account is still null
             if (saltModel == null)
             {
-                return new HttpResponseMessage
-                {
-                    Content = new StringContent("Database does not contain salt"),
-                    StatusCode = HttpStatusCode.InternalServerError
-                };
+                return new HttpResponseMessage(HttpStatusCode.InternalServerError);
             }
 
             // Make sure you append the salt, not prepend (group decision).
@@ -174,11 +155,7 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
 
             if (!account.Password.Equals(hashedPassword))
             {
-                return new HttpResponseMessage
-                {
-                    Content = new StringContent("Hashed Password mismatch account password"),
-                    StatusCode = HttpStatusCode.Unauthorized
-                };
+                return new HttpResponseMessage(HttpStatusCode.Unauthorized);
             }
 
             var token = JwtManager.Instance.GenerateToken(loginDto.Username);
@@ -200,7 +177,6 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
             return new HttpResponseMessage
             {
                 Content = new StringContent(UrlConstants.BaseAppClient + "home?jwt=" + token),
-                ReasonPhrase = "Redirected",
                 StatusCode = HttpStatusCode.OK
             };
         }
@@ -219,20 +195,12 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
             // Validate
             if (partialAccount == null && account == null)
             {
-                return new HttpResponseMessage
-                {
-                    Content = new StringContent("Invalid Credentials"),
-                    StatusCode = HttpStatusCode.BadRequest
-                };
+                return new HttpResponseMessage(HttpStatusCode.Unauthorized);
             }
 
             if (partialAccount != null && account != null)
             {
-                return new HttpResponseMessage
-                {
-                    Content = new StringContent("Database Inconsistency"),
-                    StatusCode = HttpStatusCode.InternalServerError
-                };
+                return new HttpResponseMessage(HttpStatusCode.InternalServerError);
             }
 
             if (partialAccount != null)

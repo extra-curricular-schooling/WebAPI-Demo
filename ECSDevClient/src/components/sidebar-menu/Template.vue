@@ -104,10 +104,11 @@ export default {
     height: 850px;
     z-index: 0;
     display: none;
-    color: white;
+    color: black;
+    background-color: hsl(0, 0%, 96%);
     /* background-image: url('https://c.pxhere.com/photos/31/57/structure_texture_concrete_wall_concrete_wall_grain_background_grey-959987.jpg!d'); */
     overflow: hidden;
-    box-shadow: 0px 0px 5px #fff;
+    box-shadow: 0px 0px 5px black;
     opacity: .8;
   }
   .slideout-menu:hover {
@@ -136,16 +137,16 @@ export default {
     border: .5px solid;
     cursor: pointer;
     padding: 5px;
-    color: white;
+    color: black;
   }
   #groups:active{
     color: #FFD1AA;
     box-shadow: 0 0 5px -1px rgba(0,0,0,0.6);
   }
   #groupName{
-    color:white;
+    color:black;
   }
   #groupName:active{
-    color: #FFD1AA;
+    color: black;
   }
 </style>

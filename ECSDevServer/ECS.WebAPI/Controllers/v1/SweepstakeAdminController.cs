@@ -123,48 +123,58 @@ namespace ECS.WebAPI.Controllers.v1
         [EnableCors(origins: CorsConstants.BaseAcceptedOrigins, headers: CorsConstants.BaseAcceptedHeaders, methods: "GET")]
         public IHttpActionResult CloseSweepstake()
         {
-            List<string> sweepstakeEntries = new List<string>();
-            var everything = this.sweepStakeEntryRepository.GetAll();
-            var sweepstake = db.SweepStakes
-                       .Where(x => x.UsernameWinner == "No Winner" & x.ClosedDateTime >= DateTime.Now)
-                       .FirstOrDefault<SweepStake>();
-            foreach (var entry in everything)
+            try
             {
-                var entries = (entry.Cost / sweepstake.Price);
-                for(int i = 0; i < entries; i++)
+                List<string> sweepstakeEntries = new List<string>();
+                var everything = this.sweepStakeEntryRepository.GetAll();
+                if (everything.Count == 0)
                 {
-                    sweepstakeEntries.Add(entry.Account.UserName);
-                }
-
-            }
-            Random rnd = new Random();
-            int r = rnd.Next(sweepstakeEntries.Count);
-            var winner = (string)sweepstakeEntries[r];
-            var nameWinner = sweepStakeEntryRepository.GetSingle(x => x.UserName == winner);
-            if (nameWinner == null)
-            {
-                return Ok("No Winner");
-            }
-            else
-            {
-                var wins = nameWinner.UserName;
-                SweepStake sweep = sweepStakeRepository.GetSingle(x => x.UsernameWinner == "No Winner" & x.ClosedDateTime >= DateTime.Now);
-                if (sweep == null)
-                {
+                    SweepStake sweepstakeClosed = sweepStakeRepository.GetSingle(x => x.UsernameWinner == "No Winner" & x.ClosedDateTime >= DateTime.Now);
+                    var wins = "Closed By Admin";
+                    sweepstakeClosed.UsernameWinner = wins;
+                    sweepStakeRepository.Update(sweepstakeClosed);
                     return Ok("No Winner");
                 }
                 else
                 {
+                    var sweepstake = db.SweepStakes
+                               .Where(x => x.UsernameWinner == "No Winner" & x.ClosedDateTime >= DateTime.Now)
+                               .FirstOrDefault<SweepStake>();
+                    foreach (var entry in everything)
+                    {
+                        var entries = (entry.Cost / sweepstake.Price);
+                        for (int i = 0; i < entries; i++)
+                        {
+                            sweepstakeEntries.Add(entry.Account.UserName);
+                        }
+
+                    }
+                    // ALL THE TICKET ENTRIES ARE PUT IN A LIST AND RANDOMLY ONE WINNER CHOSEN
+                    Random rnd = new Random();
+                    int r = rnd.Next(sweepstakeEntries.Count);
+                    var winner = (string)sweepstakeEntries[r];
+                    var nameWinner = sweepStakeEntryRepository.GetSingle(x => x.UserName == winner);
+                    // GOT THE USERNMAE WHO WON
+                    SweepStake sweep = sweepStakeRepository.GetSingle(x => x.UsernameWinner == "No Winner" & x.ClosedDateTime >= DateTime.Now);
+
+                    var wins = nameWinner.UserName;
                     sweep.UsernameWinner = wins;
                     sweepStakeRepository.Update(sweep);
-                    var entries = db.SweepStakeEntries.ToList();
-                    foreach (var del in entries)
+                    var deleteEntries = db.SweepStakeEntries.ToList();
+
+                    // DELETING ALL ENTRIES IN A SWEEPSTAKE ENTRY TABLE
+
+                    foreach (var del in deleteEntries)
                     {
-                        db.SweepStakeEntries.Remove(del);
+                       db.SweepStakeEntries.Remove(del);
                     };
                     db.SaveChanges();
                     return Ok(wins);
                 }
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Source + "\n" + e.Message + "\n" + e.InnerException + "\n" + e.StackTrace);
             }
         }
     }

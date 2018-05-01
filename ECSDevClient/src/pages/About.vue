@@ -12,7 +12,7 @@
                         <h1 class="sub-title">
                             What do we do?
                         </h1>
-                        <p/>
+                        <br>
                     </div>
                     <div class="container is-fluid">
                         <h3 class="subtitle">
@@ -35,7 +35,7 @@
                         <h1 class="sub-title">
                             Who can you contact?
                         </h1>
-                        <p/>
+                        <br>
                     </div>
                     <div class="container is-fluid" align="left">
                         <h3 class="subtitle">
@@ -68,12 +68,12 @@ export default {
         }
       ],
       rows: [
-        { name: 'Luis Pedroza-Soto', email: 'example' },
+        { name: 'Luis Pedroza-Soto', email: 'luis.g.pedrozasoto@gmail.com' },
         { name: 'Scott Roberts', email: 's.e.roberts0@gmail.com' },
-        { name: 'Hugo Garcia', email: 'example' },
-        { name: 'Kris Cubie', email: 'example' },
-        { name: 'Trisha Eschual', email: 'example' },
-        { name: 'Furkan Arif', email: 'example' }
+        { name: 'Patricia "Trisha" Echual', email: 'piechual@gmail.com' },
+        { name: 'Hugo Garcia', email: 'hugogarcia354@gmail.com' },
+        { name: 'Kris Cubie', email: 'kaycubie@gmail.com' },
+        { name: 'Furkan Arif', email: 'furkanarif@hotmail.com' }
       ]
     }
   },
