@@ -71,7 +71,7 @@ export default {
         { name: 'Luis Pedroza-Soto', email: 'luis.g.pedrozasoto@gmail.com' },
         { name: 'Scott Roberts', email: 's.e.roberts0@gmail.com' },
         { name: 'Patricia "Trisha" Echual', email: 'piechual@gmail.com' },
-        { name: 'Hugo Garcia', email: 'hugogarcia354' },
+        { name: 'Hugo Garcia', email: 'hugogarcia354@gmail.com' },
         { name: 'Kris Cubie', email: 'kaycubie@gmail.com' },
         { name: 'Furkan Arif', email: 'furkanarif@hotmail.com' }
       ]
