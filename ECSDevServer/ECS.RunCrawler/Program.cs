@@ -12,9 +12,9 @@ namespace ECS.RunCrawler
 
             // Art & Design Sitess
             List<KeyValuePair<string, List<string>>> ArtSites = new List<KeyValuePair<string, List<string>>>() { };
-             ArtSites.Add(new KeyValuePair<string, List<string>>("http://www.cubanartnews.org/can/category/art", new List<string> { "div", "class", "artwork", "a", "href", "http://www.cubanartnews.org/", "meta", "name", "keywords", "content", "title", "", "", "", "meta", "name", "description", "content", "Art & Design" }));
-             ArtSites.Add(new KeyValuePair<string, List<string>>("http://www.cubanartnews.org/can/category/art/P5", new List<string> { "div", "class", "artwork", "a", "href", "http://www.cubanartnews.org/", "meta", "name", "keywords", "content", "title", "", "", "", "meta", "name", "description", "content", "Art & Design" }));
-             ArtSites.Add(new KeyValuePair<string, List<string>>("http://www.cubanartnews.org/can/category/art/P10", new List<string> { "div", "class", "artwork", "a", "href", "http://www.cubanartnews.org/", "meta", "name", "keywords", "content", "title", "", "", "", "meta", "name", "description", "content", "Art & Design" }));
+             //ArtSites.Add(new KeyValuePair<string, List<string>>("http://www.cubanartnews.org/can/category/art", new List<string> { "div", "class", "artwork", "a", "href", "http://www.cubanartnews.org/", "meta", "name", "keywords", "content", "title", "", "", "", "meta", "name", "description", "content", "Art & Design" }));
+             //ArtSites.Add(new KeyValuePair<string, List<string>>("http://www.cubanartnews.org/can/category/art/P5", new List<string> { "div", "class", "artwork", "a", "href", "http://www.cubanartnews.org/", "meta", "name", "keywords", "content", "title", "", "", "", "meta", "name", "description", "content", "Art & Design" }));
+             //ArtSites.Add(new KeyValuePair<string, List<string>>("http://www.cubanartnews.org/can/category/art/P10", new List<string> { "div", "class", "artwork", "a", "href", "http://www.cubanartnews.org/", "meta", "name", "keywords", "content", "title", "", "", "", "meta", "name", "description", "content", "Art & Design" }));
 
             // Does not allow Framing
             // ArtSites.Add(new KeyValuePair<string, List<string>>("http://www.artcyclopedia.com/art-news.php", new List<string> { "font", "size", "+1", "a", "href", "", "meta", "name", "news_keywords", "content", "meta", "property", "og:title", "content", "meta", "property", "og:description", "content", "Art & Design" }));
@@ -39,7 +39,7 @@ namespace ECS.RunCrawler
             // does not allow framing
             //EarthSites.Add(new KeyValuePair<string, List<string>>("https://theconversation.com/us/environment", new List<string> { "div", "class", "article--header", "a", "href", "https://theconversation.com", "meta", "name", "news_keywords", "content", "meta", "property", "og:title", "content", "meta", "property", "og:description", "content", "Environment" }));
 
-            EarthSites.Add(new KeyValuePair<string, List<string>>("http://discovermagazine.com/topics/environment", new List<string> { "div", "class", "dataItem", "a", "href", "http://discovermagazine.com", "meta", "name", "news_keywords", "content", "meta", "property", "og:title", "content", "meta", "property", "og:description", "content", "Environment" }));
+           // EarthSites.Add(new KeyValuePair<string, List<string>>("http://discovermagazine.com/topics/environment", new List<string> { "div", "class", "dataItem", "a", "href", "http://discovermagazine.com", "meta", "name", "news_keywords", "content", "meta", "property", "og:title", "content", "meta", "property", "og:description", "content", "Environment" }));
             EarthSites.Add(new KeyValuePair<string, List<string>>("https://www.huffingtonpost.com/section/green", new List<string> { "div", "class", "card__content", "a", "href", "https://www.huffingtonpost.com", "meta", "name", "keywords", "content", "meta", "property", "og:title", "content", "meta", "property", "og:description", "content", "Environment" }));
 
 
@@ -52,17 +52,17 @@ namespace ECS.RunCrawler
             //SmartSites.Add(new KeyValuePair<string, List<string>>("https://theconversation.com/us/education", new List<string> { "div", "class", "article--header", "a", "href", "https://theconversation.com", "meta", "name", "news_keywords", "content", "meta", "property", "og:title", "content", "meta", "property", "og:description", "content", "Education" }));
 
 
-            SmartSites.Add(new KeyValuePair<string, List<string>>("http://www.bbc.com/news/education", new List<string> { "div", "class", "pigeon-item__body", "a", "href", "http://www.bbc.com", "meta", "name", "description", "content", "meta", "property", "og:title", "content", "meta", "property", "og:description", "content", "Education" }));
-            SmartSites.Add(new KeyValuePair<string, List<string>>("http://www.bbc.com/news/education", new List<string> { "div", "class", "sparrow-item__body", "a", "href", "http://www.bbc.com", "meta", "name", "description", "content", "meta", "property", "og:title", "content", "meta", "property", "og:description", "content", "Education" }));
-            SmartSites.Add(new KeyValuePair<string, List<string>>("http://www.educationnews.org/", new List<string> { "article", "class", "article-popular ", "a", "href", "http://www.educationnews.org/", "meta", "property", "article:tag", "content", "meta", "property", "og:title", "content", "meta", "property", "og:description", "content", "Education" }));
-            SmartSites.Add(new KeyValuePair<string, List<string>>("http://www.educationnews.org/", new List<string> { "div", "class", "copy", "a", "href", "http://www.educationnews.org/", "meta", "property", "article:tag", "content", "meta", "property", "og:title", "content", "meta", "property", "og:description", "content", "Education" }));
+            //SmartSites.Add(new KeyValuePair<string, List<string>>("http://www.bbc.com/news/education", new List<string> { "div", "class", "pigeon-item__body", "a", "href", "http://www.bbc.com", "meta", "name", "description", "content", "meta", "property", "og:title", "content", "meta", "property", "og:description", "content", "Education" }));
+            //SmartSites.Add(new KeyValuePair<string, List<string>>("http://www.bbc.com/news/education", new List<string> { "div", "class", "sparrow-item__body", "a", "href", "http://www.bbc.com", "meta", "name", "description", "content", "meta", "property", "og:title", "content", "meta", "property", "og:description", "content", "Education" }));
+            //SmartSites.Add(new KeyValuePair<string, List<string>>("http://www.educationnews.org/", new List<string> { "article", "class", "article-popular ", "a", "href", "http://www.educationnews.org/", "meta", "property", "article:tag", "content", "meta", "property", "og:title", "content", "meta", "property", "og:description", "content", "Education" }));
+            //SmartSites.Add(new KeyValuePair<string, List<string>>("http://www.educationnews.org/", new List<string> { "div", "class", "copy", "a", "href", "http://www.educationnews.org/", "meta", "property", "article:tag", "content", "meta", "property", "og:title", "content", "meta", "property", "og:description", "content", "Education" }));
 
             // Education Keyword/Tag List
             HashSet<string> SmartTags = new HashSet<string> {"afford","affordable", "children", "child", "institution", "institutions", "education", "school", "university", "college", "career", "careers", "degree", "masters", "student", "students", "teacher", "teachers", "professor", "professors", "daca", "kindergarten", "developmental", "develop", "science", "stem", "steam", "schools", "colleges", "universities" };
 
             // History Sites
             List<KeyValuePair<string, List<string>>> AncientSites = new List<KeyValuePair<string, List<string>>>() { };
-            AncientSites.Add(new KeyValuePair<string, List<string>>("http://historynewsnetwork.org/", new List<string> { "div", "class", "caption", "a", "href", "https://historynewsnetwork.org", "meta", "property", "og:title", "content", "meta", "property", "og:title", "content", "meta", "property", "og:description", "content", "History" }));
+           // AncientSites.Add(new KeyValuePair<string, List<string>>("http://historynewsnetwork.org/", new List<string> { "div", "class", "caption", "a", "href", "https://historynewsnetwork.org", "meta", "property", "og:title", "content", "meta", "property", "og:title", "content", "meta", "property", "og:description", "content", "History" }));
             AncientSites.Add(new KeyValuePair<string, List<string>>("https://www.newhistorian.com/", new List<string> { "div", "class", "news-summary has-feature-image", "a", "href", "https://www.newhistorian.com/", "meta", "property", "article:tag", "content", "meta", "property", "og:title", "content", "meta", "property", "og:description", "content", "History" }));
 
 
@@ -90,10 +90,10 @@ namespace ECS.RunCrawler
 
 
 
-            TechSites.Add(new KeyValuePair<string, List<string>>("http://discovermagazine.com/topics/technology", new List<string> { "div", "class", "dataItem", "a", "href", "http://discovermagazine.com", "meta", "name", "news_keywords", "content", "meta", "property", "og:title", "content", "meta", "property", "og:description", "content", "Technology" }));
+           // TechSites.Add(new KeyValuePair<string, List<string>>("http://discovermagazine.com/topics/technology", new List<string> { "div", "class", "dataItem", "a", "href", "http://discovermagazine.com", "meta", "name", "news_keywords", "content", "meta", "property", "og:title", "content", "meta", "property", "og:description", "content", "Technology" }));
             TechSites.Add(new KeyValuePair<string, List<string>>("https://www.huffingtonpost.com/topic/computer-science", new List<string> { "div", "class", "card__content", "a", "href", "https://www.huffingtonpost.com", "meta", "name", "keywords", "content", "meta", "property", "og:title", "content", "meta", "property", "og:description", "content", "Technology" }));
-            TechSites.Add(new KeyValuePair<string, List<string>>("http://www.educationnews.org/", new List<string> { "article", "class", "article-popular ", "a", "href", "http://www.educationnews.org/", "meta", "property", "article:tag", "content", "meta", "property", "og:title", "content", "meta", "property", "og:description", "content", "Technology" }));
-            TechSites.Add(new KeyValuePair<string, List<string>>("http://www.educationnews.org/", new List<string> { "div", "class", "copy", "a", "href", "http://www.educationnews.org/", "meta", "property", "article:tag", "content", "meta", "property", "og:title", "content", "meta", "property", "og:description", "content", "Technology" }));
+            //TechSites.Add(new KeyValuePair<string, List<string>>("http://www.educationnews.org/", new List<string> { "article", "class", "article-popular ", "a", "href", "http://www.educationnews.org/", "meta", "property", "article:tag", "content", "meta", "property", "og:title", "content", "meta", "property", "og:description", "content", "Technology" }));
+            //TechSites.Add(new KeyValuePair<string, List<string>>("http://www.educationnews.org/", new List<string> { "div", "class", "copy", "a", "href", "http://www.educationnews.org/", "meta", "property", "article:tag", "content", "meta", "property", "og:title", "content", "meta", "property", "og:description", "content", "Technology" }));
 
 
             // Technology Keyword/Tag List
