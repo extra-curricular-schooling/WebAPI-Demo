@@ -48,7 +48,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Security\ClaimNames.cs" />
     <Compile Include="Security\ClaimValues.cs" />
-    <Compile Include="Security\Secrets.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Business Logic\" />
