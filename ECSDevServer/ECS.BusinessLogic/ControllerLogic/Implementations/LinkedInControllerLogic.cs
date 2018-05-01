@@ -32,11 +32,22 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
         }
 
         /// <summary>
-        /// 
+        /// Logic for sharing a post on LinkedIn
         /// </summary>
-        /// <param name="linkedInAccessToken"></param>
-        /// <param name="linkedInPostDTO"></param>
-        /// <returns></returns>
+        /// <param name="linkedInAccessToken">
+        /// LinkedIn access token object containing the value of the token itself
+        /// </param>
+        /// <param name="linkedInPostDTO">
+        /// Information about the post that will be submitted
+        /// </param>
+        /// <returns>
+        /// One of the following will be returned:
+        /// - Success: (LinkedIn accepted the post request)
+        ///     An object containing the response from LinkedIn
+        /// - Failure:
+        ///     null if the request was rejected
+        /// </returns>
+        /// <remarks>Author: Luis Guillermo Pedroza-Soto</remarks>
         public Object SharePost(LinkedInAccessToken linkedInAccessToken, LinkedInPostDTO linkedInPostDTO)
         {
             var requestUrl = _defaultAccessGateway + "people/~/shares?format=json";
@@ -47,7 +58,7 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
             webRequest.Host = "api.linkedin.com";
             webRequest.KeepAlive = true;
 
-            //Build Header.
+            //Build Headers.
             var requestHeaders = new NameValueCollection
             {
                 {"x-li-format", "json" },
@@ -85,9 +96,11 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
 
             try
             {
+                // Submit request for post submission
                 using (var webResponse = (HttpWebResponse)webRequest.GetResponse())
                 {
                     var responseStream = webResponse.GetResponseStream();
+                    // Response was not the one expected
                     if (responseStream == null || webResponse.StatusCode != HttpStatusCode.Created)
                         return new StatusCodeResult(webResponse.StatusCode, new HttpRequestMessage());
 
@@ -97,13 +110,15 @@ namespace ECS.BusinessLogic.ControllerLogic.Implementations
                         var json = JObject.Parse(response);
                         var updateKey = json.Value<string>("updateKey");
                         var updateUrl = json.Value<string>("updateUrl");
-
+                        // A successful post means the stored token is no longer valid
+                        // Thus invalidate it
                         _linkedinLogic.InvalidateLinkedInAccessToken(linkedInAccessToken);
 
                         return new { UpdateKey = updateKey, UpdateUrl = updateUrl };
                     }
                 }
             }
+            // LinkedIn rejected our request
             catch (Exception)
             {
                 return null;

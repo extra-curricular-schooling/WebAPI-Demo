@@ -24,9 +24,21 @@ namespace ECS.WebAPI.Controllers.v1
             _accountLogic = new AccountLogic();
         }
 
-        // Edit other account information
-        // ... look at scope document
-
+        /// <summary>
+        /// Grants admin access to a user's account status
+        /// </summary>
+        /// <param name="usernameDTO">
+        /// A way to get the username from the body of the request instead of a query string
+        /// </param>
+        /// <returns>
+        /// - Success: (Valid Username)
+        ///     200 status code
+        ///         Body contains status of given user
+        /// - Failure:
+        ///     400 status code
+        ///         The given username does not exist
+        /// </returns>
+        /// <remarks>Author: Luis Guillermo Pedroza-Soto</remarks>
         [HttpPost]
         [Route("SingleScholarAccountInformation")]
         public IHttpActionResult SingleScholarAccountInformation(UsernameDTO usernameDTO)
@@ -45,8 +57,22 @@ namespace ECS.WebAPI.Controllers.v1
             return Json(new { requestedAccount.AccountStatus });
         }
 
-        // Filter by username??
-
+        /// <summary>
+        /// Grants admin access to modifying a user's account status
+        /// </summary>
+        /// <param name="accountStatusDTO">
+        /// Data transfer object containing the new status of the account along with the username
+        /// </param>
+        /// <returns>
+        /// One of the following will be returned:
+        /// - Success: (Valid username)
+        ///     200 status code
+        ///         Account status was updated
+        /// - Failure:
+        ///     400 status code
+        ///         Username does not exist
+        /// </returns>
+        /// <remarks>Author: Luis Guillermo Pedroza-Soto</remarks>
         [HttpPost]
         [Route("ScholarAccountInformation")]
         public IHttpActionResult ScholarAccountInformation(AccountStatusDTO accountStatusDTO)
