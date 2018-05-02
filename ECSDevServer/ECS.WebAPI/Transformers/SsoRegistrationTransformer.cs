@@ -11,6 +11,8 @@ namespace ECS.WebAPI.Transformers
     {
         public SsoRegistrationRequestDTO Fetch(HttpRequestContext context)
         {
+            // TODO: @Scott Limit exposure to the heap by making this a direct connection to the Dto.
+
             // Read the Request Principal (User), and grab the necessary jwt claims.
             var username = SsoJwtManager.Instance.GetClaimValue(context.Principal, ClaimNames.Username);
             var password = SsoJwtManager.Instance.GetClaimValue(context.Principal, ClaimNames.Password);

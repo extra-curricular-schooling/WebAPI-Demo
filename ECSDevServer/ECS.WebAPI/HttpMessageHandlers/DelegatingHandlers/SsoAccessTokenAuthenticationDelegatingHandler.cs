@@ -54,6 +54,8 @@ namespace ECS.WebAPI.HttpMessageHandlers.DelegatingHandlers
             {
                 _authenticationService.CheckBadAccessTokens(token);
                 _authenticationService.CheckExpiredAccessTokens(token, 1);
+
+                // TODO: @Scott Make custom error type to not have two different try catch blocks.
             }
             catch (Exception e)
             {

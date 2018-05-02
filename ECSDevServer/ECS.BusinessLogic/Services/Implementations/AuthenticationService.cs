@@ -22,6 +22,8 @@ namespace ECS.BusinessLogic.Services.Implementations
         /// <exception cref="UnauthorizedAccessException">Token appears in database.</exception>
         public void CheckBadAccessTokens(string token)
         {
+            // TODO: @Scott Make sure to add comments for not having the responsiblity to check for null token values.
+
             var badAccessTokens = _badAccessTokenLogic.GetBadAccessTokens(token);
 
             // Check the Bad Tokens to ensure this hasn't been seen before.

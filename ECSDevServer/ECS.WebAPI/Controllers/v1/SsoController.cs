@@ -38,11 +38,14 @@ namespace ECS.WebAPI.Controllers.v1
          public IHttpActionResult Registration()
          {
             // Transform request context into DTO.
-            var transformer = new SsoRegistrationTransformer();
-            var ssoDto = transformer.Fetch(RequestContext);
+            
+            var registrationTransformer = new SsoRegistrationTransformer();
 
-            var response = _controllerLogic.RegisterPartialAccount(ssoDto);
-            IHttpActionResult actionResultResponse = ResponseMessage(response);
+             // TODO: @Scott Change fetch to conversion and overload it.
+            var ssoDto = registrationTransformer.Fetch(RequestContext);
+
+            var httpResponse = _controllerLogic.RegisterPartialAccount(ssoDto);
+            IHttpActionResult actionResultResponse = ResponseMessage(httpResponse);
 
             return actionResultResponse;
          }
