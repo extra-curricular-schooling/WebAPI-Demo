@@ -117,7 +117,7 @@ export default {
       if (this.FirstLoad) {
         this.FirstLoad = false
       } else {
-        this.interval = setTimeout(this.earnPoints, 1000)
+        this.interval = setTimeout(this.earnPoints, 60000)
         // listen for eventbus to cancel the time interval is user leaves home.
         EventBus.$on('cancelInterval', cancelInterval => {
           clearInterval(this.interval)
