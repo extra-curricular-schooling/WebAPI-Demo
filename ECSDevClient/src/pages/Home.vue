@@ -3,7 +3,7 @@
     <SideBar/>
     <main id="EmbedContent" class="box" style="background-color: hsl(0, 0%, 96%); border-radius: 0px;">
       <button class="toggle-button">☰</button>
-      <iframe class="box" src="http://hugogarcia.me/site/ecsHelp" id = "FrameResult" name="FrameResult" @load="mounted" @error="alert('Frame not loaded')" sandbox=""></iframe>
+      <iframe class="box" src="https://hugogarcia.me/site/ecsHelp" id = "FrameResult" name="FrameResult" @load="mounted" @error="alert('Frame not loaded')" sandbox=""></iframe>
       <div class="box" style="width: 90%; display: inline-block;">
         <LinkedInPostModal/>
       </div>

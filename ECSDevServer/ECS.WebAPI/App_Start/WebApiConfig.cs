@@ -6,7 +6,6 @@ using System.Web.Http;
 using System.Web.Http.Dispatcher;
 using ECS.WebAPI.Filters.ExceptionFilters;
 using ECS.WebAPI.HttpMessageHandlers.DelegatingHandlers;
-using ECS.WebAPI.Filters.AuthorizationFilters;
 
 namespace ECS.WebAPI
 {
