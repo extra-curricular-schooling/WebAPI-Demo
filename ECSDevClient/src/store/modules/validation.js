@@ -7,7 +7,7 @@
 export const validation = {
   state: {
     // Regular Expressions
-    nameRegex: Object.freeze(/^[a-zA-Z\- ]{1,50}$/),
+    nameRegex: Object.freeze(/^[a-zA-Z'`.\- ]{1,50}$/),
     usernameRegex: Object.freeze(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]{8,120}$/),
     passwordRegex: Object.freeze(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[~!@#$%^&*()_])[a-zA-Z0-9~!@#$%^&*()_]{8,64}$/),
     emailRegex: Object.freeze(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/),
