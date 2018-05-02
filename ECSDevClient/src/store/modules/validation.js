@@ -17,7 +17,7 @@ export const validation = {
 
     // Validation Messages
     nameMessage: Object.freeze('Sorry, the name you entered either contains invalid characters or is too long.'),
-    usernameMessage: Object.freeze('Username must be 8-120 characters long, must not contain any spaces, and must contain at least 1 lowercase letter, 1 uppercase letter, and 1 number.'),
+    usernameMessage: Object.freeze('Username must be 8-120 characters long, must not contain any spaces, must not contain any special characters, and must contain at least 1 lowercase letter, 1 uppercase letter, and 1 number.'),
     passwordMessage: Object.freeze('Password must be 8-64 characters long, must not contain any spaces, and must contain at least 1 lowercase letter, 1 uppercase letter, 1 number, and 1 special character.'),
     confirmPasswordMessage: Object.freeze('Retype Password.'),
     emailMessage: Object.freeze('Email is not a valid email.'),

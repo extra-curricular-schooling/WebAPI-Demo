@@ -77,6 +77,11 @@ export default {
   components: {
     'loading-modal': LoadingModal
   },
+  created () {
+    EventBus.$on('forgetUsername', () => {
+      this.toggle()
+    })
+  },
   data () {
     return {
       // Request Data
@@ -107,6 +112,7 @@ export default {
         document.getElementById('email').className = 'input'
       }
       this.isActive = !this.isActive
+      this.emailMessage = ''
     },
     /**
      * @description

@@ -89,9 +89,6 @@ export default {
     },
     changePassword () {
       this.$refs.password.toggle()
-      EventBus.$on('forgetUsername', () => {
-        this.rememberUsername()
-      })
     },
     rememberUsername () {
       this.$refs.username.toggle()
