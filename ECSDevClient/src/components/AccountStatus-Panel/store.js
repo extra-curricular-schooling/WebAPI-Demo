@@ -1,8 +1,8 @@
 export const AccountStatusPanel = {
   state: {
     accountStatus: false,
-    requestAccountInfoUri: 'https://localhost:44311/v1/AccountAdmin/SingleScholarAccountInformation',
-    updateAccountStatusUri: 'https://localhost:44311/v1/AccountAdmin/ScholarAccountInformation',
+    requestAccountInfoUri: 'AccountAdmin/SingleScholarAccountInformation',
+    updateAccountStatusUri: 'AccountAdmin/ScholarAccountInformation',
     adminSelectedUsername: ''
   },
   getters: {

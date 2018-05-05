@@ -30,7 +30,7 @@ export default {
     retrieveUserInfo: function () {
       Axios({
         method: 'POST',
-        url: this.$store.getters.getRequestAccountInfoUri,
+        url: this.$store.getters.getBaseAppUrl + this.$store.getters.getRequestAccountInfoUri,
         headers: this.$store.getters.getRequestHeaders,
         data: {
           username: this.username

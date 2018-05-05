@@ -108,7 +108,7 @@ export default {
           this.toggleLoadingModal()
           Axios({
             method: 'POST',
-            url: this.$store.getters.getLoginPortal,
+            url: this.$store.getters.getBaseAppUrl + this.$store.getters.getLoginPortal,
             headers: this.$store.getters.getRequestHeaders,
             data: {
               username: this.username,

@@ -1,6 +1,6 @@
 export const login = {
   state: {
-    loginPortal: 'https://localhost:44311/v1/Login/Submit'
+    loginPortal: 'Login/Submit'
   },
   getters: {
     getLoginPortal: function (state) {

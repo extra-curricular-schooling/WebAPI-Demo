@@ -26,7 +26,7 @@ export default {
   data () {
     return {
       requestHeaders: this.$store.getters.getRequestHeaders,
-      requestUserInfoUri: this.$store.getters.getRequestUserInfoUri,
+      requestUserInfoUri: this.$store.getters.getBaseAppUrl + this.$store.getters.getRequestUserInfoUri,
       username: '',
       currentComponent: 'select-user-panel'
     }

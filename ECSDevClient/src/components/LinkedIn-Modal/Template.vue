@@ -140,7 +140,7 @@ export default {
   },
   methods: {
     getLinkedInTokenUri: function () {
-      return 'https://localhost:44311/v1/OAuth/RedirectToLinkedIn?authtoken=' +
+      return this.$store.getters.getBaseAppUrl + 'OAuth/RedirectToLinkedIn?authtoken=' +
           this.$store.getters.getAuthToken + '&returnuri=' + encodeURIComponent(window.location.href)
     },
     updateArticleInfo: function () {
@@ -178,7 +178,7 @@ export default {
     shareToLinkedIn: function () {
       Axios({
         method: 'POST',
-        url: this.$store.getters.getLinkedInPostURI,
+        url: this.$store.getters.getBaseAppUrl + this.$store.getters.getLinkedInPostURI,
         headers: this.$store.getters.getRequestHeaders,
         data: {
           comment: this.postData.comment,

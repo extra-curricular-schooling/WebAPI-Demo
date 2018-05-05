@@ -40,7 +40,7 @@ export default {
     updateAccountStatus: function () {
       Axios({
         method: 'POST',
-        url: this.$store.getters.getUpdateAccountStatusUri,
+        url: this.$store.getters.getBaseAppUrl + this.$store.getters.getUpdateAccountStatusUri,
         headers: this.$store.getters.getRequestHeaders,
         data: {
           accountStatus: this.accountStatus,

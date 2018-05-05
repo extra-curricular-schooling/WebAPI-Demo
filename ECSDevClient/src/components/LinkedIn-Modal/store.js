@@ -1,7 +1,7 @@
 export const linkedin = {
   state: {
     linkedInAccessToken: '',
-    linkedInPostURI: 'https://localhost:44311/v1/LinkedIn/SharePost'
+    linkedInPostURI: 'LinkedIn/SharePost'
   },
   getters: {
     getLinkedInAccessToken: function (state) {
