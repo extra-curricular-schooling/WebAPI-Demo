@@ -235,6 +235,7 @@
     <Content Include="static\js\manifest.3b34a6bd8600ee00d574.js.map" />
     <Content Include="static\js\vendor.969b1356efc60c054539.js.map" />
     <None Include="Properties\PublishProfiles\FolderProfile3.pubxml" />
+    <None Include="Properties\PublishProfiles\FolderProfile4.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

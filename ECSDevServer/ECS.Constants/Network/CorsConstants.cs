@@ -10,6 +10,8 @@
             "http://localhost:8081, " +
             "http://localhost:8085, " +
             "https://localhost:8085, " +
+            "http://ecschooling.org, " +
+            "http://www.ecschooling.org, " +
             "https://ecschooling.org, " +
             "https://www.ecschooling.org, " +
             "https://fannbrian.github.io";
