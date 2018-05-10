@@ -213,9 +213,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
-    <None Include="Properties\PublishProfiles\FolderProfile1.pubxml" />
-    <None Include="Properties\PublishProfiles\FolderProfile2.pubxml" />
     <Content Include="static\css\app.2fb10a02fd057685cd65bdd015e748b7.css.map" />
     <Content Include="static\js\0.f97d0d1176c7d5636cbd.js.map" />
     <Content Include="static\js\1.5f8faff7a53b7db8df4a.js.map" />
@@ -234,8 +231,7 @@
     <Content Include="static\js\app.94df80a7bf67f169d641.js.map" />
     <Content Include="static\js\manifest.3b34a6bd8600ee00d574.js.map" />
     <Content Include="static\js\vendor.969b1356efc60c054539.js.map" />
-    <None Include="Properties\PublishProfiles\FolderProfile3.pubxml" />
-    <None Include="Properties\PublishProfiles\FolderProfile4.pubxml" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
